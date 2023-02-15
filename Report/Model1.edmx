@@ -1,0 +1,1895 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PPAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateCreate" Type="datetime" Nullable="false" />
+          <Property Name="MarriageId" Type="int" Nullable="false" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="SexId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DateBirth" Type="date" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="EmailPassword" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone1" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone2" Type="nvarchar" MaxLength="500" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="FaxTelNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="PassportNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="DatePassportIssue" Type="date" />
+          <Property Name="DatePassportExpire" Type="date" />
+          <Property Name="Address" Type="nvarchar" MaxLength="2000" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="DateJoinAvation" Type="date" />
+          <Property Name="DateLastCheckUP" Type="date" />
+          <Property Name="DateNextCheckUP" Type="date" />
+          <Property Name="DateYearOfExperience" Type="date" />
+          <Property Name="CaoCardNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateCaoCardIssue" Type="date" />
+          <Property Name="DateCaoCardExpire" Type="date" />
+          <Property Name="CompetencyNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="CaoInterval" Type="int" />
+          <Property Name="CaoIntervalCalanderTypeId" Type="int" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="StampNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="StampUrl" Type="nvarchar" MaxLength="500" />
+          <Property Name="TechLogNo" Type="varchar" MaxLength="100" />
+          <Property Name="DateIssueNDT" Type="date" />
+          <Property Name="IntervalNDT" Type="int" />
+          <Property Name="NDTNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="NDTIntervalCalanderTypeId" Type="int" />
+          <Property Name="IsAuditor" Type="bit" />
+          <Property Name="IsAuditee" Type="bit" />
+          <Property Name="Nickname" Type="nvarchar" MaxLength="50" />
+          <Property Name="CityId" Type="int" />
+          <Property Name="FatherName" Type="nvarchar" MaxLength="500" />
+          <Property Name="IDNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="RowId" Type="uniqueidentifier" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CustomerCreatorId" Type="int" />
+          <Property Name="DateExpireNDT" Type="date" />
+          <Property Name="ProficiencyExpireDate" Type="datetime" />
+          <Property Name="CrewMemberCertificateExpireDate" Type="datetime" />
+          <Property Name="LicenceExpireDate" Type="datetime" />
+          <Property Name="SimulatorLastCheck" Type="datetime" />
+          <Property Name="SimulatorNextCheck" Type="datetime" />
+          <Property Name="RampPassNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="RampPassExpireDate" Type="datetime" />
+          <Property Name="LanguageCourseExpireDate" Type="datetime" />
+          <Property Name="LicenceTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="LicenceInitialIssue" Type="datetime" />
+          <Property Name="RaitingCertificates" Type="nvarchar" MaxLength="500" />
+          <Property Name="LicenceIssueDate" Type="datetime" />
+          <Property Name="LicenceDescription" Type="nvarchar" MaxLength="2000" />
+          <Property Name="ProficiencyCheckType" Type="int" />
+          <Property Name="ProficiencyCheckDate" Type="datetime" />
+          <Property Name="ProficiencyValidUntil" Type="datetime" />
+          <Property Name="ICAOLPRLevel" Type="int" />
+          <Property Name="ICAOLPRValidUntil" Type="datetime" />
+          <Property Name="MedicalClass" Type="int" />
+          <Property Name="CMCEmployedBy" Type="varchar" MaxLength="500" />
+          <Property Name="CMCOccupation" Type="varchar" MaxLength="500" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="255" />
+          <Property Name="ProficiencyIPC" Type="bit" />
+          <Property Name="ProficiencyOPC" Type="bit" />
+          <Property Name="MedicalLimitation" Type="varchar" MaxLength="500" />
+          <Property Name="ProficiencyDescription" Type="varchar" MaxLength="500" />
+          <Property Name="VisaExpireDate" Type="datetime" />
+          <Property Name="SEPTIssueDate" Type="datetime" />
+          <Property Name="SEPTExpireDate" Type="datetime" />
+          <Property Name="DangerousGoodsIssueDate" Type="datetime" />
+          <Property Name="DangerousGoodsExpireDate" Type="datetime" />
+          <Property Name="CCRMIssueDate" Type="datetime" />
+          <Property Name="CCRMExpireDate" Type="datetime" />
+          <Property Name="CRMIssueDate" Type="datetime" />
+          <Property Name="CRMExpireDate" Type="datetime" />
+          <Property Name="SMSIssueDate" Type="datetime" />
+          <Property Name="SMSExpireDate" Type="datetime" />
+          <Property Name="AviationSecurityIssueDate" Type="datetime" />
+          <Property Name="AviationSecurityExpireDate" Type="datetime" />
+          <Property Name="EGPWSIssueDate" Type="datetime" />
+          <Property Name="EGPWSExpireDate" Type="datetime" />
+          <Property Name="UpsetRecoveryTrainingIssueDate" Type="datetime" />
+          <Property Name="UpsetRecoveryTrainingExpireDate" Type="datetime" />
+          <Property Name="ColdWeatherOperationIssueDate" Type="datetime" />
+          <Property Name="HotWeatherOperationIssueDate" Type="datetime" />
+          <Property Name="PBNRNAVIssueDate" Type="datetime" />
+          <Property Name="PBNRNAVExpireDate" Type="datetime" />
+          <Property Name="ColdWeatherOperationExpireDate" Type="datetime" />
+          <Property Name="HotWeatherOperationExpireDate" Type="datetime" />
+          <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="Code" Type="varchar" MaxLength="500" />
+          <Property Name="SEPTPIssueDate" Type="datetime" />
+          <Property Name="SEPTPExpireDate" Type="datetime" />
+          <Property Name="FirstAidIssueDate" Type="datetime" />
+          <Property Name="FirstAidExpireDate" Type="datetime" />
+          <Property Name="LicenceIRExpireDate" Type="datetime" />
+          <Property Name="RankId" Type="int" />
+          <Property Name="LinkedIn" Type="nvarchar" MaxLength="500" />
+          <Property Name="WhatsApp" Type="nvarchar" MaxLength="500" />
+          <Property Name="Telegram" Type="nvarchar" MaxLength="255" />
+          <Property Name="AircraftTypeId" Type="int" />
+          <Property Name="DateTypeIssue" Type="datetime" />
+          <Property Name="DateTypeExpire" Type="datetime" />
+          <Property Name="ProficiencyDescriptionOPC" Type="varchar" MaxLength="500" />
+          <Property Name="ProficiencyCheckDateOPC" Type="datetime" />
+          <Property Name="ProficiencyValidUntilOPC" Type="datetime" />
+          <Property Name="DateTRIExpired" Type="datetime" />
+          <Property Name="DateTREExpired" Type="datetime" />
+          <Property Name="LineIssueDate" Type="datetime" />
+          <Property Name="LineExpireDate" Type="datetime" />
+          <Property Name="RecurrentIssueDate" Type="datetime" />
+          <Property Name="RecurrentExpireDate" Type="datetime" />
+          <Property Name="FMTIssueDate" Type="datetime" />
+          <Property Name="FMTExpireDate" Type="datetime" />
+          <Property Name="PFirstName" Type="nvarchar" MaxLength="500" />
+          <Property Name="PLastName" Type="nvarchar" MaxLength="500" />
+          <Property Name="MultiType" Type="varchar" MaxLength="1000" />
+          <Property Name="OtherAirline" Type="bit" />
+          <Property Name="TypeMDIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeMDExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="Type737IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="Type737ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeAirbusIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeAirbusExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeMDConversionIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="Type737ConversionIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeAirbusConversionIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LRCIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LRCExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="RSPIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="RSPExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="CTUIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="CTUExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="SAIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="SAExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="HFIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="HFExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASDIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASDExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="GOMIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="GOMExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASFIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASFExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="CCIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="CCExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ERPIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ERPExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="MBIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="MBExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="PSIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="PSExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ANNEXIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ANNEXExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="DRMIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="DRMExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="FMTDIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="FMTDExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="MELExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="MELIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="METIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="METExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="PERIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="PERExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="LPCC1ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="LPCC2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="LPCC3ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="LPCC1IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LPCC2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LPCC3IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OPCC1IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OPCC2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OPCC3IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LineC1IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LineC2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LineC3IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LineC1ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="LineC2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="LineC3ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="RampIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="RampExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ACIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ACExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="UPRTIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="UPRTExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="SFIIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="SFIExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="SFEIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="SFEExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="TRI2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="TRI2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="TRE2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="TRE2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="IRIIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="IRIExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="IREIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="IREExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="CRIIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="CRIExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="CREIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="CREExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="SFI2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="SFI2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="SFE2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="SFE2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="AirCrewIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="AirCrewExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="AirOpsIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="AirOpsExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="SOPIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="SOPExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="Diff31IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="Diff31ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="Diff34IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="Diff34ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OMA1IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OMA1ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OMB1IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OMB1ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OMC1IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OMC1ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OMA2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OMA2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OMB2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OMB2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OMC2IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OMC2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OMA3IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OMA3ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OMB3IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OMB3ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OMC3IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="OMC3ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="MapIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="MapExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ComResIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ComResExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OPCC1ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OPCC2ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OPCC3ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate1" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate1" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate2" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate2" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate3" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate3" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate4" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate4" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate5" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate5" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate6" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate6" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate7" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate7" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate8" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate8" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate9" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate9" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate10" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate10" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseNew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewCourseNew">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CourseTypeId" />
+            <PropertyRef Name="DateStart" />
+            <PropertyRef Name="Recurrent" />
+            <PropertyRef Name="Sessions" />
+            <PropertyRef Name="PeopleCount" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CourseTypeId" Type="int" Nullable="false" />
+          <Property Name="CourseType" Type="nvarchar" MaxLength="500" />
+          <Property Name="CertificateTypeId" Type="int" />
+          <Property Name="CertificateType" Type="varchar" MaxLength="255" />
+          <Property Name="JobGroups" Type="nvarchar" MaxLength="4000" />
+          <Property Name="JobGroupsCode" Type="varchar" MaxLength="8000" />
+          <Property Name="DateStart" Type="date" Nullable="false" />
+          <Property Name="DateEnd" Type="date" />
+          <Property Name="Instructor" Type="nvarchar" MaxLength="1001" />
+          <Property Name="Location" Type="nvarchar" MaxLength="500" />
+          <Property Name="Department" Type="nvarchar" MaxLength="500" />
+          <Property Name="OrganizationId" Type="int" />
+          <Property Name="Duration" Type="int" />
+          <Property Name="DurationUnitId" Type="int" />
+          <Property Name="StatusId" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="11" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="TrainingDirector" Type="nvarchar" MaxLength="500" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="Recurrent" Type="bit" Nullable="false" />
+          <Property Name="Interval" Type="int" />
+          <Property Name="CalanderTypeId" Type="int" />
+          <Property Name="IsInside" Type="bit" />
+          <Property Name="IsGeneral" Type="bit" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="No" Type="varchar" MaxLength="204" />
+          <Property Name="IsNotificationEnabled" Type="bit" />
+          <Property Name="Sessions" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="PeopleCount" Type="int" Nullable="false" />
+          <Property Name="Organization" Type="nvarchar" MaxLength="1000" />
+          <Property Name="DurationUnit" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CalendarType" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Continual" Type="bit" />
+          <Property Name="Mandatory" Type="int" />
+          <Property Name="CurrencyId" Type="int" />
+          <Property Name="InstructorEmployeeId" Type="int" />
+          <Property Name="InstructorJobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="HoldingType" Type="varchar" MaxLength="500" />
+          <Property Name="InForm" Type="bit" />
+          <Property Name="SendLetter" Type="bit" />
+          <Property Name="Financial" Type="bit" />
+          <Property Name="Certificate" Type="bit" />
+          <Property Name="Instructor2Id" Type="int" />
+          <Property Name="Instructor2EmployeeId" Type="int" />
+          <Property Name="Instructor2JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="Instructor2" Type="nvarchar" MaxLength="1001" />
+          <Property Name="Cost" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="SMSIns1" Type="varchar" MaxLength="2000" />
+          <Property Name="SMSIns2" Type="varchar" MaxLength="2000" />
+          <Property Name="SMSIns1Status" Type="varchar" MaxLength="500" />
+          <Property Name="SMSIns2Status" Type="varchar" MaxLength="500" />
+          <Property Name="SMSInsDate" Type="datetime2" Precision="7" />
+          <Property Name="AttForm" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeople' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewCoursePeople">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="CourseTypeId" />
+            <PropertyRef Name="DateStart" />
+            <PropertyRef Name="Recurrent" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="JobGroupRoot" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Customer" />
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="EmployeeLocation" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" />
+          <Property Name="CourseTypeId" Type="int" Nullable="false" />
+          <Property Name="CourseType" Type="nvarchar" MaxLength="500" />
+          <Property Name="CertificateTypeId" Type="int" />
+          <Property Name="CertificateType" Type="varchar" MaxLength="255" />
+          <Property Name="DateStart" Type="date" Nullable="false" />
+          <Property Name="DateEnd" Type="date" />
+          <Property Name="Instructor" Type="nvarchar" MaxLength="2004" />
+          <Property Name="Location" Type="nvarchar" MaxLength="500" />
+          <Property Name="Department" Type="nvarchar" MaxLength="500" />
+          <Property Name="OrganizationId" Type="int" />
+          <Property Name="Duration" Type="int" />
+          <Property Name="DurationUnitId" Type="int" />
+          <Property Name="StatusId" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="11" />
+          <Property Name="TrainingDirector" Type="nvarchar" MaxLength="500" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="Recurrent" Type="bit" Nullable="false" />
+          <Property Name="Interval" Type="int" />
+          <Property Name="CalanderTypeId" Type="int" />
+          <Property Name="No" Type="varchar" MaxLength="204" />
+          <Property Name="DurationUnit" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CalendarType" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Organization" Type="nvarchar" MaxLength="1000" />
+          <Property Name="PID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroupRoot" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="SexId" Type="int" Nullable="false" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="IDNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Customer" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="CoursePeopleStatusId" Type="int" />
+          <Property Name="DateStatus" Type="datetime" />
+          <Property Name="DateIssue" Type="datetime" />
+          <Property Name="DateExpire" Type="datetime" />
+          <Property Name="StatusRemark" Type="varchar" MaxLength="500" />
+          <Property Name="CoursePeopleStatus" Type="varchar" MaxLength="7" />
+          <Property Name="CertificateNo" Type="varchar" MaxLength="250" />
+          <Property Name="IsNotificationEnabled" Type="bit" />
+          <Property Name="Mandatory" Type="int" />
+          <Property Name="ImgUrl" Type="varchar" MaxLength="2000" />
+          <Property Name="EmployeeLocation" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="SMSStatus" Type="varchar" MaxLength="500" />
+          <Property Name="SMSDateSent" Type="datetime2" Precision="7" />
+          <Property Name="SMSRefId" Type="bigint" />
+          <Property Name="SMSMsg" Type="varchar" MaxLength="2000" />
+          <Property Name="Instructor1" Type="nvarchar" MaxLength="1001" />
+          <Property Name="Instructor2" Type="nvarchar" MaxLength="1001" />
+          <Property Name="Instructor2Id" Type="int" />
+          <Property Name="Instructor1Id" Type="int" />
+          <Property Name="Continual" Type="bit" />
+          <Property Name="InActive" Type="bit" />
+          <Property Name="JobGroupCode2" Type="varchar" MaxLength="500" />
+          <Property Name="ExamResult" Type="int" />
+          <Property Name="ExamDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSession' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewCourseSession">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="Done" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="DateStart" Type="datetime" />
+          <Property Name="DateEnd" Type="datetime" />
+          <Property Name="DateStartUtc" Type="datetime" />
+          <Property Name="DateEndUtc" Type="datetime" />
+          <Property Name="Done" Type="bit" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Key" Type="varchar" MaxLength="500" />
+          <Property Name="DayName" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Year" Type="int" />
+          <Property Name="MonthName" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Month" Type="int" />
+          <Property Name="PDate" Type="nvarchar" MaxLength="4000" />
+          <Property Name="PYearName" Type="nvarchar" MaxLength="4000" />
+          <Property Name="PYear" Type="int" />
+          <Property Name="PMonthName" Type="nvarchar" MaxLength="4000" />
+          <Property Name="PMonth" Type="int" />
+          <Property Name="PDayName" Type="nvarchar" MaxLength="4000" />
+          <Property Name="No" Type="nvarchar" MaxLength="500" />
+          <Property Name="Instructor" Type="nvarchar" MaxLength="500" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="CT_Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Location" Type="nvarchar" MaxLength="500" />
+          <Property Name="Department" Type="nvarchar" MaxLength="500" />
+          <Property Name="OrganizationId" Type="int" />
+          <Property Name="Organization" Type="nvarchar" MaxLength="1000" />
+          <Property Name="IsGeneral" Type="bit" />
+          <Property Name="StatusId" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="11" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSessionPresence' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewCourseSessionPresence">
+          <Key>
+            
+            
+            
+            <PropertyRef Name="CourseId" />
+            
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="SessionKey" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SessionId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="SessionKey" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="SessionStart" Type="datetime" />
+          <Property Name="SessionEnd" Type="datetime" />
+          <Property Name="TotalSession" Type="int" />
+          <Property Name="Attendance" Type="int" />
+          <Property Name="AttendancePercent" Type="numeric" Precision="26" Scale="12" />
+          <Property Name="CourseSessionPresenceId" Type="int" />
+          <Property Name="IsPresent" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewLogBook18' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewLogBook18">
+          <Key>
+            <PropertyRef Name="ArrStn" />
+            <PropertyRef Name="FltNo" />
+            <PropertyRef Name="ACReg" />
+            <PropertyRef Name="ACType" />
+          </Key>
+          <Property Name="Date" Type="date" />
+          <Property Name="ArrStn" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Dep2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Arr2" Type="nvarchar" MaxLength="255" />
+          <Property Name="FltNo" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="ACReg" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ACType" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="OffBlock" Type="datetime" />
+          <Property Name="OffBlockLocal" Type="datetime" />
+          <Property Name="OnBlock" Type="datetime" />
+          <Property Name="OnBlockLocal" Type="datetime" />
+          <Property Name="DayTakeOff" Type="int" />
+          <Property Name="NightTakeOff" Type="int" />
+          <Property Name="DayLanding" Type="int" />
+          <Property Name="NightLanding" Type="int" />
+          <Property Name="NightTime" Type="int" />
+          <Property Name="BlockTime" Type="int" />
+          <Property Name="MultiPilotTime" Type="int" />
+          <Property Name="IFRTime" Type="int" />
+          <Property Name="PICTime" Type="int" />
+          <Property Name="COPILOTTime" Type="int" />
+          <Property Name="IPTime" Type="int" />
+          <Property Name="DUALTime" Type="int" />
+          <Property Name="Pos" Type="nvarchar" MaxLength="255" />
+          <Property Name="PICName" Type="varchar" MaxLength="500" />
+          <Property Name="DepStn" Type="varchar" MaxLength="1014" />
+          <Property Name="IPNAME" Type="varchar" MaxLength="500" />
+          <Property Name="CPTNAME" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewSyllabus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewSyllabus">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="SessionKey" Type="varchar" MaxLength="255" />
+          <Property Name="Duration" Type="int" />
+          <Property Name="InstructorId" Type="int" />
+          <Property Name="InstructorId2" Type="int" />
+          <Property Name="Title" Type="varchar" MaxLength="1000" />
+          <Property Name="Remark" Type="varchar" MaxLength="1000" />
+          <Property Name="DurationActual" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="SessionStart" Type="datetime" />
+          <Property Name="SessionEnd" Type="datetime" />
+          <Property Name="Instructor2" Type="nvarchar" MaxLength="1001" />
+          <Property Name="Instructor" Type="nvarchar" MaxLength="1001" />
+        </EntityType>
+        <EntityContainer Name="PPAModelStoreContainer">
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViewCourseNew" EntityType="Self.ViewCourseNew" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewCourseNew].[Id] AS [Id], 
+    [ViewCourseNew].[CourseTypeId] AS [CourseTypeId], 
+    [ViewCourseNew].[CourseType] AS [CourseType], 
+    [ViewCourseNew].[CertificateTypeId] AS [CertificateTypeId], 
+    [ViewCourseNew].[CertificateType] AS [CertificateType], 
+    [ViewCourseNew].[JobGroups] AS [JobGroups], 
+    [ViewCourseNew].[JobGroupsCode] AS [JobGroupsCode], 
+    [ViewCourseNew].[DateStart] AS [DateStart], 
+    [ViewCourseNew].[DateEnd] AS [DateEnd], 
+    [ViewCourseNew].[Instructor] AS [Instructor], 
+    [ViewCourseNew].[Location] AS [Location], 
+    [ViewCourseNew].[Department] AS [Department], 
+    [ViewCourseNew].[OrganizationId] AS [OrganizationId], 
+    [ViewCourseNew].[Duration] AS [Duration], 
+    [ViewCourseNew].[DurationUnitId] AS [DurationUnitId], 
+    [ViewCourseNew].[StatusId] AS [StatusId], 
+    [ViewCourseNew].[Status] AS [Status], 
+    [ViewCourseNew].[Remark] AS [Remark], 
+    [ViewCourseNew].[TrainingDirector] AS [TrainingDirector], 
+    [ViewCourseNew].[Title] AS [Title], 
+    [ViewCourseNew].[Recurrent] AS [Recurrent], 
+    [ViewCourseNew].[Interval] AS [Interval], 
+    [ViewCourseNew].[CalanderTypeId] AS [CalanderTypeId], 
+    [ViewCourseNew].[IsInside] AS [IsInside], 
+    [ViewCourseNew].[IsGeneral] AS [IsGeneral], 
+    [ViewCourseNew].[CustomerId] AS [CustomerId], 
+    [ViewCourseNew].[No] AS [No], 
+    [ViewCourseNew].[IsNotificationEnabled] AS [IsNotificationEnabled], 
+    [ViewCourseNew].[Sessions] AS [Sessions], 
+    [ViewCourseNew].[PeopleCount] AS [PeopleCount], 
+    [ViewCourseNew].[Organization] AS [Organization], 
+    [ViewCourseNew].[DurationUnit] AS [DurationUnit], 
+    [ViewCourseNew].[CalendarType] AS [CalendarType], 
+    [ViewCourseNew].[Continual] AS [Continual], 
+    [ViewCourseNew].[Mandatory] AS [Mandatory], 
+    [ViewCourseNew].[CurrencyId] AS [CurrencyId], 
+    [ViewCourseNew].[InstructorEmployeeId] AS [InstructorEmployeeId], 
+    [ViewCourseNew].[InstructorJobGroup] AS [InstructorJobGroup], 
+    [ViewCourseNew].[HoldingType] AS [HoldingType], 
+    [ViewCourseNew].[InForm] AS [InForm], 
+    [ViewCourseNew].[SendLetter] AS [SendLetter], 
+    [ViewCourseNew].[Financial] AS [Financial], 
+    [ViewCourseNew].[Certificate] AS [Certificate], 
+    [ViewCourseNew].[Instructor2Id] AS [Instructor2Id], 
+    [ViewCourseNew].[Instructor2EmployeeId] AS [Instructor2EmployeeId], 
+    [ViewCourseNew].[Instructor2JobGroup] AS [Instructor2JobGroup], 
+    [ViewCourseNew].[Instructor2] AS [Instructor2], 
+    [ViewCourseNew].[Cost] AS [Cost], 
+    [ViewCourseNew].[SMSIns1] AS [SMSIns1], 
+    [ViewCourseNew].[SMSIns2] AS [SMSIns2], 
+    [ViewCourseNew].[SMSIns1Status] AS [SMSIns1Status], 
+    [ViewCourseNew].[SMSIns2Status] AS [SMSIns2Status], 
+    [ViewCourseNew].[SMSInsDate] AS [SMSInsDate], 
+    [ViewCourseNew].[AttForm] AS [AttForm]
+    FROM [dbo].[ViewCourseNew] AS [ViewCourseNew]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewCoursePeople" EntityType="Self.ViewCoursePeople" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewCoursePeople].[Id] AS [Id], 
+    [ViewCoursePeople].[CourseId] AS [CourseId], 
+    [ViewCoursePeople].[PersonId] AS [PersonId], 
+    [ViewCoursePeople].[CourseTypeId] AS [CourseTypeId], 
+    [ViewCoursePeople].[CourseType] AS [CourseType], 
+    [ViewCoursePeople].[CertificateTypeId] AS [CertificateTypeId], 
+    [ViewCoursePeople].[CertificateType] AS [CertificateType], 
+    [ViewCoursePeople].[DateStart] AS [DateStart], 
+    [ViewCoursePeople].[DateEnd] AS [DateEnd], 
+    [ViewCoursePeople].[Instructor] AS [Instructor], 
+    [ViewCoursePeople].[Location] AS [Location], 
+    [ViewCoursePeople].[Department] AS [Department], 
+    [ViewCoursePeople].[OrganizationId] AS [OrganizationId], 
+    [ViewCoursePeople].[Duration] AS [Duration], 
+    [ViewCoursePeople].[DurationUnitId] AS [DurationUnitId], 
+    [ViewCoursePeople].[StatusId] AS [StatusId], 
+    [ViewCoursePeople].[Status] AS [Status], 
+    [ViewCoursePeople].[TrainingDirector] AS [TrainingDirector], 
+    [ViewCoursePeople].[Title] AS [Title], 
+    [ViewCoursePeople].[Recurrent] AS [Recurrent], 
+    [ViewCoursePeople].[Interval] AS [Interval], 
+    [ViewCoursePeople].[CalanderTypeId] AS [CalanderTypeId], 
+    [ViewCoursePeople].[No] AS [No], 
+    [ViewCoursePeople].[DurationUnit] AS [DurationUnit], 
+    [ViewCoursePeople].[CalendarType] AS [CalendarType], 
+    [ViewCoursePeople].[Organization] AS [Organization], 
+    [ViewCoursePeople].[PID] AS [PID], 
+    [ViewCoursePeople].[CustomerId] AS [CustomerId], 
+    [ViewCoursePeople].[GroupId] AS [GroupId], 
+    [ViewCoursePeople].[JobGroup] AS [JobGroup], 
+    [ViewCoursePeople].[JobGroupCode] AS [JobGroupCode], 
+    [ViewCoursePeople].[JobGroupRoot] AS [JobGroupRoot], 
+    [ViewCoursePeople].[SexId] AS [SexId], 
+    [ViewCoursePeople].[NID] AS [NID], 
+    [ViewCoursePeople].[FirstName] AS [FirstName], 
+    [ViewCoursePeople].[LastName] AS [LastName], 
+    [ViewCoursePeople].[Name] AS [Name], 
+    [ViewCoursePeople].[Mobile] AS [Mobile], 
+    [ViewCoursePeople].[IDNo] AS [IDNo], 
+    [ViewCoursePeople].[Sex] AS [Sex], 
+    [ViewCoursePeople].[Customer] AS [Customer], 
+    [ViewCoursePeople].[ScheduleName] AS [ScheduleName], 
+    [ViewCoursePeople].[EmployeeId] AS [EmployeeId], 
+    [ViewCoursePeople].[CoursePeopleStatusId] AS [CoursePeopleStatusId], 
+    [ViewCoursePeople].[DateStatus] AS [DateStatus], 
+    [ViewCoursePeople].[DateIssue] AS [DateIssue], 
+    [ViewCoursePeople].[DateExpire] AS [DateExpire], 
+    [ViewCoursePeople].[StatusRemark] AS [StatusRemark], 
+    [ViewCoursePeople].[CoursePeopleStatus] AS [CoursePeopleStatus], 
+    [ViewCoursePeople].[CertificateNo] AS [CertificateNo], 
+    [ViewCoursePeople].[IsNotificationEnabled] AS [IsNotificationEnabled], 
+    [ViewCoursePeople].[Mandatory] AS [Mandatory], 
+    [ViewCoursePeople].[ImgUrl] AS [ImgUrl], 
+    [ViewCoursePeople].[EmployeeLocation] AS [EmployeeLocation], 
+    [ViewCoursePeople].[SMSStatus] AS [SMSStatus], 
+    [ViewCoursePeople].[SMSDateSent] AS [SMSDateSent], 
+    [ViewCoursePeople].[SMSRefId] AS [SMSRefId], 
+    [ViewCoursePeople].[SMSMsg] AS [SMSMsg], 
+    [ViewCoursePeople].[Instructor1] AS [Instructor1], 
+    [ViewCoursePeople].[Instructor2] AS [Instructor2], 
+    [ViewCoursePeople].[Instructor2Id] AS [Instructor2Id], 
+    [ViewCoursePeople].[Instructor1Id] AS [Instructor1Id], 
+    [ViewCoursePeople].[Continual] AS [Continual], 
+    [ViewCoursePeople].[InActive] AS [InActive], 
+    [ViewCoursePeople].[JobGroupCode2] AS [JobGroupCode2], 
+    [ViewCoursePeople].[ExamResult] AS [ExamResult], 
+    [ViewCoursePeople].[ExamDate] AS [ExamDate]
+    FROM [dbo].[ViewCoursePeople] AS [ViewCoursePeople]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewCourseSession" EntityType="Self.ViewCourseSession" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewCourseSession].[Id] AS [Id], 
+    [ViewCourseSession].[CourseId] AS [CourseId], 
+    [ViewCourseSession].[DateStart] AS [DateStart], 
+    [ViewCourseSession].[DateEnd] AS [DateEnd], 
+    [ViewCourseSession].[DateStartUtc] AS [DateStartUtc], 
+    [ViewCourseSession].[DateEndUtc] AS [DateEndUtc], 
+    [ViewCourseSession].[Done] AS [Done], 
+    [ViewCourseSession].[Remark] AS [Remark], 
+    [ViewCourseSession].[Key] AS [Key], 
+    [ViewCourseSession].[DayName] AS [DayName], 
+    [ViewCourseSession].[Year] AS [Year], 
+    [ViewCourseSession].[MonthName] AS [MonthName], 
+    [ViewCourseSession].[Month] AS [Month], 
+    [ViewCourseSession].[PDate] AS [PDate], 
+    [ViewCourseSession].[PYearName] AS [PYearName], 
+    [ViewCourseSession].[PYear] AS [PYear], 
+    [ViewCourseSession].[PMonthName] AS [PMonthName], 
+    [ViewCourseSession].[PMonth] AS [PMonth], 
+    [ViewCourseSession].[PDayName] AS [PDayName], 
+    [ViewCourseSession].[No] AS [No], 
+    [ViewCourseSession].[Instructor] AS [Instructor], 
+    [ViewCourseSession].[Title] AS [Title], 
+    [ViewCourseSession].[CT_Title] AS [CT_Title], 
+    [ViewCourseSession].[CustomerId] AS [CustomerId], 
+    [ViewCourseSession].[Location] AS [Location], 
+    [ViewCourseSession].[Department] AS [Department], 
+    [ViewCourseSession].[OrganizationId] AS [OrganizationId], 
+    [ViewCourseSession].[Organization] AS [Organization], 
+    [ViewCourseSession].[IsGeneral] AS [IsGeneral], 
+    [ViewCourseSession].[StatusId] AS [StatusId], 
+    [ViewCourseSession].[Status] AS [Status]
+    FROM [dbo].[ViewCourseSession] AS [ViewCourseSession]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewCourseSessionPresence" EntityType="Self.ViewCourseSessionPresence" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewCourseSessionPresence].[Id] AS [Id], 
+    [ViewCourseSessionPresence].[SessionId] AS [SessionId], 
+    [ViewCourseSessionPresence].[Date] AS [Date], 
+    [ViewCourseSessionPresence].[Remark] AS [Remark], 
+    [ViewCourseSessionPresence].[PersonId] AS [PersonId], 
+    [ViewCourseSessionPresence].[SessionKey] AS [SessionKey], 
+    [ViewCourseSessionPresence].[CourseId] AS [CourseId], 
+    [ViewCourseSessionPresence].[SessionStart] AS [SessionStart], 
+    [ViewCourseSessionPresence].[SessionEnd] AS [SessionEnd], 
+    [ViewCourseSessionPresence].[TotalSession] AS [TotalSession], 
+    [ViewCourseSessionPresence].[Attendance] AS [Attendance], 
+    [ViewCourseSessionPresence].[AttendancePercent] AS [AttendancePercent], 
+    [ViewCourseSessionPresence].[CourseSessionPresenceId] AS [CourseSessionPresenceId], 
+    [ViewCourseSessionPresence].[IsPresent] AS [IsPresent]
+    FROM [dbo].[ViewCourseSessionPresence] AS [ViewCourseSessionPresence]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewLogBook18" EntityType="Self.ViewLogBook18" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewLogBook18].[Date] AS [Date], 
+    [ViewLogBook18].[ArrStn] AS [ArrStn], 
+    [ViewLogBook18].[Dep2] AS [Dep2], 
+    [ViewLogBook18].[Arr2] AS [Arr2], 
+    [ViewLogBook18].[FltNo] AS [FltNo], 
+    [ViewLogBook18].[ACReg] AS [ACReg], 
+    [ViewLogBook18].[ACType] AS [ACType], 
+    [ViewLogBook18].[OffBlock] AS [OffBlock], 
+    [ViewLogBook18].[OffBlockLocal] AS [OffBlockLocal], 
+    [ViewLogBook18].[OnBlock] AS [OnBlock], 
+    [ViewLogBook18].[OnBlockLocal] AS [OnBlockLocal], 
+    [ViewLogBook18].[DayTakeOff] AS [DayTakeOff], 
+    [ViewLogBook18].[NightTakeOff] AS [NightTakeOff], 
+    [ViewLogBook18].[DayLanding] AS [DayLanding], 
+    [ViewLogBook18].[NightLanding] AS [NightLanding], 
+    [ViewLogBook18].[NightTime] AS [NightTime], 
+    [ViewLogBook18].[BlockTime] AS [BlockTime], 
+    [ViewLogBook18].[MultiPilotTime] AS [MultiPilotTime], 
+    [ViewLogBook18].[IFRTime] AS [IFRTime], 
+    [ViewLogBook18].[PICTime] AS [PICTime], 
+    [ViewLogBook18].[COPILOTTime] AS [COPILOTTime], 
+    [ViewLogBook18].[IPTime] AS [IPTime], 
+    [ViewLogBook18].[DUALTime] AS [DUALTime], 
+    [ViewLogBook18].[Pos] AS [Pos], 
+    [ViewLogBook18].[PICName] AS [PICName], 
+    [ViewLogBook18].[DepStn] AS [DepStn], 
+    [ViewLogBook18].[IPNAME] AS [IPNAME], 
+    [ViewLogBook18].[CPTNAME] AS [CPTNAME]
+    FROM [dbo].[ViewLogBook18] AS [ViewLogBook18]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewSyllabus" EntityType="Self.ViewSyllabus" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewSyllabus].[Id] AS [Id], 
+    [ViewSyllabus].[CourseId] AS [CourseId], 
+    [ViewSyllabus].[SessionKey] AS [SessionKey], 
+    [ViewSyllabus].[Duration] AS [Duration], 
+    [ViewSyllabus].[InstructorId] AS [InstructorId], 
+    [ViewSyllabus].[InstructorId2] AS [InstructorId2], 
+    [ViewSyllabus].[Title] AS [Title], 
+    [ViewSyllabus].[Remark] AS [Remark], 
+    [ViewSyllabus].[DurationActual] AS [DurationActual], 
+    [ViewSyllabus].[Status] AS [Status], 
+    [ViewSyllabus].[SessionStart] AS [SessionStart], 
+    [ViewSyllabus].[SessionEnd] AS [SessionEnd], 
+    [ViewSyllabus].[Instructor2] AS [Instructor2], 
+    [ViewSyllabus].[Instructor] AS [Instructor]
+    FROM [dbo].[ViewSyllabus] AS [ViewSyllabus]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PPAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCreate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MarriageId" Type="Int32" Nullable="false" />
+          <Property Name="NID" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SexId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateBirth" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EmailPassword" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FaxTelNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PassportNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DatePassportIssue" Type="DateTime" Precision="0" />
+          <Property Name="DatePassportExpire" Type="DateTime" Precision="0" />
+          <Property Name="Address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="DateJoinAvation" Type="DateTime" Precision="0" />
+          <Property Name="DateLastCheckUP" Type="DateTime" Precision="0" />
+          <Property Name="DateNextCheckUP" Type="DateTime" Precision="0" />
+          <Property Name="DateYearOfExperience" Type="DateTime" Precision="0" />
+          <Property Name="CaoCardNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateCaoCardIssue" Type="DateTime" Precision="0" />
+          <Property Name="DateCaoCardExpire" Type="DateTime" Precision="0" />
+          <Property Name="CompetencyNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CaoInterval" Type="Int32" />
+          <Property Name="CaoIntervalCalanderTypeId" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="StampNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="StampUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TechLogNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DateIssueNDT" Type="DateTime" Precision="0" />
+          <Property Name="IntervalNDT" Type="Int32" />
+          <Property Name="NDTNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NDTIntervalCalanderTypeId" Type="Int32" />
+          <Property Name="IsAuditor" Type="Boolean" />
+          <Property Name="IsAuditee" Type="Boolean" />
+          <Property Name="Nickname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="FatherName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IDNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RowId" Type="Guid" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerCreatorId" Type="Int32" />
+          <Property Name="DateExpireNDT" Type="DateTime" Precision="0" />
+          <Property Name="ProficiencyExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="CrewMemberCertificateExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="LicenceExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="SimulatorLastCheck" Type="DateTime" Precision="3" />
+          <Property Name="SimulatorNextCheck" Type="DateTime" Precision="3" />
+          <Property Name="RampPassNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RampPassExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="LanguageCourseExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="LicenceTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LicenceInitialIssue" Type="DateTime" Precision="3" />
+          <Property Name="RaitingCertificates" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LicenceIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="LicenceDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="ProficiencyCheckType" Type="Int32" />
+          <Property Name="ProficiencyCheckDate" Type="DateTime" Precision="3" />
+          <Property Name="ProficiencyValidUntil" Type="DateTime" Precision="3" />
+          <Property Name="ICAOLPRLevel" Type="Int32" />
+          <Property Name="ICAOLPRValidUntil" Type="DateTime" Precision="3" />
+          <Property Name="MedicalClass" Type="Int32" />
+          <Property Name="CMCEmployedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CMCOccupation" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ProficiencyIPC" Type="Boolean" />
+          <Property Name="ProficiencyOPC" Type="Boolean" />
+          <Property Name="MedicalLimitation" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ProficiencyDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VisaExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="SEPTIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="SEPTExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="DangerousGoodsIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="DangerousGoodsExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="CCRMIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="CCRMExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="CRMIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="CRMExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="SMSIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="SMSExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="AviationSecurityIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="AviationSecurityExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="EGPWSIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="EGPWSExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="UpsetRecoveryTrainingIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="UpsetRecoveryTrainingExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="ColdWeatherOperationIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="HotWeatherOperationIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="PBNRNAVIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="PBNRNAVExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="ColdWeatherOperationExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="HotWeatherOperationExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SEPTPIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="SEPTPExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="FirstAidIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="FirstAidExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="LicenceIRExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="RankId" Type="Int32" />
+          <Property Name="LinkedIn" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="WhatsApp" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Telegram" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AircraftTypeId" Type="Int32" />
+          <Property Name="DateTypeIssue" Type="DateTime" Precision="3" />
+          <Property Name="DateTypeExpire" Type="DateTime" Precision="3" />
+          <Property Name="ProficiencyDescriptionOPC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ProficiencyCheckDateOPC" Type="DateTime" Precision="3" />
+          <Property Name="ProficiencyValidUntilOPC" Type="DateTime" Precision="3" />
+          <Property Name="DateTRIExpired" Type="DateTime" Precision="3" />
+          <Property Name="DateTREExpired" Type="DateTime" Precision="3" />
+          <Property Name="LineIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="LineExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="RecurrentIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="RecurrentExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="FMTIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="FMTExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="PFirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MultiType" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="OtherAirline" Type="Boolean" />
+          <Property Name="TypeMDIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="TypeMDExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="Type737IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="Type737ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="TypeAirbusIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="TypeAirbusExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="TypeMDConversionIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="Type737ConversionIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="TypeAirbusConversionIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="LRCIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="LRCExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="RSPIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="RSPExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="CTUIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="CTUExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="SAIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="SAExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="HFIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="HFExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASDIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASDExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="GOMIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="GOMExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASFIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASFExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="CCIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="CCExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ERPIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ERPExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="MBIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="MBExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="PSIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="PSExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ANNEXIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ANNEXExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="DRMIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="DRMExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="FMTDIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="FMTDExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="MELExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="MELIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="METIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="METExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="PERIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="PERExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="LPCC1ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="LPCC2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="LPCC3ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="LPCC1IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="LPCC2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="LPCC3IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OPCC1IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OPCC2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OPCC3IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="LineC1IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="LineC2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="LineC3IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="LineC1ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="LineC2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="LineC3ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="RampIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="RampExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ACIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ACExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="UPRTIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="UPRTExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="SFIIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="SFIExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="SFEIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="SFEExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="TRI2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="TRI2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="TRE2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="TRE2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="IRIIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="IRIExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="IREIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="IREExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="CRIIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="CRIExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="CREIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="CREExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="SFI2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="SFI2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="SFE2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="SFE2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="AirCrewIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="AirCrewExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="AirOpsIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="AirOpsExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="SOPIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="SOPExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="Diff31IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="Diff31ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="Diff34IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="Diff34ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OMA1IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OMA1ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OMB1IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OMB1ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OMC1IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OMC1ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OMA2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OMA2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OMB2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OMB2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OMC2IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OMC2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OMA3IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OMA3ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OMB3IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OMB3ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OMC3IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="OMC3ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="MapIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="MapExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ComResIssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ComResExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OPCC1ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OPCC2ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="OPCC3ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate1" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate1" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate2" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate2" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate3" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate3" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate4" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate4" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate5" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate5" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate6" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate6" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate7" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate7" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate8" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate8" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate9" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate9" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate10" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate10" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityContainer Name="ppa_cspnEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="ViewCourseSessions" EntityType="PPAModel.ViewCourseSession" />
+          <EntitySet Name="ViewCourseSessionPresences" EntityType="PPAModel.ViewCourseSessionPresence" />
+          <EntitySet Name="ViewCourseNews" EntityType="PPAModel.ViewCourseNew" />
+          <EntitySet Name="ViewSyllabus" EntityType="PPAModel.ViewSyllabu" />
+          <EntitySet Name="ViewCoursePeoples" EntityType="PPAModel.ViewCoursePeople" />
+          <EntitySet Name="ViewLogBook18" EntityType="PPAModel.ViewLogBook18" />
+        </EntityContainer>
+        <EntityType Name="ViewCourseSession">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="Done" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="DateStart" Type="DateTime" Precision="3" />
+          <Property Name="DateEnd" Type="DateTime" Precision="3" />
+          <Property Name="DateStartUtc" Type="DateTime" Precision="3" />
+          <Property Name="DateEndUtc" Type="DateTime" Precision="3" />
+          <Property Name="Done" Type="Boolean" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Key" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DayName" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="MonthName" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Month" Type="Int32" />
+          <Property Name="PDate" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="PYearName" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="PYear" Type="Int32" />
+          <Property Name="PMonthName" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="PMonth" Type="Int32" />
+          <Property Name="PDayName" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="No" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Instructor" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CT_Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationId" Type="Int32" />
+          <Property Name="Organization" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsGeneral" Type="Boolean" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ViewCourseSessionPresence">
+          <Key>
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="SessionKey" />
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SessionId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="SessionKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="SessionStart" Type="DateTime" Precision="3" />
+          <Property Name="SessionEnd" Type="DateTime" Precision="3" />
+          <Property Name="TotalSession" Type="Int32" />
+          <Property Name="Attendance" Type="Int32" />
+          <Property Name="AttendancePercent" Type="Decimal" Precision="26" Scale="12" />
+          <Property Name="CourseSessionPresenceId" Type="Int32" />
+          <Property Name="IsPresent" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ViewCourseNew">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CourseTypeId" />
+            <PropertyRef Name="DateStart" />
+            <PropertyRef Name="Recurrent" />
+            <PropertyRef Name="Sessions" />
+            <PropertyRef Name="PeopleCount" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CourseTypeId" Type="Int32" Nullable="false" />
+          <Property Name="CourseType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CertificateTypeId" Type="Int32" />
+          <Property Name="CertificateType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroups" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupsCode" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Precision="0" />
+          <Property Name="Instructor" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationId" Type="Int32" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="DurationUnitId" Type="Int32" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="TrainingDirector" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Recurrent" Type="Boolean" Nullable="false" />
+          <Property Name="Interval" Type="Int32" />
+          <Property Name="CalanderTypeId" Type="Int32" />
+          <Property Name="IsInside" Type="Boolean" />
+          <Property Name="IsGeneral" Type="Boolean" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="No" Type="String" MaxLength="204" FixedLength="false" Unicode="false" />
+          <Property Name="IsNotificationEnabled" Type="Boolean" />
+          <Property Name="Sessions" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PeopleCount" Type="Int32" Nullable="false" />
+          <Property Name="Organization" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DurationUnit" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CalendarType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Continual" Type="Boolean" />
+          <Property Name="Mandatory" Type="Int32" />
+          <Property Name="CurrencyId" Type="Int32" />
+          <Property Name="InstructorEmployeeId" Type="Int32" />
+          <Property Name="InstructorJobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HoldingType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InForm" Type="Boolean" />
+          <Property Name="SendLetter" Type="Boolean" />
+          <Property Name="Financial" Type="Boolean" />
+          <Property Name="Certificate" Type="Boolean" />
+          <Property Name="Instructor2Id" Type="Int32" />
+          <Property Name="Instructor2EmployeeId" Type="Int32" />
+          <Property Name="Instructor2JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Instructor2" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="SMSIns1" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="SMSIns2" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="SMSIns1Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMSIns2Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMSInsDate" Type="DateTime" Precision="7" />
+          <Property Name="AttForm" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ViewSyllabu">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="SessionKey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="InstructorId" Type="Int32" />
+          <Property Name="InstructorId2" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="DurationActual" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="SessionStart" Type="DateTime" Precision="3" />
+          <Property Name="SessionEnd" Type="DateTime" Precision="3" />
+          <Property Name="Instructor2" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="Instructor" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ViewCoursePeople">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="CourseTypeId" />
+            <PropertyRef Name="DateStart" />
+            <PropertyRef Name="Recurrent" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="JobGroupRoot" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Customer" />
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="EmployeeLocation" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" />
+          <Property Name="CourseTypeId" Type="Int32" Nullable="false" />
+          <Property Name="CourseType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CertificateTypeId" Type="Int32" />
+          <Property Name="CertificateType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Precision="0" />
+          <Property Name="Instructor" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationId" Type="Int32" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="DurationUnitId" Type="Int32" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="TrainingDirector" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Recurrent" Type="Boolean" Nullable="false" />
+          <Property Name="Interval" Type="Int32" />
+          <Property Name="CalanderTypeId" Type="Int32" />
+          <Property Name="No" Type="String" MaxLength="204" FixedLength="false" Unicode="false" />
+          <Property Name="DurationUnit" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CalendarType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Organization" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="SexId" Type="Int32" Nullable="false" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IDNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Sex" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Customer" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="CoursePeopleStatusId" Type="Int32" />
+          <Property Name="DateStatus" Type="DateTime" Precision="3" />
+          <Property Name="DateIssue" Type="DateTime" Precision="3" />
+          <Property Name="DateExpire" Type="DateTime" Precision="3" />
+          <Property Name="StatusRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CoursePeopleStatus" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="CertificateNo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IsNotificationEnabled" Type="Boolean" />
+          <Property Name="Mandatory" Type="Int32" />
+          <Property Name="ImgUrl" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeLocation" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="SMSStatus" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMSDateSent" Type="DateTime" Precision="7" />
+          <Property Name="SMSRefId" Type="Int64" />
+          <Property Name="SMSMsg" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="Instructor1" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="Instructor2" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="Instructor2Id" Type="Int32" />
+          <Property Name="Instructor1Id" Type="Int32" />
+          <Property Name="Continual" Type="Boolean" />
+          <Property Name="InActive" Type="Boolean" />
+          <Property Name="JobGroupCode2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ExamResult" Type="Int32" />
+          <Property Name="ExamDate" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="ViewLogBook18">
+          <Key>
+            <PropertyRef Name="ArrStn" />
+            <PropertyRef Name="FltNo" />
+            <PropertyRef Name="ACReg" />
+            <PropertyRef Name="ACType" />
+          </Key>
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="ArrStn" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Dep2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Arr2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FltNo" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ACReg" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ACType" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="OffBlock" Type="DateTime" Precision="3" />
+          <Property Name="OffBlockLocal" Type="DateTime" Precision="3" />
+          <Property Name="OnBlock" Type="DateTime" Precision="3" />
+          <Property Name="OnBlockLocal" Type="DateTime" Precision="3" />
+          <Property Name="DayTakeOff" Type="Int32" />
+          <Property Name="NightTakeOff" Type="Int32" />
+          <Property Name="DayLanding" Type="Int32" />
+          <Property Name="NightLanding" Type="Int32" />
+          <Property Name="NightTime" Type="Int32" />
+          <Property Name="BlockTime" Type="Int32" />
+          <Property Name="MultiPilotTime" Type="Int32" />
+          <Property Name="IFRTime" Type="Int32" />
+          <Property Name="PICTime" Type="Int32" />
+          <Property Name="COPILOTTime" Type="Int32" />
+          <Property Name="IPTime" Type="Int32" />
+          <Property Name="DUALTime" Type="Int32" />
+          <Property Name="Pos" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PICName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DepStn" Type="String" MaxLength="1014" FixedLength="false" Unicode="false" />
+          <Property Name="IPNAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CPTNAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PPAModelStoreContainer" CdmEntityContainer="ppa_cspnEntities">
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="PPAModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="ExpireDate10" ColumnName="ExpireDate10" />
+                <ScalarProperty Name="IssueDate10" ColumnName="IssueDate10" />
+                <ScalarProperty Name="ExpireDate9" ColumnName="ExpireDate9" />
+                <ScalarProperty Name="IssueDate9" ColumnName="IssueDate9" />
+                <ScalarProperty Name="ExpireDate8" ColumnName="ExpireDate8" />
+                <ScalarProperty Name="IssueDate8" ColumnName="IssueDate8" />
+                <ScalarProperty Name="ExpireDate7" ColumnName="ExpireDate7" />
+                <ScalarProperty Name="IssueDate7" ColumnName="IssueDate7" />
+                <ScalarProperty Name="ExpireDate6" ColumnName="ExpireDate6" />
+                <ScalarProperty Name="IssueDate6" ColumnName="IssueDate6" />
+                <ScalarProperty Name="ExpireDate5" ColumnName="ExpireDate5" />
+                <ScalarProperty Name="IssueDate5" ColumnName="IssueDate5" />
+                <ScalarProperty Name="ExpireDate4" ColumnName="ExpireDate4" />
+                <ScalarProperty Name="IssueDate4" ColumnName="IssueDate4" />
+                <ScalarProperty Name="ExpireDate3" ColumnName="ExpireDate3" />
+                <ScalarProperty Name="IssueDate3" ColumnName="IssueDate3" />
+                <ScalarProperty Name="ExpireDate2" ColumnName="ExpireDate2" />
+                <ScalarProperty Name="IssueDate2" ColumnName="IssueDate2" />
+                <ScalarProperty Name="ExpireDate1" ColumnName="ExpireDate1" />
+                <ScalarProperty Name="IssueDate1" ColumnName="IssueDate1" />
+                <ScalarProperty Name="OPCC3ExpireDate" ColumnName="OPCC3ExpireDate" />
+                <ScalarProperty Name="OPCC2ExpireDate" ColumnName="OPCC2ExpireDate" />
+                <ScalarProperty Name="OPCC1ExpireDate" ColumnName="OPCC1ExpireDate" />
+                <ScalarProperty Name="ComResExpireDate" ColumnName="ComResExpireDate" />
+                <ScalarProperty Name="ComResIssueDate" ColumnName="ComResIssueDate" />
+                <ScalarProperty Name="MapExpireDate" ColumnName="MapExpireDate" />
+                <ScalarProperty Name="MapIssueDate" ColumnName="MapIssueDate" />
+                <ScalarProperty Name="OMC3ExpireDate" ColumnName="OMC3ExpireDate" />
+                <ScalarProperty Name="OMC3IssueDate" ColumnName="OMC3IssueDate" />
+                <ScalarProperty Name="OMB3ExpireDate" ColumnName="OMB3ExpireDate" />
+                <ScalarProperty Name="OMB3IssueDate" ColumnName="OMB3IssueDate" />
+                <ScalarProperty Name="OMA3ExpireDate" ColumnName="OMA3ExpireDate" />
+                <ScalarProperty Name="OMA3IssueDate" ColumnName="OMA3IssueDate" />
+                <ScalarProperty Name="OMC2ExpireDate" ColumnName="OMC2ExpireDate" />
+                <ScalarProperty Name="OMC2IssueDate" ColumnName="OMC2IssueDate" />
+                <ScalarProperty Name="OMB2ExpireDate" ColumnName="OMB2ExpireDate" />
+                <ScalarProperty Name="OMB2IssueDate" ColumnName="OMB2IssueDate" />
+                <ScalarProperty Name="OMA2ExpireDate" ColumnName="OMA2ExpireDate" />
+                <ScalarProperty Name="OMA2IssueDate" ColumnName="OMA2IssueDate" />
+                <ScalarProperty Name="OMC1ExpireDate" ColumnName="OMC1ExpireDate" />
+                <ScalarProperty Name="OMC1IssueDate" ColumnName="OMC1IssueDate" />
+                <ScalarProperty Name="OMB1ExpireDate" ColumnName="OMB1ExpireDate" />
+                <ScalarProperty Name="OMB1IssueDate" ColumnName="OMB1IssueDate" />
+                <ScalarProperty Name="OMA1ExpireDate" ColumnName="OMA1ExpireDate" />
+                <ScalarProperty Name="OMA1IssueDate" ColumnName="OMA1IssueDate" />
+                <ScalarProperty Name="Diff34ExpireDate" ColumnName="Diff34ExpireDate" />
+                <ScalarProperty Name="Diff34IssueDate" ColumnName="Diff34IssueDate" />
+                <ScalarProperty Name="Diff31ExpireDate" ColumnName="Diff31ExpireDate" />
+                <ScalarProperty Name="Diff31IssueDate" ColumnName="Diff31IssueDate" />
+                <ScalarProperty Name="SOPExpireDate" ColumnName="SOPExpireDate" />
+                <ScalarProperty Name="SOPIssueDate" ColumnName="SOPIssueDate" />
+                <ScalarProperty Name="AirOpsExpireDate" ColumnName="AirOpsExpireDate" />
+                <ScalarProperty Name="AirOpsIssueDate" ColumnName="AirOpsIssueDate" />
+                <ScalarProperty Name="AirCrewExpireDate" ColumnName="AirCrewExpireDate" />
+                <ScalarProperty Name="AirCrewIssueDate" ColumnName="AirCrewIssueDate" />
+                <ScalarProperty Name="SFE2ExpireDate" ColumnName="SFE2ExpireDate" />
+                <ScalarProperty Name="SFE2IssueDate" ColumnName="SFE2IssueDate" />
+                <ScalarProperty Name="SFI2ExpireDate" ColumnName="SFI2ExpireDate" />
+                <ScalarProperty Name="SFI2IssueDate" ColumnName="SFI2IssueDate" />
+                <ScalarProperty Name="CREExpireDate" ColumnName="CREExpireDate" />
+                <ScalarProperty Name="CREIssueDate" ColumnName="CREIssueDate" />
+                <ScalarProperty Name="CRIExpireDate" ColumnName="CRIExpireDate" />
+                <ScalarProperty Name="CRIIssueDate" ColumnName="CRIIssueDate" />
+                <ScalarProperty Name="IREExpireDate" ColumnName="IREExpireDate" />
+                <ScalarProperty Name="IREIssueDate" ColumnName="IREIssueDate" />
+                <ScalarProperty Name="IRIExpireDate" ColumnName="IRIExpireDate" />
+                <ScalarProperty Name="IRIIssueDate" ColumnName="IRIIssueDate" />
+                <ScalarProperty Name="TRE2ExpireDate" ColumnName="TRE2ExpireDate" />
+                <ScalarProperty Name="TRE2IssueDate" ColumnName="TRE2IssueDate" />
+                <ScalarProperty Name="TRI2ExpireDate" ColumnName="TRI2ExpireDate" />
+                <ScalarProperty Name="TRI2IssueDate" ColumnName="TRI2IssueDate" />
+                <ScalarProperty Name="SFEExpireDate" ColumnName="SFEExpireDate" />
+                <ScalarProperty Name="SFEIssueDate" ColumnName="SFEIssueDate" />
+                <ScalarProperty Name="SFIExpireDate" ColumnName="SFIExpireDate" />
+                <ScalarProperty Name="SFIIssueDate" ColumnName="SFIIssueDate" />
+                <ScalarProperty Name="UPRTExpireDate" ColumnName="UPRTExpireDate" />
+                <ScalarProperty Name="UPRTIssueDate" ColumnName="UPRTIssueDate" />
+                <ScalarProperty Name="ACExpireDate" ColumnName="ACExpireDate" />
+                <ScalarProperty Name="ACIssueDate" ColumnName="ACIssueDate" />
+                <ScalarProperty Name="RampExpireDate" ColumnName="RampExpireDate" />
+                <ScalarProperty Name="RampIssueDate" ColumnName="RampIssueDate" />
+                <ScalarProperty Name="LineC3ExpireDate" ColumnName="LineC3ExpireDate" />
+                <ScalarProperty Name="LineC2ExpireDate" ColumnName="LineC2ExpireDate" />
+                <ScalarProperty Name="LineC1ExpireDate" ColumnName="LineC1ExpireDate" />
+                <ScalarProperty Name="LineC3IssueDate" ColumnName="LineC3IssueDate" />
+                <ScalarProperty Name="LineC2IssueDate" ColumnName="LineC2IssueDate" />
+                <ScalarProperty Name="LineC1IssueDate" ColumnName="LineC1IssueDate" />
+                <ScalarProperty Name="OPCC3IssueDate" ColumnName="OPCC3IssueDate" />
+                <ScalarProperty Name="OPCC2IssueDate" ColumnName="OPCC2IssueDate" />
+                <ScalarProperty Name="OPCC1IssueDate" ColumnName="OPCC1IssueDate" />
+                <ScalarProperty Name="LPCC3IssueDate" ColumnName="LPCC3IssueDate" />
+                <ScalarProperty Name="LPCC2IssueDate" ColumnName="LPCC2IssueDate" />
+                <ScalarProperty Name="LPCC1IssueDate" ColumnName="LPCC1IssueDate" />
+                <ScalarProperty Name="LPCC3ExpireDate" ColumnName="LPCC3ExpireDate" />
+                <ScalarProperty Name="LPCC2ExpireDate" ColumnName="LPCC2ExpireDate" />
+                <ScalarProperty Name="LPCC1ExpireDate" ColumnName="LPCC1ExpireDate" />
+                <ScalarProperty Name="PERExpireDate" ColumnName="PERExpireDate" />
+                <ScalarProperty Name="PERIssueDate" ColumnName="PERIssueDate" />
+                <ScalarProperty Name="METExpireDate" ColumnName="METExpireDate" />
+                <ScalarProperty Name="METIssueDate" ColumnName="METIssueDate" />
+                <ScalarProperty Name="MELIssueDate" ColumnName="MELIssueDate" />
+                <ScalarProperty Name="MELExpireDate" ColumnName="MELExpireDate" />
+                <ScalarProperty Name="FMTDExpireDate" ColumnName="FMTDExpireDate" />
+                <ScalarProperty Name="FMTDIssueDate" ColumnName="FMTDIssueDate" />
+                <ScalarProperty Name="DRMExpireDate" ColumnName="DRMExpireDate" />
+                <ScalarProperty Name="DRMIssueDate" ColumnName="DRMIssueDate" />
+                <ScalarProperty Name="ANNEXExpireDate" ColumnName="ANNEXExpireDate" />
+                <ScalarProperty Name="ANNEXIssueDate" ColumnName="ANNEXIssueDate" />
+                <ScalarProperty Name="PSExpireDate" ColumnName="PSExpireDate" />
+                <ScalarProperty Name="PSIssueDate" ColumnName="PSIssueDate" />
+                <ScalarProperty Name="MBExpireDate" ColumnName="MBExpireDate" />
+                <ScalarProperty Name="MBIssueDate" ColumnName="MBIssueDate" />
+                <ScalarProperty Name="ERPExpireDate" ColumnName="ERPExpireDate" />
+                <ScalarProperty Name="ERPIssueDate" ColumnName="ERPIssueDate" />
+                <ScalarProperty Name="CCExpireDate" ColumnName="CCExpireDate" />
+                <ScalarProperty Name="CCIssueDate" ColumnName="CCIssueDate" />
+                <ScalarProperty Name="ASFExpireDate" ColumnName="ASFExpireDate" />
+                <ScalarProperty Name="ASFIssueDate" ColumnName="ASFIssueDate" />
+                <ScalarProperty Name="GOMExpireDate" ColumnName="GOMExpireDate" />
+                <ScalarProperty Name="GOMIssueDate" ColumnName="GOMIssueDate" />
+                <ScalarProperty Name="ASDExpireDate" ColumnName="ASDExpireDate" />
+                <ScalarProperty Name="ASDIssueDate" ColumnName="ASDIssueDate" />
+                <ScalarProperty Name="HFExpireDate" ColumnName="HFExpireDate" />
+                <ScalarProperty Name="HFIssueDate" ColumnName="HFIssueDate" />
+                <ScalarProperty Name="SAExpireDate" ColumnName="SAExpireDate" />
+                <ScalarProperty Name="SAIssueDate" ColumnName="SAIssueDate" />
+                <ScalarProperty Name="CTUExpireDate" ColumnName="CTUExpireDate" />
+                <ScalarProperty Name="CTUIssueDate" ColumnName="CTUIssueDate" />
+                <ScalarProperty Name="RSPExpireDate" ColumnName="RSPExpireDate" />
+                <ScalarProperty Name="RSPIssueDate" ColumnName="RSPIssueDate" />
+                <ScalarProperty Name="LRCExpireDate" ColumnName="LRCExpireDate" />
+                <ScalarProperty Name="LRCIssueDate" ColumnName="LRCIssueDate" />
+                <ScalarProperty Name="TypeAirbusConversionIssueDate" ColumnName="TypeAirbusConversionIssueDate" />
+                <ScalarProperty Name="Type737ConversionIssueDate" ColumnName="Type737ConversionIssueDate" />
+                <ScalarProperty Name="TypeMDConversionIssueDate" ColumnName="TypeMDConversionIssueDate" />
+                <ScalarProperty Name="TypeAirbusExpireDate" ColumnName="TypeAirbusExpireDate" />
+                <ScalarProperty Name="TypeAirbusIssueDate" ColumnName="TypeAirbusIssueDate" />
+                <ScalarProperty Name="Type737ExpireDate" ColumnName="Type737ExpireDate" />
+                <ScalarProperty Name="Type737IssueDate" ColumnName="Type737IssueDate" />
+                <ScalarProperty Name="TypeMDExpireDate" ColumnName="TypeMDExpireDate" />
+                <ScalarProperty Name="TypeMDIssueDate" ColumnName="TypeMDIssueDate" />
+                <ScalarProperty Name="OtherAirline" ColumnName="OtherAirline" />
+                <ScalarProperty Name="MultiType" ColumnName="MultiType" />
+                <ScalarProperty Name="PLastName" ColumnName="PLastName" />
+                <ScalarProperty Name="PFirstName" ColumnName="PFirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="MarriageId" ColumnName="MarriageId" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="SexId" ColumnName="SexId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="DateBirth" ColumnName="DateBirth" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailPassword" ColumnName="EmailPassword" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="FaxTelNumber" ColumnName="FaxTelNumber" />
+                <ScalarProperty Name="PassportNumber" ColumnName="PassportNumber" />
+                <ScalarProperty Name="DatePassportIssue" ColumnName="DatePassportIssue" />
+                <ScalarProperty Name="DatePassportExpire" ColumnName="DatePassportExpire" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DateJoinAvation" ColumnName="DateJoinAvation" />
+                <ScalarProperty Name="DateLastCheckUP" ColumnName="DateLastCheckUP" />
+                <ScalarProperty Name="DateNextCheckUP" ColumnName="DateNextCheckUP" />
+                <ScalarProperty Name="DateYearOfExperience" ColumnName="DateYearOfExperience" />
+                <ScalarProperty Name="CaoCardNumber" ColumnName="CaoCardNumber" />
+                <ScalarProperty Name="DateCaoCardIssue" ColumnName="DateCaoCardIssue" />
+                <ScalarProperty Name="DateCaoCardExpire" ColumnName="DateCaoCardExpire" />
+                <ScalarProperty Name="CompetencyNo" ColumnName="CompetencyNo" />
+                <ScalarProperty Name="CaoInterval" ColumnName="CaoInterval" />
+                <ScalarProperty Name="CaoIntervalCalanderTypeId" ColumnName="CaoIntervalCalanderTypeId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="StampNumber" ColumnName="StampNumber" />
+                <ScalarProperty Name="StampUrl" ColumnName="StampUrl" />
+                <ScalarProperty Name="TechLogNo" ColumnName="TechLogNo" />
+                <ScalarProperty Name="DateIssueNDT" ColumnName="DateIssueNDT" />
+                <ScalarProperty Name="IntervalNDT" ColumnName="IntervalNDT" />
+                <ScalarProperty Name="NDTNumber" ColumnName="NDTNumber" />
+                <ScalarProperty Name="NDTIntervalCalanderTypeId" ColumnName="NDTIntervalCalanderTypeId" />
+                <ScalarProperty Name="IsAuditor" ColumnName="IsAuditor" />
+                <ScalarProperty Name="IsAuditee" ColumnName="IsAuditee" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="IDNo" ColumnName="IDNo" />
+                <ScalarProperty Name="RowId" ColumnName="RowId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="CustomerCreatorId" ColumnName="CustomerCreatorId" />
+                <ScalarProperty Name="DateExpireNDT" ColumnName="DateExpireNDT" />
+                <ScalarProperty Name="ProficiencyExpireDate" ColumnName="ProficiencyExpireDate" />
+                <ScalarProperty Name="CrewMemberCertificateExpireDate" ColumnName="CrewMemberCertificateExpireDate" />
+                <ScalarProperty Name="LicenceExpireDate" ColumnName="LicenceExpireDate" />
+                <ScalarProperty Name="SimulatorLastCheck" ColumnName="SimulatorLastCheck" />
+                <ScalarProperty Name="SimulatorNextCheck" ColumnName="SimulatorNextCheck" />
+                <ScalarProperty Name="RampPassNo" ColumnName="RampPassNo" />
+                <ScalarProperty Name="RampPassExpireDate" ColumnName="RampPassExpireDate" />
+                <ScalarProperty Name="LanguageCourseExpireDate" ColumnName="LanguageCourseExpireDate" />
+                <ScalarProperty Name="LicenceTitle" ColumnName="LicenceTitle" />
+                <ScalarProperty Name="LicenceInitialIssue" ColumnName="LicenceInitialIssue" />
+                <ScalarProperty Name="RaitingCertificates" ColumnName="RaitingCertificates" />
+                <ScalarProperty Name="LicenceIssueDate" ColumnName="LicenceIssueDate" />
+                <ScalarProperty Name="LicenceDescription" ColumnName="LicenceDescription" />
+                <ScalarProperty Name="ProficiencyCheckType" ColumnName="ProficiencyCheckType" />
+                <ScalarProperty Name="ProficiencyCheckDate" ColumnName="ProficiencyCheckDate" />
+                <ScalarProperty Name="ProficiencyValidUntil" ColumnName="ProficiencyValidUntil" />
+                <ScalarProperty Name="ICAOLPRLevel" ColumnName="ICAOLPRLevel" />
+                <ScalarProperty Name="ICAOLPRValidUntil" ColumnName="ICAOLPRValidUntil" />
+                <ScalarProperty Name="MedicalClass" ColumnName="MedicalClass" />
+                <ScalarProperty Name="CMCEmployedBy" ColumnName="CMCEmployedBy" />
+                <ScalarProperty Name="CMCOccupation" ColumnName="CMCOccupation" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="ProficiencyIPC" ColumnName="ProficiencyIPC" />
+                <ScalarProperty Name="ProficiencyOPC" ColumnName="ProficiencyOPC" />
+                <ScalarProperty Name="MedicalLimitation" ColumnName="MedicalLimitation" />
+                <ScalarProperty Name="ProficiencyDescription" ColumnName="ProficiencyDescription" />
+                <ScalarProperty Name="VisaExpireDate" ColumnName="VisaExpireDate" />
+                <ScalarProperty Name="SEPTIssueDate" ColumnName="SEPTIssueDate" />
+                <ScalarProperty Name="SEPTExpireDate" ColumnName="SEPTExpireDate" />
+                <ScalarProperty Name="DangerousGoodsIssueDate" ColumnName="DangerousGoodsIssueDate" />
+                <ScalarProperty Name="DangerousGoodsExpireDate" ColumnName="DangerousGoodsExpireDate" />
+                <ScalarProperty Name="CCRMIssueDate" ColumnName="CCRMIssueDate" />
+                <ScalarProperty Name="CCRMExpireDate" ColumnName="CCRMExpireDate" />
+                <ScalarProperty Name="CRMIssueDate" ColumnName="CRMIssueDate" />
+                <ScalarProperty Name="CRMExpireDate" ColumnName="CRMExpireDate" />
+                <ScalarProperty Name="SMSIssueDate" ColumnName="SMSIssueDate" />
+                <ScalarProperty Name="SMSExpireDate" ColumnName="SMSExpireDate" />
+                <ScalarProperty Name="AviationSecurityIssueDate" ColumnName="AviationSecurityIssueDate" />
+                <ScalarProperty Name="AviationSecurityExpireDate" ColumnName="AviationSecurityExpireDate" />
+                <ScalarProperty Name="EGPWSIssueDate" ColumnName="EGPWSIssueDate" />
+                <ScalarProperty Name="EGPWSExpireDate" ColumnName="EGPWSExpireDate" />
+                <ScalarProperty Name="UpsetRecoveryTrainingIssueDate" ColumnName="UpsetRecoveryTrainingIssueDate" />
+                <ScalarProperty Name="UpsetRecoveryTrainingExpireDate" ColumnName="UpsetRecoveryTrainingExpireDate" />
+                <ScalarProperty Name="ColdWeatherOperationIssueDate" ColumnName="ColdWeatherOperationIssueDate" />
+                <ScalarProperty Name="HotWeatherOperationIssueDate" ColumnName="HotWeatherOperationIssueDate" />
+                <ScalarProperty Name="PBNRNAVIssueDate" ColumnName="PBNRNAVIssueDate" />
+                <ScalarProperty Name="PBNRNAVExpireDate" ColumnName="PBNRNAVExpireDate" />
+                <ScalarProperty Name="ColdWeatherOperationExpireDate" ColumnName="ColdWeatherOperationExpireDate" />
+                <ScalarProperty Name="HotWeatherOperationExpireDate" ColumnName="HotWeatherOperationExpireDate" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="SEPTPIssueDate" ColumnName="SEPTPIssueDate" />
+                <ScalarProperty Name="SEPTPExpireDate" ColumnName="SEPTPExpireDate" />
+                <ScalarProperty Name="FirstAidIssueDate" ColumnName="FirstAidIssueDate" />
+                <ScalarProperty Name="FirstAidExpireDate" ColumnName="FirstAidExpireDate" />
+                <ScalarProperty Name="LicenceIRExpireDate" ColumnName="LicenceIRExpireDate" />
+                <ScalarProperty Name="RankId" ColumnName="RankId" />
+                <ScalarProperty Name="LinkedIn" ColumnName="LinkedIn" />
+                <ScalarProperty Name="WhatsApp" ColumnName="WhatsApp" />
+                <ScalarProperty Name="Telegram" ColumnName="Telegram" />
+                <ScalarProperty Name="AircraftTypeId" ColumnName="AircraftTypeId" />
+                <ScalarProperty Name="DateTypeIssue" ColumnName="DateTypeIssue" />
+                <ScalarProperty Name="DateTypeExpire" ColumnName="DateTypeExpire" />
+                <ScalarProperty Name="ProficiencyDescriptionOPC" ColumnName="ProficiencyDescriptionOPC" />
+                <ScalarProperty Name="ProficiencyCheckDateOPC" ColumnName="ProficiencyCheckDateOPC" />
+                <ScalarProperty Name="ProficiencyValidUntilOPC" ColumnName="ProficiencyValidUntilOPC" />
+                <ScalarProperty Name="DateTRIExpired" ColumnName="DateTRIExpired" />
+                <ScalarProperty Name="DateTREExpired" ColumnName="DateTREExpired" />
+                <ScalarProperty Name="LineIssueDate" ColumnName="LineIssueDate" />
+                <ScalarProperty Name="LineExpireDate" ColumnName="LineExpireDate" />
+                <ScalarProperty Name="RecurrentIssueDate" ColumnName="RecurrentIssueDate" />
+                <ScalarProperty Name="RecurrentExpireDate" ColumnName="RecurrentExpireDate" />
+                <ScalarProperty Name="FMTIssueDate" ColumnName="FMTIssueDate" />
+                <ScalarProperty Name="FMTExpireDate" ColumnName="FMTExpireDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewCourseSessions">
+            <EntityTypeMapping TypeName="PPAModel.ViewCourseSession">
+              <MappingFragment StoreEntitySet="ViewCourseSession">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="IsGeneral" ColumnName="IsGeneral" />
+                <ScalarProperty Name="Organization" ColumnName="Organization" />
+                <ScalarProperty Name="OrganizationId" ColumnName="OrganizationId" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="CT_Title" ColumnName="CT_Title" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Instructor" ColumnName="Instructor" />
+                <ScalarProperty Name="No" ColumnName="No" />
+                <ScalarProperty Name="PDayName" ColumnName="PDayName" />
+                <ScalarProperty Name="PMonth" ColumnName="PMonth" />
+                <ScalarProperty Name="PMonthName" ColumnName="PMonthName" />
+                <ScalarProperty Name="PYear" ColumnName="PYear" />
+                <ScalarProperty Name="PYearName" ColumnName="PYearName" />
+                <ScalarProperty Name="PDate" ColumnName="PDate" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="MonthName" ColumnName="MonthName" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="DayName" ColumnName="DayName" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Done" ColumnName="Done" />
+                <ScalarProperty Name="DateEndUtc" ColumnName="DateEndUtc" />
+                <ScalarProperty Name="DateStartUtc" ColumnName="DateStartUtc" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewCourseSessionPresences">
+            <EntityTypeMapping TypeName="PPAModel.ViewCourseSessionPresence">
+              <MappingFragment StoreEntitySet="ViewCourseSessionPresence">
+                <ScalarProperty Name="IsPresent" ColumnName="IsPresent" />
+                <ScalarProperty Name="CourseSessionPresenceId" ColumnName="CourseSessionPresenceId" />
+                <ScalarProperty Name="AttendancePercent" ColumnName="AttendancePercent" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="TotalSession" ColumnName="TotalSession" />
+                <ScalarProperty Name="SessionEnd" ColumnName="SessionEnd" />
+                <ScalarProperty Name="SessionStart" ColumnName="SessionStart" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="SessionKey" ColumnName="SessionKey" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewCourseNews">
+            <EntityTypeMapping TypeName="PPAModel.ViewCourseNew">
+              <MappingFragment StoreEntitySet="ViewCourseNew">
+                <ScalarProperty Name="AttForm" ColumnName="AttForm" />
+                <ScalarProperty Name="SMSInsDate" ColumnName="SMSInsDate" />
+                <ScalarProperty Name="SMSIns2Status" ColumnName="SMSIns2Status" />
+                <ScalarProperty Name="SMSIns1Status" ColumnName="SMSIns1Status" />
+                <ScalarProperty Name="SMSIns2" ColumnName="SMSIns2" />
+                <ScalarProperty Name="SMSIns1" ColumnName="SMSIns1" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Instructor2" ColumnName="Instructor2" />
+                <ScalarProperty Name="Instructor2JobGroup" ColumnName="Instructor2JobGroup" />
+                <ScalarProperty Name="Instructor2EmployeeId" ColumnName="Instructor2EmployeeId" />
+                <ScalarProperty Name="Instructor2Id" ColumnName="Instructor2Id" />
+                <ScalarProperty Name="Certificate" ColumnName="Certificate" />
+                <ScalarProperty Name="Financial" ColumnName="Financial" />
+                <ScalarProperty Name="SendLetter" ColumnName="SendLetter" />
+                <ScalarProperty Name="InForm" ColumnName="InForm" />
+                <ScalarProperty Name="HoldingType" ColumnName="HoldingType" />
+                <ScalarProperty Name="InstructorJobGroup" ColumnName="InstructorJobGroup" />
+                <ScalarProperty Name="InstructorEmployeeId" ColumnName="InstructorEmployeeId" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="Mandatory" ColumnName="Mandatory" />
+                <ScalarProperty Name="Continual" ColumnName="Continual" />
+                <ScalarProperty Name="CalendarType" ColumnName="CalendarType" />
+                <ScalarProperty Name="DurationUnit" ColumnName="DurationUnit" />
+                <ScalarProperty Name="Organization" ColumnName="Organization" />
+                <ScalarProperty Name="PeopleCount" ColumnName="PeopleCount" />
+                <ScalarProperty Name="Sessions" ColumnName="Sessions" />
+                <ScalarProperty Name="IsNotificationEnabled" ColumnName="IsNotificationEnabled" />
+                <ScalarProperty Name="No" ColumnName="No" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="IsGeneral" ColumnName="IsGeneral" />
+                <ScalarProperty Name="IsInside" ColumnName="IsInside" />
+                <ScalarProperty Name="CalanderTypeId" ColumnName="CalanderTypeId" />
+                <ScalarProperty Name="Interval" ColumnName="Interval" />
+                <ScalarProperty Name="Recurrent" ColumnName="Recurrent" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TrainingDirector" ColumnName="TrainingDirector" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="DurationUnitId" ColumnName="DurationUnitId" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="OrganizationId" ColumnName="OrganizationId" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Instructor" ColumnName="Instructor" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="JobGroupsCode" ColumnName="JobGroupsCode" />
+                <ScalarProperty Name="JobGroups" ColumnName="JobGroups" />
+                <ScalarProperty Name="CertificateType" ColumnName="CertificateType" />
+                <ScalarProperty Name="CertificateTypeId" ColumnName="CertificateTypeId" />
+                <ScalarProperty Name="CourseType" ColumnName="CourseType" />
+                <ScalarProperty Name="CourseTypeId" ColumnName="CourseTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewSyllabus">
+            <EntityTypeMapping TypeName="PPAModel.ViewSyllabu">
+              <MappingFragment StoreEntitySet="ViewSyllabus">
+                <ScalarProperty Name="Instructor" ColumnName="Instructor" />
+                <ScalarProperty Name="Instructor2" ColumnName="Instructor2" />
+                <ScalarProperty Name="SessionEnd" ColumnName="SessionEnd" />
+                <ScalarProperty Name="SessionStart" ColumnName="SessionStart" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DurationActual" ColumnName="DurationActual" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="InstructorId2" ColumnName="InstructorId2" />
+                <ScalarProperty Name="InstructorId" ColumnName="InstructorId" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="SessionKey" ColumnName="SessionKey" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewCoursePeoples">
+            <EntityTypeMapping TypeName="PPAModel.ViewCoursePeople">
+              <MappingFragment StoreEntitySet="ViewCoursePeople">
+                <ScalarProperty Name="ExamDate" ColumnName="ExamDate" />
+                <ScalarProperty Name="ExamResult" ColumnName="ExamResult" />
+                <ScalarProperty Name="JobGroupCode2" ColumnName="JobGroupCode2" />
+                <ScalarProperty Name="InActive" ColumnName="InActive" />
+                <ScalarProperty Name="Continual" ColumnName="Continual" />
+                <ScalarProperty Name="Instructor1Id" ColumnName="Instructor1Id" />
+                <ScalarProperty Name="Instructor2Id" ColumnName="Instructor2Id" />
+                <ScalarProperty Name="Instructor2" ColumnName="Instructor2" />
+                <ScalarProperty Name="Instructor1" ColumnName="Instructor1" />
+                <ScalarProperty Name="SMSMsg" ColumnName="SMSMsg" />
+                <ScalarProperty Name="SMSRefId" ColumnName="SMSRefId" />
+                <ScalarProperty Name="SMSDateSent" ColumnName="SMSDateSent" />
+                <ScalarProperty Name="SMSStatus" ColumnName="SMSStatus" />
+                <ScalarProperty Name="EmployeeLocation" ColumnName="EmployeeLocation" />
+                <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
+                <ScalarProperty Name="Mandatory" ColumnName="Mandatory" />
+                <ScalarProperty Name="IsNotificationEnabled" ColumnName="IsNotificationEnabled" />
+                <ScalarProperty Name="CertificateNo" ColumnName="CertificateNo" />
+                <ScalarProperty Name="CoursePeopleStatus" ColumnName="CoursePeopleStatus" />
+                <ScalarProperty Name="StatusRemark" ColumnName="StatusRemark" />
+                <ScalarProperty Name="DateExpire" ColumnName="DateExpire" />
+                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
+                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
+                <ScalarProperty Name="CoursePeopleStatusId" ColumnName="CoursePeopleStatusId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="IDNo" ColumnName="IDNo" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="SexId" ColumnName="SexId" />
+                <ScalarProperty Name="JobGroupRoot" ColumnName="JobGroupRoot" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Organization" ColumnName="Organization" />
+                <ScalarProperty Name="CalendarType" ColumnName="CalendarType" />
+                <ScalarProperty Name="DurationUnit" ColumnName="DurationUnit" />
+                <ScalarProperty Name="No" ColumnName="No" />
+                <ScalarProperty Name="CalanderTypeId" ColumnName="CalanderTypeId" />
+                <ScalarProperty Name="Interval" ColumnName="Interval" />
+                <ScalarProperty Name="Recurrent" ColumnName="Recurrent" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TrainingDirector" ColumnName="TrainingDirector" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="DurationUnitId" ColumnName="DurationUnitId" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="OrganizationId" ColumnName="OrganizationId" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Instructor" ColumnName="Instructor" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="CertificateType" ColumnName="CertificateType" />
+                <ScalarProperty Name="CertificateTypeId" ColumnName="CertificateTypeId" />
+                <ScalarProperty Name="CourseType" ColumnName="CourseType" />
+                <ScalarProperty Name="CourseTypeId" ColumnName="CourseTypeId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewLogBook18">
+            <EntityTypeMapping TypeName="PPAModel.ViewLogBook18">
+              <MappingFragment StoreEntitySet="ViewLogBook18">
+                <ScalarProperty Name="CPTNAME" ColumnName="CPTNAME" />
+                <ScalarProperty Name="IPNAME" ColumnName="IPNAME" />
+                <ScalarProperty Name="DepStn" ColumnName="DepStn" />
+                <ScalarProperty Name="PICName" ColumnName="PICName" />
+                <ScalarProperty Name="Pos" ColumnName="Pos" />
+                <ScalarProperty Name="DUALTime" ColumnName="DUALTime" />
+                <ScalarProperty Name="IPTime" ColumnName="IPTime" />
+                <ScalarProperty Name="COPILOTTime" ColumnName="COPILOTTime" />
+                <ScalarProperty Name="PICTime" ColumnName="PICTime" />
+                <ScalarProperty Name="IFRTime" ColumnName="IFRTime" />
+                <ScalarProperty Name="MultiPilotTime" ColumnName="MultiPilotTime" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="NightTime" ColumnName="NightTime" />
+                <ScalarProperty Name="NightLanding" ColumnName="NightLanding" />
+                <ScalarProperty Name="DayLanding" ColumnName="DayLanding" />
+                <ScalarProperty Name="NightTakeOff" ColumnName="NightTakeOff" />
+                <ScalarProperty Name="DayTakeOff" ColumnName="DayTakeOff" />
+                <ScalarProperty Name="OnBlockLocal" ColumnName="OnBlockLocal" />
+                <ScalarProperty Name="OnBlock" ColumnName="OnBlock" />
+                <ScalarProperty Name="OffBlockLocal" ColumnName="OffBlockLocal" />
+                <ScalarProperty Name="OffBlock" ColumnName="OffBlock" />
+                <ScalarProperty Name="ACType" ColumnName="ACType" />
+                <ScalarProperty Name="ACReg" ColumnName="ACReg" />
+                <ScalarProperty Name="FltNo" ColumnName="FltNo" />
+                <ScalarProperty Name="Arr2" ColumnName="Arr2" />
+                <ScalarProperty Name="Dep2" ColumnName="Dep2" />
+                <ScalarProperty Name="ArrStn" ColumnName="ArrStn" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
