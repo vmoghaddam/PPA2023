@@ -26,70 +26,70 @@ namespace EPAGriffinAPI.Controllers
         private UnitOfWork unitOfWork = new UnitOfWork();
 
 
-        [Route("odata/training/ext/test")]
+        //[Route("odata/training/ext/test")]
 
-        public async Task<IHttpActionResult> GetTrainingTest()
-        {
-            // var data=HelperTraining.GetTrainingTest();
-            var data = HelperTraining.GetIdeaLast();
-
-            return Ok(data);
-
-        }
-
-        [Route("odata/training/idea/all")]
-
-        public async Task<IHttpActionResult> GetTrainingTestAll()
-        {
-            // var data=HelperTraining.GetTrainingTest();
-            var data = HelperTraining.GetIdeaAll();
-
-            return Ok(data);
-
-        }
-
-        [Route("odata/training/ext/test2")]
-
-        public async Task<IHttpActionResult> GetTrainingTest2()
-        {
-            // var data=HelperTraining.GetTrainingTest();
-            var data = HelperTraining.GetIdeaLast2();
-
-            return Ok(data);
-
-        }
-
-        [Route("odata/training/ext/test3")]
-
-        public async Task<IHttpActionResult> GetTrainingTest3()
-        {
-            // var data=HelperTraining.GetTrainingTest();
-            var data = HelperTraining.GetIdeaAll3();
-
-            return Ok(data);
-
-        }
-
-        //[Route("odata/training/ext/test4")]
-
-        //public async Task<IHttpActionResult> GetTrainingTest4()
+        //public async Task<IHttpActionResult> GetTrainingTest()
         //{
         //    // var data=HelperTraining.GetTrainingTest();
-        //    var data = HelperTraining.GetIdeaAll4();
+        //    var data = HelperTraining.GetIdeaLast();
 
         //    return Ok(data);
 
         //}
 
-        [Route("odata/training/ext/idea/update")]
-        [AcceptVerbs("GET")]
-        public async Task<IHttpActionResult> PostUpdateFromIdea()
-        {
-            var result = await unitOfWork.PersonRepository.UpdateByIdea();
+        //[Route("odata/training/idea/all")]
+
+        //public async Task<IHttpActionResult> GetTrainingTestAll()
+        //{
+        //    // var data=HelperTraining.GetTrainingTest();
+        //    var data = HelperTraining.GetIdeaAll();
+
+        //    return Ok(data);
+
+        //}
+
+        //[Route("odata/training/ext/test2")]
+
+        //public async Task<IHttpActionResult> GetTrainingTest2()
+        //{
+        //    // var data=HelperTraining.GetTrainingTest();
+        //    var data = HelperTraining.GetIdeaLast2();
+
+        //    return Ok(data);
+
+        //}
+
+        //[Route("odata/training/ext/test3")]
+
+        //public async Task<IHttpActionResult> GetTrainingTest3()
+        //{
+        //    // var data=HelperTraining.GetTrainingTest();
+        //    var data = HelperTraining.GetIdeaAll3();
+
+        //    return Ok(data);
+
+        //}
+
+        ////[Route("odata/training/ext/test4")]
+
+        ////public async Task<IHttpActionResult> GetTrainingTest4()
+        ////{
+        ////    // var data=HelperTraining.GetTrainingTest();
+        ////    var data = HelperTraining.GetIdeaAll4();
+
+        ////    return Ok(data);
+
+        ////}
+
+        //[Route("odata/training/ext/idea/update")]
+        //[AcceptVerbs("GET")]
+        //public async Task<IHttpActionResult> PostUpdateFromIdea()
+        //{
+        //    var result = await unitOfWork.PersonRepository.UpdateByIdea();
             
-            return result;
+        //    return result;
              
-        }
+        //}
 
 
 

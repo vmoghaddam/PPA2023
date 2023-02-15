@@ -798,124 +798,124 @@ namespace EPAGriffinAPI.DAL
             }
         }
 
-        internal async Task<CustomActionResult> UpdateByIdea()
-        {
-            var serviceRecords = HelperTraining.GetIdeaAll();
-            var people = await this.context.People.ToListAsync();
-            this.context.Database.CommandTimeout = 160;
-            var ideaRecords = await this.context.ViewIdeaLasts.ToListAsync();
-            foreach(var rec in ideaRecords)
-            {
-                if (rec.MappedTitle == "CRM")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.UpsetRecoveryTrainingIssueDate = rec.DateIssue;
-                        person.UpsetRecoveryTrainingExpireDate = rec.DateExpire;
-                    }
-                }
-                if (rec.MappedTitle == "CCRM")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.CCRMIssueDate = rec.DateIssue;
-                        person.CCRMExpireDate = rec.DateExpire;
-                    }
-                }
-                if (rec.MappedTitle == "SMS")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.SMSIssueDate = rec.DateIssue;
-                        person.SMSExpireDate = rec.DateExpire;
-                    }
-                }
-                if (rec.MappedTitle == "FIRSTAID")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.FirstAidIssueDate = rec.DateIssue;
-                        person.FirstAidExpireDate = rec.DateExpire;
-                    }
-                }
-                if (rec.MappedTitle == "DG")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.DangerousGoodsIssueDate = rec.DateIssue;
-                        person.DangerousGoodsExpireDate = rec.DateExpire;
-                    }
-                }
+        //internal async Task<CustomActionResult> UpdateByIdea()
+        //{
+        //    var serviceRecords = HelperTraining.GetIdeaAll();
+        //    var people = await this.context.People.ToListAsync();
+        //    this.context.Database.CommandTimeout = 160;
+        //    var ideaRecords = await this.context.ViewIdeaLasts.ToListAsync();
+        //    foreach(var rec in ideaRecords)
+        //    {
+        //        if (rec.MappedTitle == "CRM")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.UpsetRecoveryTrainingIssueDate = rec.DateIssue;
+        //                person.UpsetRecoveryTrainingExpireDate = rec.DateExpire;
+        //            }
+        //        }
+        //        if (rec.MappedTitle == "CCRM")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.CCRMIssueDate = rec.DateIssue;
+        //                person.CCRMExpireDate = rec.DateExpire;
+        //            }
+        //        }
+        //        if (rec.MappedTitle == "SMS")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.SMSIssueDate = rec.DateIssue;
+        //                person.SMSExpireDate = rec.DateExpire;
+        //            }
+        //        }
+        //        if (rec.MappedTitle == "FIRSTAID")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.FirstAidIssueDate = rec.DateIssue;
+        //                person.FirstAidExpireDate = rec.DateExpire;
+        //            }
+        //        }
+        //        if (rec.MappedTitle == "DG")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.DangerousGoodsIssueDate = rec.DateIssue;
+        //                person.DangerousGoodsExpireDate = rec.DateExpire;
+        //            }
+        //        }
 
-                if (rec.MappedTitle == "SEPT")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.SEPTIssueDate = rec.DateIssue;
-                        person.SEPTExpireDate = rec.DateExpire;
-                    }
-                }
+        //        if (rec.MappedTitle == "SEPT")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.SEPTIssueDate = rec.DateIssue;
+        //                person.SEPTExpireDate = rec.DateExpire;
+        //            }
+        //        }
 
-                if (rec.MappedTitle == "AVSEC")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.AviationSecurityIssueDate = rec.DateIssue;
-                        person.AviationSecurityExpireDate = rec.DateExpire;
-                    }
-                }
+        //        if (rec.MappedTitle == "AVSEC")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.AviationSecurityIssueDate = rec.DateIssue;
+        //                person.AviationSecurityExpireDate = rec.DateExpire;
+        //            }
+        //        }
 
-                if (rec.MappedTitle == "HOT-WX")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.HotWeatherOperationIssueDate = rec.DateIssue;
-                        person.HotWeatherOperationExpireDate = rec.DateExpire;
-                    }
-                }
+        //        if (rec.MappedTitle == "HOT-WX")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.HotWeatherOperationIssueDate = rec.DateIssue;
+        //                person.HotWeatherOperationExpireDate = rec.DateExpire;
+        //            }
+        //        }
 
-                if (rec.MappedTitle == "COLD-WX")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.ColdWeatherOperationIssueDate = rec.DateIssue;
-                        person.ColdWeatherOperationExpireDate = rec.DateExpire;
-                    }
-                }
-                //Re/Annual-Re/Cabin
-                if (rec.MappedTitle == "Re/Annual-Re/Cabin")
-                {
-                    var person = people.FirstOrDefault(q => q.NID == rec.NID);
-                    if (person != null)
-                    {
-                        person.RecurrentIssueDate = rec.DateIssue;
-                        person.RecurrentExpireDate = rec.DateExpire;
-                    }
-                }
+        //        if (rec.MappedTitle == "COLD-WX")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.ColdWeatherOperationIssueDate = rec.DateIssue;
+        //                person.ColdWeatherOperationExpireDate = rec.DateExpire;
+        //            }
+        //        }
+        //        //Re/Annual-Re/Cabin
+        //        if (rec.MappedTitle == "Re/Annual-Re/Cabin")
+        //        {
+        //            var person = people.FirstOrDefault(q => q.NID == rec.NID);
+        //            if (person != null)
+        //            {
+        //                person.RecurrentIssueDate = rec.DateIssue;
+        //                person.RecurrentExpireDate = rec.DateExpire;
+        //            }
+        //        }
 
 
-            }
-            var history = new ThirdPartySyncHistory()
-            {
-                App = "IDEA",
-                DateSync = DateTime.Now,
-                Remark = serviceRecords.Count + " Records Proccessed.",
-            };
-            this.context.ThirdPartySyncHistories.Add(history);
+        //    }
+        //    var history = new ThirdPartySyncHistory()
+        //    {
+        //        App = "IDEA",
+        //        DateSync = DateTime.Now,
+        //        Remark = serviceRecords.Count + " Records Proccessed.",
+        //    };
+        //    this.context.ThirdPartySyncHistories.Add(history);
 
-            await this.context.SaveChangesAsync();
+        //    await this.context.SaveChangesAsync();
 
-            return new CustomActionResult(HttpStatusCode.OK, history);
-        }
+        //    return new CustomActionResult(HttpStatusCode.OK, history);
+        //}
 
 
         internal bool SaveIPs(string ips,string users)
