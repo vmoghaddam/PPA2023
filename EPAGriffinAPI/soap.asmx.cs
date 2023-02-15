@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Script.Services;
+//using System.Web.Script.Services;
 using System.Web.Services;
 
 namespace EPAGriffinAPI
@@ -15,7 +15,7 @@ namespace EPAGriffinAPI
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
    // [System.Web.Script.Services.ScriptService]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-   [System.Web.Script.Services.ScriptService]
+  // [System.Web.Script.Services.ScriptService]
     public class soap : System.Web.Services.WebService
     {
 
