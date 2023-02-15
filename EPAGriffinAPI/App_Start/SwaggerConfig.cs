@@ -12,7 +12,7 @@ namespace EPAGriffinAPI
         public static void Register()
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;
-
+            return;
             GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
                     {
