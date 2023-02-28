@@ -1,6 +1,6 @@
 ﻿'use strict';
 app.controller('schedulingController', ['$scope', '$location', '$routeParams', '$rootScope', '$timeout', 'schedulingService', 'flightService', 'weatherService', 'aircraftService', 'authService', 'notificationService', '$route', '$window', function ($scope, $location, $routeParams, $rootScope, $timeout, schedulingService, flightService, weatherService, aircraftService, authService, notificationService, $route, $window) {
-    //06-13
+    //2023 doog
     $scope.IsCabin = true;
     $scope.IsCockpit = true;
     $scope.getActionShow = function (grp, x) {
@@ -4826,6 +4826,13 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
                     //if (_d.resourceId == 69)
 
                     $.each(flights, function (_j, _q) {
+
+                        //amw////////////////////
+                        //_q.STD = (new Date(_q.STD)).addMinutes(240);
+                        //_q.STA = (new Date(_q.STA)).addMinutes(240);
+                        //_q.ChocksIn = (new Date(_q.ChocksIn)).addMinutes(240);
+                        //_q.ChocksOut = (new Date(_q.ChocksOut)).addMinutes(240);
+                        ////////////
 
                         _q.STD = moment(_q.STD);
                         _q.STA = moment(_q.STA);
