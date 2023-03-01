@@ -1915,10 +1915,13 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
 
         return deferred.promise;
     };
+    //2023
     var _saveDuty = function (entity) {
         var deferred = $q.defer();
-        $http.post($rootScope.serviceUrl + 'odata/duty/save', entity).then(function (response) {
+        $http.post(/*$rootScope.serviceUrl + 'odata/duty/save'*/ apiScheduling + 'api/duty/save', entity).then(function (response) {
+            console.log('service ', response);
             deferred.resolve(response.data);
+            
         }, function (err, status) {
 
             deferred.reject(Exceptions.getMessage(err));

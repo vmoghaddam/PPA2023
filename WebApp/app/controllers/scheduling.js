@@ -3383,6 +3383,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
         schedulingService.saveDuty(dto).then(function (response) {
             $scope.loadingVisible = false;
+            console.log('controller 2 ', response);
             response.dutyTypeTitle = response.DutyTypeTitle;
             response.dutyType = response.DutyType;
             $scope.cal_crew_ds.push(response);
@@ -3767,9 +3768,12 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
         }
         $scope.loadingVisible = true;
-
+        alert('x');
         schedulingService.saveDuty(dto).then(function (response) {
             $scope.loadingVisible = false;
+
+            console.log('controller ',response);
+            alert('y');
             response.dutyTypeTitle = response.DutyTypeTitle;
             response.dutyType = response.DutyType;
             $scope.cal_crew_ds.push(response);

@@ -12931,7 +12931,7 @@ namespace EPAGriffinAPI.DAL
                || (duty.InitEnd >= q.InitStart && duty.InitEnd <= q.InitRestTo)
                || (q.InitStart >= duty.InitStart && q.InitRestTo <= duty.InitRestTo)
               )
-           );
+           ); 
             if (_interupted != null )
             {
                 //Rest/Interruption Error

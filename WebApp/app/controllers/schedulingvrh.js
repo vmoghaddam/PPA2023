@@ -3633,6 +3633,8 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
     };
     $scope.IsEventOverLapped = function (event) {
+        //2023
+        return false;
         //4-20
         var f;
         if (event.dutyType == 10000) {
@@ -3785,6 +3787,15 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
         schedulingService.saveDuty(dto).then(function (response) {
             $scope.loadingVisible = false;
+            //2023
+            if (response.Code == '406') {
+               
+                General.ShowNotify(response.message, 'error');
+                    return;
+               
+            }
+            ////////////
+            console.log(response);
             response.dutyTypeTitle = response.DutyTypeTitle;
             response.dutyType = response.DutyType;
             $scope.cal_crew_ds.push(response);
@@ -3795,6 +3806,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
             $scope.ev_fx_hh = null;
             $scope.ev_fx_mm = null;
             callback();
+            
 
 
 
