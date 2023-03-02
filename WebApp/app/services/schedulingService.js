@@ -1964,10 +1964,12 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
         return deferred.promise;
     };
 
-
+    //2023
     var _saveSTBY = function (entity) {
         var deferred = $q.defer();
-        $http.post($rootScope.serviceUrl + 'odata/roster/stby/save', entity).then(function (response) {
+        $http.post(/*$rootScope.serviceUrl + 'odata/roster/stby/save'*/apiScheduling + 'api/roster/stby/save', entity).then(function (response) {
+            //if (response.data)
+            //    resp
             deferred.resolve(response.data);
         }, function (err, status) {
 

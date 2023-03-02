@@ -1674,6 +1674,7 @@
                                     <td style="text-align:left;padding-left:5px;">
                                         <div style="font-size:12px;font-weight:bold">{{duty.DutyTypeTitle}}</div>
                                         <!--<div ng-show="duty.DutyType!=10000">-->
+                                        <!--2023-->
                                         <div>
                                             <div style="font-size:10px; " ng-show="!duty.Remark2"><span style="font-size:11px; ">{{formatTime(duty.Start)}}</span><span style="font-size:11px;display:inline-block;margin-left:10px">{{formatTime(duty.End)}}</span></div>
                                             <div style="font-size:12px; " ng-show="duty.CanceledNo">{{duty.CanceledNo}}</div>
@@ -1767,7 +1768,7 @@
     <div id="popup_event" dx-popup="popup_event">
         <div style="padding:0px 0 0 0">
             <div class="dx-border">
-                <div ng-show="event_status!=10000">
+                <div ng-show="event_status!=10000 && [1166,1169,300008,100007,100008,100002].indexOf(event_status)==-1">
                     <div class="col-lg-6 margin-bottom-5 padding-7">
                         <label>From</label>
                         <div class="center" dx-date-box="date_from_event" dx-validator="{validationGroup:'eventadd2',  validationRules: [{ type: 'required'}]}"></div>
@@ -1796,7 +1797,11 @@
                         <div class="center" dx-date-box="date_from_event_hh" dx-validator="{validationGroup:'eventadd2',  validationRules: [{ type: 'required'}]}"></div>
                     </div>
                     <div style="clear:both"></div>
+                    <div style="padding:20px;">
+                        <div dx-check-box="check_ex48"></div>
+                    </div>
                    
+                    <div style="clear:both"></div>
                 </div>
                 <div style="clear:both"></div>
                 <div ng-show="event_status==100025">

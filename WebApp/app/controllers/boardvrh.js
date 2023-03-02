@@ -1,24 +1,11 @@
 ﻿'use strict';
-app.controller('boardController', ['$scope', '$location', '$routeParams', '$rootScope', '$timeout','$compile', 'flightService', 'weatherService', 'aircraftService', 'authService', 'notificationService', '$route', '$window', 'fbService', '$http', '$q', 'logService', function ($scope, $location, $routeParams, $rootScope, $timeout,$compile, flightService, weatherService, aircraftService, authService, notificationService, $route, $window, fbService, $http, $q, logService) {
+app.controller('boardController', ['$scope', '$location', '$routeParams', '$rootScope', '$timeout', 'flightService', 'weatherService', 'aircraftService', 'authService', 'notificationService', '$route', '$window', 'fbService', '$http', '$q', 'logService', function ($scope, $location, $routeParams, $rootScope, $timeout, flightService, weatherService, aircraftService, authService, notificationService, $route, $window, fbService, $http, $q, logService) {
     $scope.prms = $routeParams.prms;
-    $scope.isTimeTypeEnabled = true;
-    $scope.hourWidth = 65;
-    $scope.getCellHourStyle = function () {
-        var style = {};
-        style.width = ($scope.hourWidth + 1) + 'px';
-        return style;
-    };
-    $scope.getCellDayStyle = function () {
-        var style = {};
-        style.width = ($scope.hourWidth * 24 + 24) + 'px';
-        return style;
-    };
 
-
-
+    var hourWidth = 85;
     authService.setModule(3);
     $rootScope.setTheme();
-
+    $scope.isPGS = $rootScope.userName.toLowerCase() == 'pgs' || $rootScope.userName.toLowerCase() == 'ops.pgs';
     $scope.IsPlanning = $rootScope.HasMenuAccess('flight_planning', 3);
     //flight_planning-edit
     $scope.IsStaion = $rootScope.roles && $rootScope.roles.indexOf('Station') != -1;
@@ -33,7 +20,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     )
         $scope.IsJLOG = true;
     $scope.IsPickup = $rootScope.userName.toLowerCase().startsWith('trans.') || $rootScope.userName.toLowerCase().startsWith('transport');
-    $scope.IsCrewMobileVisible = $rootScope.userName.toLowerCase().startsWith('dis') || $rootScope.userName.toLowerCase().startsWith('demo');
+    $scope.IsCrewMobileVisible = $rootScope.userName.toLowerCase().startsWith('dis') || $rootScope.userName.toLowerCase().startsWith('demo') || $rootScope.userName.toLowerCase().startsWith('trans');
     $scope.IsSMSVisible = $rootScope.userName.toLowerCase().startsWith('dis') || $rootScope.userName.toLowerCase().startsWith('demo') || $rootScope.userName.toLowerCase().startsWith('cs.') || $rootScope.userName.toLowerCase().startsWith('razbani');
 
     $scope.IsNoCrewVisible = $rootScope.userName.toLowerCase().startsWith('dis') || $rootScope.userName.toLowerCase().startsWith('demo') || $rootScope.userName.toLowerCase().startsWith('razbani') || $rootScope.userName.toLowerCase().startsWith('ops.darabian')
@@ -59,7 +46,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     $scope.IsSave = $scope.IsEditable || $scope.IsStaion || $scope.IsRemark;
 
     //divargar-ok
-    $scope.IsComm = true;// $rootScope.userName.toLowerCase().startsWith('comm.') || $rootScope.userName.toLowerCase().startsWith('com.') || $rootScope.userName.toLowerCase().startsWith('demo');
+    $scope.IsComm = $rootScope.userName.toLowerCase().startsWith('comm.') || $rootScope.userName.toLowerCase().startsWith('com.') || $rootScope.userName.toLowerCase().startsWith('demo');
     $scope.NotIsComm = !$scope.IsComm;
     // $scope.IsComm = true;
     //alert((new Date()).yyyymmddtime(false));
@@ -99,6 +86,8 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     $scope.showLog = function (isApply) {
         //if ($rootScope.userName.toLowerCase().startsWith('kusha'))
         //			return;
+        if ($rootScope.userName.toLowerCase() == 'mehregan')
+            return;
         if ($scope.IsSelectionMode)
             return;
         if (!$scope.selectedFlights || $scope.selectedFlights.length == 0) {
@@ -215,7 +204,8 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         }, function (err) { });
     };
     $scope.showLogX = function (isApply) {
-
+        if ($rootScope.userName.toLowerCase() == 'mehregan')
+            return;
         //if (!$scope.ati_selectedFlights || $scope.ati_selectedFlights.length == 0) {
         //    General.ShowNotify(Config.Text_NoFlightSelected, 'error');
         //    return;
@@ -572,7 +562,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         //divargar-ok
         flightService.getRealRegisters(cid).then(function (response) {
             $scope.realMSNs = Enumerable.From(response)
-                .Where(function (x) { return !x.Register.startsWith('CNL')  ; })
+                .Where(function (x) { return !x.Register.startsWith('CNL') && (x.Register.startsWith('V') || x.Register.startsWith('R')); })
                 .OrderBy('$.isvirtual').ThenBy('$.TFC')
                 .ThenBy('$.Register').ToArray();
 
@@ -2151,32 +2141,27 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                 $scope.linkEntity.FlightTypeID = $scope.ati_flight.FlightTypeID;
 
                 var _xstd = new Date($scope.ati_flight.STD);
-                //if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT'].indexOf($scope.ati_flight.FromAirportIATA) != -1)
-                //    _xstd = new Date(_xstd.addMinutes(-30));
-                //if (['DYU'].indexOf($scope.ati_flight.FromAirportIATA) != -1)
-                //    _xstd = new Date(_xstd.addMinutes(90));
-                //if (['FRU'].indexOf($scope.ati_flight.FromAirportIATA) != -1)
-                //    _xstd = new Date(_xstd.addMinutes(150));
-                //if (['TBS', 'BUS'].indexOf($scope.ati_flight.FromAirportIATA) != -1)
-                //    _xstd = new Date(_xstd.addMinutes(30));
+                if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT', 'DOH'].indexOf($scope.ati_flight.FromAirportIATA) != -1)
+                    _xstd = new Date(_xstd.addMinutes(-30));
+                if (['DYU', 'FEG'].indexOf($scope.ati_flight.FromAirportIATA) != -1)
+                    _xstd = new Date(_xstd.addMinutes(90));
+                if (['FRU'].indexOf($scope.ati_flight.FromAirportIATA) != -1)
+                    _xstd = new Date(_xstd.addMinutes(150));
+                if (['TBS', 'BUS'].indexOf($scope.ati_flight.FromAirportIATA) != -1)
+                    _xstd = new Date(_xstd.addMinutes(30));
 
                 var _xsta = new Date($scope.ati_flight.STA);
-                //if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT'].indexOf($scope.ati_flight.ToAirportIATA) != -1)
-                //    _xsta = new Date(_xsta.addMinutes(-30));
-                //if (['DYU'].indexOf($scope.ati_flight.ToAirportIATA) != -1)
-                //    _xsta = new Date(_xsta.addMinutes(90));
-                //if (['FRU'].indexOf($scope.ati_flight.ToAirportIATA) != -1)
-                //    _xsta = new Date(_xsta.addMinutes(150));
-                //if (['TBS', 'BUS'].indexOf($scope.ati_flight.ToAirportIATA) != -1)
-                //    _xsta = new Date(_xsta.addMinutes(30));
+                if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT', 'DOH'].indexOf($scope.ati_flight.ToAirportIATA) != -1)
+                    _xsta = new Date(_xsta.addMinutes(-30));
+                if (['DYU', 'FEG'].indexOf($scope.ati_flight.ToAirportIATA) != -1)
+                    _xsta = new Date(_xsta.addMinutes(90));
+                if (['FRU'].indexOf($scope.ati_flight.ToAirportIATA) != -1)
+                    _xsta = new Date(_xsta.addMinutes(150));
+                if (['TBS', 'BUS'].indexOf($scope.ati_flight.ToAirportIATA) != -1)
+                    _xsta = new Date(_xsta.addMinutes(30));
 
-                ///To UTC
-                _xstd = getUtcDate(_xstd);
-                _xsta = getUtcDate(_xsta);
-                ///////////
 
-                console.log(_xstd);
-                console.log(_xsta);
+
 
                 $scope.time_ir_std_date = new Date(_xstd); //new Date($scope.ati_flight.STD);
                 $scope.time_ir_std_time = new Date(_xstd); //new Date($scope.ati_flight.STD);
@@ -2186,14 +2171,11 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                 $scope.time_ir_sta_date = new Date(_xsta); //new Date($scope.ati_flight.STA);
                 $scope.time_ir_sta_time = new Date(_xsta); //new Date($scope.ati_flight.STA);
 
-                //mahsa
-                $scope.time_interval_from_date = new Date(_xstd); //new Date($scope.ati_flight.STD);
-                $scope.time_interval_to_date = new Date(_xstd); //new Date($scope.ati_flight.STD);
+                //divargar-ok
+                $scope.time_interval_from_date = new Date($scope.ati_flight.STD);
+                $scope.time_interval_to_date = new Date($scope.ati_flight.STD);
                 $scope.interval_days = [];
-
-                //$scope.interval_days.push((new Date($scope.ati_flight.STD)).getDay());
-                $scope.interval_days.push((new Date(_xstd)).getDay());
-
+                $scope.interval_days.push((new Date($scope.ati_flight.STD)).getDay());
                 //$scope.linkEntity.LinkedRemark = $scope.flight.LinkedRemark;
                 $scope.doIrRoute = true;
                 //hoda
@@ -5223,20 +5205,28 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     $scope.timeBaseReadOnly = false;
     //12-05
     $scope.sb_timebase = {
-        disabled: $scope.isTimeTypeEnabled,
         showClearButton: false,
         searchEnabled: false,
-        dataSource: ['UTC', 'LCL'/*, 'LCB'*/],
+        dataSource: ['UTC', 'LCL', 'LCB'],
         //readOnly:true,
         onValueChanged: function (e) {
             console.log('OOOOOOOOOOOOOOOOOO   TIME BASE');
             console.log('value', e.value);
             console.log('pre', e.previousValue);
-            if (e.value == 'UTC' && (e.previousValue == 'LCL' || e.previousValue == 'LCB')) {
+            if (e.value == 'UTC' && (e.previousValue == 'LCL')) {
                 $scope.convertToUTCNew();
             }
-            else if ((e.value == 'LCL' || e.value == 'LCB') && e.previousValue == 'UTC')
+            else if ((e.value == 'UTC') && e.previousValue == 'LCB')
+                $scope.convertToUTC();
+            else if ((e.value == 'LCL') && e.previousValue == 'UTC')
                 $scope.convertToLCLFromUTC();
+            else if ((e.value == 'LCL') && e.previousValue == 'LCB')
+                $scope.convertToLCLFromLCB();
+            else if ((e.value == 'LCB') && e.previousValue == 'UTC')
+                $scope.convertToLCBFromUTC();
+            else if ((e.value == 'LCB') && e.previousValue == 'LCL')
+                $scope.convertToLCBFromLCL();
+            //console.log($scope.logFlight.ChocksOut);
 
         },
         bindingOptions: {
@@ -5895,16 +5885,6 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
             return '--';
         return moment(date).format('HH:mm');
     };
-    //12-07
-    $scope.momenttimebytype = function (date) {
-        if (!date)
-            return '--';
-        if ($scope.timeType == 1) {
-            date = getUtcDate(new Date(date));
-        }
-
-        return moment(date).format('HH:mm');
-    };
     $scope.setStatus = function (flight, status) {
         var statusItem = Enumerable.From(Flight.statusDataSource).Where('$.id==' + status).FirstOrDefault();
         flight.status = status;
@@ -6557,7 +6537,6 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                             flightService.activeFlightsGroup(entity).then(function (response) {
                                 General.ShowNotify(Config.Text_SavedOk, 'success');
                                 $scope.loadingVisible = false;
-                                alert(response.flights.length);
                                 $.each(response.flights, function (_i, _flt) {
                                     var aflt = Enumerable.From($scope.ganttData.flights).Where('$.ID==' + _flt.ID).FirstOrDefault();
                                     if (aflt) {
@@ -6572,7 +6551,6 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
                                         var _ressq = Enumerable.From(response.ressq).Where('$.resourceId==' + aflt.RegisterID).FirstOrDefault();
                                         $scope.modifyGantt(aflt, _ressq, oldResId);
-                                        console.log(aflt);
                                     }
 
                                 });
@@ -6680,7 +6658,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     //////////////////////////////////////
     $scope.saveFree = function () {
         //07-10
-        var oldSTD = $scope.linkEntity.STD;
+
         var std_dates = (new Date($scope.time_ir_std_date)).getDatePartArray();
         var std_times = (new Date($scope.time_ir_std_time)).getTimePartArray();
         var stdNo = Number(moment(new Date($scope.time_ir_std_time)).format("HHmm"));
@@ -6700,45 +6678,65 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         var _minutes = Math.floor((_diffx / 1000) / 60);
         $scope.linkEntity.FlightH = Math.trunc(_minutes / 60);
         $scope.linkEntity.FlightM = _minutes % 60;
+        // alert(_hhx+' '+_mmx);
+        //return;
+
+
+        if ([152340, 132316, 133405, 152352, 150903, 132636].indexOf($scope.linkEntity.FromAirportId) != -1) {
+            std = new Date(std.addMinutes(30));
+        }
+        if ([146698, 152383].indexOf($scope.linkEntity.FromAirportId) != -1) {
+            std = new Date(std.addMinutes(-90));
+        }
+        if ([152366, 152362].indexOf($scope.linkEntity.FromAirportId) != -1) {
+            std = new Date(std.addMinutes(-30));
+        }
+
+
+        var sta_dates = (new Date($scope.time_ir_sta_date)).getDatePartArray();
+        var sta_times = (new Date($scope.time_ir_sta_time)).getTimePartArray();
+        var sta = new Date(sta_dates[0], sta_dates[1], sta_dates[2], sta_times[0], sta_times[1], 0, 0);
+        if ([152340, 132316, 133405, 152352, 150903, 132636].indexOf($scope.linkEntity.ToAirportId) != -1) {
+            sta = new Date(sta.addMinutes(30));
+        }
+        if ([146698, 152383].indexOf($scope.linkEntity.ToAirportId) != -1) {
+            sta = new Date(sta.addMinutes(-90));
+        }
+        if ([152379].indexOf($scope.linkEntity.ToAirportId) != -1) {
+            sta = new Date(sta.addMinutes(-150));
+        }
+        if ([152366, 152362].indexOf($scope.linkEntity.ToAirportId) != -1) {
+            sta = new Date(sta.addMinutes(-30));
+        }
 
         var _flight = JSON.parse(JSON.stringify($scope.linkEntity));
-
+        //9-8
         _flight.FlightStatusID = 1;
         _flight.STD = (new Date(std)).toUTCString();
-        _flight.STDRAW = moment(new Date(std)).format("YYYY-MM-DD-HH-mm");
 
         //9-8
         _flight.STDHH = (new Date(std)).getHours();
         _flight.STDMM = (new Date(std)).getMinutes();
 
         _flight.STA = (new Date(sta)).toUTCString();
-        _flight.STARAW = moment(new Date(sta)).format("YYYY-MM-DD-HH-mm");
         _flight.SMSNira = $scope.sms_nira_nsf ? 1 : 0;
         _flight.UserName = $rootScope.userName;
-
-        _flight.RefDateRAW = moment(new Date($scope._datefrom)).format("YYYY-MM-DD-12-00");
 
         //divargar-ok3
         var interval_from_dates = (new Date($scope.time_interval_from_date)).getDatePartArray();
         var intervalFrom = new Date(interval_from_dates[0], interval_from_dates[1], interval_from_dates[2], 12, 0, 0, 0);
         var interval_to_dates = (new Date($scope.time_interval_to_date)).getDatePartArray();
         var intervalTo = new Date(interval_to_dates[0], interval_to_dates[1], interval_to_dates[2], 12, 0, 0, 0);
-        _flight.IntervalFromRAW = moment(new Date(intervalFrom)).format("YYYY-MM-DD-12-00");
-        _flight.IntervalToRAW = moment(new Date(intervalTo)).format("YYYY-MM-DD-12-00");
 
         //07-10
         _flight.Days = $scope.interval_days;
-        _flight.DaysUTC = $scope.interval_days;
         var ref_dates = (new Date($scope._datefrom)).getDatePartArray();
         var ref = new Date(ref_dates[0], ref_dates[1], ref_dates[2], 12, 0, 0, 0);
         _flight.RefDate = (new Date(ref)).toUTCString();
         _flight.RefDays = $scope.days_count;
 
         var _zoffset = (new Date($scope.time_ir_std_date)).getTimezoneOffset();
-        // var stdOffset = (new Date(std)).addMinutes(_zoffset);
-        var stdOffset = (new Date(oldSTD)).addMinutes(_zoffset);
-        if (_flight.ID == -1)
-            var stdOffset = (new Date(std)).addMinutes(_zoffset);
+        var stdOffset = (new Date(std)).addMinutes(_zoffset);
 
         if (stdOffset.getDate() != std.getDate()) {
             intervalFrom = (new Date(intervalFrom)).addDays(-1);
@@ -6794,31 +6792,35 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                 $scope.freeSaved = true;
 
                 //////////////////////////////////////////////////////////
-                //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(response.flight.FromAirportIATA) != -1)
-                //    response.flight.GWLand = 180;
-                //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(response.flight.ToAirportIATA) != -1)
-                //    response.flight.GWTO = 180;
+                if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(response.flight.FromAirportIATA) != -1)
+                    response.flight.GWLand = 180;
+                if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(response.flight.ToAirportIATA) != -1)
+                    response.flight.GWTO = 180;
 
-                //if (response.flight.FromAirportIATA == 'DAM')
-                //    response.flight.GWLand = 120;
-                //if (response.flight.ToAirportIATA == 'DAM')
-                //    response.flight.GWTO = 120;
+                if (response.flight.FromAirportIATA == 'DAM')
+                    response.flight.GWLand = 120;
+                if (response.flight.ToAirportIATA == 'DAM')
+                    response.flight.GWTO = 120;
 
 
-                //if (response.flight.FromAirportIATA == 'DYU')
-                //    response.flight.GWLand = 300;
-                //if (response.flight.ToAirportIATA == 'DYU')
-                //    response.flight.GWTO = 300;
+                if (response.flight.FromAirportIATA == 'DYU')
+                    response.flight.GWLand = 300;
+                if (response.flight.ToAirportIATA == 'DYU')
+                    response.flight.GWTO = 300;
+                if (response.flight.FromAirportIATA == 'FEG')
+                    response.flight.GWLand = 300;
+                if (response.flight.ToAirportIATA == 'FEG')
+                    response.flight.GWTO = 300;
 
-                //if (response.flight.FromAirportIATA == 'FRU')
-                //    response.flight.GWLand = 360;
-                //if (response.flight.ToAirportIATA == 'FRU')
-                //    response.flight.GWTO = 360;
+                if (response.flight.FromAirportIATA == 'FRU')
+                    response.flight.GWLand = 360;
+                if (response.flight.ToAirportIATA == 'FRU')
+                    response.flight.GWTO = 360;
 
-                //if (['TBS', 'BUS'].indexOf(response.flight.FromAirportIATA) != -1)
-                //    response.flight.GWLand = 240;
-                //if (['TBS', 'BUS'].indexOf(response.flight.ToAirportIATA) != -1)
-                //    response.flight.GWTO = 240;
+                if (['TBS', 'BUS'].indexOf(response.flight.FromAirportIATA) != -1)
+                    response.flight.GWLand = 240;
+                if (['TBS', 'BUS'].indexOf(response.flight.ToAirportIATA) != -1)
+                    response.flight.GWTO = 240;
                 ////////////////////////////////////////////////////////
 
 
@@ -6852,7 +6854,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                 _flight.CheckTime = 0;
             else
                 _flight.CheckTime = $scope.interval_checktime ? 1 : 0;
-            flightService.saveFlightGroupUTC(_flight).then(function (response) {
+            flightService.saveFlightGroup(_flight).then(function (response) {
 
 
 
@@ -6888,31 +6890,36 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
                         if (resFlt) {
                             //////////////////////////////////////////////////////////
-                            //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(resFlt.FromAirportIATA) != -1)
-                            //    resFlt.GWLand = 180;
-                            //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(resFlt.ToAirportIATA) != -1)
-                            //    resFlt.GWTO = 180;
+                            if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(resFlt.FromAirportIATA) != -1)
+                                resFlt.GWLand = 180;
+                            if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(resFlt.ToAirportIATA) != -1)
+                                resFlt.GWTO = 180;
 
-                            //if (resFlt.FromAirportIATA == 'DAM')
-                            //    resFlt.GWLand = 120;
-                            //if (resFlt.ToAirportIATA == 'DAM')
-                            //    resFlt.GWTO = 120;
+                            if (resFlt.FromAirportIATA == 'DAM')
+                                resFlt.GWLand = 120;
+                            if (resFlt.ToAirportIATA == 'DAM')
+                                resFlt.GWTO = 120;
 
 
-                            //if (resFlt.FromAirportIATA == 'DYU')
-                            //    resFlt.GWLand = 300;
-                            //if (resFlt.ToAirportIATA == 'DYU')
-                            //    resFlt.GWTO = 300;
+                            if (resFlt.FromAirportIATA == 'DYU')
+                                resFlt.GWLand = 300;
+                            if (resFlt.ToAirportIATA == 'DYU')
+                                resFlt.GWTO = 300;
 
-                            //if (resFlt.FromAirportIATA == 'FRU')
-                            //    resFlt.GWLand = 360;
-                            //if (resFlt.ToAirportIATA == 'FRU')
-                            //    resFlt.GWTO = 360;
+                            if (resFlt.FromAirportIATA == 'FEG')
+                                resFlt.GWLand = 300;
+                            if (resFlt.ToAirportIATA == 'FEG')
+                                resFlt.GWTO = 300;
 
-                            //if (['TBS', 'BUS'].indexOf(resFlt.FromAirportIATA) != -1)
-                            //    resFlt.GWLand = 240;
-                            //if (['TBS', 'BUS'].indexOf(resFlt.ToAirportIATA) != -1)
-                            //    resFlt.GWTO = 240;
+                            if (resFlt.FromAirportIATA == 'FRU')
+                                resFlt.GWLand = 360;
+                            if (resFlt.ToAirportIATA == 'FRU')
+                                resFlt.GWTO = 360;
+
+                            if (['TBS', 'BUS'].indexOf(resFlt.FromAirportIATA) != -1)
+                                resFlt.GWLand = 240;
+                            if (['TBS', 'BUS'].indexOf(resFlt.ToAirportIATA) != -1)
+                                resFlt.GWTO = 240;
                             ////////////////////////////////////////////////////////
                             for (var key of Object.keys(resFlt)) {
 
@@ -6929,31 +6936,36 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                 else {
                     $.each(response.flights, function (_z, _f) {
                         //////////////////////////////////////////////////////////
-                        //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(_f.FromAirportIATA) != -1)
-                        //    _f.GWLand = 180;
-                        //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(_f.ToAirportIATA) != -1)
-                        //    _f.GWTO = 180;
+                        if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(_f.FromAirportIATA) != -1)
+                            _f.GWLand = 180;
+                        if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(_f.ToAirportIATA) != -1)
+                            _f.GWTO = 180;
 
-                        //if (_f.FromAirportIATA == 'DAM')
-                        //    _f.GWLand = 120;
-                        //if (_f.ToAirportIATA == 'DAM')
-                        //    _f.GWTO = 120;
+                        if (_f.FromAirportIATA == 'DAM')
+                            _f.GWLand = 120;
+                        if (_f.ToAirportIATA == 'DAM')
+                            _f.GWTO = 120;
 
 
-                        //if (_f.FromAirportIATA == 'DYU')
-                        //    _f.GWLand = 300;
-                        //if (_f.ToAirportIATA == 'DYU')
-                        //    _f.GWTO = 300;
+                        if (_f.FromAirportIATA == 'DYU')
+                            _f.GWLand = 300;
+                        if (_f.ToAirportIATA == 'DYU')
+                            _f.GWTO = 300;
 
-                        //if (_f.FromAirportIATA == 'FRU')
-                        //    _f.GWLand = 360;
-                        //if (_f.ToAirportIATA == 'FRU')
-                        //    _f.GWTO = 360;
+                        if (_f.FromAirportIATA == 'FEG')
+                            _f.GWLand = 300;
+                        if (_f.ToAirportIATA == 'FEG')
+                            _f.GWTO = 300;
 
-                        //if (['TBS', 'BUS'].indexOf(_f.FromAirportIATA) != -1)
-                        //    _f.GWLand = 240;
-                        //if (['TBS', 'BUS'].indexOf(_f.ToAirportIATA) != -1)
-                        //    _f.GWTO = 240;
+                        if (_f.FromAirportIATA == 'FRU')
+                            _f.GWLand = 360;
+                        if (_f.ToAirportIATA == 'FRU')
+                            _f.GWTO = 360;
+
+                        if (['TBS', 'BUS'].indexOf(_f.FromAirportIATA) != -1)
+                            _f.GWLand = 240;
+                        if (['TBS', 'BUS'].indexOf(_f.ToAirportIATA) != -1)
+                            _f.GWTO = 240;
                         ////////////////////////////////////////////////////////
                         $scope.modifyFlightTimes(_f);
                         $scope.addToGantt(_f, response.ressq[0]);
@@ -7167,9 +7179,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
                             //$scope.ati_flight =Enumerable.From($scope.ganttData.flights).Where('$.ID=='+ $scope.ati_selectedFlights[0].ID).FirstOrDefault();
                             //$scope.ati_resid=$scope.ati_flight.RegisterID;
-                            
                             $.each(response.flights, function (_i, _flt) {
-                                
                                 var aflt = Enumerable.From($scope.ganttData.flights).Where('$.ID==' + _flt.ID).FirstOrDefault();
                                 var oldResId = aflt.RegisterID;
                                 for (var key of Object.keys(_flt)) {
@@ -8781,12 +8791,14 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     //5-13
     $scope.fillLog = function (entity) {
         console.log('FILL', $scope.logFlight);
+        console.log($scope.logFlight.ChocksOut);
         //alert($scope.timeBase);
         if ($scope.timeBase == 'UTC')
             // $scope.convertToLCL();
             $scope.convertToLCBFromUTC();
         if ($scope.timeBase == 'LCL')
             $scope.convertToLCBFromLCL();
+        console.log($scope.logFlight.ChocksOut);
 
         //return;
         //zooti
@@ -9493,31 +9505,36 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                             $scope.loadingVisible = true;
                             flightService.saveFlightLog(dto).then(function (response) {
                                 //////////////////////////////////////////////////////////
-                                //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(response.flight.FromAirportIATA) != -1)
-                                //    response.flight.GWLand = 180;
-                                //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(response.flight.ToAirportIATA) != -1)
-                                //    response.flight.GWTO = 180;
+                                if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(response.flight.FromAirportIATA) != -1)
+                                    response.flight.GWLand = 180;
+                                if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(response.flight.ToAirportIATA) != -1)
+                                    response.flight.GWTO = 180;
 
-                                //if (response.flight.FromAirportIATA == 'DAM')
-                                //    response.flight.GWLand = 120;
-                                //if (response.flight.ToAirportIATA == 'DAM')
-                                //    response.flight.GWTO = 120;
+                                if (response.flight.FromAirportIATA == 'DAM')
+                                    response.flight.GWLand = 120;
+                                if (response.flight.ToAirportIATA == 'DAM')
+                                    response.flight.GWTO = 120;
 
 
-                                //if (response.flight.FromAirportIATA == 'DYU')
-                                //    response.flight.GWLand = 300;
-                                //if (response.flight.ToAirportIATA == 'DYU')
-                                //    response.flight.GWTO = 300;
+                                if (response.flight.FromAirportIATA == 'DYU')
+                                    response.flight.GWLand = 300;
+                                if (response.flight.ToAirportIATA == 'DYU')
+                                    response.flight.GWTO = 300;
 
-                                //if (response.flight.FromAirportIATA == 'FRU')
-                                //    response.flight.GWLand = 360;
-                                //if (response.flight.ToAirportIATA == 'FRU')
-                                //    response.flight.GWTO = 360;
+                                if (response.flight.FromAirportIATA == 'FEG')
+                                    response.flight.GWLand = 300;
+                                if (response.flight.ToAirportIATA == 'FEG')
+                                    response.flight.GWTO = 300;
 
-                                //if (['TBS', 'BUS'].indexOf(response.flight.FromAirportIATA) != -1)
-                                //    response.flight.GWLand = 240;
-                                //if (['TBS', 'BUS'].indexOf(response.flight.ToAirportIATA) != -1)
-                                //    response.flight.GWTO = 240;
+                                if (response.flight.FromAirportIATA == 'FRU')
+                                    response.flight.GWLand = 360;
+                                if (response.flight.ToAirportIATA == 'FRU')
+                                    response.flight.GWTO = 360;
+
+                                if (['TBS', 'BUS'].indexOf(response.flight.FromAirportIATA) != -1)
+                                    response.flight.GWLand = 240;
+                                if (['TBS', 'BUS'].indexOf(response.flight.ToAirportIATA) != -1)
+                                    response.flight.GWTO = 240;
                                 ////////////////////////////////////////////////////////
                                 for (var key of Object.keys(response.flight)) {
 
@@ -10146,37 +10163,42 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                             console.log('SAVE LOG', dto);
 
                             $scope.loadingVisible = true;
-                            logService.saveFlightLog(dto).then(function (response) {
+                            flightService.saveFlightLog(dto).then(function (response) {
                                 //doolkala
                                 //console.log('update log result');
 
                                 //12-05
                                 //////////////////////////////////////////////////////////
-                                //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(response.flight.FromAirportIATA) != -1)
-                                //    response.flight.GWLand = 180;
-                                //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(response.flight.ToAirportIATA) != -1)
-                                //    response.flight.GWTO = 180;
+                                if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(response.flight.FromAirportIATA) != -1)
+                                    response.flight.GWLand = 180;
+                                if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(response.flight.ToAirportIATA) != -1)
+                                    response.flight.GWTO = 180;
 
-                                //if (response.flight.FromAirportIATA == 'DAM')
-                                //    response.flight.GWLand = 120;
-                                //if (response.flight.ToAirportIATA == 'DAM')
-                                //    response.flight.GWTO = 120;
+                                if (response.flight.FromAirportIATA == 'DAM')
+                                    response.flight.GWLand = 120;
+                                if (response.flight.ToAirportIATA == 'DAM')
+                                    response.flight.GWTO = 120;
 
 
-                                //if (response.flight.FromAirportIATA == 'DYU')
-                                //    response.flight.GWLand = 300;
-                                //if (response.flight.ToAirportIATA == 'DYU')
-                                //    response.flight.GWTO = 300;
+                                if (response.flight.FromAirportIATA == 'DYU')
+                                    response.flight.GWLand = 300;
+                                if (response.flight.ToAirportIATA == 'DYU')
+                                    response.flight.GWTO = 300;
 
-                                //if (response.flight.FromAirportIATA == 'FRU')
-                                //    response.flight.GWLand = 360;
-                                //if (response.flight.ToAirportIATA == 'FRU')
-                                //    response.flight.GWTO = 360;
+                                if (response.flight.FromAirportIATA == 'FEG')
+                                    response.flight.GWLand = 300;
+                                if (response.flight.ToAirportIATA == 'FEG')
+                                    response.flight.GWTO = 300;
 
-                                //if (['TBS', 'BUS'].indexOf(response.flight.FromAirportIATA) != -1)
-                                //    response.flight.GWLand = 240;
-                                //if (['TBS', 'BUS'].indexOf(response.flight.ToAirportIATA) != -1)
-                                //    response.flight.GWTO = 240;
+                                if (response.flight.FromAirportIATA == 'FRU')
+                                    response.flight.GWLand = 360;
+                                if (response.flight.ToAirportIATA == 'FRU')
+                                    response.flight.GWTO = 360;
+
+                                if (['TBS', 'BUS'].indexOf(response.flight.FromAirportIATA) != -1)
+                                    response.flight.GWLand = 240;
+                                if (['TBS', 'BUS'].indexOf(response.flight.ToAirportIATA) != -1)
+                                    response.flight.GWTO = 240;
                                 ////////////////////////////////////////////////////////
 
 
@@ -10347,7 +10369,6 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                 if ($scope.doUTC) { $scope.timeBase = 'UTC'; }
                 else { $scope.timeBase = 'LCL'; }
 
-                $scope.timeBase = 'UTC';
                 //sooki
 
                 $scope.calculateTotalDelay();
@@ -10689,7 +10710,8 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         { dataField: 'IsPositioning', caption: 'DH', allowResizing: true, alignment: 'center', dataType: 'boolean', allowEditing: false, width: 55 },
         { dataField: 'Position', caption: 'Pos.', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 65, fixed: true, fixedPosition: 'left' },
 
-        { dataField: 'Name', caption: 'Name', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, width: 200 },
+        { dataField: 'Name', caption: 'Name', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, width: 180 },
+        { dataField: 'Mobile', caption: 'Mobile', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 120, visible: $scope.IsCrewMobileVisible },
         { dataField: 'Sex', caption: 'Pass.', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 120, visible: $scope.IsCrewMobileVisible },
         { dataField: 'Mobile', caption: 'Mobile', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 120, visible: $scope.IsCrewMobileVisible },
         {
@@ -14914,13 +14936,15 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         var days_count = $scope.days_count + $scope.nextDay;
         days_count = days_count + $scope.preDay;
         //  $('.cell-hour').width(hourWidth);
-        $('.cell-day').width(($scope.hourWidth + 1) * 24 - 1);
-        $('.timeline').width(($scope.hourWidth + 1) * days_count * 24 + 2);
-        $('.flights').width(($scope.hourWidth + 1) * days_count * 24 + 2);
+        $('.cell-day').width((hourWidth + 1) * 24 - 1);
+        $('.timeline').width((hourWidth + 1) * days_count * 24 + 2);
+        $('.flights').width((hourWidth + 1) * days_count * 24 + 2);
 
 
 
         $('.row-top-mirror').height($('.row-top').height() - 1);
+        $('.row-top-mirror').height(50);
+        console.log('row-top', $('.row-top').height());
         var h = ($('.reg-box').height());
         //$('.mid-line').height($('.flights').prop('scrollHeight') );
         //$('.hour-line').height($('.flights').prop('scrollHeight'));
@@ -14967,7 +14991,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         var time = moment(/*new Date()*/nowDate).format('HH:mm');
         var _left = $scope.getDuration(new Date(/*$scope.datefrom*/dfirst), /*new Date()*/nowDate);
         //////////////////////////////////////
-        var nowleft = (_left * ($scope.hourWidth + 1)) - 1;
+        var nowleft = (_left * (hourWidth + 1)) - 1;
         $('.now-line').css('left', nowleft + 'px');
         $('#nowTime').css('left', (nowleft + 5) + 'px');
         $('#nowTime').html(time);
@@ -15049,7 +15073,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     $scope.getDep = function (flt) {
         //2022-02-28
         // console.log(flt);
-		/*var dt = flt.ChocksOut;
+        /*var dt = flt.ChocksOut;
         if (flt.ChocksOut)
             dt = flt.ChocksOut;
         else
@@ -15075,8 +15099,8 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         if ($scope.timeType == 2) {
 
             var offset = getOffset(new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 1, 0, 0, 0));
-            // if (flt.FlightNumber == '7900')
-            //   console.log(offset + '   ' + flt.GWLand);
+            //if (flt.FlightNumber == '6809')
+            //    console.log(offset + '   ' + flt.GWLand+ '  '+ dt);
             offset += flt.GWLand;
             dt = (new Date(dt)).addMinutes(offset)
 
@@ -15133,15 +15157,17 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
             var _dtSTD = new Date(dt2.year(), dt2.month(), dt2.date(), dt2.hour(), dt2.minute(), 0);
             var diff = Math.abs(_dtCNL.getTime() - _dtSTD.getTime()) / 3600000;
             if (diff > 24 * 7)
-                return 'xer_flight ' + flt.FlightStatus.toLowerCase();
+                return flt.FlightStatus.toLowerCase();
             else
-                return 'xer_flight ' + 'canceled-t2';
-             
+                return 'canceled-t2';
+            //console.log(_dtCNL);
+            //console.log(_dtSTD);
+            //console.log(diff);
 
 
         }
         else
-            return 'xer_flight ' + flt.FlightStatus.toLowerCase();
+            return flt.FlightStatus.toLowerCase();
     }
     $scope.getDuration = function (d1, d2) {
         //
@@ -15151,19 +15177,19 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
     $scope._getFlightWidth = function (flt) {
         var duration = $scope.getDuration(new Date(flt.ChocksIn ? flt.ChocksIn : flt.STA), new Date(flt.ChocksOut ? flt.ChocksOut : flt.STD));
-        var w = duration * $scope.hourWidth;
+        var w = duration * hourWidth;
         return w + "px";
     }
     $scope.getFlightWidth = function (flt) {
         var duration = $scope.getDuration(new Date(flt.ChocksIn ? flt.ChocksIn : flt.STA), new Date(flt.STD));
-        var w = duration * $scope.hourWidth;
+        var w = duration * hourWidth;
         return w + "px";
     }
     $scope.getDelayStyle = function (flt) {
         if (!flt.ChocksOut || new Date(flt.ChocksOut) <= new Date(flt.STD))
             return { width: 0 };
         var duration = $scope.getDuration(new Date(flt.ChocksOut), new Date(flt.STD));
-        var w = duration * $scope.hourWidth;
+        var w = duration * hourWidth;
         return { width: w + "px" };
     };
     $scope.getDelayText = function (flt) {
@@ -15203,7 +15229,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         var style = {};
         style.width = $scope.getFlightWidth(f);
         var left = $scope.getDuration(new Date($scope.datefrom), new Date(f.STD));
-        style.left = (left * ($scope.hourWidth + 1)) + "px";
+        style.left = (left * (hourWidth + 1)) + "px";
         var top = f.top;
 
         //console.log(index);
@@ -15257,7 +15283,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
         if (new Date(std) < new Date($scope.datefrom))
             left = -1 * left;
-        style.left = (left * ($scope.hourWidth + 1)) + "px";
+        style.left = (left * (hourWidth + 1)) + "px";
         var top = f.top + 10;
         if (f.FlightStatusID == 4 || f.Register.includes('RBC'))
             top += 30;
@@ -15699,7 +15725,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     };
     $scope.getFDPWidth = function (fdp) {
         var duration = $scope.getDuration(new Date(fdp.End), new Date(fdp.Start));
-        var w = duration * ($scope.hourWidth + 1) + 6;
+        var w = duration * (hourWidth + 1) + 6;
         return w + "px";
     }
     $scope.getFDPStyle = function (f, index, res) {
@@ -15733,7 +15759,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
         if (new Date(std) < new Date($scope.datefrom))
             left = -1 * left;
-        style.left = ((left * ($scope.hourWidth + 1)) - 3) + "px";
+        style.left = ((left * (hourWidth + 1)) - 3) + "px";
         var top = f.top;
 
         //console.log(index); 
@@ -15885,12 +15911,13 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
         visible: false,
 
-        closeOnOutsideClick: false,
+        closeOnOutsideClick: true,
         onShowing: function (e) {
 
 
         },
         onShown: function (e) {
+
             //$scope.flight
             $scope.ctr_stn_ds = [];
             $scope.ctr_stn_ds.push({ Id: $scope.flight.FromAirport, Title: $scope.flight.FromAirportIATA });
@@ -16001,10 +16028,6 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     //fjk
     $scope.getResStyle = function (res) {
 
-        if (res.resourceName.includes('CNL'))
-            return {
-                minHeight: '150px'
-            };
         var ext = 15;
         if (res.resourceName.includes('CNL') || res.resourceName.includes('RBC'))
             ext = 40;
@@ -16162,12 +16185,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
     $scope.nextDay = 0;
     $scope.preDay = 0;
-
-    //12-07
     $scope.timeType = 2;
-
-
-
     $scope.timeTypeChanged = function () {
         if ($scope.timeType == 1) {
 
@@ -16184,10 +16202,9 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     $scope.sb_timetype = {
         showClearButton: false,
         searchEnabled: false,
-        dataSource: [/*{ id: 0, title: 'LCB' },*/ { id: 1, title: 'UTC' }, { id: 2, title: 'LCL' },],
+        dataSource: [{ id: 0, title: 'LCB' }, { id: 1, title: 'UTC' }, { id: 2, title: 'LCL' },],
         displayExpr: 'title',
         valueExpr: 'id',
-        disabled: $scope.isTimeTypeEnabled,
         onValueChanged: function (e) {
 
             $scope.timeTypeChanged();
@@ -16202,13 +16219,14 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     console.log('mobile ', detector.mobile());
     console.log('tablet ', detector.tablet());
     console.log('os ', detector.os());
-    $scope.createGantt_LARGE = function () {
+    $scope.createGantt = function () {
         if ($(window).width() < 1200) {
             // $('.large-gantt').remove();
-            $scope.hourWidth = 69;
+            hourWidth = 69;
         }
-        else
-            $('.small-gantt').remove();
+        else {
+            //	$('.small-gantt').remove();
+        }
         $scope.nextDay = 0;
         var lastDay = (new Date($scope.dateEnd)).getDate();
         // alert(lastDay);
@@ -16274,11 +16292,11 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                 var hourElem = "<div class='cell-hour' style='display:inline-block;float:left;'>" + _gpad2(j) + "<span class='second-time' style='" + secondDateStyle + "'>" + moment(secondDate).format('HHmm') + "</span><span class='second-time-right' style='" + secondDate2Style + "'>" + moment(secondDate2).format('HHmm') + "</span></div>";
                 $timeBar.append(hourElem);
                 if (c < 24 * days_count) {
-                    var hleft = c * ($scope.hourWidth + 1) - 0.8;
+                    var hleft = c * (hourWidth + 1) - 0.8;
                     var hline = "<div class='hour-line' style='top:0px;left:" + hleft + "px'></div>";
                     $flightArea.append(hline);
 
-                    var hleft2 = (cf) * ($scope.hourWidth + 1) - 0.8;
+                    var hleft2 = (cf) * (hourWidth + 1) - 0.8;
                     var hline2 = "<div class='halfhour-line' style='top:0px;left:" + hleft2 + "px'></div>";
                     $flightArea.append(hline2);
                 }
@@ -16297,7 +16315,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
             $dayBar.append(dayElem);
 
             if (i < days_count) {
-                var midleft = i * 24 * ($scope.hourWidth + 1) - 1;
+                var midleft = i * 24 * (hourWidth + 1) - 1;
                 var midline = "<div class='mid-line' style='top:0px;left:" + midleft + "px'></div>";
                 $flightArea.append(midline);
             }
@@ -16328,7 +16346,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                 dfirst = (new Date($scope.datefrom)).addMinutes(60);
             ////////////////////
             var _left = $scope.getDuration(new Date(/*$scope.datefrom*/dfirst), /*new Date()*/nowDate);
-            var nowleft = (_left * ($scope.hourWidth + 1));
+            var nowleft = (_left * (hourWidth + 1));
 
 
             var nowline = "<div class='now-line' style='top:0px;left:" + nowleft + "px'></div>";
@@ -16338,161 +16356,13 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         }
         $dayBar.append("<div style='clear:both'></div>");
         $timeBar.append("<div style='clear:both'></div>");
-        $('.timeline').width(($scope.hourWidth + 1) * days_count * 24);
-        $('.flights').width(($scope.hourWidth + 1) * days_count * 24);
+        $('.timeline').width((hourWidth + 1) * days_count * 24);
+        $('.flights').width((hourWidth + 1) * days_count * 24);
 
 
     };
 
-    $scope.createGantt = function () {
 
-        if ($(window).width() < 1400) {
-            $('.large-gantt').remove();
-            $scope.hourWidth = 69;
-        }
-        else
-            $('.small-gantt').remove();
-        $scope.nextDay = 0;
-        var lastDay = (new Date($scope.dateEnd)).getDate();
-        // alert(lastDay);
-        var nxtdy = Enumerable.From($scope.ganttData.flights).Where(function (x) {
-
-            return x.ChocksOut.getDate() > lastDay || x.Takeoff.getDate() > lastDay || x.Landing.getDate() > lastDay || x.ChocksIn.getDate() > lastDay || x.STA.getDate() > lastDay;
-        }).ToArray();
-        if (nxtdy && nxtdy.length > 0)
-            $scope.nextDay = 1;
-
-
-
-        var $timeBar = $('.header-time');
-        var $dayBar = $('.header-date');
-        var $flightArea = $('.flights');
-        $timeBar.empty();
-        $dayBar.empty();
-        //$flightArea.empty();
-        $('.reg-row').remove();
-        $('.hour-line').remove();
-        $('.halfhour-line').remove();
-        $('.mid-line').remove();
-        $('.now-line').remove();
-        $('#nowTime').remove();
-        $('.flights').height(0);
-
-
-        $('.flights').off('scroll');
-        var c = 1;
-        var cf = 0.5;
-        $scope.preDay = 0;
-        var days_count = $scope.days_count + $scope.nextDay;
-        var tempDate = (new Date(dfrom)).addDays(-1 * $scope.preDay);
-        days_count = days_count + $scope.preDay;
-
-
-        //magu utc
-        var floatTime = 'left';
-
-        //var secondTimeClass = 'second-time';
-        //if ($scope.timeType == 1) {
-        //    floatTime = 'left';
-        //    secondTimeClass = 'second-time-right';
-        //}
-        /////////////////////////////
-        for (var i = 1; i <= days_count; i++) {
-            for (var j = 0; j < 24; j++) {
-                var offset = getOffset(new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), j, 0, 0, 0));
-                ////magu utc
-                //if ($scope.timeType == 1)
-                //    offset = -1 * offset;
-                /////////////
-                var secondDate = (new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), j, 0, 0, 0)).addMinutes(offset);
-                var secondDate2 = (new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), j, 0, 0, 0)).addMinutes(-offset);
-                var secondDateStyle = 'display:initial';
-                var secondDate2Style = 'display:none';
-                if ($scope.timeType == 1) {
-                    secondDateStyle = 'display:none';
-                    secondDate2Style = 'display:initial';
-                }
-
-                //11-01
-
-                var hourElem = "<div class='cell-hour' style='display:inline-block;float:left;' ng-style='getCellHourStyle()'>" + _gpad2(j) + "<span class='second-time' style='" + secondDateStyle + "'>" + moment(secondDate).format('HHmm') + "</span><span class='second-time-right' style='" + secondDate2Style + "'>" + moment(secondDate2).format('HHmm') + "</span></div>";
-                $timeBar.append(hourElem);
-                if (c < 24 * days_count) {
-                    var hleft = c * ($scope.hourWidth + 1) - 0.8;
-                    var hline = "<div class='hour-line' style='top:0px;left:" + hleft + "px'></div>";
-                    $flightArea.append(hline);
-
-                    var hleft2 = (cf) * ($scope.hourWidth + 1) - 0.8;
-                    var hline2 = "<div class='halfhour-line' style='top:0px;left:" + hleft2 + "px'></div>";
-                    $flightArea.append(hline2);
-                }
-                cf = cf + 1;
-                c++;
-            }
-
-            var tbl = "<table style='padding:0;width:95%'><tr>"
-                + "<td style='font-size:14px;' class='qdate'>" + moment(tempDate).format('dd DD-MMM-YYYY') + " (" + new persianDate(tempDate).format("DD-MM-YYYY") + ")" + "</td>"
-                + ($(window).width() < 1400 ? "<td style='font-size:14px;' class='qdate'>" + moment(tempDate).format('dd DD-MMM-YYYY') + " (" + new persianDate(tempDate).format("DD-MM-YYYY") + ")" + "</td>" : "")
-                + "<td style='font-size:14px;' class='qdate'>" + moment(tempDate).format('dd DD-MMM-YYYY') + " (" + new persianDate(tempDate).format("DD-MM-YYYY") + ")" + "</td>"
-                + "<td style='font-size:14px;' class='qdate'>" + moment(tempDate).format('dd DD-MMM-YYYY') + " (" + new persianDate(tempDate).format("DD-MM-YYYY") + ")" + "</td>"
-
-                + "</tr></table>"
-            //11-01
-            var dayElem = "<div class='cell-day' ng-style='getCellDayStyle()' style='display:inline-block;float:left;'>" + tbl + "</div>";
-            $dayBar.append(dayElem);
-
-            if (i < days_count) {
-                var midleft = i * 24 * ($scope.hourWidth + 1) - 1;
-                var midline = "<div class='mid-line' style='top:0px;left:" + midleft + "px'></div>";
-                $flightArea.append(midline);
-            }
-
-
-            tempDate = tempDate.addDays(1);
-        }
-        //11-01
-
-        $compile($timeBar)($scope);
-        $compile($timeBar)($dayBar);
-
-        if ($scope.IsNowLine) {
-            //magu utc
-            var nowDate = new Date();
-            if ($scope.timeType == 1) {
-                var offset = getOffset(new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 1, 0, 0, 0));
-                nowDate = (new Date()).addMinutes(offset)
-            }
-            /////////////////
-            //3-17
-            var std = new Date(nowDate);
-            var datefromOffset = (new Date($scope.datefrom)).getTimezoneOffset();
-            var stdOffset = (new Date(std)).getTimezoneOffset();
-            var dfirst = new Date($scope.datefrom);
-            var mm = (new Date($scope.datefrom)).getMonth();
-            var dd = (new Date($scope.datefrom)).getDate();
-
-
-            if (stdOffset < datefromOffset || (mm == 2 && dd == 22))
-                dfirst = (new Date($scope.datefrom)).addMinutes(-60);
-            if (stdOffset > datefromOffset)
-                dfirst = (new Date($scope.datefrom)).addMinutes(60);
-            ////////////////////
-            var _left = $scope.getDuration(new Date(/*$scope.datefrom*/dfirst), /*new Date()*/nowDate);
-            var nowleft = (_left * ($scope.hourWidth + 1));
-
-
-            var nowline = "<div class='now-line' style='top:0px;left:" + nowleft + "px'></div>";
-            var nowTime = "<span style='display:inline-block;font-size:11px;position:absolute;top:2px;left:" + (nowleft + 5) + "px' id='nowTime'>" + moment(/*new Date()*/nowDate).format('HH:mm') + "</span>";
-            $flightArea.append(nowline);
-            $flightArea.append(nowTime);
-        }
-        $dayBar.append("<div style='clear:both'></div>");
-        $timeBar.append("<div style='clear:both'></div>");
-        $('.timeline').width(($scope.hourWidth + 1) * days_count * 24);
-        $('.flights').width(($scope.hourWidth + 1) * days_count * 24);
-
-
-    };
     $scope.ganttData = null;
 
     $scope.checkConflict = function (flights) {
@@ -16711,31 +16581,36 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
                     $.each(flights, function (_j, _q) {
 
-                        //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(_q.FromAirportIATA) != -1)
-                        //    _q.GWLand = 180;
-                        //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(_q.ToAirportIATA) != -1)
-                        //    _q.GWTO = 180;
+                        if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(_q.FromAirportIATA) != -1)
+                            _q.GWLand = 180;
+                        if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(_q.ToAirportIATA) != -1)
+                            _q.GWTO = 180;
 
-                        //if (_q.FromAirportIATA == 'DAM')
-                        //    _q.GWLand = 120;
-                        //if (_q.ToAirportIATA == 'DAM')
-                        //    _q.GWTO = 120;
+                        if (_q.FromAirportIATA == 'DAM')
+                            _q.GWLand = 120;
+                        if (_q.ToAirportIATA == 'DAM')
+                            _q.GWTO = 120;
 
 
-                        //if (_q.FromAirportIATA == 'DYU')
-                        //    _q.GWLand = 300;
-                        //if (_q.ToAirportIATA == 'DYU')
-                        //    _q.GWTO = 300;
+                        if (_q.FromAirportIATA == 'DYU')
+                            _q.GWLand = 300;
+                        if (_q.ToAirportIATA == 'DYU')
+                            _q.GWTO = 300;
 
-                        //if (_q.FromAirportIATA == 'FRU')
-                        //    _q.GWLand = 360;
-                        //if (_q.ToAirportIATA == 'FRU')
-                        //    _q.GWTO = 360;
+                        if (_q.FromAirportIATA == 'FEG')
+                            _q.GWLand = 300;
+                        if (_q.ToAirportIATA == 'FEG')
+                            _q.GWTO = 300;
 
-                        //if (['TBS', 'BUS'].indexOf(_q.FromAirportIATA) != -1)
-                        //    _q.GWLand = 240;
-                        //if (['TBS', 'BUS'].indexOf(_q.ToAirportIATA) != -1)
-                        //    _q.GWTO = 240;
+                        if (_q.FromAirportIATA == 'FRU')
+                            _q.GWLand = 360;
+                        if (_q.ToAirportIATA == 'FRU')
+                            _q.GWTO = 360;
+
+                        if (['TBS', 'BUS'].indexOf(_q.FromAirportIATA) != -1)
+                            _q.GWLand = 240;
+                        if (['TBS', 'BUS'].indexOf(_q.ToAirportIATA) != -1)
+                            _q.GWTO = 240;
 
                         $scope.modifyFlightTimes(_q);
 
@@ -16897,7 +16772,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
     $scope.scrollTo = function (dt) {
         var _left = $scope.getDuration(new Date($scope.datefrom), dt);
-        var nowleft = (_left * ($scope.hourWidth + 1)) - 1;
+        var nowleft = (_left * (hourWidth + 1)) - 1;
         $('.col-flights').scrollLeft(nowleft - 50);
         //$('.col-flights').animate({
         //    scrollLeft: nowleft-50
@@ -17065,7 +16940,6 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         $scope.stop();
         $scope.StopUTimer();
         $scope.bindFlights(function () {
-             $scope.timeType = 1;
             $scope.createGantt();
             $scope.initSelection();
             if ($(window).width() >= 1200)
@@ -17906,6 +17780,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         onShowing: function (e) {
 
 
+
         },
         onShown: function (e) {
             //$scope.flight
@@ -18083,9 +17958,9 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                         dfrom = $scope._datefrom;
                         $scope.datefrom = General.getDayFirstHour(new Date(dfrom));
                         $scope.dateEnd = General.getDayLastHour(new Date(new Date(dfrom).addDays($scope.days_count - 1)));
-                        var _tturl = 'https://api2.apvaresh.ir/' + 'api/xls/' + '?dt1=' + moment(new Date($scope.datefrom)).format('YYYY-MM-DD') + '&dt2=' + moment(new Date($scope.dateEnd)).format('YYYY-MM-DD') + "&chr=" + $scope.tt_chr + "&crew=" + $scope.tt_crew + "&cnl=" + $scope.tt_cnl + "&sort=" + $scope.tt_sort + "&time=" + $scope.tt_time + "&sep=1";
+                        var _tturl = 'https://api2.apvaresh.com/' + 'api/xls/' + '?dt1=' + moment(new Date($scope.datefrom)).format('YYYY-MM-DD') + '&dt2=' + moment(new Date($scope.dateEnd)).format('YYYY-MM-DD') + "&chr=" + $scope.tt_chr + "&crew=" + $scope.tt_crew + "&cnl=" + $scope.tt_cnl + "&sort=" + $scope.tt_sort + "&time=" + $scope.tt_time + "&sep=1";
                         console.log(_tturl);
-                        $window.open('https://api2.apvaresh.ir/' + 'api/xls/' + '?dt1=' + moment(new Date($scope.datefrom)).format('YYYY-MM-DD') + '&dt2=' + moment(new Date($scope.dateEnd)).format('YYYY-MM-DD') + "&chr=" + $scope.tt_chr + "&crew=" + $scope.tt_crew + "&cnl=" + $scope.tt_cnl + "&sort=" + $scope.tt_sort + "&time=" + $scope.tt_time + "&sep=1", '_blank');
+                        $window.open('https://api2.apvaresh.com/' + 'api/xls/' + '?dt1=' + moment(new Date($scope.datefrom)).format('YYYY-MM-DD') + '&dt2=' + moment(new Date($scope.dateEnd)).format('YYYY-MM-DD') + "&chr=" + $scope.tt_chr + "&crew=" + $scope.tt_crew + "&cnl=" + $scope.tt_cnl + "&sort=" + $scope.tt_sort + "&time=" + $scope.tt_time + "&sep=1", '_blank');
                     }
                 }, toolbar: 'bottom'
             },
@@ -18425,7 +18300,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     };
     /////////////////////////////////
     //11-16
-	/*$scope.uploaderValueATC = [];
+    /*$scope.uploaderValueATC = [];
     $scope.uploadedATC = null;
     $scope.uploader_atc = {
         //uploadedMessage: 'بارگزاری شد',
@@ -18700,31 +18575,36 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                             $scope.loadingVisible = true;
                             flightService.saveFlightLog(dto).then(function (response) {
                                 //////////////////////////////////////////////////////////
-                                //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(response.flight.FromAirportIATA) != -1)
-                                //    response.flight.GWLand = 180;
-                                //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(response.flight.ToAirportIATA) != -1)
-                                //    response.flight.GWTO = 180;
+                                if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(response.flight.FromAirportIATA) != -1)
+                                    response.flight.GWLand = 180;
+                                if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(response.flight.ToAirportIATA) != -1)
+                                    response.flight.GWTO = 180;
 
-                                //if (response.flight.FromAirportIATA == 'DAM')
-                                //    response.flight.GWLand = 120;
-                                //if (response.flight.ToAirportIATA == 'DAM')
-                                //    response.flight.GWTO = 120;
+                                if (response.flight.FromAirportIATA == 'DAM')
+                                    response.flight.GWLand = 120;
+                                if (response.flight.ToAirportIATA == 'DAM')
+                                    response.flight.GWTO = 120;
 
 
-                                //if (response.flight.FromAirportIATA == 'DYU')
-                                //    response.flight.GWLand = 300;
-                                //if (response.flight.ToAirportIATA == 'DYU')
-                                //    response.flight.GWTO = 300;
+                                if (response.flight.FromAirportIATA == 'DYU')
+                                    response.flight.GWLand = 300;
+                                if (response.flight.ToAirportIATA == 'DYU')
+                                    response.flight.GWTO = 300;
 
-                                //if (response.flight.FromAirportIATA == 'FRU')
-                                //    response.flight.GWLand = 360;
-                                //if (response.flight.ToAirportIATA == 'FRU')
-                                //    response.flight.GWTO = 360;
+                                if (response.flight.FromAirportIATA == 'FEG')
+                                    response.flight.GWLand = 300;
+                                if (response.flight.ToAirportIATA == 'FEG')
+                                    response.flight.GWTO = 300;
 
-                                //if (['TBS', 'BUS'].indexOf(response.flight.FromAirportIATA) != -1)
-                                //    response.flight.GWLand = 240;
-                                //if (['TBS', 'BUS'].indexOf(response.flight.ToAirportIATA) != -1)
-                                //    response.flight.GWTO = 240;
+                                if (response.flight.FromAirportIATA == 'FRU')
+                                    response.flight.GWLand = 360;
+                                if (response.flight.ToAirportIATA == 'FRU')
+                                    response.flight.GWTO = 360;
+
+                                if (['TBS', 'BUS'].indexOf(response.flight.FromAirportIATA) != -1)
+                                    response.flight.GWLand = 240;
+                                if (['TBS', 'BUS'].indexOf(response.flight.ToAirportIATA) != -1)
+                                    response.flight.GWTO = 240;
                                 ////////////////////////////////////////////////////////
                                 for (var key of Object.keys(response.flight)) {
 
@@ -19143,31 +19023,36 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     $scope.tblvisible = false;
     $scope.modifyIntAirports = function (resFlt) {
 
-        //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(resFlt.FromAirportIATA) != -1)
-        //    resFlt.GWLand = 180;
-        //if (['NJF', 'BSR', 'IST', 'KWI', 'AYT'].indexOf(resFlt.ToAirportIATA) != -1)
-        //    resFlt.GWTO = 180;
+        if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(resFlt.FromAirportIATA) != -1)
+            resFlt.GWLand = 180;
+        if (['NJF', 'BSR', 'IST', 'KWI', 'AYT', 'DOH'].indexOf(resFlt.ToAirportIATA) != -1)
+            resFlt.GWTO = 180;
 
-        //if (resFlt.FromAirportIATA == 'DAM')
-        //    resFlt.GWLand = 120;
-        //if (resFlt.ToAirportIATA == 'DAM')
-        //    resFlt.GWTO = 120;
+        if (resFlt.FromAirportIATA == 'DAM')
+            resFlt.GWLand = 120;
+        if (resFlt.ToAirportIATA == 'DAM')
+            resFlt.GWTO = 120;
 
 
-        //if (resFlt.FromAirportIATA == 'DYU')
-        //    resFlt.GWLand = 300;
-        //if (resFlt.ToAirportIATA == 'DYU')
-        //    resFlt.GWTO = 300;
+        if (resFlt.FromAirportIATA == 'DYU')
+            resFlt.GWLand = 300;
+        if (resFlt.ToAirportIATA == 'DYU')
+            resFlt.GWTO = 300;
 
-        //if (resFlt.FromAirportIATA == 'FRU')
-        //    resFlt.GWLand = 360;
-        //if (resFlt.ToAirportIATA == 'FRU')
-        //    resFlt.GWTO = 360;
+        if (resFlt.FromAirportIATA == 'FEG')
+            resFlt.GWLand = 300;
+        if (resFlt.ToAirportIATA == 'FEG')
+            resFlt.GWTO = 300;
 
-        //if (['TBS', 'BUS'].indexOf(resFlt.FromAirportIATA) != -1)
-        //    resFlt.GWLand = 240;
-        //if (['TBS', 'BUS'].indexOf(resFlt.ToAirportIATA) != -1)
-        //    resFlt.GWTO = 240;
+        if (resFlt.FromAirportIATA == 'FRU')
+            resFlt.GWLand = 360;
+        if (resFlt.ToAirportIATA == 'FRU')
+            resFlt.GWTO = 360;
+
+        if (['TBS', 'BUS'].indexOf(resFlt.FromAirportIATA) != -1)
+            resFlt.GWLand = 240;
+        if (['TBS', 'BUS'].indexOf(resFlt.ToAirportIATA) != -1)
+            resFlt.GWTO = 240;
     };
     $scope.btn_tbl_search = {
         //text: 'Search',
@@ -19198,25 +19083,25 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
 
 
                     var _xstd = new Date(_d.STDLocal);
-                    //if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT'].indexOf(_d.FromAirportIATA) != -1)
-                    //    _xstd = new Date(_xstd.addMinutes(-30));
-                    //if (['DYU'].indexOf(_d.FromAirportIATA) != -1)
-                    //    _xstd = new Date(_xstd.addMinutes(90));
-                    //if (['FRU'].indexOf(_d.FromAirportIATA) != -1)
-                    //    _xstd = new Date(_xstd.addMinutes(150));
-                    //if (['TBS', 'BUS'].indexOf(_d.FromAirportIATA) != -1)
-                    //    _xstd = new Date(_xstd.addMinutes(30));
+                    if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT', 'DOH'].indexOf(_d.FromAirportIATA) != -1)
+                        _xstd = new Date(_xstd.addMinutes(-30));
+                    if (['DYU'].indexOf(_d.FromAirportIATA) != -1)
+                        _xstd = new Date(_xstd.addMinutes(90));
+                    if (['FRU'].indexOf(_d.FromAirportIATA) != -1)
+                        _xstd = new Date(_xstd.addMinutes(150));
+                    if (['TBS', 'BUS'].indexOf(_d.FromAirportIATA) != -1)
+                        _xstd = new Date(_xstd.addMinutes(30));
 
 
                     var _xsta = new Date(_d.STALocal);
-                    //if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT'].indexOf(_d.ToAirportIATA) != -1)
-                    //    _xsta = new Date(_xsta.addMinutes(-30));
-                    //if (['DYU'].indexOf(_d.ToAirportIATA) != -1)
-                    //    _xsta = new Date(_xsta.addMinutes(90));
-                    //if (['FRU'].indexOf(_d.ToAirportIATA) != -1)
-                    //    _xsta = new Date(_xsta.addMinutes(150));
-                    //if (['TBS', 'BUS'].indexOf(_d.ToAirportIATA) != -1)
-                    //    _xsta = new Date(_xsta.addMinutes(30));
+                    if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT', 'DOH'].indexOf(_d.ToAirportIATA) != -1)
+                        _xsta = new Date(_xsta.addMinutes(-30));
+                    if (['DYU', 'FEG'].indexOf(_d.ToAirportIATA) != -1)
+                        _xsta = new Date(_xsta.addMinutes(90));
+                    if (['FRU'].indexOf(_d.ToAirportIATA) != -1)
+                        _xsta = new Date(_xsta.addMinutes(150));
+                    if (['TBS', 'BUS'].indexOf(_d.ToAirportIATA) != -1)
+                        _xsta = new Date(_xsta.addMinutes(30));
 
                     _d.STDLocal = new Date(_xstd);
                     _d.STALocal = new Date(_xsta);
@@ -19298,6 +19183,10 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         {
             "IATA": "NJF",
             "Id": 152340
+        },
+        {
+            "IATA": "FEG",
+            "Id": 152383
         },
         {
             "IATA": "OMH",
@@ -19830,25 +19719,25 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
                         $.each(recs, function (_i, _d) {
 
                             var _xstd = new Date(_d.STDLocal);
-                            //if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT'].indexOf(_d.FromAirportIATA) != -1 || [152340, 132316, 152352, 133405, 150903].indexOf(_d.FromAirport) != -1)
-                            //    _xstd = new Date(_xstd.addMinutes(30));
-                            //if (['DYU'].indexOf(_d.FromAirportIATA) != -1 || [146698].indexOf(_d.FromAirport) != -1)
-                            //    _xstd = new Date(_xstd.addMinutes(-90));
-                            //if (['FRU'].indexOf(_d.FromAirportIATA) != -1 || [152379].indexOf(_d.FromAirport) != -1)
-                            //    _xstd = new Date(_xstd.addMinutes(-150));
-                            //if (['TBS', 'BUS'].indexOf(_d.FromAirportIATA) != -1 || [152366, 152362].indexOf(_d.FromAirport) != -1)
-                            //    _xstd = new Date(_xstd.addMinutes(-30));
+                            if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT', 'DOH'].indexOf(_d.FromAirportIATA) != -1 || [152340, 132316, 152352, 133405, 150903, 132636].indexOf(_d.FromAirport) != -1)
+                                _xstd = new Date(_xstd.addMinutes(30));
+                            if (['DYU', 'FEG'].indexOf(_d.FromAirportIATA) != -1 || [146698, 152383].indexOf(_d.FromAirport) != -1)
+                                _xstd = new Date(_xstd.addMinutes(-90));
+                            if (['FRU'].indexOf(_d.FromAirportIATA) != -1 || [152379].indexOf(_d.FromAirport) != -1)
+                                _xstd = new Date(_xstd.addMinutes(-150));
+                            if (['TBS', 'BUS'].indexOf(_d.FromAirportIATA) != -1 || [152366, 152362].indexOf(_d.FromAirport) != -1)
+                                _xstd = new Date(_xstd.addMinutes(-30));
 
 
                             var _xsta = new Date(_d.STALocal);
-                            //if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT'].indexOf(_d.ToAirportIATA) != -1 || [152340, 132316, 152352, 13340, 150903].indexOf(_d.ToAirport) != -1)
-                            //    _xsta = new Date(_xsta.addMinutes(30));
-                            //if (['DYU'].indexOf(_d.ToAirportIATA) != -1 || [146698].indexOf(_d.ToAirport) != -1)
-                            //    _xsta = new Date(_xsta.addMinutes(-90));
-                            //if (['FRU'].indexOf(_d.ToAirportIATA) != -1 || [152379].indexOf(_d.ToAirport) != -1)
-                            //    _xsta = new Date(_xsta.addMinutes(-150));
-                            //if (['TBS', 'BUS'].indexOf(_d.ToAirportIATA) != -1 || [152366, 152362].indexOf(_d.ToAirport) != -1)
-                            //    _xsta = new Date(_xsta.addMinutes(-30));
+                            if (['NJF', 'BSR', 'IST', 'KWI', 'DAM', 'AYT', 'DOH'].indexOf(_d.ToAirportIATA) != -1 || [152340, 132316, 152352, 13340, 150903, 132636].indexOf(_d.ToAirport) != -1)
+                                _xsta = new Date(_xsta.addMinutes(30));
+                            if (['DYU', 'FEG'].indexOf(_d.ToAirportIATA) != -1 || [146698, 152383].indexOf(_d.ToAirport) != -1)
+                                _xsta = new Date(_xsta.addMinutes(-90));
+                            if (['FRU'].indexOf(_d.ToAirportIATA) != -1 || [152379].indexOf(_d.ToAirport) != -1)
+                                _xsta = new Date(_xsta.addMinutes(-150));
+                            if (['TBS', 'BUS'].indexOf(_d.ToAirportIATA) != -1 || [152366, 152362].indexOf(_d.ToAirport) != -1)
+                                _xsta = new Date(_xsta.addMinutes(-30));
 
                             _d.STDLocal = new Date(_xstd);
                             _d.STALocal = new Date(_xsta);
@@ -21515,6 +21404,8 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
     $scope.scroll_dep_height = $(window).height() - 195;
     var appWindow = angular.element($window);
     appWindow.bind('resize', function () {
+        console.log('resize', $(window).width());
+        console.log('hgt1', $('.gantt-main-container').height());
         $scope.isMobile = $(window).width() <= 1200;
         $scope.popup_lognew_full = $(window).width() <= 1200;
         $scope.scroll_lognew_height = !$scope.popup_lognew_full ? $scope.lognew_height - 200 : $(window).height() - 200;
@@ -21526,11 +21417,13 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
             $('.gantt-main-container').height($(window).height() - 145 - $scope.absHeight);
         else
             $('.gantt-main-container').height($(window).height() - 145);
+        console.log('hgt2', $('.gantt-main-container').height());
         $scope.$apply(function () {
 
             $scope.scroll_dep_height = $(window).height() - 195;
 
         });
+
         //if ($(window).width() > $(window).height()) {
         //    $scope.$apply(function () {
         //        $scope.footerfilter = false;
@@ -21553,6 +21446,32 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         //}
 
     });
+
+    //// FlightRadar
+    $scope.btn_flightradar = {
+        text: 'View Flight',
+        type: 'default',
+        icon: 'fas fa-plane',
+        width: 160,
+
+        onClick: function (e) {
+            //console.log('hello');
+            //var airlineCode = "vrh";
+            var fltNoTotal = airlineCode + $scope.logFlight.FlightNumber;
+            var flightRadarURL = "https://flightradar24.com"
+            fetch(apiExternal + 'api/flightradar?flightNumber=' + fltNoTotal)
+                .then((response) => {
+                    if (response.ok)
+                        return response.json();
+                })
+                .then((data) => {
+                    if (data.isLive != 0)
+                        window.open(flightRadarURL + '/' + fltNoTotal + '/' + data.flightRadarFlightId, '_blank').focus();
+                    else
+                        alert('Flight is not live!');
+                });
+        }
+    };
 
 
 

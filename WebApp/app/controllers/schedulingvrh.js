@@ -1750,8 +1750,10 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
     };
     //06-13
+    //2023 stby
     $scope.addStby = function (_crew, _type) {
         _crew = _crew.data;
+        console.log(_crew);
         var dto = {
             date: new Date($scope.selectedDate2),
             crewId: _crew.Id,
@@ -1763,11 +1765,11 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
             $scope.loadingVisible = false;
 
             if (response.Code == 406) {
-                if (response.data.message) {
+                if (response.message) {
                     var myDialog = DevExpress.ui.dialog.custom({
                         rtlEnabled: true,
                         title: "Error",
-                        message: response.data.message,
+                        message: crew.ScheduleName+": "+ response.message,
                         buttons: [{ text: "OK", onClick: function () { } }]
                     });
                     myDialog.show();
@@ -1784,15 +1786,15 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
                     return x.Id != _crew.Id && (($scope.IsCabin && x.JobGroupCode.startsWith('00102')) || ($scope.IsCockpit && x.JobGroupCode.startsWith('00101')));
                 }).OrderBy('$.GroupOrder').ThenBy('$.ScheduleName').ToArray();
                 if (_type == 1168) {
-                    $scope.AmDs.push(response.data);
+                    $scope.AmDs.push(response);
                     $scope.AmDs = Enumerable.From($scope.AmDs).OrderBy('$.OrderIndex').ThenBy('$.ScheduleName').ToArray();
                 }
                 else if (_type == 1167) {
-                    $scope.PmDs.push(response.data);
+                    $scope.PmDs.push(response);
                     $scope.PmDs = Enumerable.From($scope.PmDs).OrderBy('$.OrderIndex').ThenBy('$.ScheduleName').ToArray();
                 }
                 else {
-                    $scope.ReservedDs.push(response.data);
+                    $scope.ReservedDs.push(response);
                     $scope.ReservedDs = Enumerable.From($scope.ReservedDs).OrderBy('$.OrderIndex').ThenBy('$.ScheduleName').ToArray();
                 }
 
@@ -1841,6 +1843,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
     $scope.dg_crew_stby_instance = null;
     $scope.dg_crew_stby_ds = null;
+    //2023
     $scope.dg_crew_stby = {
         headerFilter: {
             visible: false
@@ -1860,7 +1863,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
         scrolling: { mode: 'infinite' },
         paging: { pageSize: 100 },
         showBorders: true,
-        selection: { mode: 'single' },
+        selection: { mode: 'multiple' },
 
         columnAutoWidth: false,
         height: 550,
@@ -1906,6 +1909,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
         }
     };
     /////////////////////////
+    //2023
     $scope.popup_stby_visible = false;
     $scope.popup_stby = {
         width: function () {
@@ -1923,6 +1927,52 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
         showTitle: true,
         dragEnabled: true,
         toolbarItems: [
+            {
+                widget: 'dxButton', location: 'before', options: {
+                    type: 'default', text: 'AM',   onClick: function (e) {
+
+                        var selected = $rootScope.getSelectedRows($scope.dg_crew_stby_instance);
+                        console.log(selected);
+                        if (selected && selected.length > 0) {
+                            $.each(selected, function (_i, _d) {
+                                var _cr = {};
+                                _cr.data = _d;
+                                $scope.addStby(_cr, 1168);
+                            });
+                        }
+                    }
+                }, toolbar: 'bottom'
+            },
+            {
+                widget: 'dxButton', location: 'before', options: {
+                    type: 'default', text: 'PM', onClick: function (e) {
+
+
+
+                        $scope.popup_stby_visible = false;
+                    }
+                }, toolbar: 'bottom'
+            },
+            {
+                widget: 'dxButton', location: 'before', options: {
+                    type: 'default', text: 'RES', onClick: function (e) {
+
+
+
+                        $scope.popup_stby_visible = false;
+                    }
+                }, toolbar: 'bottom'
+            },
+            {
+                widget: 'dxButton', location: 'before', options: {
+                    type: 'default', text: 'OFF', onClick: function (e) {
+
+
+
+                        $scope.popup_stby_visible = false;
+                    }
+                }, toolbar: 'bottom'
+            },
 
             {
                 widget: 'dxButton', location: 'after', options: {
@@ -3175,7 +3225,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
         $scope.ToDateEvent = (new Date($scope.FromDateEvent)).addMinutes((23 * 60) + 59);
         //$scope.FromDateEvent = (new Date($scope.contextMenuCellData.startDate)).setHours(8, 0, 0, 0);
         //$scope.ToDateEvent = (new Date($scope.FromDateEvent)).addHours(12);
-        $scope.popup_event_title = 'Day Off';
+        $scope.popup_event_title = 'RERRP';
         $scope.popup_event_visible = true;
     };
     $scope.assign5000 = function (e) {
@@ -3266,6 +3316,22 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
         $scope.popup_event_visible = true;
 
     };
+    $scope.assign1166 = function (e) {
+        $scope.event_status = 1166;
+        $scope.FromDateEvent = (new Date($scope.contextMenuCellData.startDate)).setHours(0, 0, 0, 0);
+        $scope.ToDateEvent = (new Date($scope.FromDateEvent)).addMinutes(24 * 60);
+        $scope.popup_event_title = 'OFF';
+        $scope.popup_event_visible = true;
+
+    };
+    $scope.assign300014 = function (e) {
+        $scope.event_status = 300014;
+        $scope.FromDateEvent = (new Date($scope.contextMenuCellData.startDate)).setHours(0, 0, 0, 0);
+        $scope.ToDateEvent = (new Date($scope.FromDateEvent)).addMinutes(24 * 60);
+        $scope.popup_event_title = 'Briefing';
+        $scope.popup_event_visible = true;
+
+    };
     $scope.assign100009 = function (e) {
         $scope.event_status = 100009;
         $scope.FromDateEvent = (new Date($scope.contextMenuCellData.startDate)).setHours(0, 0, 0, 0);
@@ -3316,27 +3382,31 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
     };
     ////////////////////////////
     //2020-12-19
+    //2023
     $scope.cellContextMenuItems = [
 
-        { visible: !$scope.OnlyRoster, text: 'STBY AM', onItemClick: $scope.assign1168, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1168' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>STBY AM</td></tr></table>", },
-        { visible: !$scope.OnlyRoster, text: 'STBY PM', onItemClick: $scope.assign1167, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1167' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>STBY PM</td></tr></table>", },
+     //   { visible: !$scope.OnlyRoster, text: 'STBY AM', onItemClick: $scope.assign1168, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1168' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>STBY AM</td></tr></table>", },
+      //  { visible: !$scope.OnlyRoster, text: 'STBY PM', onItemClick: $scope.assign1167, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1167' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>STBY PM</td></tr></table>", },
         //lay
+        { visible: !$scope.OnlyRoster, text: 'RERRP', onItemClick: $scope.assign10000, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-10000' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>RERRP</td></tr></table>", },
+
         { visible: !$scope.OnlyRoster, text: 'STBY Other Airline', onItemClick: $scope.assign300010, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1167' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>STBY Other Airline</td></tr></table>", },
         ///////////////////
 
 
-
-        { visible: !$scope.OnlyRoster, text: 'Day Off', onItemClick: $scope.assign10000, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-10000' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Day Off</td></tr></table>", },
+        { visible: !$scope.OnlyRoster, text: 'OFF', onItemClick: $scope.assign1166, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-10000' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>OFF (24 hrs)</td></tr></table>", },
         { visible: !$scope.OnlyRoster, text: 'Requested Off', onItemClick: $scope.assign100008, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-10000' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Requested Off</td></tr></table>", },
         // { text: 'Assign Stan By AM', onItemClick: $scope.assign1168, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1168' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Assign Stand By AM</td></tr></table>", },
         // { text: 'Assign Stan By PM', onItemClick: $scope.assign1167, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1167' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Assign Stand By PM</td></tr></table>", },
 
         { visible: !$scope.OnlyRoster, text: 'Office', onItemClick: $scope.assign5001, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-5001' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Office</td></tr></table>", },
-        //soltani
+        { visible: !$scope.OnlyRoster, text: 'Briefing', onItemClick: $scope.assign300014, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-5001' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Briefing</td></tr></table>", },
+
+//soltani
         { text: 'Training', onItemClick: $scope.assign5000, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-5000' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Training</td></tr></table>", },
 
         { visible: !$scope.OnlyRoster, text: 'Meeting', onItemClick: $scope.assign100001, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-100001' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Meeting</td></tr></table>", },
-        { visible: !$scope.OnlyRoster, text: 'Reserve', onItemClick: $scope.assign1170, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1170' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Reserve</td></tr></table>", },
+       // { visible: !$scope.OnlyRoster, text: 'Reserve', onItemClick: $scope.assign1170, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1170' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Reserve</td></tr></table>", },
         { visible: !$scope.OnlyRoster, text: 'Vacation', onItemClick: $scope.assign1169, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-1169' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Vacation</td></tr></table>", },
         { visible: !$scope.OnlyRoster, text: 'Ground', onItemClick: $scope.assign100000, template: "<table><tr><td style='vertical-align:middle;'><div class='duty-100000' style='width:15px;height:15px;border-radius:50%;'></div></td><td style='vertical-align:top;padding-left:5px;'>Ground</td></tr></table>", },
 
@@ -3764,14 +3834,15 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
     };
     //reposition
     $scope.saveNewDutyCal = function (crewid, callback) {
+        //2023
         var dto = {
             DateStart: new Date($scope.FromDateEvent),
             DateEnd: new Date($scope.ToDateEvent),
             CityId: -1,
             CrewId: crewid,
             DutyType: $scope.event_status,
-            Remark: $scope.RemarkEvent
-
+            Remark: $scope.RemarkEvent,
+            EXTRERRP : $scope.ex48?1:0,
         }
         dto.BL = 0;
         dto.FX = 0;
@@ -3857,6 +3928,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
         }
     };
+    //2023
     $scope.popup_event = {
         width: 350,
         height: 460,
@@ -3931,7 +4003,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
 
                         //}
-                        else if ($scope.event_status == 5000 || $scope.event_status == 5001
+                        else if ($scope.event_status == 5000 || $scope.event_status == 5001 || $scope.event_status==300014
                             || $scope.event_status == 100001 || $scope.event_status == 100003 || $scope.event_status == 1170 || $scope.event_status == 1167
                             || $scope.event_status == 1168
                         ) {
@@ -6039,6 +6111,15 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
         bindingOptions: {
             value: 'offNotify',
+        }
+    };
+    $scope.ex48 = false;
+    $scope.check_ex48 = {
+
+        text: "Extended (48 hours)",
+
+        bindingOptions: {
+            value: 'ex48',
         }
     };
     $scope.sb_offreason = {
