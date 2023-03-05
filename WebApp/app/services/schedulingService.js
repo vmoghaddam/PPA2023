@@ -3347,6 +3347,52 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
     };
     serviceFactory.getCrewForRosterByDateNew = _getCrewForRosterByDateNew;
 
+
+
+
+    //2023
+    var _getCrewForGanttByDateNew = function (cid, dt) {
+        var deferred = $q.defer();
+        $http.get(/*serviceBaseAPI + 'api/crew/valid/1?dt=' + dt*/apiScheduling + 'api/sch/crew/valid/gant').then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getCrewForGanttByDateNew = _getCrewForGanttByDateNew;
+
+
+    //2023
+    var _getDutiesForGanttByDateNew = function (df, dt) {
+        var deferred = $q.defer();
+        $http.get(/*serviceBaseAPI + 'api/crew/valid/1?dt=' + dt*/apiScheduling + 'api/sch/crew/duties/gant/?df='+df+'&dt='+dt).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getDutiesForGanttByDateNew = _getDutiesForGanttByDateNew;
+
+    //2023
+    var _getSchFlights = function (df, dt) {
+        var deferred = $q.defer();
+        $http.get(/*serviceBaseAPI + 'api/crew/valid/1?dt=' + dt*/apiScheduling + 'api/sch/flts/gant/?df=' + df + '&dt=' + dt).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getSchFlights = _getSchFlights;
+
     var _getFTL = function (cid, df) {
 
         var deferred = $q.defer();
