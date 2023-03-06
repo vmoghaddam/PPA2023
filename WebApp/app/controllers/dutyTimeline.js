@@ -1013,7 +1013,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         // validationGroup: 'ctrsearch',
         bindingOptions: {},
         onClick: function (e) {
-            $scope.popup_event_visible = true;
+            $scope.popup_flt_visible = true;
             return;
             alert($scope.ganttData.resources[0].maxTop);
             $scope.ganttData.resources[0].duties.push({
@@ -2494,6 +2494,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     };
 
     $scope.selected_crew_id = null;
+    $scope.selected_crew = null;
     $scope.new_event = function (key, id) {
         $scope.$apply(function () {
             var prts = id.split('_');
@@ -2502,6 +2503,10 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             $scope.contextMenuCellData = {};
             $scope.contextMenuCellData.startDate = new Date(dt_parts[0], Number( dt_parts[1]-1), dt_parts[2]);
             switch (key) {
+                case 'FDP':
+                    $scope.selected_crew = Enumerable.From($scope.crews).Where('$.CrewId==' + $scope.selected_crew_id).FirstOrDefault();
+                    $scope.popup_flt_visible = true;
+                    break;
                 case 'RERRP':
                     $scope.assign10000();
                     break;
@@ -2658,7 +2663,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         }
     };
 
-    var date_cell_width_hour = 55;
+    var date_cell_width_hour = 50;
     var date_cell_width_flt = (date_cell_width_hour+0)*24+1 ;
     var duty_height_flt = 45;
     var minute_width_flt = date_cell_width_hour * 1.0 / (  60);
@@ -2667,7 +2672,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         //  var end = moment('2014-01-01 13:00:00');
         //  var minutes = end.diff(start, 'minutes');
         //zook
-        console.log('zook');
+      
         var start = getMinDate(duty.STDLocal, duty.ChocksOutLocal);// duty.InitStart;
         var end = getMaxDate(duty.STALocal, duty.ChocksInLocal); //duty.InitRestTo;
 
@@ -2747,19 +2752,435 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         };
     };
     $scope.flt_selected = [];
+    $scope.flt_selected_obj = [];
+    $scope.FDPStat = {};
     $scope.flightClick = function (flt) {
         if (flt.FlightStatusID == 4)
             return;
-        if ($scope.flt_selected.indexOf(flt.ID) != -1)
+        if ($scope.flt_selected.indexOf(flt.ID) != -1) {
             $scope.flt_selected = Enumerable.From($scope.flt_selected).Where('$!=' + flt.ID).ToArray();
-        else
+            $scope.flt_selected_obj = Enumerable.From($scope.flt_selected_obj).Where(function (x) { return x.ID != flt.ID; }).OrderBy('$.ChocksOut').ToArray();
+        }
+        else {
             $scope.flt_selected.push(flt.ID);
+            var fltobj = Enumerable.From($scope.gantt_flights).Where(function (x) { return flt.ID == x.ID; }).FirstOrDefault();
+            fltobj.Position = null;
+            fltobj.DH = false;
+            $scope.flt_selected_obj.push(fltobj);
+            $scope.flt_selected_obj = Enumerable.From($scope.flt_selected_obj).OrderBy('$.ChocksOut').ToArray();
+        }
+
+        var flts = Enumerable.From($scope.gantt_flights).Where(function (x) { return $scope.flt_selected.indexOf(x.ID) != -1; }).OrderBy('$.ChocksOut').ToArray();
+        //$scope.flt_selected_obj = flts;
+
+        $scope.continuity = $scope.checkContinuity2(flts);
+        $scope.overlapping = $scope.checkConflict2(flts);
+        console.log($scope.continuity);
+        $scope.FDPStat = {};
+        $scope.useSplit = false;
+        if (!$scope.continuit && !$scope.overlapping)
+            $scope.getFDPStat();
     };
-    $scope.prepare_gantt_flt();
+    $scope.useSplit = false;
+    $scope.check_split = {
+        width: '100%',
+        text: "",
+        onValueChanged: function (e) {
+            
+                if (e.value) {
+                    $scope.FDPStat.IsOver = $scope.FDPStat.Duration > $scope.FDPStat.MaxFDPExtended;
+                }
+                else {
+                    $scope.FDPStat.IsOver = $scope.FDPStat.Duration > $scope.FDPStat.MaxFDP;
+                }
+               // $scope.dg3_instance.refresh();
+            
+        },
+        bindingOptions: {
+            value: 'useSplit',
+
+        }
+    };
+
+    
+    $scope.overlapping = false;
+    $scope.check_overlapping = {
+        width: '100%',
+        text: "",
+        readOnly: true,
+        bindingOptions: {
+            value: 'overlapping',
+
+        }
+    };
+
+    $scope.continuity = false;
+    $scope.check_continuity = {
+        width: '100%',
+        text: "",
+        readOnly:true,
+        bindingOptions: {
+            value: 'continuity',
+
+        }
+    };
+    $scope.getFDPCellStyle = function () {
+        var clr = '#66ff99';
+        if ($scope.FDPStat.IsOver)
+            clr = '#ff8080';
+        return {
+            background:clr
+        }
+    };
+    $scope.getFDPStat = function () {
+        $scope.FDPDuty = null;
+        $scope.FDPFlight = null;
+        $scope.IsExtensionVisible = false;
+        $scope.IsSplitVisible = false;
+        $scope.loadingVisible = false;
+        var ids = Enumerable.From($scope.flt_selected_obj).Select('$.ID').ToArray();
+        var dhs = 0; //Enumerable.From($scope.ati_selectedFlights).Where('$.dh==1').ToArray().length;
+        schedulingService.getFDPStats(ids.join('_'), dhs).then(function (response) {
+
+
+            $scope.loadingVisible = false;
+            try {
+                var _end = (new Date(response.RestFrom)).addMinutes(-30);
+
+                $scope.editable = !(_end < $scope.firstHour);
+
+
+            }
+            catch (e) {
+
+            }
+
+
+            console.log(response);
+
+            $scope.FDPStat = response;
+            $scope.FDPDuty = response.Duty;
+            $scope.FDPFlight = response.Flight;
+            response.DurationStr = pad(Math.floor(response.Duration / 60)).toString() + ':' + pad(Math.round(response.Duration % 60)).toString();
+            response.FlightStr = pad(Math.floor(response.Flight / 60)).toString() + ':' + pad(Math.round(response.Flight % 60)).toString();
+            response.DutyStr = pad(Math.floor(response.Duty / 60)).toString() + ':' + pad(Math.round(response.Duty % 60)).toString();
+            response.ExtendedStr = pad(Math.floor(response.Extended / 60)).toString() + ':' + pad(Math.round(response.Extended % 60)).toString();
+            response.AllowedExtensionStr = pad(Math.floor(response.AllowedExtension / 60)).toString() + ':' + pad(Math.round(response.AllowedExtension % 60)).toString();
+            response.WOCLStr = pad(Math.floor(response.WOCL / 60)).toString() + ':' + pad(Math.round(response.WOCL % 60)).toString();
+            response.MaxFDPExtendedStr = pad(Math.floor(response.MaxFDPExtended / 60)).toString() + ':' + pad(Math.round(response.MaxFDPExtended % 60)).toString();
+            response.MaxFDPStr = pad(Math.floor(response.MaxFDP / 60)).toString() + ':' + pad(Math.round(response.MaxFDP % 60)).toString();
+            response.RestTo = moment(new Date(response.RestTo)).format('YY-MM-DD HH:mm');
+            $scope.FDPStat.IsOver = $scope.FDPStat.Duration > $scope.FDPStat.MaxFDP;
+            $scope.dg3_ds = [];
+            $scope.dg3_height = $scope.bottom - 108;
+            //$scope.dg3_ds.push({ Title: 'Max FDP', Value: response.MaxFDPStr });
+            $scope.dg3_ds.push({ Title: 'WOCL', Value: response.WOCLStr });
+
+            if (response.Extended > 0) {
+                $scope.dg3_ds.push({ Title: 'Max FDP', Value: response.MaxFDPStr });
+                $scope.dg3_ds.push({ Title: 'By Split', Value: response.ExtendedStr });
+                $scope.dg3_ds.push({ Title: 'Max Ext. FDP', Value: response.MaxFDPExtendedStr });
+                $scope.dg3_height = $scope.bottom - 108 - 60;
+                $scope.IsSplitVisible = true;
+                $scope.useSplit = true;
+            } else
+                if (response.AllowedExtension > 0) {
+                    $scope.dg3_ds.push({ Title: 'Max FDP', Value: response.MaxFDPExtendedStr });
+                    $scope.dg3_ds.push({ Title: 'By Extension', Value: response.AllowedExtensionStr });
+                    $scope.dg3_height = $scope.bottom - 108 - 60;
+                    $scope.IsExtensionVisible = true;
+                } else {
+                    $scope.dg3_ds.push({ Title: 'Max FDP', Value: response.MaxFDPStr });
+                    //$scope.dg3_ds.push({ Title: 'Max FDP', Value: response.MaxFDPExtendedStr });
+                }
+
+
+            $scope.dg3_ds.push({ Title: 'FDP', Value: response.DurationStr });
+            $scope.dg3_ds.push({ Title: 'Duty', Value: response.DutyStr });
+            $scope.dg3_ds.push({ Title: 'Flight', Value: response.FlightStr });
+            $scope.dg3_ds.push({ Title: 'Rest Until', Value: response.RestTo });
+        });
+    };
+
+    $scope.checkConflict2 = function (flights) {
+        //2022-01-23
+        var hasConflict = false;
+        $.each(flights, function (_i, _d) {
+
+            var f = Enumerable.From(flights).Where(function (x) {
+                return x.ID != _d.ID && (
+                    (new Date(x.ChocksOut) >= new Date(_d.ChocksOut) && new Date(x.ChocksOut) <= new Date(_d.ChocksIn))
+                    ||
+                    (new Date(x.onblock) >= new Date(_d.ChocksOut) && new Date(x.ChocksIn) <= new Date(_d.ChocksIn))
+                );
+            }).FirstOrDefault();
+            if (f)
+                hasConflict = true;
+        });
+
+        return hasConflict;
+
+        
+    };
+    $scope.checkContinuity2 = function (flights) {
+        //2022-01-23
+        var hasError = false;
+        var ordered = Enumerable.From(flights).OrderBy(function (x) { return new Date(x.ChocksOut); }).ToArray();
+        $.each(ordered, function (_i, _d) {
+            if (_i >= 0 && _i < ordered.length - 1) {
+
+                if (_d.ToAirportIATA != ordered[_i + 1].FromAirportIATA)
+                    hasError = true;
+            }
+        });
+        return hasError;
+         
+
+    };
+    $scope.position_ds = ['CPT','IP','CHECK','SAFETY','OBS'];
+    $scope.dg_flt_columns = [
+
+
+        { dataField: 'FlightNumber', caption: 'No',width:'60', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, fixed: false, fixedPosition: 'left' },
+        { dataField: 'FromAirportIATA', caption: 'From',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
+        { dataField: 'ToAirportIATA', caption: 'To',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
+        //{ dataField: 'Position', caption: 'POS', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
+        {
+            allowEditing: true,
+            alignment: 'center',
+            dataField: 'Position',
+            caption: 'POS',
+            
+            lookup: {
+                dataSource: [],
+                
+            },
+            validationRules: [{ type: 'required' }],
+
+        },
+       // { dataField: 'DH', caption: 'D/H',width:40, allowResizing: true, alignment: 'center', dataType: 'boolean', allowEditing: false, },
+
+
+
+    ];
+    $scope.dg_flt_selected = null;
+    $scope.dg_flt_instance = null;
+    $scope.dg_flt_ds = null;
+    $scope.dg_flt_height = 300;
+    $scope.dg_flt = {
+        headerFilter: {
+            visible: false
+        },
+        filterRow: {
+            visible: false,
+            showOperationChooser: true,
+        },
+        editing: {
+            mode: 'cell',
+            allowUpdating: true,
+            allowAdding: false,
+            allowDeleting: false,
+        },
+        showRowLines: true,
+        showColumnLines: true,
+        sorting: { mode: 'none' },
+
+        noDataText: '',
+
+        allowColumnReordering: true,
+        allowColumnResizing: true,
+        scrolling: { mode: 'infinite' },
+        paging: { pageSize: 100 },
+        showBorders: true,
+        selection: { mode: 'single' },
+
+        columnAutoWidth: true,
+        // height: $scope.bottom-108,
+
+        columns: $scope.dg_flt_columns,
+        onContentReady: function (e) {
+            if (!$scope.dg_flt_instance)
+                $scope.dg_flt_instance = e.component;
+
+        },
+        onRowPrepared: function (e) {
+            //if (e.rowType === "data") {
+            //    var day = (new Date(e.data.STDDay)).getDay();
+            //    e.rowElement.css("backgroundColor", $scope.palete[day]);
+            //}
+            //42 %  10
+
+        },
+        
+        onSelectionChanged: function (e) {
+            var data = e.selectedRowsData[0];
+
+            if (!data) {
+                $scope.dg_flt_selected = null;
+                $scope.dg_crew_abs_ds = [];
+            }
+            else {
+                $scope.dg_flt_selected = data;
+                schedulingService.getFlightCrewsNew(data.ID).then(function (response) {
+                    $.each(response, function (_i, _d) {
+                        _d.FlightNumber =  data.FlightNumber;
+                    });
+                    $scope.dg_crew_abs_ds = response;
+                });
+            }
+
+
+        },
+        onEditingStart: function (e) {
+            schedulingService.getFlightCrewsNew(e.data.ID).then(function (response) {
+                $.each(response, function (_i, _d) {
+                    _d.FlightNumber = e.data.FlightNumber;
+                });
+                $scope.dg_crew_abs_ds = response;
+            });
+        },
+        onCellPrepared: function (e) {
+            ////lightgray
+            //if (e.rowType === "data" && e.column.dataField == "Title")
+            //    e.cellElement.css("backgroundColor", "lightgray");
+            //if (e.rowType === "data" && e.column.dataField == "Value" && e.data.Title == 'FDP' && $scope.FDPStat.IsOver)
+            //    e.cellElement.css("backgroundColor", "#ffcccc");
+
+        },
+
+        bindingOptions: {
+            dataSource: 'flt_selected_obj',
+            height: 'dg_flt_height'
+        }
+    };
+
+
+    $scope.dg_crew_abs_columns = [
+        { dataField: 'FlightNumber', caption: 'No', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 70, fixed: false, fixedPosition: 'left' },
+
+        { dataField: 'IsPositioning', caption: 'DH', allowResizing: true, alignment: 'center', dataType: 'boolean', allowEditing: false, width: 55 },
+        { dataField: 'Position', caption: 'Pos.', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 100, fixed: false, fixedPosition: 'left' },
+       
+        { dataField: 'Name', caption: 'Name', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false,   },
+        
+    ];
+    $scope.dg_crew_abs_selected = null;
+    $scope.dg_crew_abs_instance = null;
+    $scope.dg_crew_abs_ds = null;
+    $scope.dg_crew_abs = {
+        headerFilter: {
+            visible: false
+        },
+        filterRow: {
+            visible: false,
+            showOperationChooser: true,
+        },
+        showRowLines: true,
+        showColumnLines: true,
+        sorting: { mode: 'none' },
+
+        noDataText: '',
+
+        allowColumnReordering: true,
+        allowColumnResizing: true,
+        scrolling: { mode: 'infinite' },
+        paging: { pageSize: 100 },
+        showBorders: true,
+        selection: { mode: 'single' },
+
+        columnAutoWidth: false,
+        //2020-10-27 1 s
+        height: 250,// $(window).height() - 250,// 490 
+
+        columns: $scope.dg_crew_abs_columns,
+        onContentReady: function (e) {
+            if (!$scope.dg_crew_abs_instance)
+                $scope.dg_crew_abs_instance = e.component;
+
+        },
+        onSelectionChanged: function (e) {
+            var data = e.selectedRowsData[0];
+
+            if (!data) {
+                $scope.dg_crew_abs_selected = null;
+
+            }
+            else {
+                $scope.dg_crew_abs_selected = data;
+
+            }
+        },
+        onRowPrepared: function (e) {
+            if (e.data && e.data.IsPositioning)
+                e.rowElement.css('background', '#ffccff');
+
+        },
+
+        bindingOptions: {
+            dataSource: 'dg_crew_abs_ds',
+
+        }
+    };
+
+
+    $scope.popup_flt_visible = false;
+    $scope.popup_flt_title = 'Flights';
+    $scope.popup_flt = {
+        shading: true,
+        width: $(window).width()-100,
+        height: $(window).height() - 100,
+        fullScreen: false,
+        showTitle: true,
+        dragEnabled: true,
+        toolbarItems: [
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: 'Save', icon: 'save', onClick: function (e) {
+                        
+                    }
+                }, toolbar: 'bottom'
+            },
+            { widget: 'dxButton', location: 'after', options: { type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) { $scope.popup_flt_visible = false; } }, toolbar: 'bottom' }
+        ],
+
+        visible: false,
+
+        closeOnOutsideClick: false,
+        onShowing: function (e) {
+
+            
+
+        },
+        onShown: function (e) {
+            $scope.prepare_gantt_flt();
+            $scope.getFlights(new Date(2023, 2, 6));
+
+           
+            $scope.dg_flt_instance.repaint();
+            $scope.dg_crew_abs_instance.repaint();
+        },
+        onHiding: function () {
+            
+            $scope.popup_flt_visible = false;
+
+        },
+       // position: { my: 'right', at: 'right', of: window, offset: '-15 0' },
+        bindingOptions: {
+            visible: 'popup_flt_visible',
+
+            title: 'popup_flt_title',
+            //'toolbarItems[0].visible': 'IsEditable',
+            //'toolbarItems[1].visible': 'IsEditable',
+
+        }
+    };
+
+   
 
     $scope.ganttFlightData = {};
 
-    $scope._datefrom_flt = new Date(2023, 2, 5);
+    $scope._datefrom_flt = new Date(2023, 2, 6);
     $scope.datefrom_flt = General.getDayFirstHour(new Date($scope._datefrom_flt));
 
      
@@ -2769,13 +3190,16 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         var c = reg.slice(-1);
         return c;
     };
+    $scope.gantt_flights = null;
     $scope.getFlights = function (df, callback) {
         var dt = new Date(df);
         dt = dt.addDays(1);
         var _df = moment(new Date(df)).format('YYYY-MM-DD');
         var _dt = moment(new Date(dt)).format('YYYY-MM-DD');
         $scope.loadingVisible = true;
-        schedulingService.getSchFlights(_df, _dt).then(function (response) {
+        schedulingService.getSchFlights(_df, _dt).then(function (response0) {
+            var response = response0.result;
+            $scope.gantt_flights = response0.flights;
             response = Enumerable.From(response).OrderBy(function (x) { return $scope.getRegisterOrder(x.Register); }).ToArray();
             $scope.loadingVisible = false;
             console.log(response);
@@ -2829,12 +3253,13 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             //    callback(response);
             //}
 
-
+            $scope.dg_flt_instance.columnOption('Position', 'lookup.dataSource', $scope.position_ds);
         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
     }
-    $scope.getFlights(new Date(2023, 2, 5));
+    
+      
     /////////////////////////////////////////////////
     //menux
     $scope.$on('$viewContentLoaded', function () {
@@ -2850,12 +3275,19 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                     // Do not close the menu after clicking an item
                     //return true;
                 },
-                items: {
+                items:
+                {
+                    "FDP": {
+                        name: "<span style='font-weight: bold'>FDP</span>",
+                        isHtmlName: true, icon: "add"
+                    },
+                    "sep1000": "---------",
                     "RERRP": {
                         name: "<span style='font-weight: bold'>RERRP</span>",
                         isHtmlName: true, icon: "add"
                     },
                     "sep1": "---------",
+
                     "OFF": {
                         name: "<span style='font-weight: bold'>OFF</span>",
                         isHtmlName: true, icon: "add"

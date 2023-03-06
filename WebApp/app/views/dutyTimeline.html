@@ -747,8 +747,8 @@
 
     <div ng-include="'app/views/header.html'" class="rowx header"></div>
 
-    <div class="rowx content" style="clear:both;display:block">
-        <!--<div class="gantt2-main-container" id="content" style="width:100%; background:#fff;border :1px solid #ccc;border-top:1px solid #ccc">
+    <div class="rowx content" style="clear:both; ">
+        <div class="gantt2-main-container" id="content" style="width:100%; background:#fff;border :1px solid #ccc;border-top:1px solid #ccc">
             <div style=" float:left;width:150px">
                 <div style="border-bottom:1px solid #ccc;height:30px"> </div>
                 <div class="thin-scroll col-res" style="background:#d9d9d9;overflow-y:hidden;overflow-x:hidden " ng-style="getLeftColumnStyle()">
@@ -819,57 +819,9 @@
                 </div>
             </div>
             <div style="clear:both"></div>
-        </div>-->
-        <div style="clear:both"></div>
-
-
-        <div class="gantt3-main-container" id="content" style="width:100%; background:#fff;border :1px solid #ccc;border-top:1px solid #ccc">
-            <div style=" float:left;width:70px">
-                <div style="border-bottom:1px solid #ccc;height:60px"> </div>
-                <div class="thin-scroll col-res-flt" style="background:#d9d9d9;overflow-y:hidden;overflow-x:hidden " ng-style="getLeftColumnStyle_flt()">
-                    <div class="reg-row" ng-repeat="res in ganttFlightData" style="text-align:left;padding:0px 0 0 10px;font-size:12px;  border-bottom:1px solid gray" ng-style="getResStyle_flt(res)">
-                        <div style="font-size:11px;font-weight:bold" ng-style="getResCaptionStyle_flt(res)">{{res.Register }}</div>
-                    </div>
-                    <idv style="clear:both"></idv>
-                </div>
-
-            </div>
-            <div style=" float:right;width: calc(100% - 70px)">
-                <div class="thin-scroll row-date-flt" style="overflow-x: hidden; border-bottom: 1px solid #ccc; height: 60px; background: #d9d9d9">
-                    <div calss="row-data-bar" style="border-bottom:1px solid #b3b3b3" ng-style="getDateBarStyle_flt()">
-                        <div style="display:inline-block;border-right:1px solid #b3b3b3;line-height:30px;text-align:center;font-size:12px" ng-repeat="dt in ganttFlightData.dates" ng-style="getDateCellStyle_flt()">
-                            <span style="font-size:12px">{{dt.caption}}</span>
-                        </div>
-                        <div style="clear:both"></div>
-                    </div>
-                    <div calss="row-data-bar" ng-style="getDateBarStyle_flt()">
-                        <div style="display:inline-block;border-right:1px solid #b3b3b3;line-height:30px;r" ng-repeat="dt in ganttFlightData.dates" ng-style="getDateCellStyle_flt()">
-                            <div style="display:inline-block;border-right:1px solid #b3b3b3;line-height:30px;text-align:center" ng-repeat="hr in dt.hours" ng-style="getHourCellStyle_flt()">
-                                <span style="font-size:12px">{{hr}}</span>
-                            </div>
-                        </div>
-                        <div style="clear:both"></div>
-                    </div>
-
-                </div>
-                <div class="thin-scroll col-duty-flt" style="overflow-y:auto;" ng-style="getRightColumnStyle_flt()">
-                    <div class="reg-row" ng-repeat="res in ganttFlightData" style="position:relative;text-align:left;font-size:12px;  border-bottom:1px solid gray" ng-style="getResStyle_flt(res)">
-                        <div style="display:inline-block;border-right:1px solid #b3b3b3;height:100%" ng-repeat="dt in ganttFlightData.dates" ng-style="getDateCellStyle_flt()" class="context-menu-one"  >
-
-                        </div>
-                        <div style="display:inline-block;position:absolute; border:0px solid black;font-size:12px; text-align:center" ng-repeat="flight in res.Flights" ng-style="getDutyStyle_flt(flight)" ng-class="getDutyClass_flt(flight)" id="{{flight.ID}}" ng-click="flightClick(flight)">
-                            <div style="font-size:10px;">{{getFlightRoute(flight)}}</div>
-                            <div style="font-size:11px;border:1px solid #00e64d;padding:1px 0 1px 0;line-height:17px;" ng-style="getFlightStyle(flight)">{{getFlightCaption(flight)}}</div>
-                            <div style="font-size:10px;min-width:60px">{{getFlightMVT(flight)}}</div>
-                           
-                        </div>
-                        <div style="clear:both"></div>
-                    </div>
-                </div>
-            </div>
-            <div style="clear:both"></div>
         </div>
         <div style="clear:both"></div>
+       
 
 
 
@@ -976,6 +928,111 @@
             </div>
         </div>
     </div>
+
+
+
+    <div id="popup_flt" dx-popup="popup_flt">
+        <div>
+            <div style="border:1px solid #ccc;margin-bottom:2px;padding:7px;background:#ffe6cc">
+                <table style="width:100%">
+                    <tr>
+                        <td style="text-align:left;font-size:14px;font-weight:bold">{{selected_crew.ScheduleName}}</td>
+                         
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;font-size:13px;font-weight:bold">{{selected_crew.JobGroup}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-9" style="padding:0">
+                <!--BEGIN GANTT-->
+                <div class="gantt3-main-container" id="content" style="width:100%; background:#fff;border :1px solid #ccc;border-top:1px solid #ccc">
+                    <div style=" float:left;width:70px">
+                        <div style="border-bottom:1px solid #ccc;height:60px"> </div>
+                        <div class="thin-scroll col-res-flt" style="background:#d9d9d9;overflow-y:hidden;overflow-x:hidden " ng-style="getLeftColumnStyle_flt()">
+                            <div class="reg-row" ng-repeat="res in ganttFlightData" style="text-align:left;padding:0px 0 0 10px;font-size:12px;  border-bottom:1px solid gray" ng-style="getResStyle_flt(res)">
+                                <div style="font-size:11px;font-weight:bold" ng-style="getResCaptionStyle_flt(res)">{{res.Register }}</div>
+                            </div>
+                            <div style="clear:both"></div>
+                        </div>
+
+                    </div>
+                    <div style=" float:right;width: calc(100% - 70px)">
+                        <div class="thin-scroll row-date-flt" style="overflow-x: hidden; border-bottom: 1px solid #ccc; height: 60px; background: #d9d9d9">
+                            <div calss="row-data-bar" style="border-bottom:1px solid #b3b3b3" ng-style="getDateBarStyle_flt()">
+                                <div style="display:inline-block;border-right:1px solid #b3b3b3;line-height:30px;text-align:center;font-size:12px" ng-repeat="dt in ganttFlightData.dates" ng-style="getDateCellStyle_flt()">
+                                    <span style="font-size:12px">{{dt.caption}}</span>
+                                </div>
+                                <div style="clear:both"></div>
+                            </div>
+                            <div calss="row-data-bar" ng-style="getDateBarStyle_flt()">
+                                <div style="display:inline-block;border-right:1px solid #b3b3b3;line-height:30px;r" ng-repeat="dt in ganttFlightData.dates" ng-style="getDateCellStyle_flt()">
+                                    <div style="display:inline-block;border-right:1px solid #b3b3b3;line-height:30px;text-align:center" ng-repeat="hr in dt.hours" ng-style="getHourCellStyle_flt()">
+                                        <span style="font-size:12px">{{hr}}</span>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                            </div>
+
+                        </div>
+                        <div class="thin-scroll col-duty-flt" style="overflow-y:auto;" ng-style="getRightColumnStyle_flt()">
+                            <div class="reg-row" ng-repeat="res in ganttFlightData" style="position:relative;text-align:left;font-size:12px;  border-bottom:1px solid gray" ng-style="getResStyle_flt(res)">
+                                <div style="display:inline-block;border-right:1px solid #b3b3b3;height:100%" ng-repeat="dt in ganttFlightData.dates" ng-style="getDateCellStyle_flt()" class="context-menu-one">
+
+                                </div>
+                                <div style="display:inline-block;position:absolute; border:0px solid black;font-size:12px; text-align:center" ng-repeat="flight in res.Flights" ng-style="getDutyStyle_flt(flight)" ng-class="getDutyClass_flt(flight)" id="{{flight.ID}}" ng-click="flightClick(flight)">
+                                    <div style="font-size:10px;">{{getFlightRoute(flight)}}</div>
+                                    <div style="font-size:11px;border:1px solid #00e64d;padding:1px 0 1px 0;line-height:17px;" ng-style="getFlightStyle(flight)">{{getFlightCaption(flight)}}</div>
+                                    <div style="font-size:10px;min-width:60px">{{getFlightMVT(flight)}}</div>
+
+                                </div>
+                                <div style="clear:both"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div style="clear:both"></div>
+                <div style="margin-top:2px">
+                    <table style="width:100%; border:1px solid #ccc">
+                        <tr>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold">OVERLAPPED</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;width:45px"><div dx-check-box="check_overlapping"></div></td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold">CONTINUITY</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;width:45px"><div dx-check-box="check_continuity"></div></td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold">WOCL</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;min-width:60px">{{FDPStat.WOCLStr}}</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold;background:#66ff99">MAX FDP</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;min-width:60px;">{{FDPStat.MaxFDPStr}}</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold">BY SPLIT</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;min-width:60px">{{FDPStat.ExtendedStr}}</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold">MAX EXT. FDP</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;min-width:60px">{{FDPStat.MaxFDPExtendedStr}}</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold" ng-style="getFDPCellStyle()">FDP</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;min-width:60px">{{FDPStat.DurationStr}}</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold">DUTY</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;min-width:60px">{{FDPStat.DutyStr}}</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold">FLIGHT</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;min-width:60px">{{FDPStat.FlightStr}}</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:12px;font-weight:bold">USE SPLIT</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;width:45px"><div dx-check-box="check_split"></div></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!--END GANTT-->
+            </div>
+            <div class="col-lg-3" style="padding:0">
+
+                <div dx-data-grid="dg_flt" id="dg_flt"></div>
+                <div dx-data-grid="dg_crew_abs" id="dg_crew_abs" class="content" style="overflow-y:hidden"></div>
+            </div>
+            <div style="clear:both"></div>
+
+        </div>
+    </div>
+
+
 
     <div dx-load-panel="loadPanel"></div>
 

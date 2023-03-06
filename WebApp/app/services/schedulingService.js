@@ -3393,6 +3393,20 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
     };
     serviceFactory.getSchFlights = _getSchFlights;
 
+    //2023
+    var _getFlightCrewsNew = function (id) {
+        var deferred = $q.defer();
+        $http.get(/*serviceBaseAPI + 'api/crew/valid/1?dt=' + dt*/apiScheduling + 'api/sch/flight/crews/' + id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getFlightCrewsNew = _getFlightCrewsNew;
+
     var _getFTL = function (cid, df) {
 
         var deferred = $q.defer();
