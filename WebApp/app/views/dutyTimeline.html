@@ -740,6 +740,14 @@
     .tbl-dty-content tr td {
         font-size: 11px;
     }
+
+    .isover {
+        background: #ffaa80 !important;
+    }
+
+    .aboveavg {
+        background: #ffd480 !important;
+    }
 </style>
 
 <div class="box dutytimeline" style="height:100%;display:none;overflow-y:hidden">
@@ -933,14 +941,36 @@
 
     <div id="popup_flt" dx-popup="popup_flt">
         <div>
-            <div style="border:1px solid #ccc;margin-bottom:2px;padding:7px;background:#ffe6cc">
+            <div style="border:1px solid #ccc;margin-bottom:5px;padding:0px;background:#ddd">
                 <table style="width:100%">
                     <tr>
-                        <td style="text-align:left;font-size:14px;font-weight:bold">{{selected_crew.ScheduleName}}</td>
-                         
+                        <td style="text-align:left;font-size:14px;font-weight:bold;width:75%;padding-left:10px">{{selected_crew.ScheduleName}}</td>
+                        
+                        <td style="font-size:12px;font-weight:bold;padding:7px;width:50px;border:1px solid gray;text-align:center" ng-class="getFLT28Class(selected_crew.FTL.Flight28)">F28</td>
+                        <td style="font-size: 12px; font-weight: bold; padding: 5px; width: 50px; border: 1px solid gray; text-align: center " ng-class="getFLClass(selected_crew.FTL.Ratio)">F/L</td>
+                        <td style="font-size: 12px; font-weight: bold; padding: 5px; width: 50px; border: 1px solid gray; text-align: center ">D7</td>
+                        <td style="font-size: 12px; font-weight: bold; padding: 5px; width: 50px; border: 1px solid gray; text-align: center ">D14</td>
+                        <td style="font-size: 12px; font-weight: bold; padding: 5px; width: 50px; border: 1px solid gray; text-align: center ">D28</td>
+                        <td style="font-size: 12px; font-weight: bold; padding: 5px; width: 50px; border: 1px solid gray; text-align: center ">F12M</td>
+                        <td rowspan="2" style="text-align:center ;padding:0 12px" ng-style="getCertificationStyle(selected_crew)">
+                            <i style="color:#f7f7f7;font-size:20px;" class="fas fa-graduation-cap"></i>
+                        </td>
+                        <td rowspan="2" style="text-align:center;  padding: 0 12px;background: #66c2ff;width:50px" >
+                            <i style="color:white;font-size:20px" class="fas fa-info"></i>
+                        </td>
+
                     </tr>
                     <tr>
-                        <td style="text-align:left;font-size:13px;font-weight:bold">{{selected_crew.JobGroup}}</td>
+                        <td style="text-align:left;font-size:13px;font-weight:bold;padding-left:10px">{{selected_crew.JobGroup}}</td>
+                        
+                        <td style="font-size: 12px; text-align: center; border : 1px solid gray; font-weight: bold; background: #f9f9f9; padding: 5px; text-align: center " ng-class="getCFTLStyle(selected_crew.FTL.Flight28Remain,1)"> {{selected_crew.FTL._Flight28Remain}}</td>
+                        <td style="font-size: 12px; text-align: center; border : 1px solid gray; font-weight: bold; background: #b3ffe6; padding: 5px; text-align: center "> {{selected_crew.FTL.Ratio}}</td>
+                        <td style="font-size: 12px; text-align: center; border: 1px solid gray; font-weight: bold; background: #f9f9f9; padding: 5px; text-align: center " ng-class="getCFTLStyle(selected_crew.FTL.Duty7Remain,0)">{{selected_crew.FTL._Duty7Remain}}</td>
+                        <td style="font-size: 12px; text-align: center; border: 1px solid gray; font-weight: bold; background: #f9f9f9; padding: 5px; text-align: center " ng-class="getCFTLStyle(selected_crew.FTL.Duty14Remain,0)">{{selected_crew.FTL._Duty14Remain}}</td>
+                        <td style="font-size: 12px; text-align: center; border : 1px solid gray; font-weight: bold; background: #f9f9f9; padding: 5px; text-align: center " ng-class="getCFTLStyle(selected_crew.FTL.Duty28Remain,0)">{{selected_crew.FTL._Duty28Remain}}</td>
+
+                        <td style="font-size: 12px; text-align: center; border-right: 1px solid gray; font-weight: bold; background: #f9f9f9; padding: 5px; text-align: center " ng-class="getCFTLStyle(selected_crew.FTL.FlightYearRemain,1)"> {{selected_crew.FTL._FlightYearRemain}}</td>
+
                     </tr>
                 </table>
             </div>
@@ -1023,8 +1053,16 @@
                 <!--END GANTT-->
             </div>
             <div class="col-lg-3" style="padding:0">
-
-                <div dx-data-grid="dg_flt" id="dg_flt"></div>
+                
+                <table style="width:100%">
+                    <tr>
+                        <td style="padding:5px 5px 10px 5px;font-size:12px;">Def. Pos.</td>
+                        <td><div dx-select-box="sb_position" class="dx-border"></div></td>
+                        <td style="padding:5px 10px 5px 10px;font-size:12px">Apply to all</td>
+                        <td><div dx-check-box="check_apply_all" class="dx-border"></div></td>
+                    </tr>
+                </table>
+                <div dx-data-grid="dg_flt" id="dg_flt" ></div>
                 <div dx-data-grid="dg_crew_abs" id="dg_crew_abs" class="content" style="overflow-y:hidden"></div>
             </div>
             <div style="clear:both"></div>

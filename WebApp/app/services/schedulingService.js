@@ -1834,7 +1834,7 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
 
         return deferred.promise;
     };
-
+   
     var _getFDPsByYearMonth = function (year, month) {
 
         var deferred = $q.defer();
@@ -1915,6 +1915,22 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
 
         return deferred.promise;
     };
+    //2023
+    //2023
+    
+    var _getFDPIndex = function (key, pos) {
+
+        var deferred = $q.defer();
+        $http.get(apiScheduling + "api/sch/fdp/index/?key="+key+"&pos="+pos).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getFDPIndex = _getFDPIndex;
     //2023
     var _saveDuty = function (entity) {
         var deferred = $q.defer();
@@ -3265,9 +3281,10 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
     };
     serviceFactory.getFDPsCrewCount = _getFDPsCrewCount;
     ///////
+    //2023
     var _getFTLByCrewIds = function (entity) {
         var deferred = $q.defer();
-        $http.post(serviceBaseAPI + 'api/ftl/abs/crews/', entity).then(function (response) {
+        $http.post(apiScheduling + 'api/ftl/abs/crews/', entity).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 

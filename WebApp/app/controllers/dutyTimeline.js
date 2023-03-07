@@ -2505,6 +2505,44 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             switch (key) {
                 case 'FDP':
                     $scope.selected_crew = Enumerable.From($scope.crews).Where('$.CrewId==' + $scope.selected_crew_id).FirstOrDefault();
+                    switch ($scope.selected_crew.JobGroup) {
+                        case 'P1':
+                            $scope.position_ds = ['CPT', 'SAFETY', 'CHECK', 'OBS','D/H'];
+                            $scope.default_pos = 'CPT';
+                            break;
+                        case 'P2':
+                            $scope.position_ds = ['FO', 'SAFETY', 'CHECK', 'OBS','D/H'];
+                            $scope.default_pos = 'FO';
+                            break;
+                        case 'TRE':
+                        case 'TRI':
+                        case 'LTC':
+                        case 'SFE':
+                        case 'SFI':
+                            $scope.position_ds = ['IP','CPT', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
+                            $scope.default_pos = 'IP';
+                            break;
+                        case 'ISCCM':
+                        case 'CCE':
+                        case 'CCI':
+                            $scope.position_ds = ['ISCCM', 'SCCM',  'CHECK', 'OBS', 'D/H'];
+                            $scope.default_pos = 'ISCCM';
+                            break;
+                        case 'SCCM':
+                        case 'SCC':
+                            $scope.position_ds = [ 'SCCM', 'CHECK', 'OBS', 'D/H'];
+                            $scope.default_pos = 'SCCM';
+                            break;
+                        case 'CCM':
+                        case 'CC':
+                            $scope.position_ds = ['CCM', 'CHECK', 'OBS', 'D/H'];
+                            $scope.default_pos = 'CCM';
+                            break;
+
+                        default:
+                            $scope.position_ds = [];
+                            break;
+                    }
                     $scope.popup_flt_visible = true;
                     break;
                 case 'RERRP':
@@ -2764,7 +2802,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         else {
             $scope.flt_selected.push(flt.ID);
             var fltobj = Enumerable.From($scope.gantt_flights).Where(function (x) { return flt.ID == x.ID; }).FirstOrDefault();
-            fltobj.Position = null;
+            fltobj.Position = $scope.default_pos;
             fltobj.DH = false;
             $scope.flt_selected_obj.push(fltobj);
             $scope.flt_selected_obj = Enumerable.From($scope.flt_selected_obj).OrderBy('$.ChocksOut').ToArray();
@@ -2798,6 +2836,16 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         },
         bindingOptions: {
             value: 'useSplit',
+
+        }
+    };
+    $scope.apply_all = true;
+    $scope.check_apply_all = {
+        width: '100%',
+        text: "",
+        
+        bindingOptions: {
+            value: 'apply_all',
 
         }
     };
@@ -2937,7 +2985,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
          
 
     };
-    $scope.position_ds = ['CPT','IP','CHECK','SAFETY','OBS'];
+    $scope.position_ds = [];
     $scope.dg_flt_columns = [
 
 
@@ -3054,6 +3102,26 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         }
     };
 
+    $scope.default_pos = null;
+    $scope.sb_position = {
+        // openOnFieldClick: false,
+        // showDropDownButton: false,
+        showClearButton: false,
+        searchEnabled: false,
+
+        onSelectionChanged: function (arg) {
+            $.each($scope.flt_selected_obj, function (_i, _d) {
+                _d.Position = $scope.default_pos;
+            });
+        },
+        
+        bindingOptions: {
+            value: 'default_pos',
+            dataSource:'position_ds'
+
+
+        }
+    };
 
     $scope.dg_crew_abs_columns = [
         { dataField: 'FlightNumber', caption: 'No', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 70, fixed: false, fixedPosition: 'left' },
@@ -3122,7 +3190,180 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         }
     };
 
+    $scope.getDefaultPos = function (grp) {
+        switch (grp) {
+            case 'P1':
+                return 'P1';
+            case 'P2':
+                return 'P2';
+            case 'TRE':
+            case 'TRI':
+            case 'LTC':
+            case 'SFI':
+            case 'SFE':
+                return 'IP';
+            case 'ISCCM':
+            case 'CCI':
+            case 'CCE':
+                return 'ISCCM';
+            case 'SCCM':
+                return 'SCCM';
+            case 'CCM':
+            case 'CC':
+                return 'CCM';
+            default:
+                return grp;
+        }
+    };
+    $scope.getPosScore = function (pos) {
+        switch (pos) {
+            case 'IP':
+                return 1000;
+            case 'P1':
+            case 'CPT':
+                return 950;
+            case 'FO':
+            case 'P2':
+                return 900;
+            case 'CCE':
+                return 850;
+            case 'ISCCM':
+            case 'CCI':
+                return 800;
+            case 'CCM':
+            case 'CC':
+                return 750;
+            case 'SAFETY':
+            case 'SO':
+                return 700;
+            case 'CHECK':
+                return 650;
+            case 'OBS':
+                return 600;
+            default:
+                return 0;
+        }
+    }
+    $scope.getPos = function (str) {
+        switch (str) {
+            case 'CPT':
+                return 'P1';
+            case 'FO':
+                return 'P2';
 
+            default:
+                return str;
+        }
+    }
+    $scope.getMainPos = function (ids) {
+        var d = Enumerable.From(ids).OrderByDescending(function (x) { return $scope.getPosScore(x.pos); }).ToArray();
+        return d[0].pos;
+    }
+    $scope.getFtlAbs = function (crewid, dt,callback) {
+        var crewIds = [];
+        crewIds.push(crewid);
+        var date = moment(new Date(dt)).format("YYYY-MM-DD");
+        var dto = {
+            CDate: date,
+            CrewIds: crewIds,
+        };
+        console.log('ftl',dto);
+        schedulingService.getFTLByCrewIds(dto).then(function (response) {
+            var sumFLT28 = 0;
+            var sumFL = 0;
+            $.each(response, function (_i, _d) {
+                sumFL += _d.Ratio ? _d.Ratio : 0;
+                sumFLT28 += _d.Flight28 ? _d.Flight28 : 0;
+                _d._Duty7 = $scope.formatMinutes(_d.Duty7);
+                _d._Duty7Remain = $scope.formatMinutes(_d.Duty7Remain);
+                _d._Duty14 = $scope.formatMinutes(_d.Duty14);
+                _d._Duty14Remain = $scope.formatMinutes(_d.Duty14Remain);
+                _d._Duty28 = $scope.formatMinutes(_d.Duty28);
+                _d._Duty28Remain = $scope.formatMinutes(_d.Duty28Remain);
+                _d._Flight28 = $scope.formatMinutes(_d.Flight28);
+                _d._Flight28Remain = $scope.formatMinutes(_d.Flight28Remain);
+                _d._FlightCYear = $scope.formatMinutes(_d.FlightCYear);
+                _d._FlightCYearRemain = $scope.formatMinutes(_d.FlightCYearRemain);
+                _d._FlightYear = $scope.formatMinutes(_d.FlightYear);
+                _d._FlightYearRemain = $scope.formatMinutes(_d.FlightYearRemain);
+                
+            });
+            if (response.length > 0) {
+                $scope.FLT28Avg = (sumFLT28 * 1.0) / response.length;
+                $scope.FLAvg = (sumFL * 1.0) / response.length;
+            }
+            callback(response);
+
+        }, function (err) { });
+
+    };
+
+    $scope.getFLT28Class = function (x) {
+        if ($scope.FLT28Avg) {
+            if (x >= $scope.FLT28Avg)
+                return "";
+            var diff = Math.abs((x - $scope.FLT28Avg) / ($scope.FLT28Avg * 1.0));
+            if (diff > 0.15)
+                return " aboveavg";
+            return "";
+        }
+
+        return "";
+    };
+
+    $scope.getFLClass = function (x) {
+        if ($scope.FLAvg) {
+            if (x >= $scope.FLAvg)
+                return "";
+            var diff = Math.abs((x - $scope.FLAvg) / ($scope.FLAvg * 1.0));
+            if (diff > 0.15)
+                return " aboveavg";
+            return "";
+        }
+
+        return "";
+    };
+
+    $scope.getCertificationStyle = function (_d) {
+        var style = { background: '#f7f7f7' };
+        var isValid = true;
+        if ((!_d.RemainMedical && _d.RemainMedical !== 0) || _d.RemainMedical < 0)
+            return { background: '#cc0000' };
+
+        return style;
+    };
+
+    $scope.getCertificationStyle = function (_d) {
+        var style = { background: '#f7f7f7' };
+        var isValid = true;
+        if ((!_d.RemainMedical && _d.RemainMedical !== 0) || _d.RemainMedical < 0)
+            return { background: '#cc0000' };
+
+        return style;
+    };
+    $scope.calculateOrder = function (c) {
+        if (!c.FTL) {
+            console.log('c FTL is null', c);
+            return;
+        }
+        if (!c.FTL.Flight28Remain && c.FTL.Flight28Remain !== 0)
+            return 10000;
+        return Number(c.FTL.Flight28Remain);
+    };
+    $scope.getCFTLStyle = function (v, t) {
+        if (!$scope.FDPStat.Duty || !$scope.FDPStat.Flight)
+            return;
+        var m = $scope.FDPStat.Duty;
+        if (t == 1)
+            m = $scope.FDPStat.Flight;
+
+        var n = v - m;
+
+        if (n < 0) return " isover";
+        else
+            return "";
+
+    };
     $scope.popup_flt_visible = false;
     $scope.popup_flt_title = 'Flights';
     $scope.popup_flt = {
@@ -3137,7 +3378,102 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'success', text: 'Save', icon: 'save', onClick: function (e) {
-                        
+                        //test obs,check for cockpit and cabin
+                        var dto = {
+                            Id: -1,
+                            IsGantt:1,
+                            IsAdmin: $scope.isAdmin ? 1 : 0, 
+                            Extension: Math.round($scope.FDPStat.Extended),
+                            UserName: $rootScope.userName,
+                            CrewId: $scope.selected_crew.CrewId,
+                        };
+                        var _ids = [];
+                        $.each($scope.flt_selected_obj, function (_i, _d) {
+                            var _id = { id: _d.ID, dh: _d.Position == 'DH' || _d.Position=='D/H' ? 1 : 0 };
+                            _id.pos = _d.Position == 'DH' ? $scope.getDefaultPos($scope.selected_crew.JobGroup) : $scope.getPos(_d.Position);
+                            _ids.push(_id);
+
+                        });
+                        dto.ids = _ids;
+                        dto.rank = $scope.getPos( $scope.getMainPos(_ids));
+                        dto.group = $scope.selected_crew.JobGroup;
+                        dto.no = Enumerable.From($scope.flt_selected_obj).Select('$.FlightNumber').ToArray().join('_');
+                        dto.key = Enumerable.From($scope.flt_selected_obj).Select('$.ID').ToArray().join('_');
+                        dto.key2 = Enumerable.From(_ids).Select('$.id+"*"+$.dh').ToArray().join('_');
+                        dto.scheduleName = $scope.selected_crew.ScheduleName;
+                        dto.from = $scope.flt_selected_obj[0].FromAirportId;
+                        dto.to = $scope.flt_selected_obj[$scope.flt_selected_obj.length-1].ToAirportId;
+                        dto.homeBase = $scope.selected_crew.BaseAirportId;
+                        dto.split = $scope.useSplit;
+                        dto.maxFDP = $scope.FDPStat.MaxFDPExtended;
+                        dto.flights = [];
+                        console.log(dto);
+                        //yook
+                        schedulingService.getFDPIndex(dto.key2,dto.rank).then(function (responsex) {
+                            //alert(response);
+                            ///////////////
+                            ///////////////
+                            dto.index = responsex;
+                            schedulingService.saveFDP(dto).then(function (response) {
+                                $scope.loadingVisible = false;
+
+                                if (response.Code == 406) {
+                                    if (response.data.message) {
+                                        var myDialog = DevExpress.ui.dialog.custom({
+                                            rtlEnabled: true,
+                                            title: "Error",
+                                            message: response.data.message,
+                                            buttons: [{ text: "OK", onClick: function () { } }]
+                                        });
+                                        myDialog.show();
+                                    }
+
+                                } else
+                                    if (response.Code == 501) {
+                                        General.Confirm("The selected crew is on STANDBY. Do you want to activate him/her?", function (res) {
+                                            if (res) {
+
+                                                $scope.activeStby(crew, response.data.Id, fdp.rank, fdp.index, fdp);
+                                               
+                                            }
+                                        });
+                                    }
+                                    else
+                                        if (response.Code == 304) {
+                                            var myDialog = DevExpress.ui.dialog.custom({
+                                                rtlEnabled: true,
+                                                title: "Error",
+                                                message: "You can not activate this reserved crew.",
+                                                buttons: [{ text: "OK", onClick: function () { } }]
+                                            });
+                                            myDialog.show();
+                                        }
+                                        else {
+                                            dto.Id = response.data.Id;
+
+                                            //$scope.ati_fdps.push(fdp);
+
+                                            //$scope.currentAssigned.CrewIds.push(crew.Id);
+                                            //$scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString() + 'Id'] = crew.Id;
+                                            //$scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString()] = crew.ScheduleName;
+                                            //$scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString() + 'Group'] = crew.JobGroup;
+                                            //if (!crew.FlightSum)
+                                            //    crew.FlightSum = 0;
+                                            //crew.FlightSum += $scope.FDPStat.Flight;
+                                            //$scope.fillFilteredCrew();
+                                            //$scope.fillRangeFdps();
+                                            //$scope.fillFlightCrews();
+                                            //$scope.fillRangeCrews();
+                                            //$scope.getAssigned();
+                                        }
+
+                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                            //////////////
+                            ///////////////
+                        });
+
+
                     }
                 }, toolbar: 'bottom'
             },
@@ -3153,9 +3489,14 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
         },
         onShown: function (e) {
+            console.log($scope.selected_crew);
             $scope.prepare_gantt_flt();
-            $scope.getFlights(new Date(2023, 2, 6));
-
+            var dt = $scope.contextMenuCellData.startDate;
+            $scope.getFlights(new Date(dt));
+            $scope.getFtlAbs($scope.selected_crew.CrewId, dt, function (ftl) {
+                $scope.selected_crew.FTL = ftl[0];
+                console.log('crew ftl', $scope.selected_crew);
+            });
            
             $scope.dg_flt_instance.repaint();
             $scope.dg_crew_abs_instance.repaint();
