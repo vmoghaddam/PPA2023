@@ -568,7 +568,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         return style;
     }
     $scope.getDutyTextStyle = function (f) {
-        var types = [1167, 1168];
+        var types = [1167, 1168,300013];
         var i = types.indexOf(f.DutyType);
         return i == -1 ? { color: 'white' } : { color: 'black' };
     };
@@ -933,7 +933,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
 
     };
-    var col_height_gap = 500;
+    var col_height_gap = 150;
     $scope.getLeftColumnStyle = function () {
         var _height = $(window).height() - col_height_gap;
         return {
@@ -1001,6 +1001,10 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         var dt_str = moment(new Date(dt.date)).format('YYYY-MM-DD');
         return res.CrewId + '_' + dt_str;
     };
+    $scope.getCellDutyId = function (dty) {
+        var dt_str = dty.CrewId + '_' + dty.Id;
+        return dt_str;
+    };
     $scope.prepare_gantt();
 
 
@@ -1032,8 +1036,40 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
     };
     $scope.getDuties = function (df, dt, callback) {
+        var _code = '';
+        switch ($scope.rank) {
+            case 'IP,P1':
+                _code = 1;
+                break;
+            case 'P1':
+                _code = 2;
+                break;
+            case 'P2':
+                _code = 3;
+                break;
+            case 'TRE':
+                _code = 4;
+                break;
+            case 'TRI':
+                _code = 5;
+                break;
+            case 'ISCCM,SCCM':
+                _code = 6;
+                break;
+            case 'ISCCM':
+                _code = 7;
+                break;
+            case 'SCCM':
+                _code = 8;
+                break;
+            case 'CCM':
+                _code = 9;
+                break;
+            default:
+                break;
+        }
         $scope.loadingVisible = true;
-        schedulingService.getDutiesForGanttByDateNew(df, dt).then(function (response) {
+        schedulingService.getDutiesForGanttByDateNew(df, dt,_code).then(function (response) {
 
             $scope.loadingVisible = false;
             $.each(response, function (_i, _c) {
@@ -1060,7 +1096,12 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
 
     }
-
+    $scope.getHomeBase = function (dty) {
+        var cl = 'white';
+        if (dty.OutOfHomeBase)
+            cl = 'yellow';
+        return {color:cl};
+    };
     $scope.getCrew = function (callback) {
 
 
@@ -1070,7 +1111,38 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         $scope.loadingVisible = true;
         // schedulingService.getCrewForRosterByDateNew(1, _dt).then(function (response) {
         var _code = '';
-        schedulingService.getCrewForGanttByDateNew(_code, _dt).then(function (response) {
+        switch ($scope.rank) {
+            case 'IP,P1':
+                _code = 1;
+                break;
+            case 'P1':
+                _code = 2;
+                break;
+            case 'P2':
+                _code = 3;
+                break;
+            case 'TRE':
+                _code = 4;
+                break;
+            case 'TRI':
+                _code = 5;
+                break;
+            case 'ISCCM,SCCM':
+                _code = 6;
+                break;
+            case 'ISCCM':
+                _code = 7;
+                break;
+            case 'SCCM':
+                _code = 8;
+                break;
+            case 'CCM':
+                _code = 9;
+                break;
+            default:
+                break;
+        }
+        schedulingService.getCrewForGanttByDateNew(_code, '', _dt).then(function (response) {
 
             $scope.loadingVisible = false;
 
@@ -1156,12 +1228,13 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         $scope.ganttData = {};
         $scope.totalHeight = 0;
         $scope.getCrew(function (crews) {
-
+          
             $scope.getDuties(_df, _dt, function (dts) {
                 $scope.duties = dts;
                 crews.duties = [];
 
                 $.each(crews, function (_i, _d) {
+                    _d.dates = [];
                     var cdts = Enumerable.From(dts).Where('$.CrewId==' + _d.CrewId).FirstOrDefault();
                     if (cdts)
 
@@ -1227,6 +1300,12 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                     $scope.ganttData.dates.push({
                         date: new Date(tempDate),
                         caption: moment(tempDate).format("MMM-DD")
+                    });
+                    $.each($scope.crews, function (_j, _c) {
+                        _c.dates.push({
+                            date: new Date(tempDate),
+                            caption: moment(tempDate).format("MMM-DD")
+                        });
                     });
                     tempDate = tempDate.addDays(1);
                     i++;
@@ -1360,6 +1439,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 return "STBY AM";
             case 1167:
                 return "STBY PM";
+            case 300013:
+                return "STBY C";
             case 300014:
                 return "BRF";
             
@@ -1369,7 +1450,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     }
 
     $scope.getDutyClass = function (duty) {
-        return 'duty-' + duty.DutyType;
+        return 'obj-duty duty-' + duty.DutyType;
     }
 
     $scope.bindFlights = function (callback) {
@@ -2108,6 +2189,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                         else if ($scope.event_status == 5000 || $scope.event_status == 5001 || $scope.event_status == 300014
                             || $scope.event_status == 100001 || $scope.event_status == 100003 || $scope.event_status == 1170 || $scope.event_status == 1167
                             || $scope.event_status == 1168
+                            || $scope.event_status == 300013
                         ) {
                             //nool
 
@@ -2575,6 +2657,21 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 case 'GROUND':
                     $scope.assign100000();
                     break;
+                case 'STBY-AM':
+                    //1168
+                    $scope.addStby(1168);
+                    break;
+                case 'STBY-PM':
+                    //1167
+                    $scope.addStby(1167);
+                    break;
+                case 'STBY-C':
+                    //300013
+                    $scope.addStby(300013);
+                    break;
+                case 'RESERVE':
+                    $scope.addStby(1170);
+                    break;
                 default:
                     break;
             }
@@ -2585,6 +2682,123 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         
         //$scope.contextMenuCellData.startDate
       
+    };
+    $scope.delete_event = function (key, id) {
+        $scope.$apply(function () {
+            var prts = id.split('_');
+            var crew_id = prts[0];
+            var duty_id = prts[1];
+
+            var dto = { fdp: duty_id };
+
+            $scope.loadingVisible = true;
+            schedulingService.saveDeleteFDP(dto).then(function (response) {
+                $scope.loadingVisible = false;
+                //khar
+                var resource = Enumerable.From($scope.ganttData.resources).Where('$.CrewId==' + crew_id).FirstOrDefault();
+
+                 
+
+                resource.duties = Enumerable.From(resource.duties).Where('$.Id!=' + duty_id).ToArray();
+                $.each(resource.duties, function (_j, _f) {
+                    _f.top = null;
+                });
+                $scope.setTopDuty(resource.duties);
+                resource.maxTop = Enumerable.From(resource.duties).Select('Number($.top)').Max();
+                 
+
+            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+             
+
+        });
+
+
+
+        //$scope.contextMenuCellData.startDate
+
+    };
+    $scope.getRoute = function (str) {
+        if (!str)
+            return "";
+        return str.replaceAll(',', ' ');
+    }
+
+    $scope.addStby = function (  _type) {
+        $scope.selected_crew = Enumerable.From($scope.crews).Where('$.CrewId==' + $scope.selected_crew_id).FirstOrDefault();
+       
+       
+        var dto = {
+            date: new Date($scope.contextMenuCellData.startDate),
+            crewId: $scope.selected_crew.CrewId,
+            type: _type,
+            isgantt:1,
+        };
+        ///////////////////////////////
+        $scope.loadingVisible = true;
+        schedulingService.saveSTBY(dto).then(function (response) {
+            $scope.loadingVisible = false;
+
+            if (response.Code == 406) {
+                if (response.message) {
+                    var myDialog = DevExpress.ui.dialog.custom({
+                        rtlEnabled: true,
+                        title: "Error",
+                        message: crew.ScheduleName + ": " + response.message,
+                        buttons: [{ text: "OK", onClick: function () { } }]
+                    });
+                    myDialog.show();
+                }
+
+            }
+            else {
+                //dlubaz
+                var gres = response ;
+
+                var resource = Enumerable.From($scope.ganttData.resources).Where('$.CrewId==' + $scope.selected_crew.CrewId).FirstOrDefault();
+
+                var offset1 = -1 * (new Date(gres.InitStart)).getTimezoneOffset();
+                gres.InitStart = (new Date(gres.InitStart)).addMinutes(offset1);
+
+                var offset2 = -1 * (new Date(gres.InitEnd)).getTimezoneOffset();
+                gres.InitEnd = (new Date(gres.InitEnd)).addMinutes(offset2);
+
+                var offset3 = -1 * (new Date(gres.InitRestTo)).getTimezoneOffset();
+                gres.InitRestTo = (new Date(gres.InitRestTo)).addMinutes(offset3);
+
+
+                resource.duties.push(gres);
+                $.each(resource.duties, function (_j, _f) {
+                    _f.top = null;
+                });
+                $scope.setTopDuty(resource.duties);
+                resource.maxTop = Enumerable.From(resource.duties).Select('Number($.top)').Max();
+
+
+
+                //$scope.dg_crew_stby_ds = Enumerable.From($scope.ds_crew).Where(function (x) {
+                //    return x.Id != _crew.Id && (($scope.IsCabin && x.JobGroupCode.startsWith('00102')) || ($scope.IsCockpit && x.JobGroupCode.startsWith('00101')));
+                //}).OrderBy('$.GroupOrder').ThenBy('$.ScheduleName').ToArray();
+                //if (_type == 1168) {
+                //    $scope.AmDs.push(response);
+                //    $scope.AmDs = Enumerable.From($scope.AmDs).OrderBy('$.OrderIndex').ThenBy('$.ScheduleName').ToArray();
+                //}
+                //else if (_type == 1167) {
+                //    $scope.PmDs.push(response);
+                //    $scope.PmDs = Enumerable.From($scope.PmDs).OrderBy('$.OrderIndex').ThenBy('$.ScheduleName').ToArray();
+                //}
+                //else {
+                //    $scope.ReservedDs.push(response);
+                //    $scope.ReservedDs = Enumerable.From($scope.ReservedDs).OrderBy('$.OrderIndex').ThenBy('$.ScheduleName').ToArray();
+                //}
+
+
+            }
+
+        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+        ////////////////////////////////
     };
 
     //////////////////////////
@@ -2687,7 +2901,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
 
     };
-    var col_height_gap_flt = 500;
+    var col_height_gap_flt = 350;
     $scope.getLeftColumnStyle_flt = function () {
         var _height = $(window).height() - col_height_gap_flt;
         return {
@@ -2990,8 +3204,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
 
         { dataField: 'FlightNumber', caption: 'No',width:'60', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, fixed: false, fixedPosition: 'left' },
-        { dataField: 'FromAirportIATA', caption: 'From',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
-        { dataField: 'ToAirportIATA', caption: 'To',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
+       // { dataField: 'FromAirportIATA', caption: 'From',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
+       // { dataField: 'ToAirportIATA', caption: 'To',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
         //{ dataField: 'Position', caption: 'POS', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
         {
             allowEditing: true,
@@ -3014,7 +3228,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.dg_flt_selected = null;
     $scope.dg_flt_instance = null;
     $scope.dg_flt_ds = null;
-    $scope.dg_flt_height = 300;
+    $scope.dg_flt_height = 300; //$(window).height() -   550; 
     $scope.dg_flt = {
         headerFilter: {
             visible: false
@@ -3158,7 +3372,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
         columnAutoWidth: false,
         //2020-10-27 1 s
-        height: 250,// $(window).height() - 250,// 490 
+        height:300, //$(window).height() - 500,
 
         columns: $scope.dg_crew_abs_columns,
         onContentReady: function (e) {
@@ -3369,7 +3583,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.popup_flt = {
         shading: true,
         width: $(window).width()-100,
-        height: $(window).height() - 100,
+        height: $(window).height() - 50,
         fullScreen: false,
         showTitle: true,
         dragEnabled: true,
@@ -3414,6 +3628,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                             ///////////////
                             ///////////////
                             dto.index = responsex;
+                            $scope.loadingVisible = true;
                             schedulingService.saveFDP(dto).then(function (response) {
                                 $scope.loadingVisible = false;
 
@@ -3449,8 +3664,32 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                                             myDialog.show();
                                         }
                                         else {
-                                            dto.Id = response.data.Id;
+                                            console.log('fdp', response);
+                                            var gres = response.data;
 
+                                            var resource = Enumerable.From($scope.ganttData.resources).Where('$.CrewId==' + $scope.selected_crew.CrewId).FirstOrDefault();
+
+                                            var offset1 = -1 * (new Date(gres.InitStart)).getTimezoneOffset();
+                                            gres.InitStart = (new Date(gres.InitStart)).addMinutes(offset1);
+
+                                            var offset2 = -1 * (new Date(gres.InitEnd)).getTimezoneOffset();
+                                            gres.InitEnd = (new Date(gres.InitEnd)).addMinutes(offset2);
+
+                                            var offset3 = -1 * (new Date(gres.InitRestTo)).getTimezoneOffset();
+                                            gres.InitRestTo = (new Date(gres.InitRestTo)).addMinutes(offset3);
+
+
+                                            resource.duties.push(gres);
+                                            $.each(resource.duties, function (_j, _f) {
+                                                _f.top = null;
+                                            });
+                                            $scope.setTopDuty(resource.duties);
+                                            resource.maxTop = Enumerable.From(resource.duties).Select('Number($.top)').Max();
+
+
+                                            $scope.dg_crew_abs_ds = [];
+
+                                            $scope.popup_flt_visible = false;
                                             //$scope.ati_fdps.push(fdp);
 
                                             //$scope.currentAssigned.CrewIds.push(crew.Id);
@@ -3491,6 +3730,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         onShown: function (e) {
             console.log($scope.selected_crew);
             $scope.prepare_gantt_flt();
+            $scope._datefrom_flt = $scope.contextMenuCellData.startDate;
+            $scope.datefrom_flt = General.getDayFirstHour(new Date($scope._datefrom_flt));
             var dt = $scope.contextMenuCellData.startDate;
             $scope.getFlights(new Date(dt));
             $scope.getFtlAbs($scope.selected_crew.CrewId, dt, function (ftl) {
@@ -3521,7 +3762,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
     $scope.ganttFlightData = {};
 
-    $scope._datefrom_flt = new Date(2023, 2, 6);
+    $scope._datefrom_flt = new Date();  // new Date(2023, 2, 6);
     $scope.datefrom_flt = General.getDayFirstHour(new Date($scope._datefrom_flt));
 
      
@@ -3622,76 +3863,115 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                         name: "<span style='font-weight: bold'>FDP</span>",
                         isHtmlName: true, icon: "add"
                     },
-                    "sep1000": "---------",
+                  //  "sep1000": "---------",
+                    "STBY-AM": {
+                        name: "<span style='font-weight: bold'>STBY-AM</span>",
+                        isHtmlName: true, icon: "add"
+                    },
+                  //  "sep1001": "---------",
+                    "STBY-PM": {
+                        name: "<span style='font-weight: bold'>STBY-PM</span>",
+                        isHtmlName: true, icon: "add"
+                    },
+                  //  "sep1002": "---------",
+                    "STBY-C": {
+                        name: "<span style='font-weight: bold'>STBY-C</span>",
+                        isHtmlName: true, icon: "add"
+                    },
+                   // "sep1003": "---------",
+                    "RESERVE": {
+                        name: "<span style='font-weight: bold'>RESERVE</span>",
+                        isHtmlName: true, icon: "add"
+                    },
+                  //  "sep1004": "---------",
                     "RERRP": {
                         name: "<span style='font-weight: bold'>RERRP</span>",
                         isHtmlName: true, icon: "add"
                     },
-                    "sep1": "---------",
+                   // "sep1": "---------",
 
                     "OFF": {
                         name: "<span style='font-weight: bold'>OFF</span>",
                         isHtmlName: true, icon: "add"
                     },
-                    "sep2": "---------",
+                   // "sep2": "---------",
                     "REQUESTED OFF": {
                         name: "<span style='font-weight: bold'>REQUESTED OFF</span>",
                         isHtmlName: true, icon: "add"
                     },
-                    "sep3": "---------",
+                   // "sep3": "---------",
                     "VACATION": {
                         name: "<span style='font-weight: bold'>VACATION</span>",
                         isHtmlName: true, icon: "add"
                     },
-                    "sep4": "---------",
+                   // "sep4": "---------",
                     "SICK": {
                         name: "<span style='font-weight: bold'>SICK</span>",
                         isHtmlName: true, icon: "add"
                     },
-                    "sep4": "---------",
+                    //"sep5": "---------",
                     "GROUND": {
                         name: "<span style='font-weight: bold'>GROUND</span>",
                         isHtmlName: true, icon: "add"
                     },
-                    "sep4": "---------",
+                   
                     "EXP. LICENCE": {
                         name: "<span style='font-weight: bold'>EXP. LICENCE</span>",
                         isHtmlName: true, icon: "add"
                     },
-                    "sep4": "---------",
+                   
                     "EXP. MEDICAL": {
                         name: "<span style='font-weight: bold'>EXP. MEDICAL</span>",
                         isHtmlName: true, icon: "add"
                     },
-                    "sep4": "---------",
+                  
                     "EXP. PASSPORT": {
                         name: "<span style='font-weight: bold'>EXP. PASSPORT</span>",
                         isHtmlName: true, icon: "add"
                     },
                    
-                    "sep4": "---------",
+                    
                     "DUTY": {
                         name: "<span style='font-weight: bold'>DUTY</span>",
                         isHtmlName: true, icon: "add"
                     },
 
-                    "sep4": "---------",
-                    "cut": { name: "Cut", icon: "cut" },
-                    copy: { name: "Copy", icon: "copy" },
-                    "paste": { name: "Paste", icon: "paste" },
-                    "delete": { name: "Delete", icon: "delete" },
-
-                    "quit": {
-                        name: "Quit", icon: function () {
-                            return 'context-menu-icon context-menu-icon-quit';
-                        }
-                    }
+                     
                 }
             });
 
             $('.context-menu-one').on('click', function (e) {
                 console.log('clicked', this);
-            })
+            });
+
+
+            
+                $.contextMenu({
+                    selector: '.obj-duty',
+                    callback: function (itemKey, opt, e) {
+                        // Alert the key of the item and the trigger element's id.
+
+                        // alert("Clicked on " + itemKey + " on element " + opt.$trigger[0].id);
+                        $scope.delete_event(itemKey, opt.$trigger[0].id);
+                        // Do not close the menu after clicking an item
+                        //return true;
+                    },
+                    items:
+                    {
+                        "DELETE": {
+                            name: "<span style='font-weight: bold'>DELETE</span>",
+                            isHtmlName: true, icon: "delete"
+                        },
+                       
+
+
+                    }
+                });
+
+
+
+
+
         });
 
     });
