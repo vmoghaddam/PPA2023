@@ -1,4 +1,6 @@
 ﻿'use strict';
+ 
+
 app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams', '$rootScope', '$timeout', 'flightService', 'weatherService', 'aircraftService', 'authService', 'notificationService', '$route', '$window', 'schedulingService', function ($scope, $location, $routeParams, $rootScope, $timeout, flightService, weatherService, aircraftService, authService, notificationService, $route, $window, schedulingService) {
     $scope.OnlyRoster = false;
     if ($rootScope.userName.toLowerCase() == 'train.moradi' || $rootScope.userName.toLowerCase() == 'mohammadifard')
@@ -580,7 +582,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         return style;
     }
     $scope.getDutyTextStyle = function (f) {
-        var types = [1167, 1168,300013];
+        var types = [1167, 1168, 300013];
         var i = types.indexOf(f.DutyType);
         return i == -1 ? { color: 'white' } : { color: 'black' };
     };
@@ -833,8 +835,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
     };
     $scope.bindFTL = function () {
-       
-        
+
+
         if (!$scope.dt_ftl)
             return;
         $scope.data_ftl = null;
@@ -1127,12 +1129,12 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.IsConflictDuty = function (flt, x) {
         //moment(x.STD).format('YYYYDDMMHHmm')
         var fltDep = moment(new Date(flt.InitStart)).format('YYYYDDMMHHmm'); //getMinDate(new Date(flt.STD), new Date(flt.ChocksOut));
-        var xDep =   moment(new Date(x.InitStart)).format('YYYYDDMMHHmm'); //getMinDate(new Date(x.STD), new Date(x.ChocksOut));
+        var xDep = moment(new Date(x.InitStart)).format('YYYYDDMMHHmm'); //getMinDate(new Date(x.STD), new Date(x.ChocksOut));
 
-        var fltArr =  moment(new Date(flt.InitRestTo)).format('YYYYDDMMHHmm');//getMaxDate(new Date(flt.STA), new Date(flt.ChocksIn));
-        var xArr =   moment(new Date(x.InitRestTo)).format('YYYYDDMMHHmm');// getMaxDate(new Date(x.STA), new Date(x.ChocksIn));
+        var fltArr = moment(new Date(flt.InitRestTo)).format('YYYYDDMMHHmm');//getMaxDate(new Date(flt.STA), new Date(flt.ChocksIn));
+        var xArr = moment(new Date(x.InitRestTo)).format('YYYYDDMMHHmm');// getMaxDate(new Date(x.STA), new Date(x.ChocksIn));
 
-       
+
 
 
         return (fltDep > xDep && fltDep < xArr) || (fltArr > xDep && fltArr < xArr)
@@ -1296,7 +1298,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
 
 
-   
+
     $scope.prepare_gantt = function () {
         // angular.element(document.querySelector('.col-duty')).bind('scroll', function (e) {
         //     console.log('scroll', e);
@@ -1445,7 +1447,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 break;
         }
         $scope.loadingVisible = true;
-        schedulingService.getDutiesForGanttByDateNew(df, dt,_code).then(function (response) {
+        schedulingService.getDutiesForGanttByDateNew(df, dt, _code).then(function (response) {
 
             $scope.loadingVisible = false;
             $.each(response, function (_i, _c) {
@@ -1460,8 +1462,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                     var offset3 = -1 * (new Date(_d.InitRestTo)).getTimezoneOffset();
                     _d.InitRestTo = (new Date(_d.InitRestTo)).addMinutes(offset3);
                 });
-               
-              
+
+
             });
             if (callback) {
                 callback(response);
@@ -1476,7 +1478,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         var cl = 'white';
         if (dty.OutOfHomeBase)
             cl = 'yellow';
-        return {color:cl};
+        return { color: cl };
     };
     $scope.getCrew = function (callback) {
 
@@ -1587,7 +1589,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.popup_profile_visible = false;
     $scope.popup_profile_title = 'Profile';
 
-    $scope.scroll_profile_height = $(window).height() - 100 - 150;
+    $scope.scroll_profile_height = $(window).height() - 100 - 180;
     $scope.scroll_profile = {
         scrollByContent: true,
         scrollByThumb: true,
@@ -1602,7 +1604,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         shading: true,
         //position: { my: 'left', at: 'left', of: window, offset: '5 0' },
         height: $(window).height() - 100,
-        width:1100,
+        width: 1100,
         fullScreen: false,
         showTitle: true,
         dragEnabled: true,
@@ -1681,7 +1683,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         }
     };
     $scope.tabsprofile = [
-        { text: "Main", id: 'profilemain', visible_btn: false },
+        { text: "Certificates/Licences", id: 'profilemain', visible_btn: false },
         { text: "FTL", id: 'profileftl', visible_btn: false },
         { text: "Flights", id: 'profileflights', visible_btn: false },
         { text: "Duties", id: 'profileduties', visible_btn: false },
@@ -1736,56 +1738,65 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     };
 
     $scope.profile = { certificates: [] };
+    $scope.profile_crew = null;
+    $scope.bind_profile_cer = function () {
+        $scope.profile.certificates = Enumerable.From($scope.getCrewCerStatus($scope.profile_crew, $scope.dt_ftl).certificates).OrderBy('$.remain').ToArray();
+    };
+    $scope.showProfile2 = function () {
+        console.log($scope.selected_crew);
+        $scope.showProfile($scope.selected_crew.item, $scope.contextMenuCellData.startDate);
+    }
     $scope.showProfile = function (c, dt) {
-         
+
         console.log(c);
         if (dt)
             $scope.dt_ftl = new Date(dt);
         else $scope.dt_ftl = new Date();
         $scope.profile = { certificates: [] };
         var crew = c;//Enumerable.From($scope.ds_crew).Where('$.Id==' + c.Id).FirstOrDefault();
+        $scope.profile_crew = c;
         if (!crew)
             return;
         $scope.profile = JSON.parse(JSON.stringify(crew));
-        $scope.profile.certificates = [];
 
-        $scope.profile.certificates.push({ Title: 'Flight Crew Licence', Issue: $scope.profile.LicenceIssued, Expire: $scope.profile.LicenceExpired });
-        $scope.profile.certificates.push({ Title: 'Crew Member Certificate', Issue: null, Expire: $scope.profile.CMCExpired });
-        $scope.profile.certificates.push({ Title: 'Medical', Issue: $scope.profile.MedicalIssued, Expire: $scope.profile.MedicalExpired });
+        $scope.bind_profile_cer();
+        //$scope.profile.certificates.push({ Title: 'Flight Crew Licence', Issue: $scope.profile.LicenceIssued, Expire: $scope.profile.LicenceExpired });
+        //$scope.profile.certificates.push({ Title: 'Crew Member Certificate', Issue: null, Expire: $scope.profile.CMCExpired });
+        //$scope.profile.certificates.push({ Title: 'Medical', Issue: $scope.profile.MedicalIssued, Expire: $scope.profile.MedicalExpired });
 
 
-        $scope.profile.certificates.push({ Title: 'SEPT Theoretical', Issue: $scope.profile.SEPTIssued, Expire: $scope.profile.SEPTExpired });
-        $scope.profile.certificates.push({ Title: 'SEPT Practical', Issue: $scope.profile.SEPTPIssued, Expire: $scope.profile.SEPTPExpired });
+        //$scope.profile.certificates.push({ Title: 'SEPT Theoretical', Issue: $scope.profile.SEPTIssued, Expire: $scope.profile.SEPTExpired });
+        //$scope.profile.certificates.push({ Title: 'SEPT Practical', Issue: $scope.profile.SEPTPIssued, Expire: $scope.profile.SEPTPExpired });
 
-        $scope.profile.certificates.push({ Title: 'Dangerous Goods', Issue: $scope.profile.DGIssued, Expire: $scope.profile.DGExpired });
-        $scope.profile.certificates.push({ Title: 'CRM', Issue: $scope.profile.CRMIssued, Expire: $scope.profile.CRMExpired });
-        $scope.profile.certificates.push({ Title: 'CCRM', Issue: $scope.profile.CCRMIssued, Expire: $scope.profile.CCRMExpired });
+        //$scope.profile.certificates.push({ Title: 'Dangerous Goods', Issue: $scope.profile.DGIssued, Expire: $scope.profile.DGExpired });
+        //$scope.profile.certificates.push({ Title: 'CRM', Issue: $scope.profile.CRMIssued, Expire: $scope.profile.CRMExpired });
+        //$scope.profile.certificates.push({ Title: 'CCRM', Issue: $scope.profile.CCRMIssued, Expire: $scope.profile.CCRMExpired });
 
-        $scope.profile.certificates.push({ Title: 'SMS', Issue: $scope.profile.SMSIssued, Expire: $scope.profile.SMSExpired });
-        $scope.profile.certificates.push({ Title: 'Aviation Security', Issue: $scope.profile.AvSecIssued, Expire: $scope.profile.AvSecExpired });
-        //cockpit
-        if (crew.JobGroupCode.startsWith('00101')) {
-            if (crew.JobGroupCode == '0010103' || crew.JobGroupCode == '0010104') {
-                $scope.profile.certificates.push({ Title: 'TRE', Issue: null, Expire: $scope.profile.TREExpired });
-                $scope.profile.certificates.push({ Title: 'TRI', Issue: null, Expire: $scope.profile.TRIExpired });
-            }
-            $scope.profile.certificates.push({ Title: 'Skill Test/Proficiency LPC', Issue: $scope.profile.LPCIssued, Expire: $scope.profile.LPCExpired });
-            $scope.profile.certificates.push({ Title: 'Skill Test/Proficiency OPC', Issue: $scope.profile.OPCIssued, Expire: $scope.profile.OPCExpired });
-            //ICAO LPR
-            $scope.profile.certificates.push({ Title: 'ICAO LPR', Issue: null, Expire: $scope.profile.LPRExpired });
-            //Cold Weather Operation
-            $scope.profile.certificates.push({ Title: 'Cold Weather Operation', Issue: $scope.profile.ColdWXIssued, Expire: $scope.profile.ColdWXExpired });
-            //Hot Weather Operation
-            $scope.profile.certificates.push({ Title: 'Hot Weather Operation', Issue: $scope.profile.HotWXIssued, Expire: $scope.profile.HotWXExpired });
-            //Line Check 
-            $scope.profile.certificates.push({ Title: 'Line Check', Issue: $scope.profile.LineIssued, Expire: $scope.profile.LineExpired });
-        }
-        else {
-            //Recurrent Training
-            $scope.profile.certificates.push({ Title: 'Recurrent Training', Issue: $scope.profile.RecurrentIssued, Expire: $scope.profile.RecurrentExpired });
-            //First Aid
-            $scope.profile.certificates.push({ Title: 'First Aid', Issue: $scope.profile.FirstAidIssued, Expire: $scope.profile.FirstAidExpired });
-        }
+        //$scope.profile.certificates.push({ Title: 'SMS', Issue: $scope.profile.SMSIssued, Expire: $scope.profile.SMSExpired });
+        //$scope.profile.certificates.push({ Title: 'Aviation Security', Issue: $scope.profile.AvSecIssued, Expire: $scope.profile.AvSecExpired });
+        ////cockpit
+        //if (crew.JobGroupCode.startsWith('00101')) {
+        //    if (crew.JobGroupCode == '0010103' || crew.JobGroupCode == '0010104') {
+        //        $scope.profile.certificates.push({ Title: 'TRE', Issue: null, Expire: $scope.profile.TREExpired });
+        //        $scope.profile.certificates.push({ Title: 'TRI', Issue: null, Expire: $scope.profile.TRIExpired });
+        //    }
+        //    $scope.profile.certificates.push({ Title: 'Skill Test/Proficiency LPC', Issue: $scope.profile.LPCIssued, Expire: $scope.profile.LPCExpired });
+        //    $scope.profile.certificates.push({ Title: 'Skill Test/Proficiency OPC', Issue: $scope.profile.OPCIssued, Expire: $scope.profile.OPCExpired });
+        //    //ICAO LPR
+        //    $scope.profile.certificates.push({ Title: 'ICAO LPR', Issue: null, Expire: $scope.profile.LPRExpired });
+        //    //Cold Weather Operation
+        //    $scope.profile.certificates.push({ Title: 'Cold Weather Operation', Issue: $scope.profile.ColdWXIssued, Expire: $scope.profile.ColdWXExpired });
+        //    //Hot Weather Operation
+        //    $scope.profile.certificates.push({ Title: 'Hot Weather Operation', Issue: $scope.profile.HotWXIssued, Expire: $scope.profile.HotWXExpired });
+        //    //Line Check 
+        //    $scope.profile.certificates.push({ Title: 'Line Check', Issue: $scope.profile.LineIssued, Expire: $scope.profile.LineExpired });
+        //}
+        //else {
+        //    //Recurrent Training
+        //    $scope.profile.certificates.push({ Title: 'Recurrent Training', Issue: $scope.profile.RecurrentIssued, Expire: $scope.profile.RecurrentExpired });
+        //    //First Aid
+        //    $scope.profile.certificates.push({ Title: 'First Aid', Issue: $scope.profile.FirstAidIssued, Expire: $scope.profile.FirstAidExpired });
+        //}
         $scope.popup_profile_visible = true;
     };
 
@@ -1844,12 +1855,13 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
 
 
-        { dataField: 'Title', caption: 'Title', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, },
+        { dataField: 'title', caption: 'Title', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, },
 
 
 
-        { dataField: 'Issue', caption: 'Issue', allowResizing: true, alignment: 'center', dataType: 'datetime', format: 'yyyy-MM-dd', allowEditing: false, width: 200 },
-        { dataField: 'Expire', caption: 'Expire', allowResizing: true, alignment: 'center', dataType: 'datetime', format: 'yyyy-MM-dd', allowEditing: false, width: 200 },
+        // { dataField: 'Issue', caption: 'Issue', allowResizing: true, alignment: 'center', dataType: 'datetime', format: 'yyyy-MM-dd', allowEditing: false, width: 200 },
+        { dataField: 'expire', caption: 'Expire', allowResizing: true, alignment: 'center', dataType: 'datetime', format: 'yyyy-MM-dd', allowEditing: false, width: 200 },
+        { dataField: 'remain', caption: 'Remain', allowResizing: true, alignment: 'center', dataType: 'number', allowEditing: false, width: 100 },
 
 
     ];
@@ -1879,7 +1891,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         selection: { mode: 'single' },
 
         columnAutoWidth: false,
-        height: $(window).height() - 400,
+        height: $(window).height() - 300,
 
         columns: $scope.dg_cer_columns,
         onContentReady: function (e) {
@@ -1890,7 +1902,14 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         onSelectionChanged: function (e) {
 
         },
+        onCellPrepared: function (e) {
 
+            if (e.rowType === "data" && e.column.dataField == "remain" && !e.data.remain)
+                e.cellElement.css("backgroundColor", "#ffa64d");
+            else if (e.rowType === "data" && e.column.dataField == "remain" && e.data.remain < 0)
+                e.cellElement.css("backgroundColor", "#ff6666");
+
+        },
 
         bindingOptions: {
             dataSource: 'profile.certificates',
@@ -2065,7 +2084,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         useMaskBehavior: true,
         onValueChanged: function (e) {
 
-             
+            //nook
+            $scope.bind_profile_cer();
             $scope.bindFTL();
         },
         bindingOptions: {
@@ -2439,7 +2459,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         relativeInnerRadius: 0.7,
         startValue: 0,
         endValue: 60,
-
+        size: { height: 200 },
         label: {
             visible: false,
             indent: 20,
@@ -2486,7 +2506,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         relativeInnerRadius: 0.7,
         startValue: 0,
         endValue: 110,
-
+        size: { height: 200 },
         label: {
             visible: false,
             indent: 20,
@@ -2530,6 +2550,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     };
     $scope.duty28Gauge = {
         barSpacing: 4,
+        size: { height: 200 },
         relativeInnerRadius: 0.7,
         startValue: 0,
         endValue: 190,
@@ -2580,6 +2601,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
     $scope.flight28Gauge = {
         barSpacing: 4,
+        size: { height: 200 },
         relativeInnerRadius: 0.7,
         startValue: 0,
         endValue: 100,
@@ -2627,6 +2649,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     };
     $scope.flightYearGauge = {
         barSpacing: 4,
+        size: { height: 200 },
         relativeInnerRadius: 0.7,
         startValue: 0,
         endValue: 1000,
@@ -2674,6 +2697,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     };
     $scope.flightCYearGauge = {
         barSpacing: 4,
+        size: { height: 200 },
         relativeInnerRadius: 0.7,
         startValue: 0,
         endValue: 900,
@@ -2762,112 +2786,133 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
     ////////////////////////////////////
     $scope.getCrewCerStatus = function (c, dt) {
-        var item = c.item;
+        var item = c.item ? c.item : c;
         //console.log(item);
-        var _dt = new Date(dt.date);
-        var result = { expired: [] };
+        var _dt = dt.date ? new Date(dt.date) : new Date(dt);
+        var result = { expired: [], certificates: [] };
 
 
         result.RemainMedical = !item.MedicalExpired ? null : $scope.getDaysDiffMoment(new Date(item.MedicalExpired), _dt);
+        result.certificates.push({ title: 'Medical', expire: item.MedicalExpired, remain: result.RemainMedical });
         if (result.RemainMedical < 0)
             result.expired.push({ title: 'Medical', date: item.MedicalExpired, remain: result.RemainMedical });
         //_d.RemainCMC = !_d.CMCExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.CMCExpired));
         result.RemainCMC = !item.CMCExpired ? null : $scope.getDaysDiffMoment(new Date(item.CMCExpired), _dt);
+        result.certificates.push({ title: 'CMC', expire: item.CMCExpired, remain: result.RemainCMC });
         if (result.RemainCMC < 0)
             result.expired.push({ title: 'CMC', date: item.CMCExpired, remain: result.RemainCMC });
 
 
         //_d.RemainSEPT = !_d.SEPTExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.SEPTExpired));
         result.RemainSEPT = !item.SEPTExpired ? null : $scope.getDaysDiffMoment(new Date(item.SEPTExpired), _dt);
+        result.certificates.push({ title: 'SEPT', expire: item.SEPTExpired, remain: result.RemainSEPT });
         if (result.RemainSEPT < 0)
             result.expired.push({ title: 'SEPT', date: item.SEPTExpired, remain: result.RemainSEPT });
         //_d.RemainDG = !_d.DGExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.DGExpired));
         result.RemainDG = !item.DGExpired ? null : $scope.getDaysDiffMoment(new Date(item.DGExpired), _dt);
+        result.certificates.push({ title: 'DG', expire: item.DGExpired, remain: result.RemainDG });
         if (result.RemainDG < 0)
             result.expired.push({ title: 'DG', date: item.DGExpired, remain: result.RemainDG });
         //_d.RemainCCRM = !_d.CCRMExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.CCRMExpired));
         result.RemainCCRM = !item.CCRMExpired ? null : $scope.getDaysDiffMoment(new Date(item.CCRMExpired), _dt);
+        result.certificates.push({ title: 'CCRM', expire: item.CCRMExpired, remain: result.RemainCCRM });
         if (result.RemainCCRM < 0)
             result.expired.push({ title: 'CCRM', date: item.CCRMExpired, remain: result.RemainCCRM });
         //_d.RemainSMS = !_d.SMSExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.SMSExpired));
         result.RemainSMS = !item.SMSExpired ? null : $scope.getDaysDiffMoment(new Date(item.SMSExpired), _dt);
+        result.certificates.push({ title: 'SMS', expire: item.SMSExpired, remain: result.RemainSMS });
         if (result.RemainSMS < 0)
             result.expired.push({ title: 'SMS', date: item.SMSExpired, remain: result.RemainSMS });
         //_d.RemainAvSec = !_d.AvSecExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.AvSecExpired));
         result.RemainAvSec = !item.AvSecExpired ? null : $scope.getDaysDiffMoment(new Date(item.AvSecExpired), _dt);
+        result.certificates.push({ title: 'AVSEC', expire: item.AvSecExpired, remain: result.RemainAvSec });
         if (result.RemainAvSec < 0)
             result.expired.push({ title: 'AVSEC', date: item.AvSecExpired, remain: result.RemainAvSec });
 
         if (item.IsCockpit) {
             //_d.RemainLPC = !_d.LPCExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.LPCExpired));
             result.RemainLPC = !item.LPCExpired ? null : $scope.getDaysDiffMoment(new Date(item.LPCExpired), _dt);
+            result.certificates.push({ title: 'LPC', expire: item.LPCExpired, remain: result.RemainLPC });
             if (result.RemainLPC < 0)
                 result.expired.push({ title: 'LPC', date: item.LPCExpired, remain: result.RemainLPC });
             //_d.RemainLPR = !_d.LPRExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.LPRExpired));
             result.RemainLPR = !item.LPRExpired ? null : $scope.getDaysDiffMoment(new Date(item.LPRExpired), _dt);
+            result.certificates.push({ title: 'LPR', expire: item.LPRExpired, remain: result.RemainLPR });
             if (result.RemainLPR < 0)
                 result.expired.push({ title: 'LPR', date: item.LPRExpired, remain: result.RemainLPR });
             //_d.RemainLicence = !_d.LicenceExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.LicenceExpired));
             result.RemainLicence = !item.LicenceExpired ? null : $scope.getDaysDiffMoment(new Date(item.LicenceExpired), _dt);
+            result.certificates.push({ title: 'LICENCE', expire: item.LicenceExpired, remain: result.RemainLicence });
             if (result.RemainLicence < 0)
                 result.expired.push({ title: 'Licence', date: item.LicenceExpired, remain: result.RemainLicence });
 
             //_d.RemainOPC = !_d.OPCExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.OPCExpired));
             result.RemainOPC = !item.OPCExpired ? null : $scope.getDaysDiffMoment(new Date(item.OPCExpired), _dt);
+            result.certificates.push({ title: 'OPC', expire: item.OPCExpired, remain: result.RemainOPC });
             if (result.RemainOPC < 0)
                 result.expired.push({ title: 'OPC', date: item.OPCExpired, remain: result.RemainOPC });
             //_d.RemainLine = !_d.LineExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.LineExpired));
             result.RemainLine = !item.LineExpired ? null : $scope.getDaysDiffMoment(new Date(item.LineExpired), _dt);
+            result.certificates.push({ title: 'LINE', expire: item.LineExpired, remain: result.RemainLine });
             if (result.RemainLine < 0)
                 result.expired.push({ title: 'LINE', date: item.LineExpired, remain: result.RemainLine });
             //_d.RemainColdWx = !_d.ColdWXExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.ColdWXExpired));
             result.RemainColdWx = !item.ColdWXExpired ? null : $scope.getDaysDiffMoment(new Date(item.ColdWXExpired), _dt);
+            result.certificates.push({ title: 'COLD-WX', expire: item.ColdWXExpired, remain: result.RemainColdWx });
             if (result.RemainColdWx < 0)
                 result.expired.push({ title: 'COLD-WX', date: item.ColdWXExpired, remain: result.RemainFirstAid });
             //_d.RemainHotWx = !_d.HotWXExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.HotWXExpired));
             result.RemainHotWx = !item.HotWXExpired ? null : $scope.getDaysDiffMoment(new Date(item.HotWXExpired), _dt);
+            result.certificates.push({ title: 'HOT-WX', expire: item.HotWXExpired, remain: result.RemainHotWx });
             if (result.RemainHotWx < 0)
                 result.expired.push({ title: 'HOT-WX', date: item.HotWXExpired, remain: result.RemainHotWx });
         }
         if (item.IsCabin) {
             //_d.RemainFirstAid = !_d.FirstAidExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.FirstAidExpired));
             result.RemainFirstAid = !item.FirstAidExpired ? null : $scope.getDaysDiffMoment(new Date(item.FirstAidExpired), _dt);
+            result.certificates.push({ title: 'FIRSTAID', expire: item.FirstAidExpired, remain: result.RemainFirstAid });
             if (result.RemainFirstAid < 0)
                 result.expired.push({ title: 'FIRSTAID', date: item.FirstAidExpired, remain: result.RemainFirstAid });
             //_d.RemainRecurrent = !_d.RecurrentExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.RecurrentExpired));
             result.RemainRecurrent = !item.RecurrentExpired ? null : $scope.getDaysDiffMoment(new Date(item.RecurrentExpired), _dt);
+            result.certificates.push({ title: 'RECURRENT', expire: item.RecurrentExpired, remain: result.RemainRecurrent });
             if (result.RemainRecurrent < 0)
                 result.expired.push({ title: 'RECURRENT', date: item.RecurrentExpired, remain: result.RemainRecurrent });
             result.RemainFlightCheck = !item.TypeMDExpired ? null : $scope.getDaysDiffMoment(new Date(item.TypeMDExpired), _dt);
+            result.certificates.push({ title: 'FLIGHT-CHECK', expire: item.TypeMDExpired, remain: result.RemainFlightCheck });
             if (result.RemainFlightCheck < 0)
                 result.expired.push({ title: 'FLIGHT-CHECK', date: item.TypeMDExpired, remain: result.RemainFlightCheck });
 
 
             result.RemainType = !item.Type737Expired ? null : $scope.getDaysDiffMoment(new Date(item.Type737Expired), _dt);
+            result.certificates.push({ title: 'TYPE', expire: item.Type737Expired, remain: result.RemainType });
             if (result.RemainType < 0)
                 result.expired.push({ title: 'TYPE', date: item.Type737Expired, remain: result.RemainType });
 
 
         }
-       
+
         //_d.RemainSEPTP = !_d.SEPTPExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.SEPTPExpired));
         result.RemainSEPTP = !item.SEPTPExpired ? null : $scope.getDaysDiffMoment(new Date(item.SEPTPExpired), _dt);
+        result.certificates.push({ title: 'SEPTP', expire: item.SEPTPExpired, remain: result.RemainSEPTP });
         if (result.RemainSEPTP < 0)
             result.expired.push({ title: 'SEPTP', date: item.SEPTPExpired, remain: result.RemainSEPTP });
         //_d.RemainCRM = !_d.CRMExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.CRMExpired));
         result.RemainCRM = !item.CRMExpired ? null : $scope.getDaysDiffMoment(new Date(item.CRMExpired), _dt);
+        result.certificates.push({ title: 'CRM', expire: item.CRMExpired, remain: result.RemainCRM });
         if (result.RemainCRM < 0)
             result.expired.push({ title: 'CRM', date: item.CRMExpired, remain: result.RemainCRM });
-      
-      
+
+
 
         //_d.RemainFirstAid = !_d.FirstAidExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.FirstAidExpired));
         result.RemainPassport = !item.PassportExpired ? null : $scope.getDaysDiffMoment(new Date(item.PassportExpired), _dt);
+        result.certificates.push({ title: 'PASSPORT', expire: item.PassportExpired, remain: result.RemainPassport });
         if (result.RemainPassport < 0)
             result.expired.push({ title: 'PASSPORT', date: item.PassportExpired, remain: result.RemainPassport });
 
 
-       
+
 
         result.IsExpired = result.expired.length > 0;
         return result;
@@ -2908,19 +2953,19 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         var _dt = moment($scope.dt_to).format('YYYY-MM-DD');
 
 
-       
+
         ///////////////////////////
         $scope.ganttData = {};
         $scope.totalHeight = 0;
         $scope.getCrew(function (crews) {
-          
+
             $scope.getDuties(_df, _dt, function (dts) {
                 $scope.duties = dts;
                 crews.duties = [];
 
                 $.each(crews, function (_i, _d) {
-                   // _d._IsCockpit = ['TRE', 'TRI', 'LTC', 'SFE', 'SFI', 'P1', 'P2'].indexOf(_d.JobGroup) != -1;
-                   // _d._IsCockpit = ['TRE', 'TRI', 'LTC', 'SFE', 'SFI', 'P1', 'P2'].indexOf(_d.JobGroup) != -1;
+                    // _d._IsCockpit = ['TRE', 'TRI', 'LTC', 'SFE', 'SFI', 'P1', 'P2'].indexOf(_d.JobGroup) != -1;
+                    // _d._IsCockpit = ['TRE', 'TRI', 'LTC', 'SFE', 'SFI', 'P1', 'P2'].indexOf(_d.JobGroup) != -1;
                     _d.dates = [];
                     var cdts = Enumerable.From(dts).Where('$.CrewId==' + _d.CrewId).FirstOrDefault();
                     if (cdts)
@@ -3004,9 +3049,9 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
 
 
-            });
+        });
 
-          
+
 
         return;
 
@@ -3071,8 +3116,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     };
 
     $scope.getTime = function (dt) {
-       // dt = new Date(dt);
-       // var offset = -1 * (dt).getTimezoneOffset();
+        // dt = new Date(dt);
+        // var offset = -1 * (dt).getTimezoneOffset();
         //var dt1 = (dt).addMinutes(offset)
         return moment(new Date(dt)).format('HHmm');
     };
@@ -3130,7 +3175,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 return "STBY C";
             case 300014:
                 return "BRF";
-            
+
             default:
                 return dty.DutyTypeTitle;
         }
@@ -3630,7 +3675,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             DutyType: $scope.event_status,
             Remark: $scope.RemarkEvent,
             EXTRERRP: $scope.ex48 ? 1 : 0,
-            TIMELINE:1
+            TIMELINE: 1
         }
         dto.BL = 0;
         dto.FX = 0;
@@ -3655,8 +3700,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             }
             ////////////
             console.log(response);
-           // response.dutyTypeTitle = response.DutyTypeTitle;
-           // response.dutyType = response.DutyType;
+            // response.dutyTypeTitle = response.DutyTypeTitle;
+            // response.dutyType = response.DutyType;
             // $scope.cal_crew_ds.push(response);
             var resource = Enumerable.From($scope.ganttData.resources).Where('$.CrewId==' + crewid).FirstOrDefault();
 
@@ -3676,7 +3721,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             });
             $scope.setTopDuty(resource.duties);
             resource.maxTop = Enumerable.From(resource.duties).Select('Number($.top)').Max();
-           
+
             $scope.bl_hh = null;
             $scope.bl_mm = null;
             //reposition
@@ -3825,9 +3870,9 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
                         var eventFrom = new Date($scope.FromDateEvent);
                         var eventEnd = new Date($scope.ToDateEvent);
-                      //  var rosterFrom = new Date(General.getDayFirstHour(new Date($scope.dt_fromSearched)));
+                        //  var rosterFrom = new Date(General.getDayFirstHour(new Date($scope.dt_fromSearched)));
                         //getDayLastHour
-                     //   var rosterTo = new Date(getMidNight(new Date($scope.dt_toSearched)));
+                        //   var rosterTo = new Date(getMidNight(new Date($scope.dt_toSearched)));
                         //////////////////////////////
                         if ($scope.event_status == 10000) {
                             //nool
@@ -3840,7 +3885,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                                 return;
                             }
                             else {
-                                $scope.saveNewDutyCal($scope.selected_crew_id , function () { $scope.popup_event_visible = false; });
+                                $scope.saveNewDutyCal($scope.selected_crew_id, function () { $scope.popup_event_visible = false; });
 
 
                             }
@@ -3889,7 +3934,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                             }
                             else {
 
-                                $scope.saveNewDutyCal($scope.selected_crew_id , function () { $scope.popup_event_visible = false; });
+                                $scope.saveNewDutyCal($scope.selected_crew_id, function () { $scope.popup_event_visible = false; });
 
 
                             }
@@ -4088,7 +4133,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         //$scope.ToDateEvent = (new Date($scope.FromDateEvent)).addHours(12);
         $scope.popup_event_title = 'RERRP';
         $scope.popup_event_visible = true;
-        
+
     };
     $scope.assign1166 = function (e) {
         $scope.event_status = 1166;
@@ -4129,7 +4174,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         $scope.popup_event_title = 'STBY PM';
         $scope.popup_event_visible = true;
     };
-   
+
     $scope.assign5000 = function (e) {
         $scope.event_status = 5000;
         $scope.FromDateEvent = (new Date($scope.contextMenuCellData.startDate)).setHours(8, 0, 0, 0);
@@ -4210,8 +4255,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         $scope.popup_event_visible = true;
 
     };
-   
-   
+
+
     $scope.assign300014 = function (e) {
         $scope.event_status = 300014;
         $scope.FromDateEvent = (new Date($scope.contextMenuCellData.startDate)).setHours(0, 0, 0, 0);
@@ -4243,7 +4288,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         $scope.popup_event_title = 'Mission';
         $scope.popup_event_visible = true;
     };
-   
+
     //300009
     $scope.assign300009 = function (e) {
         $scope.event_status = 300009;
@@ -4270,17 +4315,17 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             $scope.selected_crew_id = prts[0];
             var dt_parts = prts[1].split('-');
             $scope.contextMenuCellData = {};
-            $scope.contextMenuCellData.startDate = new Date(dt_parts[0], Number( dt_parts[1]-1), dt_parts[2]);
+            $scope.contextMenuCellData.startDate = new Date(dt_parts[0], Number(dt_parts[1] - 1), dt_parts[2]);
             switch (key) {
                 case 'FDP':
                     $scope.selected_crew = Enumerable.From($scope.crews).Where('$.CrewId==' + $scope.selected_crew_id).FirstOrDefault();
                     switch ($scope.selected_crew.JobGroup) {
                         case 'P1':
-                            $scope.position_ds = ['CPT', 'SAFETY', 'CHECK', 'OBS','D/H'];
+                            $scope.position_ds = ['CPT', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
                             $scope.default_pos = 'CPT';
                             break;
                         case 'P2':
-                            $scope.position_ds = ['FO', 'SAFETY', 'CHECK', 'OBS','D/H'];
+                            $scope.position_ds = ['FO', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
                             $scope.default_pos = 'FO';
                             break;
                         case 'TRE':
@@ -4288,18 +4333,18 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                         case 'LTC':
                         case 'SFE':
                         case 'SFI':
-                            $scope.position_ds = ['IP','CPT', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
+                            $scope.position_ds = ['IP', 'CPT', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
                             $scope.default_pos = 'IP';
                             break;
                         case 'ISCCM':
                         case 'CCE':
                         case 'CCI':
-                            $scope.position_ds = ['ISCCM', 'SCCM',  'CHECK', 'OBS', 'D/H'];
+                            $scope.position_ds = ['ISCCM', 'SCCM', 'CHECK', 'OBS', 'D/H'];
                             $scope.default_pos = 'ISCCM';
                             break;
                         case 'SCCM':
                         case 'SCC':
-                            $scope.position_ds = [ 'SCCM', 'CHECK', 'OBS', 'D/H'];
+                            $scope.position_ds = ['SCCM', 'CHECK', 'OBS', 'D/H'];
                             $scope.default_pos = 'SCCM';
                             break;
                         case 'CCM':
@@ -4312,6 +4357,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                             $scope.position_ds = [];
                             break;
                     }
+                    $scope.popup_flt_title = $scope.selected_crew.ScheduleName + " (" + $scope.selected_crew.JobGroup + ")";
                     $scope.popup_flt_visible = true;
                     break;
                 case 'RERRP':
@@ -4365,10 +4411,10 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
         });
 
-            
-        
+
+
         //$scope.contextMenuCellData.startDate
-      
+
     };
     $scope.delete_event = function (key, id) {
         $scope.$apply(function () {
@@ -4376,15 +4422,15 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             var crew_id = prts[0];
             var duty_id = prts[1];
 
-            var dto = { fdp: duty_id };
+            var dto = { Id: duty_id };
 
             $scope.loadingVisible = true;
-            schedulingService.saveDeleteFDP(dto).then(function (response) {
+            schedulingService.deleteFDP(dto).then(function (response) {
                 $scope.loadingVisible = false;
                 //khar
                 var resource = Enumerable.From($scope.ganttData.resources).Where('$.CrewId==' + crew_id).FirstOrDefault();
 
-                 
+
 
                 resource.duties = Enumerable.From(resource.duties).Where('$.Id!=' + duty_id).ToArray();
                 $.each(resource.duties, function (_j, _f) {
@@ -4392,11 +4438,11 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 });
                 $scope.setTopDuty(resource.duties);
                 resource.maxTop = Enumerable.From(resource.duties).Select('Number($.top)').Max();
-                 
+
 
             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
-             
+
 
         });
 
@@ -4411,15 +4457,15 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         return str.replaceAll(',', ' ');
     }
 
-    $scope.addStby = function (  _type) {
+    $scope.addStby = function (_type) {
         $scope.selected_crew = Enumerable.From($scope.crews).Where('$.CrewId==' + $scope.selected_crew_id).FirstOrDefault();
-       
-       
+
+
         var dto = {
             date: new Date($scope.contextMenuCellData.startDate),
             crewId: $scope.selected_crew.CrewId,
             type: _type,
-            isgantt:1,
+            isgantt: 1,
         };
         ///////////////////////////////
         $scope.loadingVisible = true;
@@ -4440,7 +4486,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             }
             else {
                 //dlubaz
-                var gres = response ;
+                var gres = response;
 
                 var resource = Enumerable.From($scope.ganttData.resources).Where('$.CrewId==' + $scope.selected_crew.CrewId).FirstOrDefault();
 
@@ -4603,15 +4649,15 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     };
 
     var date_cell_width_hour = 50;
-    var date_cell_width_flt = (date_cell_width_hour+0)*24+1 ;
+    var date_cell_width_flt = (date_cell_width_hour + 0) * 24 + 1;
     var duty_height_flt = 45;
-    var minute_width_flt = date_cell_width_hour * 1.0 / (  60);
+    var minute_width_flt = date_cell_width_hour * 1.0 / (60);
     $scope.getDutyStyle_flt = function (duty) {
         //   var start = moment('2014-01-01 12:00:00');
         //  var end = moment('2014-01-01 13:00:00');
         //  var minutes = end.diff(start, 'minutes');
         //zook
-      
+
         var start = getMinDate(duty.STDLocal, duty.ChocksOutLocal);// duty.InitStart;
         var end = getMaxDate(duty.STALocal, duty.ChocksInLocal); //duty.InitRestTo;
 
@@ -4725,15 +4771,15 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         width: '100%',
         text: "",
         onValueChanged: function (e) {
-            
-                if (e.value) {
-                    $scope.FDPStat.IsOver = $scope.FDPStat.Duration > $scope.FDPStat.MaxFDPExtended;
-                }
-                else {
-                    $scope.FDPStat.IsOver = $scope.FDPStat.Duration > $scope.FDPStat.MaxFDP;
-                }
-               // $scope.dg3_instance.refresh();
-            
+
+            if (e.value) {
+                $scope.FDPStat.IsOver = $scope.FDPStat.Duration > $scope.FDPStat.MaxFDPExtended;
+            }
+            else {
+                $scope.FDPStat.IsOver = $scope.FDPStat.Duration > $scope.FDPStat.MaxFDP;
+            }
+            // $scope.dg3_instance.refresh();
+
         },
         bindingOptions: {
             value: 'useSplit',
@@ -4744,14 +4790,14 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.check_apply_all = {
         width: '100%',
         text: "",
-        
+
         bindingOptions: {
             value: 'apply_all',
 
         }
     };
 
-    
+
     $scope.overlapping = false;
     $scope.check_overlapping = {
         width: '100%',
@@ -4767,7 +4813,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.check_continuity = {
         width: '100%',
         text: "",
-        readOnly:true,
+        readOnly: true,
         bindingOptions: {
             value: 'continuity',
 
@@ -4778,7 +4824,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         if ($scope.FDPStat.IsOver)
             clr = '#ff8080';
         return {
-            background:clr
+            background: clr
         }
     };
     $scope.getFDPStat = function () {
@@ -4869,7 +4915,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
         return hasConflict;
 
-        
+
     };
     $scope.checkContinuity2 = function (flights) {
         //2022-01-23
@@ -4883,31 +4929,31 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             }
         });
         return hasError;
-         
+
 
     };
     $scope.position_ds = [];
     $scope.dg_flt_columns = [
 
 
-        { dataField: 'FlightNumber', caption: 'No',width:'60', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, fixed: false, fixedPosition: 'left' },
-       // { dataField: 'FromAirportIATA', caption: 'From',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
-       // { dataField: 'ToAirportIATA', caption: 'To',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
+        { dataField: 'FlightNumber', caption: 'No', width: '60', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, fixed: false, fixedPosition: 'left' },
+        // { dataField: 'FromAirportIATA', caption: 'From',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
+        // { dataField: 'ToAirportIATA', caption: 'To',width:40, allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
         //{ dataField: 'Position', caption: 'POS', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, },
         {
             allowEditing: true,
             alignment: 'center',
             dataField: 'Position',
             caption: 'POS',
-            
+
             lookup: {
                 dataSource: [],
-                
+
             },
             validationRules: [{ type: 'required' }],
 
         },
-       // { dataField: 'DH', caption: 'D/H',width:40, allowResizing: true, alignment: 'center', dataType: 'boolean', allowEditing: false, },
+        // { dataField: 'DH', caption: 'D/H',width:40, allowResizing: true, alignment: 'center', dataType: 'boolean', allowEditing: false, },
 
 
 
@@ -4915,7 +4961,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.dg_flt_selected = null;
     $scope.dg_flt_instance = null;
     $scope.dg_flt_ds = null;
-    $scope.dg_flt_height = 300; //$(window).height() -   550; 
+    $scope.dg_flt_height = 220; //$(window).height() -   550; 
     $scope.dg_flt = {
         headerFilter: {
             visible: false
@@ -4960,7 +5006,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             //42 %  10
 
         },
-        
+
         onSelectionChanged: function (e) {
             var data = e.selectedRowsData[0];
 
@@ -4972,7 +5018,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 $scope.dg_flt_selected = data;
                 schedulingService.getFlightCrewsNew(data.ID).then(function (response) {
                     $.each(response, function (_i, _d) {
-                        _d.FlightNumber =  data.FlightNumber;
+                        _d.FlightNumber = data.FlightNumber;
                     });
                     $scope.dg_crew_abs_ds = response;
                 });
@@ -5015,10 +5061,10 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 _d.Position = $scope.default_pos;
             });
         },
-        
+
         bindingOptions: {
             value: 'default_pos',
-            dataSource:'position_ds'
+            dataSource: 'position_ds'
 
 
         }
@@ -5029,9 +5075,9 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
         { dataField: 'IsPositioning', caption: 'DH', allowResizing: true, alignment: 'center', dataType: 'boolean', allowEditing: false, width: 55 },
         { dataField: 'Position', caption: 'Pos.', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 100, fixed: false, fixedPosition: 'left' },
-       
-        { dataField: 'Name', caption: 'Name', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false,   },
-        
+
+        { dataField: 'Name', caption: 'Name', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, },
+
     ];
     $scope.dg_crew_abs_selected = null;
     $scope.dg_crew_abs_instance = null;
@@ -5059,7 +5105,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
         columnAutoWidth: false,
         //2020-10-27 1 s
-        height:300, //$(window).height() - 500,
+        height:  $(window).height() - 200-290,
 
         columns: $scope.dg_crew_abs_columns,
         onContentReady: function (e) {
@@ -5160,7 +5206,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         var d = Enumerable.From(ids).OrderByDescending(function (x) { return $scope.getPosScore(x.pos); }).ToArray();
         return d[0].pos;
     }
-    $scope.getFtlAbs = function (crewid, dt,callback) {
+    $scope.getFtlAbs = function (crewid, dt, callback) {
         var crewIds = [];
         crewIds.push(crewid);
         var date = moment(new Date(dt)).format("YYYY-MM-DD");
@@ -5168,7 +5214,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             CDate: date,
             CrewIds: crewIds,
         };
-        console.log('ftl',dto);
+        console.log('ftl', dto);
         schedulingService.getFTLByCrewIds(dto).then(function (response) {
             var sumFLT28 = 0;
             var sumFL = 0;
@@ -5187,7 +5233,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 _d._FlightCYearRemain = $scope.formatMinutes(_d.FlightCYearRemain);
                 _d._FlightYear = $scope.formatMinutes(_d.FlightYear);
                 _d._FlightYearRemain = $scope.formatMinutes(_d.FlightYearRemain);
-                
+
             });
             if (response.length > 0) {
                 $scope.FLT28Avg = (sumFLT28 * 1.0) / response.length;
@@ -5226,22 +5272,23 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     };
 
     $scope.getCertificationStyle = function (_d) {
-        var style = { background: '#f7f7f7' };
-        var isValid = true;
-        if ((!_d.RemainMedical && _d.RemainMedical !== 0) || _d.RemainMedical < 0)
+        var res = $scope.getCrewCerStatus($scope.selected_crew, $scope.contextMenuCellData.startDate);
+        var style = { background: 'cornflowerblue' };
+        var invalid =   res.expired.length > 0;
+        if (invalid)
             return { background: '#cc0000' };
 
         return style;
     };
 
-    $scope.getCertificationStyle = function (_d) {
-        var style = { background: '#f7f7f7' };
-        var isValid = true;
-        if ((!_d.RemainMedical && _d.RemainMedical !== 0) || _d.RemainMedical < 0)
-            return { background: '#cc0000' };
+    //$scope.getCertificationStyle = function (_d) {
+    //    var style = { background: '#f7f7f7' };
+    //    var isValid = true;
+    //    if ((!_d.RemainMedical && _d.RemainMedical !== 0) || _d.RemainMedical < 0)
+    //        return { background: '#cc0000' };
 
-        return style;
-    };
+    //    return style;
+    //};
     $scope.calculateOrder = function (c) {
         if (!c.FTL) {
             console.log('c FTL is null', c);
@@ -5275,7 +5322,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         showTitle: true,
         dragEnabled: true,
         toolbarItems: [
-
+            { widget: 'dxButton', location: 'before', options: { type: 'default', text: 'Profile', icon: '', onClick: function (e) { $scope.showProfile2(); } }, toolbar: 'bottom' },
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'success', text: 'Save', icon: 'save', onClick: function (e) {
