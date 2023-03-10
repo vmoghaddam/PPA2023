@@ -82,15 +82,27 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             return "00:00";
         return pad(Math.floor(mm / 60)).toString() + ':' + pad(Math.floor(mm % 60)).toString();
     };
-    $scope.formatMinutes = function (mm) {
-        if (!mm)
-            return "";
-        var sgn = ' ';
-        if (mm < 0) {
-            mm = -1 * mm; sgn = '-';
-        }
+    //$scope.formatMinutes = function (mm) {
+    //    if (!mm)
+    //        return "";
+    //    var sgn = ' ';
+    //    if (mm < 0) {
+    //        mm = -1 * mm; sgn = '-';
+    //    }
 
-        return sgn + (pad(Math.floor(mm / 60)).toString() + ':' + pad(mm % 60).toString());
+    //    return sgn + (pad(Math.floor(mm / 60)).toString() + ':' + pad(mm % 60).toString());
+    //};
+
+    $scope.formatMinutes = function (mm) {
+
+
+        if (!mm && mm !== 0)
+            return "-";
+        var sgn = "";
+        if (mm < 0)
+            sgn = "-";
+        mm = Math.abs(Math.round(mm));
+        return sgn + pad(Math.floor(mm / 60)).toString() + ':' + pad(Math.round((mm % 60))).toString();
     };
     ////////////////////////////////////
     $scope.dt_fromSearched = new Date();
@@ -218,9 +230,9 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.rptcd_dateFrom = new Date();
     $scope.rptcd_dateTo = new Date();
     //doolq
-    $scope.formatMinutes = function (mm) {
-        return pad(Math.floor(mm / 60)).toString() + ':' + pad(mm % 60).toString();
-    };
+    //$scope.formatMinutes = function (mm) {
+    //    return pad(Math.floor(mm / 60)).toString() + ':' + pad(mm % 60).toString();
+    //};
 
 
 
@@ -578,6 +590,370 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             bk = '#ff704d';
         return { background: bk };
     };
+    $scope.d7style = {
+        display: 'inline-block',
+    };
+    $scope.yfstyle = {
+        display: 'inline-block',
+    };
+    $scope.fstyle = {
+        display: 'inline-block',
+    };
+    $scope.cyfstyle = {
+        display: 'inline-block',
+        'margin-left': '5px',
+    };
+    ////////////////////////
+    $scope.d14style = {
+        display: 'inline-block',
+        'margin-left': '5px',
+    };
+    $scope.d28style = {
+        display: 'inline-block',
+        'margin-left': '5px',
+    };
+    $scope.d7 = null;
+    $scope.d14 = null;
+    $scope.d28 = null;
+
+    $scope.f = null;
+    $scope.yf = null;
+    $scope.cyf = null;
+    $scope.Duties7 = [];
+    $scope.DutyColors7 = [];
+    $scope.Duties14 = [];
+    $scope.DutyColors14 = [];
+    $scope.Duties28 = [];
+    $scope.DutyColors28 = [];
+    $scope.getDutyText = function (n) {
+        if (!$scope.data_ftl)
+            return "";
+        var m = 60;
+        if (n == 14)
+            m = 110;
+        if (n == 28)
+            m = 190;
+        var dvalue = $scope.data_ftl['Duty' + n] / 60.0;
+        var dp = Number((dvalue * 100.0) / m).toFixed();
+        var txt = $scope.formatMinutes(dvalue * 60) + ' (' + dp + '%)';
+        return txt;
+    };
+    $scope.getFlightText = function (n) {
+        if (!$scope.data_ftl)
+            return "";
+        var str = "Flight28";
+        var m = 100;
+        if (n == 12) { m = 1000; str = "FlightYear"; }
+        if (n == 1) {
+            m = 900; str = "FlightCYear";
+        }
+        var dvalue = $scope.data_ftl[str] / 60.0;
+        var dp = Number((dvalue * 100.0) / m).toFixed();
+        var txt = $scope.formatMinutes(dvalue * 60) + ' (' + dp + '%)';
+        return txt;
+    };
+    $scope.getFlightText2 = function (n) {
+        if (!$scope.data_ftl)
+            return "";
+        var str = "Flight28";
+
+        if (n == 12) { str = "FlightYear"; }
+        if (n == 1) {
+            str = "FlightCYear";
+        }
+        var dvalue = $scope.data_ftl[str] / 60.0;
+
+        var txt = $scope.formatMinutes(dvalue * 60);
+        return txt;
+    };
+    $scope.getFlightRemainingText = function (n) {
+        if (!$scope.data_ftl)
+            return "";
+        var str = "Flight28Remain";
+
+        if (n == 12) { str = "FlightYearRemain"; }
+        if (n == 1) {
+            str = "FlightCYearRemain";
+        }
+        var dvalue = ($scope.data_ftl[str]) / 60.0;
+
+        var txt = $scope.formatMinutes(dvalue * 60);
+        return txt;
+    };
+
+    $scope.getDutyText2 = function (n) {
+        if (!$scope.data_ftl)
+            return "";
+
+        var dvalue = $scope.data_ftl['Duty' + n] / 60.0;
+
+        var txt = $scope.formatMinutes(dvalue * 60);
+        return txt;
+    };
+    $scope.getDutyText3 = function (rec, field) {
+
+
+        var dvalue = rec[field] / 60.0;
+
+        var txt = $scope.formatMinutes(dvalue * 60);
+        return txt;
+    };
+    $scope.getDutyCellStyle = function (n) {
+        if (!$scope.data_ftl)
+            return {};
+        var dvalue = $scope.data_ftl['Duty' + n];
+        var m = 60;
+        if (n == 14)
+            m = 110;
+        if (n == 28)
+            m = 190;
+        if (dvalue >= m * 60)
+            //d28color = "#e68a00";
+            return {
+                color: 'white',
+                fontWeight: 'bold',
+                background: '#ff1a1a'
+            };
+        if (dvalue >= 0.80 * m * 60)
+            //d28color = "#e68a00";
+            return {
+                color: 'black',
+                fontWeight: 'bold',
+                background: '#e68a00'
+            };
+
+    };
+    $scope.getFlightCellStyle = function (n) {
+        if (!$scope.data_ftl)
+            return {};
+        var str = "Flight28";
+
+        if (n == 12) { str = "FlightYear"; }
+        if (n == 1) {
+            str = "FlightCYear";
+        }
+        var dvalue = $scope.data_ftl[str];
+        var m = 100;
+        if (n == 12)
+            m = 1000;
+        if (n == 1)
+            m = 900;
+        if (dvalue >= m * 60)
+            //d28color = "#e68a00";
+            return {
+                color: 'white',
+                fontWeight: 'bold',
+                background: '#ff1a1a'
+            };
+        if (dvalue >= 0.80 * m * 60)
+            //d28color = "#e68a00";
+            return {
+                color: 'black',
+                fontWeight: 'bold',
+                background: '#e68a00'
+            };
+
+    };
+
+
+    $scope.getDutyCellStyle3 = function (rec, n) {
+
+        var dvalue = rec['Duty' + n];
+        var m = 60;
+        if (n == 14)
+            m = 110;
+        if (n == 28)
+            m = 190;
+        if (dvalue >= m * 60)
+            //d28color = "#e68a00";
+            return {
+                color: 'white',
+                fontWeight: 'bold',
+                background: '#ff1a1a'
+            };
+        if (dvalue >= 0.80 * m * 60)
+            //d28color = "#e68a00";
+            return {
+                color: 'black',
+                fontWeight: 'bold',
+                background: '#e68a00'
+            };
+
+    };
+    $scope.getFlightCellStyle3 = function (rec, n) {
+
+        var str = "Flight28";
+
+        if (n == 12) { str = "FlightYear"; }
+        if (n == 1) {
+            str = "FlightCYear";
+        }
+        var dvalue = rec[str];
+        var m = 100;
+        if (n == 12)
+            m = 1000;
+        if (n == 1)
+            m = 900;
+        if (dvalue >= m * 60)
+            //d28color = "#e68a00";
+            return {
+                color: 'white',
+                fontWeight: 'bold',
+                background: '#ff1a1a'
+            };
+        if (dvalue >= 0.80 * m * 60)
+            //d28color = "#e68a00";
+            return {
+                color: 'black',
+                fontWeight: 'bold',
+                background: '#e68a00'
+            };
+
+    };
+
+
+    $scope.getDutyRemainingText = function (n) {
+        if (!$scope.data_ftl)
+            return "";
+        var m = 60 * 60;
+        if (n == 14)
+            m = 110 * 60;
+        if (n == 28)
+            m = 190 * 60;
+        var dvalue = (m - $scope.data_ftl['Duty' + n]) / 60.0;
+
+        var txt = $scope.formatMinutes(dvalue * 60);
+        return txt;
+    };
+    $scope.data_ftl = null;
+    $scope.ds_exceed = [];
+    $scope.bindExceed = function () {
+        schedulingService.getFTLExceedAll($scope.profile.Id).then(function (response2) {
+            $scope.ds_exceed = response2;
+        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+    };
+    $scope.bindFTL = function () {
+       
+        
+        if (!$scope.dt_ftl)
+            return;
+        $scope.data_ftl = null;
+        $scope.Duties7 = [];
+        $scope.DutyColors7 = [];
+        $scope.Duties14 = [];
+        $scope.DutyColors14 = [];
+        $scope.Duties28 = [];
+        $scope.DutyColors28 = [];
+
+        $scope.Flights28 = [];
+        $scope.FlightColors28 = [];
+        $scope.FlightsYear = [];
+        $scope.FlightColorsYear = [];
+        $scope.FlightsCYear = [];
+        $scope.FlightColorsCYear = [];
+
+        $scope.loadingVisible = true;
+
+        schedulingService.getFTL($scope.profile.Id, moment($scope.dt_ftl).format('YYYY-MM-DD')).then(function (response) {
+
+            $scope.loadingVisible = false;
+            if (!response.Duty7)
+                response.Duty7 = 0;
+            if (!response.Duty14)
+                response.Duty14 = 0;
+            if (!response.Duty28)
+                response.Duty28 = 0;
+
+            if (!response.Flight28)
+                response.Flight28 = 0;
+            if (!response.FlightYear)
+                response.FlightYear = 0;
+            if (!response.FlightCYear)
+                response.FlightCYear = 0;
+
+            $scope.data_ftl = response;
+
+            /*response.Duty7 = 50*60;
+            response.Duty14 = 110*60;
+            response.Duty28 = 195*60;
+            */
+
+            /*response.Flight28 = 100 * 60;
+            response.FlightYear = 1000 * 60;
+            response.FlightCYear = 1000 * 60;*/
+
+            var d7 = response.Duty7 / 60.0;
+            $scope.d7 = $scope.formatMinutes(response.Duty7);
+            var d14 = response.Duty14 / 60.0;
+            $scope.d14 = $scope.formatMinutes(response.Duty14);
+            var d28 = response.Duty28 / 60.0;
+            $scope.d28 = $scope.formatMinutes(response.Duty28);
+
+            $scope.Duties28.push(d28);
+            var d28color = '#00cc99';
+            if (response.Duty28 >= 0.80 * 190 * 60)
+                d28color = "#e68a00";
+            if (response.Duty28 >= 190 * 60)
+                d28color = "#ff1a1a";
+            $scope.DutyColors28.push(d28color);
+            $scope.d28style.color = d28color;
+
+            $scope.Duties14.push(d14);
+            var d14color = '#00cc99';
+            if (response.Duty14 >= 0.80 * 110 * 60)
+                d14color = "#ff8000";
+            if (response.Duty14 >= 110 * 60)
+                d14color = "#ff1a1a";
+            $scope.DutyColors14.push(d14color);
+            $scope.d14style.color = d14color;
+
+            $scope.Duties7.push(d7);
+            var d7color = '#00cc99';
+
+            if (response.Duty7 >= 0.80 * 60 * 60) { d7color = "#ffaa00"; }
+            if (response.Duty7 >= 60 * 60)
+                d7color = "#ff1a1a";
+            $scope.DutyColors7.push(d7color);
+            $scope.d7style.color = d7color;
+
+            var f28 = response.Flight28 / 60.0;
+            $scope.Flights28.push(f28);
+            var _fcol = '#00cc99';
+            if (response.Flight28 >= 0.80 * 100 * 60)
+                _fcol = "#ff8000";
+            if (response.Flight28 >= 100 * 60)
+                _fcol = "#ff1a1a";
+            $scope.FlightColors28.push(_fcol);
+
+            $scope.FlightsYear.push(response.FlightYear / 60.0);
+            _fcol = '#00cc99';
+            if (response.FlightYear >= 0.80 * 1000 * 60)
+                _fcol = "#ff8000";
+            if (response.FlightYear >= 1000 * 60)
+                _fcol = "#ff1a1a";
+            $scope.FlightColorsYear.push(_fcol);
+
+            $scope.FlightsCYear.push(response.FlightCYear / 60.0);
+            _fcol = '#00cc99';
+            if (response.FlightCYear >= 0.80 * 900 * 60)
+                _fcol = "#ff8000";
+            if (response.FlightCYear >= 900 * 60)
+                _fcol = "#ff1a1a";
+            $scope.FlightColorsCYear.push(_fcol);
+
+
+
+
+        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+
+
+
+    };
+
+
+
 
 
     $scope.IsNowLine = false;
@@ -1187,6 +1563,1315 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
     };
+    ///////////////////////
+    $scope.getDaysDiff = function (d1, d2) {
+        var date1 = new Date(General.getDayFirstHour(d1));
+        var date2 = new Date(General.getDayLastHour(d2));
+
+        // To calculate the time difference of two dates 
+        var Difference_In_Time = date2.getTime() - date1.getTime();
+
+        // To calculate the no. of days between two dates 
+        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+        return Difference_In_Days;
+    };
+    $scope.getDaysDiffMoment = function (dt1, dt2) {
+        var date1 = moment(dt1); // create a moment object for the first date
+        var date2 = moment(dt2); // create a moment object for the second date
+        var days = date1.diff(date2, 'days');
+        return days;
+    }
+
+    ////PROFILE /////////////////////////////////
+    $scope.popup_profile_visible = false;
+    $scope.popup_profile_title = 'Profile';
+
+    $scope.scroll_profile_height = $(window).height() - 100 - 150;
+    $scope.scroll_profile = {
+        scrollByContent: true,
+        scrollByThumb: true,
+        bindingOptions: { height: 'scroll_profile_height', }
+    };
+
+    $scope.popup_profile = {
+        elementAttr: {
+            //  id: "elementId",
+            class: "popup_cduties"
+        },
+        shading: true,
+        //position: { my: 'left', at: 'left', of: window, offset: '5 0' },
+        height: $(window).height() - 100,
+        width:1100,
+        fullScreen: false,
+        showTitle: true,
+        dragEnabled: true,
+        title: 'Profile',
+        toolbarItems: [
+
+
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'danger', text: 'Close', icon: 'remove', onClick: function (arg) {
+
+                        $scope.popup_profile_visible = false;
+
+                    }
+                }, toolbar: 'bottom'
+            }
+        ],
+        visible: false,
+
+        closeOnOutsideClick: false,
+        onTitleRendered: function (e) {
+            // $(e.titleElement).addClass('vahid');
+            // $(e.titleElement).css('background-color', '#f2552c');
+        },
+        onShowing: function (e) {
+
+        },
+        onShown: function (e) {
+            // $scope.getCrewAbs2($scope.flight.ID);
+            $scope.dt_dty_to = new Date($scope.selectedDate);
+            $scope.dt_dty_from = (new Date($scope.selectedDate)).addDays(-28);
+            $scope.selectedTabProfileIndex = 0;
+            $scope.bindExceed();
+            if ($scope.dg_cer_instance)
+                $scope.dg_cer_instance.refresh();
+            if ($scope.dg_pdty_instance)
+                $scope.dg_pdty_instance.refresh();
+            if ($scope.chart_bl_instance)
+                $scope.chart_bl_instance.render();
+            if ($scope.chart_cnt_instance)
+                $scope.chart_cnt_instance.render();
+            if ($scope.chart_fltratio_instance)
+                $scope.chart_fltratio_instance.render();
+
+            $scope.bindFTL();
+
+        },
+        onHiding: function () {
+            $scope.ds_exceed = [];
+            $scope.ds_profile_duties = [];
+            $scope.bl_year = null;
+            $scope.data_bl = [];
+            $scope.dt_ftl = null;
+            $scope.data_ftl = null;
+            $scope.Duties7 = [];
+            $scope.DutyColors7 = [];
+            $scope.Duties14 = [];
+            $scope.DutyColors14 = [];
+            $scope.Duties28 = [];
+            $scope.DutyColors28 = [];
+
+            $scope.Flights28 = [];
+            $scope.FlightColors28 = [];
+            $scope.FlightsYear = [];
+            $scope.FlightColorsYear = [];
+            $scope.FlightsCYear = [];
+            $scope.FlightColorsCYear = [];
+            $scope.popup_profile_visible = false;
+
+        },
+        bindingOptions: {
+            visible: 'popup_profile_visible',
+
+
+        }
+    };
+    $scope.tabsprofile = [
+        { text: "Main", id: 'profilemain', visible_btn: false },
+        { text: "FTL", id: 'profileftl', visible_btn: false },
+        { text: "Flights", id: 'profileflights', visible_btn: false },
+        { text: "Duties", id: 'profileduties', visible_btn: false },
+
+
+
+    ];
+    $scope.selectedTabProfileIndex = -1;
+    $scope.$watch("selectedTabProfileIndex", function (newValue) {
+
+        try {
+
+            $scope.selectedTabProfile = $scope.tabsprofile[newValue];
+            $('.tabprofile').hide();
+            $('.' + $scope.selectedTabProfile.id).fadeIn(100, function () {
+
+                if ($scope.chart_bl_instance)
+                    $scope.chart_bl_instance.render();
+                if ($scope.chart_cnt_instance)
+                    $scope.chart_cnt_instance.render();
+                if ($scope.chart_fltratio_instance)
+                    $scope.chart_fltratio_instance.render();
+            });
+            if ($scope.selectedTabProfile.id == 'profileftl' && !$scope.dt_ftl)
+                $scope.dt_ftl = new Date($scope.selectedDate);
+            if ($scope.selectedTabProfile.id == 'profileflights' && !$scope.bl_year)
+                $scope.bl_year = Number(moment(new Date()).format('YYYY'));
+            if ($scope.dg_cer_instance)
+                $scope.dg_cer_instance.repaint();
+
+
+
+        }
+        catch (e) {
+
+        }
+
+    });
+    $scope.tabs_profile = {
+
+
+        onItemClick: function (arg) {
+            //$scope.selectedTab = arg.itemData;
+
+        },
+        bindingOptions: {
+
+            dataSource: { dataPath: "tabsprofile", deep: true },
+            selectedIndex: 'selectedTabProfileIndex'
+        }
+
+    };
+
+    $scope.profile = { certificates: [] };
+    $scope.showProfile = function (c, dt) {
+         
+        console.log(c);
+        if (dt)
+            $scope.dt_ftl = new Date(dt);
+        else $scope.dt_ftl = new Date();
+        $scope.profile = { certificates: [] };
+        var crew = c;//Enumerable.From($scope.ds_crew).Where('$.Id==' + c.Id).FirstOrDefault();
+        if (!crew)
+            return;
+        $scope.profile = JSON.parse(JSON.stringify(crew));
+        $scope.profile.certificates = [];
+
+        $scope.profile.certificates.push({ Title: 'Flight Crew Licence', Issue: $scope.profile.LicenceIssued, Expire: $scope.profile.LicenceExpired });
+        $scope.profile.certificates.push({ Title: 'Crew Member Certificate', Issue: null, Expire: $scope.profile.CMCExpired });
+        $scope.profile.certificates.push({ Title: 'Medical', Issue: $scope.profile.MedicalIssued, Expire: $scope.profile.MedicalExpired });
+
+
+        $scope.profile.certificates.push({ Title: 'SEPT Theoretical', Issue: $scope.profile.SEPTIssued, Expire: $scope.profile.SEPTExpired });
+        $scope.profile.certificates.push({ Title: 'SEPT Practical', Issue: $scope.profile.SEPTPIssued, Expire: $scope.profile.SEPTPExpired });
+
+        $scope.profile.certificates.push({ Title: 'Dangerous Goods', Issue: $scope.profile.DGIssued, Expire: $scope.profile.DGExpired });
+        $scope.profile.certificates.push({ Title: 'CRM', Issue: $scope.profile.CRMIssued, Expire: $scope.profile.CRMExpired });
+        $scope.profile.certificates.push({ Title: 'CCRM', Issue: $scope.profile.CCRMIssued, Expire: $scope.profile.CCRMExpired });
+
+        $scope.profile.certificates.push({ Title: 'SMS', Issue: $scope.profile.SMSIssued, Expire: $scope.profile.SMSExpired });
+        $scope.profile.certificates.push({ Title: 'Aviation Security', Issue: $scope.profile.AvSecIssued, Expire: $scope.profile.AvSecExpired });
+        //cockpit
+        if (crew.JobGroupCode.startsWith('00101')) {
+            if (crew.JobGroupCode == '0010103' || crew.JobGroupCode == '0010104') {
+                $scope.profile.certificates.push({ Title: 'TRE', Issue: null, Expire: $scope.profile.TREExpired });
+                $scope.profile.certificates.push({ Title: 'TRI', Issue: null, Expire: $scope.profile.TRIExpired });
+            }
+            $scope.profile.certificates.push({ Title: 'Skill Test/Proficiency LPC', Issue: $scope.profile.LPCIssued, Expire: $scope.profile.LPCExpired });
+            $scope.profile.certificates.push({ Title: 'Skill Test/Proficiency OPC', Issue: $scope.profile.OPCIssued, Expire: $scope.profile.OPCExpired });
+            //ICAO LPR
+            $scope.profile.certificates.push({ Title: 'ICAO LPR', Issue: null, Expire: $scope.profile.LPRExpired });
+            //Cold Weather Operation
+            $scope.profile.certificates.push({ Title: 'Cold Weather Operation', Issue: $scope.profile.ColdWXIssued, Expire: $scope.profile.ColdWXExpired });
+            //Hot Weather Operation
+            $scope.profile.certificates.push({ Title: 'Hot Weather Operation', Issue: $scope.profile.HotWXIssued, Expire: $scope.profile.HotWXExpired });
+            //Line Check 
+            $scope.profile.certificates.push({ Title: 'Line Check', Issue: $scope.profile.LineIssued, Expire: $scope.profile.LineExpired });
+        }
+        else {
+            //Recurrent Training
+            $scope.profile.certificates.push({ Title: 'Recurrent Training', Issue: $scope.profile.RecurrentIssued, Expire: $scope.profile.RecurrentExpired });
+            //First Aid
+            $scope.profile.certificates.push({ Title: 'First Aid', Issue: $scope.profile.FirstAidIssued, Expire: $scope.profile.FirstAidExpired });
+        }
+        $scope.popup_profile_visible = true;
+    };
+
+    $scope.txt_ScheduleName = {
+        hoverStateEnabled: false,
+        readOnly: true,
+        bindingOptions: {
+            value: 'profile.ScheduleName',
+
+        }
+    };
+    $scope.txt_Group = {
+        hoverStateEnabled: false,
+        readOnly: true,
+        bindingOptions: {
+            value: 'profile.JobGroup',
+
+        }
+    };
+    $scope.txt_FirstName = {
+        hoverStateEnabled: false,
+        readOnly: true,
+        bindingOptions: {
+            value: 'profile.FirstName',
+
+        }
+    };
+    $scope.txt_LastName = {
+        hoverStateEnabled: false,
+        readOnly: true,
+        bindingOptions: {
+            value: 'profile.LastName',
+
+        }
+    };
+    $scope.txt_Mobile = {
+
+
+        hoverStateEnabled: false,
+        mask: "AB00-0000000",
+        maskRules: {
+            "A": /[0]/,
+            "B": /[9]/,
+
+        },
+        maskChar: '_',
+        maskInvalidMessage: 'Wrong value',
+        readOnly: true,
+        bindingOptions: {
+            value: 'profile.Mobile',
+
+        }
+    };
+
+    $scope.dg_cer_columns = [
+
+
+
+        { dataField: 'Title', caption: 'Title', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, },
+
+
+
+        { dataField: 'Issue', caption: 'Issue', allowResizing: true, alignment: 'center', dataType: 'datetime', format: 'yyyy-MM-dd', allowEditing: false, width: 200 },
+        { dataField: 'Expire', caption: 'Expire', allowResizing: true, alignment: 'center', dataType: 'datetime', format: 'yyyy-MM-dd', allowEditing: false, width: 200 },
+
+
+    ];
+    $scope.dg_cer_selected = null;
+    $scope.dg_cer_instance = null;
+    $scope.dg_cer_ds = null;
+    $scope.dg_cer = {
+
+        headerFilter: {
+            visible: false
+        },
+        filterRow: {
+            visible: true,
+            showOperationChooser: true,
+        },
+        showRowLines: true,
+        showColumnLines: true,
+        sorting: { mode: 'none' },
+
+        noDataText: '',
+
+        allowColumnReordering: true,
+        allowColumnResizing: true,
+        scrolling: { mode: 'infinite' },
+        paging: { pageSize: 100 },
+        showBorders: true,
+        selection: { mode: 'single' },
+
+        columnAutoWidth: false,
+        height: $(window).height() - 400,
+
+        columns: $scope.dg_cer_columns,
+        onContentReady: function (e) {
+            if (!$scope.dg_cer_instance)
+                $scope.dg_cer_instance = e.component;
+
+        },
+        onSelectionChanged: function (e) {
+
+        },
+
+
+        bindingOptions: {
+            dataSource: 'profile.certificates',
+
+        }
+    };
+
+
+
+
+    $scope.dg_pdty_columns = [
+
+
+
+        { dataField: 'DutyTypeTitle', caption: 'Type', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, width: 100 },
+
+
+
+        { dataField: 'StartLocal', caption: 'Start', allowResizing: true, alignment: 'center', dataType: 'datetime', format: 'yy-MM-dd HH:mm', allowEditing: false, width: 150 },
+        { dataField: 'EndLocal', caption: 'End', allowResizing: true, alignment: 'center', dataType: 'datetime', format: 'yy-MM-dd HH:mm', allowEditing: false, width: 150 },
+        { dataField: 'RestToLocal', caption: 'Rest To', allowResizing: true, alignment: 'center', dataType: 'datetime', format: 'yyyy-MM-dd HH:mm', allowEditing: false, width: 150 },
+        { dataField: 'InitRoute', caption: 'Route', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, width: 220 },
+        { dataField: 'InitFlts', caption: 'Flights', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, width: 250 },
+        { dataField: 'IsFDPOver', caption: 'IsOver', allowResizing: true, alignment: 'center', dataType: 'boolean', allowEditing: false, width: 100 },
+        { dataField: 'DurationDuty2', caption: 'Duty', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 120 },
+        { dataField: 'DurationFDP2', caption: 'FDP', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 120 },
+        { dataField: 'MaxFDP2', caption: 'Max FDP', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 120 },
+
+    ];
+    $scope.dg_pdty_selected = null;
+    $scope.dg_pdty_instance = null;
+
+    $scope.dg_pdty = {
+
+        headerFilter: {
+            visible: false
+        },
+        filterRow: {
+            visible: true,
+            showOperationChooser: true,
+        },
+        showRowLines: true,
+        showColumnLines: true,
+        sorting: { mode: 'none' },
+
+        noDataText: '',
+
+        allowColumnReordering: true,
+        allowColumnResizing: true,
+        scrolling: { mode: 'infinite' },
+        paging: { pageSize: 100 },
+        showBorders: true,
+        selection: { mode: 'single' },
+
+        columnAutoWidth: false,
+        height: $(window).height() - 320,
+
+        columns: $scope.dg_pdty_columns,
+        onContentReady: function (e) {
+            if (!$scope.dg_pdty_instance)
+                $scope.dg_pdty_instance = e.component;
+
+        },
+        onSelectionChanged: function (e) {
+
+        },
+
+        onCellPrepared: function (e) {
+
+            if (e.rowType === "data" && e.column.dataField == "RestToLocal" && e.data.InteruptedId) {
+                // console.log('e.data.InteruptedId', e.data.InteruptedId);
+                e.cellElement.css("backgroundColor", "#ff471a");
+                e.cellElement.css("color", "#fff");
+            }
+        },
+        onRowPrepared: function (e) {
+            if (e.data && e.data.IsFDPOver) {
+                e.rowElement.css('background', '#ffcc00');
+
+            }
+
+        },
+        bindingOptions: {
+            dataSource: 'ds_profile_duties',
+
+        }
+    };
+
+    //////////////////////////
+    //mook
+    $scope.dt_dty_from = null;
+    $scope.date_dty_from = {
+        displayFormat: "yy MMM dd",
+        adaptivityEnabled: true,
+        type: "date",
+        width: '100%',
+        //pickerType: "rollers",
+        useMaskBehavior: true,
+        onValueChanged: function (e) {
+
+
+
+        },
+        bindingOptions: {
+            value: 'dt_from'
+        }
+    };
+    $scope.dt_dty_to = null;
+    $scope.date_dty_to = {
+        displayFormat: "yy MMM dd",
+        adaptivityEnabled: true,
+        type: "date",
+        width: '100%',
+        //pickerType: "rollers",
+        useMaskBehavior: true,
+        onValueChanged: function (e) {
+
+
+
+        },
+        bindingOptions: {
+            value: 'dt_to'
+        }
+    };
+
+    $scope.btn_search_duties = {
+        //text: 'Search',
+        type: 'success',
+        icon: 'search',
+        width: 40,
+
+        bindingOptions: {},
+        onClick: function (e) {
+            if (!$scope.dt_dty_to)
+                return;
+            if (!$scope.dt_dty_from)
+                return;
+            $scope.bindDuties();
+
+        }
+
+    };
+    $scope.ds_profile_duties = [];
+    $scope.bindDuties = function () {
+        $scope.loadingVisible = true;
+
+        var _df = moment($scope.dt_dty_from).format('YYYY-MM-DD');
+        var _dt = moment($scope.dt_dty_to).format('YYYY-MM-DD');
+        schedulingService.getDutyTimeLineByCrew(_df, _dt, $scope.profile.Id).then(function (response) {
+            $scope.loadingVisible = false;
+            $scope.ds_profile_duties = response;
+            $.each($scope.ds_profile_duties, function (_i, _d) {
+                if (_d.DutyType == 1165) {
+                    _d.MaxFDP2 = $scope.formatMinutes(_d.MaxFDP);
+                    _d.DurationDuty2 = $scope.formatMinutes(_d.DurationDuty);
+                    _d.DurationFDP2 = $scope.formatMinutes(_d.DurationFDP);
+                }
+            });
+        }, function (err) { });
+    };
+
+    $scope.dtFtlGo = function (d) {
+        $scope.dt_ftl = (new Date($scope.dt_ftl)).addDays(d);
+    };
+    $scope.dt_ftl = null;
+    $scope.date_ftl = {
+        displayFormat: "yy MMM dd",
+        adaptivityEnabled: true,
+        type: "date",
+        width: '100%',
+        //pickerType: "rollers",
+        useMaskBehavior: true,
+        onValueChanged: function (e) {
+
+             
+            $scope.bindFTL();
+        },
+        bindingOptions: {
+            value: 'dt_ftl'
+        }
+    };
+    $scope.bl_year = null;
+    $scope.sb_year = {
+        // openOnFieldClick: false,
+        // showDropDownButton: false,
+        showClearButton: false,
+        searchEnabled: false,
+
+        onSelectionChanged: function (arg) {
+
+
+            $scope.bindBL();
+        },
+        dataSource: [2019, 2020, 2021, 2022],
+        bindingOptions: {
+            value: 'bl_year',
+
+
+        }
+    };
+
+    $scope.dt_bl = null;
+
+    $scope.date_bl = {
+        displayFormat: "yyyy",
+        adaptivityEnabled: true,
+        type: "date",
+        width: 150,
+        //pickerType: "rollers",
+
+        useMaskBehavior: true,
+        calendarOptions: {
+            zoomLevel: 'decade',
+            minZoomLevel: 'decade',
+            maxZoomLevel: 'decade',
+        },
+        onValueChanged: function (e) {
+            var _dt = moment($scope.dt_bl).format('YYYY-MM-DDTHH:mm:ss');
+            localStorageService.set('stat_bl_date', _dt);
+            $scope.bindBL();
+        },
+        bindingOptions: {
+            value: 'dt_bl'
+        }
+    };
+
+    $scope.chart_bl = {
+        title: {
+            text: 'FLIGHT & BLOCK TIME',
+            font: { color: 'gray', size: 14 },
+            horizontalAlignment: 'center',
+        },
+        legend: {
+
+            verticalAlignment: 'bottom',
+            horizontalAlignment: 'center',
+            itemTextPosition: 'right',
+        },
+        commonPaneSettings: {
+            backgroundColor: 'white',
+            border: { top: true, bottom: true, left: true, right: true, color: '#ccc', visible: true }
+        },
+        commonAxisSettings: {
+            label: {
+                color: 'gray',
+                font: {
+                    color: 'gray',
+                    weight: 800,
+                    // size: 12,
+                    // family: 'Tahoma'
+                }
+            },
+            maxValueMargin: 0.1,
+
+        },
+        "export": {
+            enabled: false
+        },
+        onInitialized: function (e) {
+            if (!$scope.chart_bl_instance)
+                $scope.chart_bl_instance = e.component;
+        },
+        palette: "Green Mist",
+
+        commonSeriesSettings: {
+            type: "bar",
+
+            argumentField: "MonthName",
+            ignoreEmptyPoints: true,
+            label: {
+                //backgroundColor: 'gray',
+                position: 'outside',
+                color: 'gray',
+                backgroundColor: 'transparent',
+                font: {
+                    color: 'gray',
+                    size: 11,
+                    weight: 500,
+                },
+                customizeText: function () {
+                    if (!this.value || this.value == 0)
+                        return "";
+                    return $scope.formatMinutes(this.value);
+                },
+                visible: true,
+
+            },
+            // barWidth: 30,
+        },
+        series: [
+            { valueField: 'BlockTime', name: 'Block', },
+            { valueField: 'FlightTime', name: 'Flight', },
+        ],
+
+
+        tooltip: {
+            enabled: false,
+            zIndex: 10000,
+            // location: "edge",
+            customizeTooltip: function (arg) {
+                // alert(arg.seriesName + " " + $scope.formatMinutes(arg.value));
+                return {
+                    text: arg.seriesName + ": " + $scope.formatMinutes(arg.value)
+                };
+            }
+        },
+        valueAxis: [{
+            label: {
+                customizeText: function () {
+                    return $scope.formatMinutes(this.value);
+                }
+            },
+        }],
+        size: {
+            height: 350,
+
+        },
+        bindingOptions: {
+            "dataSource": "data_bl",
+
+
+
+        }
+    };
+
+    $scope.chart_cnt = {
+        title: {
+            text: 'TOTAL NUMBER OF FLIGHTS',
+            font: { color: 'gray', size: 14 },
+            horizontalAlignment: 'center',
+        },
+        legend: {
+            visible: true,
+            verticalAlignment: 'bottom',
+            horizontalAlignment: 'center',
+            itemTextPosition: 'right',
+        },
+        commonPaneSettings: {
+            backgroundColor: 'white',
+            border: { top: true, bottom: true, left: true, right: true, color: '#eeeeee', visible: true }
+        },
+        commonAxisSettings: {
+            label: {
+                color: 'gray',
+                font: {
+                    color: 'gray',
+                    weight: 800,
+                    // size: 12,
+                    // family: 'Tahoma'
+                }
+            },
+            maxValueMargin: 0.1,
+
+        },
+        "export": {
+            enabled: false
+        },
+        onInitialized: function (e) {
+            if (!$scope.chart_cnt_instance)
+                $scope.chart_cnt_instance = e.component;
+        },
+        palette: "Soft Blue",
+
+        commonSeriesSettings: {
+            type: "bar",
+
+            argumentField: "MonthName",
+            ignoreEmptyPoints: true,
+            label: {
+                //backgroundColor: 'gray',
+                position: 'outside',
+                color: 'gray',
+                backgroundColor: 'transparent',
+                font: {
+                    color: 'gray',
+                    size: 11,
+                    weight: 500,
+                },
+                customizeText: function () {
+                    if (!this.value || this.value == 0)
+                        return "";
+                    return (this.value);
+                },
+                visible: true,
+
+            },
+            // barWidth: 30,
+        },
+        series: [
+            { valueField: 'Flights', name: 'Sectors', },
+
+        ],
+
+
+        tooltip: {
+            enabled: false,
+            zIndex: 10000,
+            // location: "edge",
+            customizeTooltip: function (arg) {
+                // alert(arg.seriesName + " " + $scope.formatMinutes(arg.value));
+                return {
+                    text: arg.seriesName + ": " + $scope.formatMinutes(arg.value)
+                };
+            }
+        },
+        valueAxis: [{
+            label: {
+                customizeText: function () {
+                    return (this.value);
+                }
+            },
+        }],
+        size: {
+            height: 350,
+        },
+        bindingOptions: {
+            "dataSource": "data_bl",
+
+
+
+        }
+    };
+
+
+    $scope.chart_fltratio = {
+        title: {
+            text: 'FLIGHT TIME / TOTAL NUMBER OF FLIGHTS (mm)',
+            font: { color: 'gray', size: 14 },
+            horizontalAlignment: 'center',
+        },
+        legend: {
+            visible: true,
+            verticalAlignment: 'bottom',
+            horizontalAlignment: 'center',
+            itemTextPosition: 'right',
+        },
+        commonPaneSettings: {
+            backgroundColor: 'white',
+            border: { top: true, bottom: true, left: true, right: true, color: '#eeeeee', visible: true }
+        },
+        commonAxisSettings: {
+            label: {
+                color: 'gray',
+                font: {
+                    color: 'gray',
+                    weight: 800,
+                    // size: 12,
+                    // family: 'Tahoma'
+                }
+            },
+            maxValueMargin: 0.1,
+
+        },
+        "export": {
+            enabled: false
+        },
+        onInitialized: function (e) {
+            if (!$scope.chart_fltratio_instance)
+                $scope.chart_fltratio_instance = e.component;
+        },
+        palette: "Harmony Light",
+
+        commonSeriesSettings: {
+            type: "spline",
+            width: 4,
+            argumentField: "MonthName",
+            ignoreEmptyPoints: true,
+            label: {
+                //backgroundColor: 'gray',
+                position: 'outside',
+                color: 'gray',
+                backgroundColor: 'transparent',
+                font: {
+                    color: 'gray',
+                    size: 11,
+                    weight: 500,
+                },
+                customizeText: function () {
+                    if (!this.value || this.value == 0)
+                        return "";
+                    return $scope.formatMinutes(this.value);
+                },
+                visible: true,
+
+            },
+            // barWidth: 30,
+        },
+        series: [
+            { valueField: 'FLTRatio', name: 'Ratio', },
+
+        ],
+
+
+        tooltip: {
+            enabled: false,
+            zIndex: 10000,
+            // location: "edge",
+            customizeTooltip: function (arg) {
+                // alert(arg.seriesName + " " + $scope.formatMinutes(arg.value));
+                return {
+                    text: arg.seriesName + ": " + $scope.formatMinutes(arg.value)
+                };
+            }
+        },
+        valueAxis: [{
+            valueType: "numeric",
+            label: {
+                customizeText: function () {
+                    return $scope.formatMinutes(this.value);
+                }
+            },
+        }],
+        size: {
+            height: 350,
+        },
+        bindingOptions: {
+            "dataSource": "data_bl",
+
+
+
+        }
+    };
+
+
+    $scope.data_bl = null;
+    $scope.bindBL = function () {
+        if (!$scope.bl_year)
+            return;
+        $scope.loadingVisible = true;
+
+        schedulingService.getFlightTimeYear($scope.profile.Id, /*moment($scope.dt_bl).format('YYYY')*/$scope.bl_year).then(function (response) {
+            $scope.loadingVisible = false;
+            $.each(response, function (_i, _d) {
+                if (!_d.FlightTime)
+                    _d.FLTRatio = 0;
+                else
+                    _d.FLTRatio = ((_d.FlightTime * 1.0) / _d.Flights).toFixed();
+            });
+            $scope.data_bl = response;
+
+        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+    };
+    $scope.duty7Gauge = {
+        barSpacing: 4,
+        relativeInnerRadius: 0.7,
+        startValue: 0,
+        endValue: 60,
+
+        label: {
+            visible: false,
+            indent: 20,
+            connectorWidth: 0,
+            format: {
+                type: "fixedPoint",
+                precision: 1
+            },
+            font: {
+                size: 14,
+                color: 'gray',
+            },
+            customizeText: function (arg) {
+
+                var dvalue = $scope.Duties7[arg.index];
+                var dp = Number((dvalue * 100.0) / 60).toFixed();
+                return $scope.formatMinutes(dvalue * 60);//+ ' ('+dp+'%)'; //arg.valueText + " %";
+            }
+        },
+
+        title: {
+            text: "7 Days",
+            horizontalAlignment: 'center',
+            margin: { top: 10, bottom: 10, left: 10, right: 10 },
+            font: {
+                size: 15,
+                weight: 900,
+                color: 'gray',
+            }
+        },
+        margin: {
+            top: 0,
+            bottom: 0,
+            left: 20,
+            right: 20
+        },
+        bindingOptions: {
+            values: 'Duties7',
+            palette: 'DutyColors7',
+        }
+    };
+    $scope.duty14Gauge = {
+        barSpacing: 4,
+        relativeInnerRadius: 0.7,
+        startValue: 0,
+        endValue: 110,
+
+        label: {
+            visible: false,
+            indent: 20,
+            connectorWidth: 0,
+            format: {
+                type: "fixedPoint",
+                precision: 1
+            },
+            font: {
+                size: 14,
+                color: 'gray',
+            },
+            customizeText: function (arg) {
+
+                var dvalue = $scope.Duties14[arg.index];
+                var dp = Number((dvalue * 100.0) / 110).toFixed();
+                return $scope.formatMinutes(dvalue * 60);//+ ' ('+dp+'%)'; //arg.valueText + " %";
+            }
+        },
+
+        title: {
+            text: "14 Days",
+            horizontalAlignment: 'center',
+            margin: { top: 10, bottom: 10, left: 10, right: 10 },
+            font: {
+                size: 15,
+                weight: 900,
+                color: 'gray',
+            }
+        },
+        margin: {
+            top: 0,
+            bottom: 0,
+            left: 20,
+            right: 20
+        },
+        bindingOptions: {
+            values: 'Duties14',
+            palette: 'DutyColors14',
+        }
+    };
+    $scope.duty28Gauge = {
+        barSpacing: 4,
+        relativeInnerRadius: 0.7,
+        startValue: 0,
+        endValue: 190,
+
+        label: {
+            visible: false,
+            indent: 20,
+            connectorWidth: 0,
+            format: {
+                type: "fixedPoint",
+                precision: 1
+            },
+            font: {
+                size: 14,
+                color: 'gray',
+            },
+            customizeText: function (arg) {
+
+                var dvalue = $scope.Duties28[arg.index];
+                var dp = Number((dvalue * 100.0) / 190).toFixed();
+                return $scope.formatMinutes(dvalue * 60);//+ ' ('+dp+'%)'; //arg.valueText + " %";
+            }
+        },
+
+        title: {
+            text: "28 Days",
+            horizontalAlignment: 'center',
+            margin: { top: 10, bottom: 10, left: 10, right: 10 },
+            font: {
+                size: 15,
+                weight: 900,
+                color: 'gray',
+            }
+        },
+        margin: {
+            top: 0,
+            bottom: 0,
+            left: 20,
+            right: 20
+        },
+        bindingOptions: {
+            values: 'Duties28',
+            palette: 'DutyColors28',
+        }
+    };
+
+
+
+    $scope.flight28Gauge = {
+        barSpacing: 4,
+        relativeInnerRadius: 0.7,
+        startValue: 0,
+        endValue: 100,
+
+        label: {
+            visible: false,
+            indent: 20,
+            connectorWidth: 0,
+            format: {
+                type: "fixedPoint",
+                precision: 1
+            },
+            font: {
+                size: 14,
+                color: 'gray',
+            },
+            customizeText: function (arg) {
+
+                var dvalue = $scope.Flights28[arg.index];
+                var dp = Number((dvalue * 100.0) / 100).toFixed();
+                return $scope.formatMinutes(dvalue * 60);//+ ' ('+dp+'%)'; //arg.valueText + " %";
+            }
+        },
+
+        title: {
+            text: "28 Days",
+            horizontalAlignment: 'center',
+            margin: { top: 10, bottom: 10, left: 10, right: 10 },
+            font: {
+                size: 15,
+                weight: 900,
+                color: 'gray',
+            }
+        },
+        margin: {
+            top: 0,
+            bottom: 0,
+            left: 20,
+            right: 20
+        },
+        bindingOptions: {
+            values: 'Flights28',
+            palette: 'FlightColors28',
+        }
+    };
+    $scope.flightYearGauge = {
+        barSpacing: 4,
+        relativeInnerRadius: 0.7,
+        startValue: 0,
+        endValue: 1000,
+
+        label: {
+            visible: false,
+            indent: 20,
+            connectorWidth: 0,
+            format: {
+                type: "fixedPoint",
+                precision: 1
+            },
+            font: {
+                size: 14,
+                color: 'gray',
+            },
+            customizeText: function (arg) {
+
+                var dvalue = $scope.FlightsYear[arg.index];
+                var dp = Number((dvalue * 100.0) / 1000).toFixed();
+                return $scope.formatMinutes(dvalue * 60);//+ ' ('+dp+'%)'; //arg.valueText + " %";
+            }
+        },
+
+        title: {
+            text: "12 Consecutive Months",
+            horizontalAlignment: 'center',
+            margin: { top: 10, bottom: 10, left: 10, right: 10 },
+            font: {
+                size: 15,
+                weight: 900,
+                color: 'gray',
+            }
+        },
+        margin: {
+            top: 0,
+            bottom: 0,
+            left: 20,
+            right: 20
+        },
+        bindingOptions: {
+            values: 'FlightsYear',
+            palette: 'FlightColorsYear',
+        }
+    };
+    $scope.flightCYearGauge = {
+        barSpacing: 4,
+        relativeInnerRadius: 0.7,
+        startValue: 0,
+        endValue: 900,
+
+        label: {
+            visible: false,
+            indent: 20,
+            connectorWidth: 0,
+            format: {
+                type: "fixedPoint",
+                precision: 1
+            },
+            font: {
+                size: 14,
+                color: 'gray',
+            },
+            customizeText: function (arg) {
+
+                var dvalue = $scope.FlightsCYear[arg.index];
+                var dp = Number((dvalue * 100.0) / 900).toFixed();
+                return $scope.formatMinutes(dvalue * 60);//+ ' ('+dp+'%)'; //arg.valueText + " %";
+            }
+        },
+
+        title: {
+            text: "Calendar Year",
+            horizontalAlignment: 'center',
+            margin: { top: 10, bottom: 10, left: 10, right: 10 },
+            font: {
+                size: 15,
+                weight: 900,
+                color: 'gray',
+            }
+        },
+        margin: {
+            top: 0,
+            bottom: 0,
+            left: 20,
+            right: 20
+        },
+        bindingOptions: {
+            values: 'FlightsCYear',
+            palette: 'FlightColorsCYear',
+        }
+    };
+
+
+    $scope.barGaugeOptions = {
+        size: { height: 500, width: 500 },
+        startValue: 0,
+        endValue: 200,
+        values: [121.4, 135.4, 115.9, 141.1, 127.5],
+        label: { visible: false },
+        tooltip: {
+            enabled: true,
+            customizeTooltip(arg) {
+                return {
+                    text: getText(arg, arg.valueText),
+                };
+            },
+        },
+        export: {
+            enabled: true,
+        },
+        title: {
+            text: 'Average Speed by Racer',
+            font: {
+                size: 28,
+            },
+        },
+        legend: {
+            visible: true,
+            verticalAlignment: 'bottom',
+            horizontalAlignment: 'center',
+            customizeText(arg) {
+                return getText(arg.item, arg.text);
+            },
+        },
+    };
+
+    function getText(item, text) {
+        return `Racer ${item.index + 1} - ${text} km/h`;
+    }
+
+
+
+    ////////////////////////////////////
+    $scope.getCrewCerStatus = function (c, dt) {
+        var item = c.item;
+        //console.log(item);
+        var _dt = new Date(dt.date);
+        var result = { expired: [] };
+
+
+        result.RemainMedical = !item.MedicalExpired ? null : $scope.getDaysDiffMoment(new Date(item.MedicalExpired), _dt);
+        if (result.RemainMedical < 0)
+            result.expired.push({ title: 'Medical', date: item.MedicalExpired, remain: result.RemainMedical });
+        //_d.RemainCMC = !_d.CMCExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.CMCExpired));
+        result.RemainCMC = !item.CMCExpired ? null : $scope.getDaysDiffMoment(new Date(item.CMCExpired), _dt);
+        if (result.RemainCMC < 0)
+            result.expired.push({ title: 'CMC', date: item.CMCExpired, remain: result.RemainCMC });
+
+
+        //_d.RemainSEPT = !_d.SEPTExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.SEPTExpired));
+        result.RemainSEPT = !item.SEPTExpired ? null : $scope.getDaysDiffMoment(new Date(item.SEPTExpired), _dt);
+        if (result.RemainSEPT < 0)
+            result.expired.push({ title: 'SEPT', date: item.SEPTExpired, remain: result.RemainSEPT });
+        //_d.RemainDG = !_d.DGExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.DGExpired));
+        result.RemainDG = !item.DGExpired ? null : $scope.getDaysDiffMoment(new Date(item.DGExpired), _dt);
+        if (result.RemainDG < 0)
+            result.expired.push({ title: 'DG', date: item.DGExpired, remain: result.RemainDG });
+        //_d.RemainCCRM = !_d.CCRMExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.CCRMExpired));
+        result.RemainCCRM = !item.CCRMExpired ? null : $scope.getDaysDiffMoment(new Date(item.CCRMExpired), _dt);
+        if (result.RemainCCRM < 0)
+            result.expired.push({ title: 'CCRM', date: item.CCRMExpired, remain: result.RemainCCRM });
+        //_d.RemainSMS = !_d.SMSExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.SMSExpired));
+        result.RemainSMS = !item.SMSExpired ? null : $scope.getDaysDiffMoment(new Date(item.SMSExpired), _dt);
+        if (result.RemainSMS < 0)
+            result.expired.push({ title: 'SMS', date: item.SMSExpired, remain: result.RemainSMS });
+        //_d.RemainAvSec = !_d.AvSecExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.AvSecExpired));
+        result.RemainAvSec = !item.AvSecExpired ? null : $scope.getDaysDiffMoment(new Date(item.AvSecExpired), _dt);
+        if (result.RemainAvSec < 0)
+            result.expired.push({ title: 'AVSEC', date: item.AvSecExpired, remain: result.RemainAvSec });
+
+        if (item.IsCockpit) {
+            //_d.RemainLPC = !_d.LPCExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.LPCExpired));
+            result.RemainLPC = !item.LPCExpired ? null : $scope.getDaysDiffMoment(new Date(item.LPCExpired), _dt);
+            if (result.RemainLPC < 0)
+                result.expired.push({ title: 'LPC', date: item.LPCExpired, remain: result.RemainLPC });
+            //_d.RemainLPR = !_d.LPRExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.LPRExpired));
+            result.RemainLPR = !item.LPRExpired ? null : $scope.getDaysDiffMoment(new Date(item.LPRExpired), _dt);
+            if (result.RemainLPR < 0)
+                result.expired.push({ title: 'LPR', date: item.LPRExpired, remain: result.RemainLPR });
+            //_d.RemainLicence = !_d.LicenceExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.LicenceExpired));
+            result.RemainLicence = !item.LicenceExpired ? null : $scope.getDaysDiffMoment(new Date(item.LicenceExpired), _dt);
+            if (result.RemainLicence < 0)
+                result.expired.push({ title: 'Licence', date: item.LicenceExpired, remain: result.RemainLicence });
+
+            //_d.RemainOPC = !_d.OPCExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.OPCExpired));
+            result.RemainOPC = !item.OPCExpired ? null : $scope.getDaysDiffMoment(new Date(item.OPCExpired), _dt);
+            if (result.RemainOPC < 0)
+                result.expired.push({ title: 'OPC', date: item.OPCExpired, remain: result.RemainOPC });
+            //_d.RemainLine = !_d.LineExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.LineExpired));
+            result.RemainLine = !item.LineExpired ? null : $scope.getDaysDiffMoment(new Date(item.LineExpired), _dt);
+            if (result.RemainLine < 0)
+                result.expired.push({ title: 'LINE', date: item.LineExpired, remain: result.RemainLine });
+            //_d.RemainColdWx = !_d.ColdWXExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.ColdWXExpired));
+            result.RemainColdWx = !item.ColdWXExpired ? null : $scope.getDaysDiffMoment(new Date(item.ColdWXExpired), _dt);
+            if (result.RemainColdWx < 0)
+                result.expired.push({ title: 'COLD-WX', date: item.ColdWXExpired, remain: result.RemainFirstAid });
+            //_d.RemainHotWx = !_d.HotWXExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.HotWXExpired));
+            result.RemainHotWx = !item.HotWXExpired ? null : $scope.getDaysDiffMoment(new Date(item.HotWXExpired), _dt);
+            if (result.RemainHotWx < 0)
+                result.expired.push({ title: 'HOT-WX', date: item.HotWXExpired, remain: result.RemainHotWx });
+        }
+        if (item.IsCabin) {
+            //_d.RemainFirstAid = !_d.FirstAidExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.FirstAidExpired));
+            result.RemainFirstAid = !item.FirstAidExpired ? null : $scope.getDaysDiffMoment(new Date(item.FirstAidExpired), _dt);
+            if (result.RemainFirstAid < 0)
+                result.expired.push({ title: 'FIRSTAID', date: item.FirstAidExpired, remain: result.RemainFirstAid });
+            //_d.RemainRecurrent = !_d.RecurrentExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.RecurrentExpired));
+            result.RemainRecurrent = !item.RecurrentExpired ? null : $scope.getDaysDiffMoment(new Date(item.RecurrentExpired), _dt);
+            if (result.RemainRecurrent < 0)
+                result.expired.push({ title: 'RECURRENT', date: item.RecurrentExpired, remain: result.RemainRecurrent });
+            result.RemainFlightCheck = !item.TypeMDExpired ? null : $scope.getDaysDiffMoment(new Date(item.TypeMDExpired), _dt);
+            if (result.RemainFlightCheck < 0)
+                result.expired.push({ title: 'FLIGHT-CHECK', date: item.TypeMDExpired, remain: result.RemainFlightCheck });
+
+
+            result.RemainType = !item.Type737Expired ? null : $scope.getDaysDiffMoment(new Date(item.Type737Expired), _dt);
+            if (result.RemainType < 0)
+                result.expired.push({ title: 'TYPE', date: item.Type737Expired, remain: result.RemainType });
+
+
+        }
+       
+        //_d.RemainSEPTP = !_d.SEPTPExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.SEPTPExpired));
+        result.RemainSEPTP = !item.SEPTPExpired ? null : $scope.getDaysDiffMoment(new Date(item.SEPTPExpired), _dt);
+        if (result.RemainSEPTP < 0)
+            result.expired.push({ title: 'SEPTP', date: item.SEPTPExpired, remain: result.RemainSEPTP });
+        //_d.RemainCRM = !_d.CRMExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.CRMExpired));
+        result.RemainCRM = !item.CRMExpired ? null : $scope.getDaysDiffMoment(new Date(item.CRMExpired), _dt);
+        if (result.RemainCRM < 0)
+            result.expired.push({ title: 'CRM', date: item.CRMExpired, remain: result.RemainCRM });
+      
+      
+
+        //_d.RemainFirstAid = !_d.FirstAidExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.FirstAidExpired));
+        result.RemainPassport = !item.PassportExpired ? null : $scope.getDaysDiffMoment(new Date(item.PassportExpired), _dt);
+        if (result.RemainPassport < 0)
+            result.expired.push({ title: 'PASSPORT', date: item.PassportExpired, remain: result.RemainPassport });
+
+
+       
+
+        result.IsExpired = result.expired.length > 0;
+        return result;
+    };
 
 
     $scope.timeline_data = null;
@@ -1223,7 +2908,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         var _dt = moment($scope.dt_to).format('YYYY-MM-DD');
 
 
-        ///////////////////////
+       
         ///////////////////////////
         $scope.ganttData = {};
         $scope.totalHeight = 0;
@@ -1234,6 +2919,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 crews.duties = [];
 
                 $.each(crews, function (_i, _d) {
+                   // _d._IsCockpit = ['TRE', 'TRI', 'LTC', 'SFE', 'SFI', 'P1', 'P2'].indexOf(_d.JobGroup) != -1;
+                   // _d._IsCockpit = ['TRE', 'TRI', 'LTC', 'SFE', 'SFI', 'P1', 'P2'].indexOf(_d.JobGroup) != -1;
                     _d.dates = [];
                     var cdts = Enumerable.From(dts).Where('$.CrewId==' + _d.CrewId).FirstOrDefault();
                     if (cdts)
