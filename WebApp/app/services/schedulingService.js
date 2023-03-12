@@ -3381,9 +3381,9 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
 
 
     //2023
-    var _getCrewForGanttByDateNew = function (cid, dt) {
+    var _getCrewForGanttByDateNew = function (rnk,cid, dt) {
         var deferred = $q.defer();
-        $http.get(/*serviceBaseAPI + 'api/crew/valid/1?dt=' + dt*/apiScheduling + 'api/sch/crew/valid/gant').then(function (response) {
+        $http.get(/*serviceBaseAPI + 'api/crew/valid/1?dt=' + dt*/apiScheduling + 'api/sch/crew/valid/gant'+(rnk?"?rank="+rnk:"")).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 
@@ -3396,9 +3396,9 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
 
 
     //2023
-    var _getDutiesForGanttByDateNew = function (df, dt) {
+    var _getDutiesForGanttByDateNew = function (df, dt,rnk) {
         var deferred = $q.defer();
-        $http.get(/*serviceBaseAPI + 'api/crew/valid/1?dt=' + dt*/apiScheduling + 'api/sch/crew/duties/gant/?df='+df+'&dt='+dt).then(function (response) {
+        $http.get(/*serviceBaseAPI + 'api/crew/valid/1?dt=' + dt*/apiScheduling + 'api/sch/crew/duties/gant/?df='+df+'&dt='+dt+(rnk?"&rnk="+rnk:"")).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 

@@ -7374,7 +7374,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
         //$scope.dg_crew_ds = Enumerable.From(filtered).OrderBy('$.GroupOrder').ThenBy('$.RosterFlights').ThenBy('$.Flight28').ThenBy('$.Duty7').ThenBy('$.ScheduleName').ToArray();
 
         //2020-10-20 
-
+        //2023-03-09
         $.each(filtered, function (_i, _d) {
             _d.RemainMedical = !_d.MedicalExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.MedicalExpired));
             _d.RemainCMC = !_d.CMCExpired ? null : $scope.getDaysDiff(dateFirst, new Date(_d.CMCExpired));
