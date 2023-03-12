@@ -3295,6 +3295,19 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
     };
     serviceFactory.getFTLByCrewIds = _getFTLByCrewIds;
 
+    var _getFdpsByFlight = function (ids) {
+        var deferred = $q.defer();
+        $http.get(serviceBaseAPI + 'api/fdps/flight/' + ids).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getFdpsByFlight = _getFdpsByFlight;
+
 
 
     var _getFTLExceedAll = function (id) {
