@@ -3032,16 +3032,16 @@ app.factory('flightService', ['$http', '$q', 'ngAuthSettings', '$rootScope', fun
     };
     //11-18
     var _saveFlightGroupUTC = function (entity) {
-        var url = 'odata/flight/group/save/utc';
-        if (entity.ID != -1)
-            url = 'odata/flight/group/update/utc';
+      //  var url = 'odata/flight/group/save/utc';
+        //if (entity.ID != -1)
+          //  url = 'odata/flight/group/update/utc';
 
-       // var _url = 'api/plan/group/save/utc';
-       // if (entity.ID != -1)
-       //     _url = 'api/plan/group/update/utc';
+        var _url = 'api/plan/group/save/utc';
+        if (entity.ID != -1)
+            _url = 'api/plan/group/update/utc';
         var deferred = $q.defer();
 
-        $http.post($rootScope.serviceUrl /*apiPlanning*/ + _url, entity).then(function (response) {
+        $http.post(/*$rootScope.serviceUrl*/ apiPlanning + _url, entity).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 

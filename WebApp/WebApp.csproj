@@ -84,6 +84,7 @@
     <Content Include="app\controllers\asrreport.js" />
     <Content Include="app\controllers\atcAdd.js" />
     <Content Include="app\controllers\board.js" />
+    <Content Include="app\controllers\boardam.js" />
     <Content Include="app\controllers\boardfly.js" />
     <Content Include="app\controllers\boardtest.js" />
     <Content Include="app\controllers\boardvrh.js" />
@@ -283,6 +284,7 @@
     <Content Include="app\views\asrreport.html" />
     <Content Include="app\views\atcAdd.html" />
     <Content Include="app\views\board.html" />
+    <Content Include="app\views\boardam.html" />
     <Content Include="app\views\boardtest.html" />
     <Content Include="app\views\boardvrh.html" />
     <Content Include="app\views\boarfly.html" />

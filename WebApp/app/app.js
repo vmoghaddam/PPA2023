@@ -504,6 +504,11 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/boarfly.html",
         isAdmin: true,
     });
+    $routeProvider.when("/board/am", {
+        controller: "boardamController",
+        templateUrl: "/app/views/boardam.html",
+        isAdmin: true,
+    });
 
     $routeProvider.when("/board/test", {
         controller: "boardTestController",

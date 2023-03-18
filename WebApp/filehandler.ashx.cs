@@ -50,6 +50,11 @@ namespace WebApp
                     context.Response.Write(string.Join("@", fileNames));
                 }
             }
+            else
+            {
+                context.Response.ContentType = "text/plain";
+                context.Response.Write("WORKING");
+            }
 
 
         }
