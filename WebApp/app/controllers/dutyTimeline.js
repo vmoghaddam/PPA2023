@@ -4471,13 +4471,14 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         $scope.loadingVisible = true;
         schedulingService.saveSTBY(dto).then(function (response) {
             $scope.loadingVisible = false;
+            console.log('save stby', response);
 
             if (response.Code == 406) {
                 if (response.message) {
                     var myDialog = DevExpress.ui.dialog.custom({
                         rtlEnabled: true,
                         title: "Error",
-                        message: crew.ScheduleName + ": " + response.message,
+                        message: response.message,
                         buttons: [{ text: "OK", onClick: function () { } }]
                     });
                     myDialog.show();
@@ -4739,7 +4740,26 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.flt_selected = [];
     $scope.flt_selected_obj = [];
     $scope.FDPStat = {};
+    $scope.flt_fdps = [];
+    $scope.get_flt_fdps_style = function () {
+        return {
+            height: $(window).height() - 490,
+        };
+    };
+    $scope.getFDPsByFlights = function () {
+        //getFdpsByFlight
+        $scope.flt_fdps = [];
+        //alert($scope.flt_selectd.length);
+        if (!$scope.flt_selected || $scope.flt_selected.length == 0)
+            return;
+        var ids = $scope.flt_selected.join('_');
+       
+        schedulingService.getFdpsByFlight(ids).then(function (response) {
+            $scope.flt_fdps = response;
+        });
+    };
     $scope.flightClick = function (flt) {
+       
         if (flt.FlightStatusID == 4)
             return;
         if ($scope.flt_selected.indexOf(flt.ID) != -1) {
@@ -4763,8 +4783,12 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         console.log($scope.continuity);
         $scope.FDPStat = {};
         $scope.useSplit = false;
+        
         if (!$scope.continuit && !$scope.overlapping)
             $scope.getFDPStat();
+        
+        $scope.getFDPsByFlights();
+       
     };
     $scope.useSplit = false;
     $scope.check_split = {
@@ -5105,7 +5129,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
         columnAutoWidth: false,
         //2020-10-27 1 s
-        height:  $(window).height() - 200-290,
+        height:  $(window).height() - 490,
 
         columns: $scope.dg_crew_abs_columns,
         onContentReady: function (e) {
@@ -5312,6 +5336,95 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             return "";
 
     };
+
+    $scope.activeStby = function (crew, stbyid, rank, index, fdp) {
+
+        //FDPId
+        var flts = Enumerable.From($scope.ati_selectedFlights).OrderBy(function (x) { return new Date(x.std); }).ToArray();
+        var fltIds = Enumerable.From(flts).Select('$.Id').ToArray();
+        var fltIdsStr = fltIds.join('*');
+
+        console.log('stby');
+        console.log(flts);
+
+        $scope.loadingVisible = true;
+        schedulingService.checkStbyActivation(($scope.FDPStat.Extended > 0 ? 1 : 0), stbyid, flts[0].Id, $scope.FDPStat.Duty, $scope.FDPStat.MaxFDPExtended).then(function (response) {
+            $scope.loadingVisible = false;
+            console.log('STBY STAT');
+            console.log(response);
+            if (response.maxFDPError) {
+
+                var myDialog = DevExpress.ui.dialog.custom({
+                    rtlEnabled: true,
+                    title: "Error",
+                    message: 'MAX FDP ERROR DUE TO STBY REDUCTION',
+                    buttons: [{ text: "OK", onClick: function () { } }]
+                });
+                myDialog.show();
+                return;
+            }
+            if (response.durationError) {
+
+                var myDialog = DevExpress.ui.dialog.custom({
+                    rtlEnabled: true,
+                    title: "Error",
+                    message: 'TOTAL DURATION IS GREATER THAN 18 HOURS',
+                    buttons: [{ text: "OK", onClick: function () { } }]
+                });
+                myDialog.show();
+                return;
+            }
+
+            //dlunaz
+            var dto = {
+                crewId: crew.Id,
+                stbyId: stbyid,
+                fids: fltIdsStr,
+                rank: $scope.getDefaultPositionId(rank),
+                index: index,
+            };
+            $scope.loadingVisible = true;
+
+            schedulingService.activateStby(dto).then(function (response) {
+                $scope.loadingVisible = false;
+                console.log('stby activated');
+                console.log(response);
+                var fdpId = response.Id; //$scope.activatedStbys.length + 1;
+                fdp.Id = fdpId;
+
+                $scope.ati_fdps.push(fdp);
+
+                $scope.currentAssigned.CrewIds.push(crew.Id);
+                $scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString() + 'Id'] = crew.Id;
+                $scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString()] = crew.ScheduleName;
+                $scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString() + 'Group'] = crew.JobGroup;
+                if (!crew.FlightSum)
+                    crew.FlightSum = 0;
+                crew.FlightSum += $scope.FDPStat.Flight;
+                $scope.fillFilteredCrew();
+                $scope.fillRangeFdps();
+                $scope.fillFlightCrews();
+                $scope.fillRangeCrews();
+                $scope.getAssigned();
+
+
+                //dluparvar
+                General.Confirm("Do you want to send notification?", function (res) {
+                    if (res) {
+                        $scope.notifyDutyCal(response);
+
+                    }
+                });
+
+
+            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+
+        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+    };
     $scope.popup_flt_visible = false;
     $scope.popup_flt_title = 'Flights';
     $scope.popup_flt = {
@@ -5365,8 +5478,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                             $scope.loadingVisible = true;
                             schedulingService.saveFDP(dto).then(function (response) {
                                 $scope.loadingVisible = false;
-
-                                if (response.Code == 406) {
+                                console.log('save fdp res',response);
+                                if (response.data && response.data.Code == 406) {
                                     if (response.data.message) {
                                         var myDialog = DevExpress.ui.dialog.custom({
                                             rtlEnabled: true,
@@ -5378,17 +5491,17 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                                     }
 
                                 } else
-                                    if (response.Code == 501) {
+                                    if (response.data && response.data.Code == 501) {
                                         General.Confirm("The selected crew is on STANDBY. Do you want to activate him/her?", function (res) {
                                             if (res) {
 
-                                                $scope.activeStby(crew, response.data.Id, fdp.rank, fdp.index, fdp);
+                                                $scope.activeStby($scope.selected_crew, response.data.Id, fdp.rank, fdp.index, fdp);
                                                
                                             }
                                         });
                                     }
                                     else
-                                        if (response.Code == 304) {
+                                        if (response.data && response.data.Code == 304) {
                                             var myDialog = DevExpress.ui.dialog.custom({
                                                 rtlEnabled: true,
                                                 title: "Error",

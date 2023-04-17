@@ -2479,7 +2479,7 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
     var _checkStbyActivation = function (extended, stbyid, leg, duty, maxfdp) {
 
         var deferred = $q.defer();
-        $http.get(serviceBase + 'odata/stby/ceased/stat/' + extended + '/' + stbyid + '/' + leg + '/' + duty + '/' + maxfdp).then(function (response) {
+        $http.get(apiScheduling + 'api/stby/ceased/stat/' + extended + '/' + stbyid + '/' + leg + '/' + duty + '/' + maxfdp).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 
@@ -3297,7 +3297,7 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
 
     var _getFdpsByFlight = function (ids) {
         var deferred = $q.defer();
-        $http.get(serviceBaseAPI + 'api/fdps/flight/' + ids).then(function (response) {
+        $http.get(apiScheduling + 'api/fdps/flight/' + ids).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 
