@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
+using System.Net;
+using System.Text;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace WebApp
 {
@@ -62,6 +66,9 @@ namespace WebApp
                     ////////////////////////////////////////
                     var id = Convert.ToInt32(context.Request.QueryString["id"]);
                     step = "c";
+
+                   
+                    step = "cc";
                     var files = FileManager.getBookFilesSingle(id);
                     step = "d";
                     // context.Response.ContentType = "text/plain";

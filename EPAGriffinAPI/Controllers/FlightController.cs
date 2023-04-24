@@ -5463,6 +5463,12 @@ namespace EPAGriffinAPI.Controllers
 
             return Ok(result);
         }
+        [Route("odata/utc")]
+        public IHttpActionResult GetUtc()
+        {
+            var nowOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes;
+            return Ok(nowOffset);
+        }
         [Route("odata/flight/group/save")]
         //kakoli9
         [AcceptVerbs("POST")]
@@ -5480,9 +5486,9 @@ namespace EPAGriffinAPI.Controllers
             var validate = unitOfWork.FlightRepository.ValidateFlight(dto);
             if (validate.Code != HttpStatusCode.OK)
                 return validate;
-            var nowOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes;
+            var nowOffset = 210;//TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes;
 
-            var stdOffset= TimeZoneInfo.Local.GetUtcOffset((DateTime)dto.STD ).TotalMinutes;
+            var stdOffset = 210;//TimeZoneInfo.Local.GetUtcOffset((DateTime)dto.STD ).TotalMinutes;
             var localSTD = ((DateTime)dto.STD).AddMinutes(stdOffset);
             var _addDay = localSTD.Day == ((DateTime)dto.STD).Day ? 0 : 1;
 
@@ -5547,8 +5553,8 @@ namespace EPAGriffinAPI.Controllers
                 flights.Add(entity);
                 if (entity.STD != null)
                 {
-                    var oldSTD = ((DateTime)entity.STD).AddMinutes(270).Date;
-                    var newSTD = ((DateTime)dto.STD).AddMinutes(270).Date;
+                    var oldSTD = ((DateTime)entity.STD).AddMinutes(210).Date;
+                    var newSTD = ((DateTime)dto.STD).AddMinutes(210).Date;
                     if (oldSTD != newSTD)
                     {
                         entity.FlightDate = oldSTD;
@@ -5558,7 +5564,7 @@ namespace EPAGriffinAPI.Controllers
 
                 ViewModels.FlightDto.Fill(entity, dto);
                 var _fltDate = new DateTime(dt.Year, dt.Month, dt.Day, 1, 0, 0);
-                var fltOffset = -1 * TimeZoneInfo.Local.GetUtcOffset(_fltDate).TotalMinutes;
+                var fltOffset = -1 * 210;//TimeZoneInfo.Local.GetUtcOffset(_fltDate).TotalMinutes;
                 entity.FlightGroupID = flightGroup;
                 var _std = new DateTime(dt.Year, dt.Month, dt.Day, (int)dto.STDHH, (int)dto.STDMM, 0);
                 _std = _std.AddDays(_addDay) .AddMinutes(fltOffset);

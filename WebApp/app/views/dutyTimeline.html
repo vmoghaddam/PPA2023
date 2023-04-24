@@ -1077,7 +1077,19 @@
                     </tr>
                 </table>
                 <div dx-data-grid="dg_flt" id="dg_flt" style="margin-top:5px;"></div>
-                <div dx-data-grid="dg_crew_abs" id="dg_crew_abs" class="content" style="overflow-y:hidden;margin-top:5px;"></div>
+               <!-- <div dx-data-grid="dg_crew_abs" id="dg_crew_abs" class="content" style="overflow-y:hidden;margin-top:5px;"></div>-->
+                <div style="border:1px solid #ccc;overflow-y:auto" class="thin-scroll2" ng-style="get_flt_fdps_style()">
+                    <div ng-repeat="x in flt_fdps" style="border:0px solid #ccc">
+                        <div style="padding:7px;background-color:skyblue;color:black;border-bottom:1px solid #ccc">{{x.flts}}</div>
+                        <table style="width:100%">
+                            <tr ng-repeat="c in x.item">
+
+                                <td style="border-bottom:1px solid #ccc;padding:7px;width:95px;text-align:center;border-right:1px solid #ccc">{{c.InitRank}}</td>
+                                <td style="border-bottom:1px solid #ccc;padding:7px">{{c.InitScheduleName}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div style="clear:both"></div>
 
