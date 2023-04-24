@@ -5365,7 +5365,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                             $scope.loadingVisible = true;
                             schedulingService.saveFDP(dto).then(function (response) {
                                 $scope.loadingVisible = false;
-
+                                 
+                                console.log(response);
                                 if (response.Code == 406) {
                                     if (response.data.message) {
                                         var myDialog = DevExpress.ui.dialog.custom({
@@ -5378,11 +5379,13 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                                     }
 
                                 } else
-                                    if (response.Code == 501) {
+                                    if (response.data && response.data.Code == 501) {
+                                        var _data = response.data.data;
+                                        console.log('_data', _data);
                                         General.Confirm("The selected crew is on STANDBY. Do you want to activate him/her?", function (res) {
                                             if (res) {
 
-                                                $scope.activeStby(crew, response.data.Id, fdp.rank, fdp.index, fdp);
+                                                $scope.activeStby($scope.selected_crew, _data.Id, dto.rank, dto.index, dto);
                                                
                                             }
                                         });
@@ -5491,8 +5494,175 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
         }
     };
+    $scope.getDefaultPositionId = function (pos) {
 
-   
+        switch (pos) {
+            case 'IP':
+            case 'IP1':
+            case 'IP2':
+            case 'IP3':
+            case 'IP4':
+            case 'IP5':
+            case 'TRE':
+            case 'TRI':
+            case 'LTC':
+                //return 1206;
+                return 12000;
+            case 'P1':
+            case 'P12':
+            case 'P13':
+            case 'P14':
+            case 'P15':
+            case 'P11':
+                return 1160;
+            case 'P2':
+            case 'P21':
+            case 'P22':
+            case 'P23':
+            case 'P24':
+            case 'P25':
+                return 1161;
+            case 'Safety':
+            case 'Safety1':
+            case 'Safety2':
+            case 'SAFETY':
+            case 'SAFETY1':
+            case 'SAFETY2':
+            case 'SAFETY3':
+            case 'SAFETY4':
+            case 'SAFETY5':
+                return 1162;
+            case 'ISCCM':
+            case 'ISCCM1':
+            case 'ISCCM2':
+            case 'ISCCM3':
+            case 'ISCCM4':
+            case 'ISCCM5':
+                return 10002;
+            case 'SCCM':
+            case 'SCCM1':
+            case 'SCCM2':
+            case 'SCCM3':
+            case 'SCCM4':
+            case 'SCCM5':
+                return 1157;
+            case 'CCM':
+            case 'CCM1':
+            case 'CCM2':
+            case 'CCM3':
+            case 'CCM4':
+            case 'CCM5':
+                return 1158;
+            case 'OBS':
+            case 'OBS1':
+            case 'OBS2':
+            case 'OBS3':
+            case 'OBS4':
+            case 'OBS5':
+                return 1153;
+            case 'CHECK':
+            case 'CHECK1':
+            case 'CHECK2':
+            case 'CHECK3':
+            case 'CHECK4':
+            case 'CHECK5':
+
+                return 1154;
+            default:
+                return pos;
+        }
+    };
+    $scope.activeStby = function (crew, stbyid, rank, index, fdp) {
+
+        //FDPId
+        var flts = Enumerable.From($scope.flt_selected_obj).OrderBy(function (x) { return new Date(x.STD); }).ToArray();
+        var fltIds = Enumerable.From(flts).Select('$.ID').ToArray();
+        var fltIdsStr = fltIds.join('*');
+
+        console.log('stby');
+        console.log(flts);
+
+        $scope.loadingVisible = true;
+        schedulingService.checkStbyActivation(($scope.FDPStat.Extended > 0 ? 1 : 0), stbyid, flts[0].ID, $scope.FDPStat.Duty, $scope.FDPStat.MaxFDPExtended).then(function (response) {
+            $scope.loadingVisible = false;
+            console.log('STBY STAT');
+            console.log(response);
+            if (response.maxFDPError) {
+
+                var myDialog = DevExpress.ui.dialog.custom({
+                    rtlEnabled: true,
+                    title: "Error",
+                    message: 'MAX FDP ERROR DUE TO STBY REDUCTION',
+                    buttons: [{ text: "OK", onClick: function () { } }]
+                });
+                myDialog.show();
+                return;
+            }
+            if (response.durationError) {
+
+                var myDialog = DevExpress.ui.dialog.custom({
+                    rtlEnabled: true,
+                    title: "Error",
+                    message: 'TOTAL DURATION IS GREATER THAN 18 HOURS',
+                    buttons: [{ text: "OK", onClick: function () { } }]
+                });
+                myDialog.show();
+                return;
+            }
+
+            //dlunaz
+            var dto = {
+                crewId: crew.CrewId,
+                stbyId: stbyid,
+                fids: fltIdsStr,
+                rank: $scope.getDefaultPositionId(rank),
+                rank2: Enumerable.From(flts).Select(function (_d) { return _d.Position == 'DH' ? $scope.getDefaultPos($scope.selected_crew.JobGroup) : $scope.getPos(_d.Position) }).ToArray().join('_'),
+                index: index,
+            };
+            console.log(dto);
+            
+            $scope.loadingVisible = true;
+
+            schedulingService.activateStby(dto).then(function (response) {
+                $scope.loadingVisible = false;
+                console.log('stby activated');
+                console.log(response);
+                var fdpId = response.Id; //$scope.activatedStbys.length + 1;
+                fdp.Id = fdpId;
+
+                $scope.ati_fdps.push(fdp);
+
+                $scope.currentAssigned.CrewIds.push(crew.Id);
+                $scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString() + 'Id'] = crew.Id;
+                $scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString()] = crew.ScheduleName;
+                $scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString() + 'Group'] = crew.JobGroup;
+                if (!crew.FlightSum)
+                    crew.FlightSum = 0;
+                crew.FlightSum += $scope.FDPStat.Flight;
+                $scope.fillFilteredCrew();
+                $scope.fillRangeFdps();
+                $scope.fillFlightCrews();
+                $scope.fillRangeCrews();
+                $scope.getAssigned();
+
+
+                //dluparvar
+                General.Confirm("Do you want to send notification?", function (res) {
+                    if (res) {
+                        $scope.notifyDutyCal(response);
+
+                    }
+                });
+
+
+            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+
+        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+    };
 
     $scope.ganttFlightData = {};
 
