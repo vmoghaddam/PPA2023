@@ -3397,7 +3397,7 @@ namespace EPAGriffinAPI.DAL
                              ).ToList();
 
 
-            //hoda
+           
 
             return new CustomActionResult(HttpStatusCode.OK, new updateLogResult()
             {
@@ -3523,7 +3523,7 @@ namespace EPAGriffinAPI.DAL
                              ).ToList();
 
 
-            //hoda
+            
 
             return new CustomActionResult(HttpStatusCode.OK, new updateLogResult()
             {
@@ -3620,7 +3620,7 @@ namespace EPAGriffinAPI.DAL
 
 
 
-            //hoda
+           
 
             return new CustomActionResult(HttpStatusCode.OK, new updateLogResult()
             {
@@ -3735,7 +3735,7 @@ namespace EPAGriffinAPI.DAL
             var nullfids = fltIds.Select(q => (Nullable<int>)q).ToList();
 
 
-            //hoda
+           
 
             return new CustomActionResult(HttpStatusCode.OK, new updateLogResult()
             {
