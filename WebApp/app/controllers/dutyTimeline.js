@@ -1136,10 +1136,14 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
 
 
-
-        return (fltDep > xDep && fltDep < xArr) || (fltArr > xDep && fltArr < xArr)
+        var c = (fltDep > xDep && fltDep < xArr) || (fltArr > xDep && fltArr < xArr)
             || (xDep > fltDep && xDep < fltArr) || (xArr > fltDep && xArr < fltArr)
             || (xArr == fltArr && xDep == fltDep);
+        console.log('conflict ////////////////');
+        console.log(c);
+        console.log('flt', flt);
+        console.log('x', x);
+        return c;
 
 
 
@@ -1443,6 +1447,12 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
             case 'CCM':
                 _code = 9;
                 break;
+            case 'COCKPIT':
+                _code = 10;
+                break;
+            case 'CABIN':
+                _code = 11;
+                break;
             default:
                 break;
         }
@@ -1516,6 +1526,12 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 break;
             case 'CCM':
                 _code = 9;
+                break;
+            case 'COCKPIT':
+                _code = 10;
+                break;
+            case 'CABIN':
+                _code = 11;
                 break;
             default:
                 break;
@@ -3557,12 +3573,12 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.dt_from = new Date();//new Date(2021,11,1).addDays(0);
     $scope.dt_to = new Date($scope.dt_from).addDays(14);
 
-    $scope.rank = 'IP,P1';
+    $scope.rank = 'COCKPIT';
     $scope.sb_rank = {
         placeholder: 'Rank',
         showClearButton: false,
         searchEnabled: false,
-        dataSource: ['IP,P1', 'P2', 'TRE', 'TRI', 'P1', 'ISCCM,SCCM', 'CCM', 'ISCCM', 'SCCM'],
+        dataSource: ['COCKPIT','CABIN','IP,P1', 'P2', 'TRE', 'TRI', 'P1', 'ISCCM,SCCM', 'CCM', 'ISCCM', 'SCCM'],
 
         onSelectionChanged: function (arg) {
 
@@ -4739,6 +4755,24 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     $scope.flt_selected = [];
     $scope.flt_selected_obj = [];
     $scope.FDPStat = {};
+    $scope.flt_fdps = [];
+    $scope.get_flt_fdps_style = function () {
+        return {
+            height: $(window).height() - 490,
+        };
+    };
+    $scope.getFDPsByFlights = function () {
+        //getFdpsByFlight
+        $scope.flt_fdps = [];
+        //alert($scope.flt_selectd.length);
+        if (!$scope.flt_selected || $scope.flt_selected.length == 0)
+            return;
+        var ids = $scope.flt_selected.join('_');
+
+        schedulingService.getFdpsByFlight(ids).then(function (response) {
+            $scope.flt_fdps = response;
+        });
+    };
     $scope.flightClick = function (flt) {
         if (flt.FlightStatusID == 4)
             return;
@@ -4765,6 +4799,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
         $scope.useSplit = false;
         if (!$scope.continuit && !$scope.overlapping)
             $scope.getFDPStat();
+        $scope.getFDPsByFlights();
     };
     $scope.useSplit = false;
     $scope.check_split = {
@@ -5618,6 +5653,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 rank: $scope.getDefaultPositionId(rank),
                 rank2: Enumerable.From(flts).Select(function (_d) { return _d.Position == 'DH' ? $scope.getDefaultPos($scope.selected_crew.JobGroup) : $scope.getPos(_d.Position) }).ToArray().join('_'),
                 index: index,
+                isgantt:1,
             };
             console.log(dto);
             
@@ -5625,34 +5661,32 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
             schedulingService.activateStby(dto).then(function (response) {
                 $scope.loadingVisible = false;
-                console.log('stby activated');
-                console.log(response);
-                var fdpId = response.Id; //$scope.activatedStbys.length + 1;
-                fdp.Id = fdpId;
+                console.log('fdp', response);
+                var gres = response;//.data;
 
-                $scope.ati_fdps.push(fdp);
+                var resource = Enumerable.From($scope.ganttData.resources).Where('$.CrewId==' + $scope.selected_crew.CrewId).FirstOrDefault();
 
-                $scope.currentAssigned.CrewIds.push(crew.Id);
-                $scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString() + 'Id'] = crew.Id;
-                $scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString()] = crew.ScheduleName;
-                $scope.currentAssigned[$scope.selectedPos.rank + $scope.selectedPos.index.toString() + 'Group'] = crew.JobGroup;
-                if (!crew.FlightSum)
-                    crew.FlightSum = 0;
-                crew.FlightSum += $scope.FDPStat.Flight;
-                $scope.fillFilteredCrew();
-                $scope.fillRangeFdps();
-                $scope.fillFlightCrews();
-                $scope.fillRangeCrews();
-                $scope.getAssigned();
+                var offset1 = -1 * (new Date(gres.InitStart)).getTimezoneOffset();
+                gres.InitStart = (new Date(gres.InitStart)).addMinutes(offset1);
+
+                var offset2 = -1 * (new Date(gres.InitEnd)).getTimezoneOffset();
+                gres.InitEnd = (new Date(gres.InitEnd)).addMinutes(offset2);
+
+                var offset3 = -1 * (new Date(gres.InitRestTo)).getTimezoneOffset();
+                gres.InitRestTo = (new Date(gres.InitRestTo)).addMinutes(offset3);
 
 
-                //dluparvar
-                General.Confirm("Do you want to send notification?", function (res) {
-                    if (res) {
-                        $scope.notifyDutyCal(response);
-
-                    }
+                resource.duties.push(gres);
+                $.each(resource.duties, function (_j, _f) {
+                    _f.top = null;
                 });
+                $scope.setTopDuty(resource.duties);
+                resource.maxTop = Enumerable.From(resource.duties).Select('Number($.top)').Max();
+
+
+                $scope.dg_crew_abs_ds = [];
+
+                $scope.popup_flt_visible = false;
 
 
             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });

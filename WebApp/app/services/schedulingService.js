@@ -2555,7 +2555,7 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
     var _activateStby = function (entity) {
         var deferred = $q.defer();
         // $http.post($rootScope.serviceUrl + 'odata/stby/activate', entity).then(function (response) {
-        $http.post(apiScheduling + 'odata/stby/activate', entity).then(function (response) {
+        $http.post(apiScheduling + 'api/stby/activate', entity).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 
@@ -3301,7 +3301,7 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
 
     var _getFdpsByFlight = function (ids) {
         var deferred = $q.defer();
-        $http.get(serviceBaseAPI + 'api/fdps/flight/' + ids).then(function (response) {
+        $http.get(apiScheduling + 'api/fdps/flight/' + ids).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 
