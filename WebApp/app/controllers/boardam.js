@@ -2195,7 +2195,7 @@ app.controller('boardamController', ['$scope', '$location', '$routeParams', '$ro
                 $scope.interval_days.push((new Date(_xstd)).getDay());
                 //$scope.linkEntity.LinkedRemark = $scope.flight.LinkedRemark;
                 $scope.doIrRoute = true;
-                //hoda
+                
                 $scope.popup_free_visible = true;
             }
 

@@ -1922,7 +1922,7 @@ app.controller('boardflyController', ['$scope', '$location', '$routeParams', '$r
                 $scope.time_ir_sta_time = new Date($scope.ati_flight.STA);
                 //$scope.linkEntity.LinkedRemark = $scope.flight.LinkedRemark;
                 $scope.doIrRoute = true;
-                //hoda
+                
                 $scope.popup_free_visible = true;
             }
 
