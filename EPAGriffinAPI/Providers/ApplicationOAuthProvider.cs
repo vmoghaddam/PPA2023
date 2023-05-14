@@ -223,17 +223,17 @@ namespace EPAGriffinAPI.Providers
 
                 await unitOfWork.PersonRepository.SaveLogin(context.UserName, remoteIpAddresss);
 
-               if (app == "ap" && !string.IsNullOrEmpty(user.PhoneNumber))
-                {
-                    Magfa m = new Magfa();
-                    var smsResult = m.enqueue(1, user.PhoneNumber, "AirPocket" + "\n" + "You have successfully logged in." + "\n"+user.UserName)[0];
-                    if (user.UserName.ToLower().Contains("moham") || user.UserName.ToLower().Contains("ops.esma") || user.UserName.ToLower().Contains("ops.solt")
-                        || user.UserName.ToLower().Contains("kabir") || user.UserName.ToLower().Contains("demo"))
-                    {
-                        var res2 = m.enqueue(1, "09124449584", "AirPocket" + "\n" + "You have successfully logged in." + "\n" + user.UserName)[0];
-                    }
+               //if (app == "ap" && !string.IsNullOrEmpty(user.PhoneNumber))
+               // {
+               //     Magfa m = new Magfa();
+               //     var smsResult = m.enqueue(1, user.PhoneNumber, "AirPocket" + "\n" + "You have successfully logged in." + "\n"+user.UserName)[0];
+               //     if (user.UserName.ToLower().Contains("moham") || user.UserName.ToLower().Contains("ops.esma") || user.UserName.ToLower().Contains("ops.solt")
+               //         || user.UserName.ToLower().Contains("kabir") || user.UserName.ToLower().Contains("demo"))
+               //     {
+               //         var res2 = m.enqueue(1, "09124449584", "AirPocket" + "\n" + "You have successfully logged in." + "\n" + user.UserName)[0];
+               //     }
                     
-                }
+               // }
                 AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 
                 context.Validated(ticket);
@@ -243,6 +243,11 @@ namespace EPAGriffinAPI.Providers
             {
                 
                 int i = 0;
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException;
+                context.SetError("invalid_grant", msg + " E700");
+                return;
             }
 
         }

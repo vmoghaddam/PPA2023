@@ -4324,56 +4324,79 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     };
 
     $scope.selected_crew_id = null;
+    $scope.sb_crews = {
+        
+        showClearButton: false,
+        searchEnabled: true,
+        
+        valueExpr: 'CrewId',
+        displayExpr: "ScheduleName",
+        onSelectionChanged: function (arg) {
+            $scope.prepare_fdp_inserting();
+            $scope.getFDPsByFlights();
+        },
+
+        bindingOptions: {
+            value: 'selected_crew_id',
+            dataSource: 'crews',
+
+
+        }
+    };
     $scope.selected_crew = null;
+    $scope.prepare_fdp_inserting = function () {
+       
+        $scope.selected_crew = Enumerable.From($scope.crews).Where('$.CrewId==' + $scope.selected_crew_id).FirstOrDefault();
+        switch ($scope.selected_crew.JobGroup) {
+            case 'P1':
+                $scope.position_ds = ['CPT', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
+                $scope.default_pos = 'CPT';
+                break;
+            case 'P2':
+                $scope.position_ds = ['FO', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
+                $scope.default_pos = 'FO';
+                break;
+            case 'TRE':
+            case 'TRI':
+            case 'LTC':
+            case 'SFE':
+            case 'SFI':
+                $scope.position_ds = ['IP', 'CPT', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
+                $scope.default_pos = 'IP';
+                break;
+            case 'ISCCM':
+            case 'CCE':
+            case 'CCI':
+                $scope.position_ds = ['ISCCM', 'SCCM', 'CHECK', 'OBS', 'D/H'];
+                $scope.default_pos = 'ISCCM';
+                break;
+            case 'SCCM':
+            case 'SCC':
+                $scope.position_ds = ['SCCM', 'CHECK', 'OBS', 'D/H'];
+                $scope.default_pos = 'SCCM';
+                break;
+            case 'CCM':
+            case 'CC':
+                $scope.position_ds = ['CCM', 'CHECK', 'OBS', 'D/H'];
+                $scope.default_pos = 'CCM';
+                break;
+
+            default:
+                $scope.position_ds = [];
+                break;
+        }
+    };
     $scope.new_event = function (key, id) {
         $scope.$apply(function () {
             var prts = id.split('_');
-            $scope.selected_crew_id = prts[0];
+            $scope.selected_crew_id =Number( prts[0]);
             var dt_parts = prts[1].split('-');
             $scope.contextMenuCellData = {};
             $scope.contextMenuCellData.startDate = new Date(dt_parts[0], Number(dt_parts[1] - 1), dt_parts[2]);
             switch (key) {
                 case 'FDP':
-                    $scope.selected_crew = Enumerable.From($scope.crews).Where('$.CrewId==' + $scope.selected_crew_id).FirstOrDefault();
-                    switch ($scope.selected_crew.JobGroup) {
-                        case 'P1':
-                            $scope.position_ds = ['CPT', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
-                            $scope.default_pos = 'CPT';
-                            break;
-                        case 'P2':
-                            $scope.position_ds = ['FO', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
-                            $scope.default_pos = 'FO';
-                            break;
-                        case 'TRE':
-                        case 'TRI':
-                        case 'LTC':
-                        case 'SFE':
-                        case 'SFI':
-                            $scope.position_ds = ['IP', 'CPT', 'SAFETY', 'CHECK', 'OBS', 'D/H'];
-                            $scope.default_pos = 'IP';
-                            break;
-                        case 'ISCCM':
-                        case 'CCE':
-                        case 'CCI':
-                            $scope.position_ds = ['ISCCM', 'SCCM', 'CHECK', 'OBS', 'D/H'];
-                            $scope.default_pos = 'ISCCM';
-                            break;
-                        case 'SCCM':
-                        case 'SCC':
-                            $scope.position_ds = ['SCCM', 'CHECK', 'OBS', 'D/H'];
-                            $scope.default_pos = 'SCCM';
-                            break;
-                        case 'CCM':
-                        case 'CC':
-                            $scope.position_ds = ['CCM', 'CHECK', 'OBS', 'D/H'];
-                            $scope.default_pos = 'CCM';
-                            break;
-
-                        default:
-                            $scope.position_ds = [];
-                            break;
-                    }
-                    $scope.popup_flt_title = $scope.selected_crew.ScheduleName + " (" + $scope.selected_crew.JobGroup + ")";
+                    $scope.prepare_fdp_inserting();
+                    $scope.popup_flt_title = ''; //$scope.selected_crew.ScheduleName + " (" + $scope.selected_crew.JobGroup + ")";
                     $scope.popup_flt_visible = true;
                     break;
                 case 'RERRP':
@@ -4474,6 +4497,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
     }
 
     $scope.addStby = function (_type) {
+        alert('x');
         $scope.selected_crew = Enumerable.From($scope.crews).Where('$.CrewId==' + $scope.selected_crew_id).FirstOrDefault();
 
 
@@ -5460,8 +5484,8 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
 
 
                                             $scope.dg_crew_abs_ds = [];
-
-                                            $scope.popup_flt_visible = false;
+                                            $scope.getFDPsByFlights();
+                                           // $scope.popup_flt_visible = false;
                                             //$scope.ati_fdps.push(fdp);
 
                                             //$scope.currentAssigned.CrewIds.push(crew.Id);
@@ -5510,7 +5534,7 @@ app.controller('dutyTimelineController', ['$scope', '$location', '$routeParams',
                 $scope.selected_crew.FTL = ftl[0];
                 console.log('crew ftl', $scope.selected_crew);
             });
-           
+            $scope.getFDPsByFlights();
             $scope.dg_flt_instance.repaint();
             $scope.dg_crew_abs_instance.repaint();
         },

@@ -3414,6 +3414,11 @@ namespace EPAGriffinAPI.DAL
             // List<int?> offCrewIds = new List<int?>();
             var intervalDays = GetInvervalDates((int)dto.interval, (DateTime)dto.intervalFrom, (DateTime)dto.intervalTo, dto.days).Select(q => (Nullable<DateTime>)q).ToList();
             var baseFlights = await this.context.FlightInformations.Where(q => dto.fids.Contains(q.ID)).ToListAsync();
+            var basegroups = (from x in baseFlights
+                             group x by new { x.FlightNumber, x.STD } into grp
+                             select 
+                                  grp.Key.FlightNumber+"_"+((DateTime) grp.Key.STD).ToString("HHmm")
+                             ).ToList();
             var fltNumbers = baseFlights.Select(q => q.FlightNumber).ToList();
             var fltIds = new List<int>();
             fltIds = baseFlights.Select(q => q.ID).ToList();
@@ -3424,6 +3429,12 @@ namespace EPAGriffinAPI.DAL
             fltIds = fltIds.Concat(_flightIds).Distinct().ToList();
 
             var flights = await this.context.FlightInformations.Where(q => fltIds.Contains(q.ID)).ToListAsync();
+
+            flights = (from x in flights
+                      where basegroups.Contains(x.FlightNumber + "_" + ((DateTime)x.STD).ToString("HHmm")) 
+                      select x).ToList();
+            fltIds = flights.Select(q => q.ID).ToList();
+
             var legs = await this.context.ViewLegTimes.Where(q => fltIds.Contains(q.ID)).ToListAsync();
             foreach (var fid in fltIds)
             {
@@ -3640,6 +3651,11 @@ namespace EPAGriffinAPI.DAL
             // List<int?> offCrewIds = new List<int?>();
             var intervalDays = GetInvervalDates((int)dto.interval, (DateTime)dto.intervalFrom, (DateTime)dto.intervalTo, dto.days).Select(q => (Nullable<DateTime>)q).ToList();
             var baseFlights = await this.context.FlightInformations.Where(q => dto.fids.Contains(q.ID)).ToListAsync();
+            var basegroups = (from x in baseFlights
+                              group x by new { x.FlightNumber, x.STD } into grp
+                              select
+                                   grp.Key.FlightNumber + "_" + ((DateTime)grp.Key.STD).ToString("HHmm")
+                             ).ToList();
             var fltNumbers = baseFlights.Select(q => q.FlightNumber).ToList();
             var fltIds = new List<int>();
             fltIds = baseFlights.Select(q => q.ID).ToList();
@@ -3650,6 +3666,10 @@ namespace EPAGriffinAPI.DAL
             fltIds = fltIds.Concat(_flightIds).Distinct().ToList();
 
             var flights = await this.context.FlightInformations.Where(q => fltIds.Contains(q.ID)).ToListAsync();
+            flights = (from x in flights
+                       where basegroups.Contains(x.FlightNumber + "_" + ((DateTime)x.STD).ToString("HHmm"))
+                       select x).ToList();
+            fltIds = flights.Select(q => q.ID).ToList();
             var legs = await this.context.ViewLegTimes.Where(q => fltIds.Contains(q.ID)).ToListAsync();
             /////////////////////////////////
             //var flights = await this.context.FlightInformations.Where(q => dto.fids.Contains(q.ID)).ToListAsync();
