@@ -507,8 +507,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLogBook18' does not have a prim
             <PropertyRef Name="FltNo" />
             <PropertyRef Name="ACReg" />
             <PropertyRef Name="ACType" />
+            <PropertyRef Name="Date" />
           </Key>
-          <Property Name="Date" Type="date" />
+          <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="ArrStn" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Dep2" Type="nvarchar" MaxLength="255" />
           <Property Name="Arr2" Type="nvarchar" MaxLength="255" />
@@ -1315,8 +1316,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewSyllabus' does not have a prima
             <PropertyRef Name="FltNo" />
             <PropertyRef Name="ACReg" />
             <PropertyRef Name="ACType" />
+            <PropertyRef Name="Date" />
           </Key>
-          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Date" Type="DateTime" Precision="0" Nullable="false" />
           <Property Name="ArrStn" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Dep2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Arr2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />

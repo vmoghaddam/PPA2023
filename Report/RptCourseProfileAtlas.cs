@@ -88,7 +88,7 @@ namespace Report
                 CourseType = course.CourseType, //course.HoldingType,
                 No = course.No,
                 Location = course.Location,
-                HoldingType = course.HoldingType == "Attendance Class" ? "Class Room" : "Online",
+                HoldingType = course.HoldingType == "Attendance Class" ? "Attendance" : "Distance Learning",
 
 
             };

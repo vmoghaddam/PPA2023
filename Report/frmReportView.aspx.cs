@@ -56,9 +56,9 @@ namespace Report
                    // break;
                case "att":
                         string coid2 = Request.QueryString["cid"];
-                        var reportAtt2 = new RptCourseProfile(coid2);
+                        //var reportAtt2 = new RptCourseProfile(coid2);
                         //atlas
-                        //var reportAtt2 = new RptCourseProfileAtlas(coid2);
+                        var reportAtt2 = new RptCourseProfileAtlas(coid2);
                         ASPxWebDocumentViewer1.OpenReport(reportAtt2);
                         break;
                     //api/courses/passed/history

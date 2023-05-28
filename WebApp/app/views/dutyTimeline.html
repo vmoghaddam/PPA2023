@@ -598,14 +598,21 @@
 
 
     .duty-1165 {
-        background: #660066;
+        background: #80e5ff;
         text-align: center;
-        padding: 3px !important;
-        color: white;
+        padding: 0px !important;
+        color: black;
+    }
+
+    .duty-1165-oh {
+        background: #bfff80;
+        text-align: center;
+        padding: 0px !important;
+        color: black;
     }
 
     .duty-5001 {
-        background: #db70b8;
+        background: #e699ff;
         text-align: center;
         padding: 3px !important;
         color: black;
@@ -619,10 +626,10 @@
     }
 
     .duty-5000 {
-        background: #538cc6;
+        background: #ff1a8c;
         text-align: center;
         padding: 3px !important;
-        color: black;
+        color: white;
     }
 
     .duty-1168 {
@@ -633,35 +640,35 @@
     }
 
     .duty-1167 {
-        background: #ffcc66;
+        background: #ffb31a;
         text-align: center;
         padding: 3px !important;
         color: black;
     }
 
     .duty-300013 {
-        background: #99cc00;
+        background: #ffe066;
         text-align: center;
         padding: 3px !important;
         color: black;
     }
 
     .duty-10000, .duty-10001 {
-        background: #009999;
+        background: #e699ff;
         text-align: center;
         padding: 3px !important;
         color: white;
     }
 
     .duty-100000, .duty-100004, .duty-100005, .duty-100006 {
-        background: #ff9933;
+        background: #ff0000;
         text-align: center;
         padding: 3px !important;
-        color: black;
+        color: white;
     }
 
     .duty-100002 {
-        background: #b3b3b3;
+        background: #99ffdd;
         text-align: center;
         padding: 3px !important;
         color: black;
@@ -675,21 +682,21 @@
     }
 
     .duty-100001 {
-        background: #00b386;
+        background: #e699ff;
         text-align: center;
         padding: 3px !important;
         color: black;
     }
 
     .duty-1169 {
-        background: #ffb3ff;
+        background: #99ffdd;
         text-align: center;
         padding: 3px !important;
         color: black;
     }
 
     .duty-1166 {
-        background: #ff66cc;
+        background: #99ffdd;
         text-align: center;
         padding: 3px !important;
         color: black;
@@ -703,14 +710,14 @@
     }
 
     .duty-100007 {
-        background: #b3b3b3;
+        background: #99ffdd;
         text-align: center;
         padding: 3px !important;
         color: black;
     }
 
     .duty-100008 {
-        background: #cccc00;
+        background: #99ffdd;
         text-align: center;
         padding: 3px !important;
         color: black;
@@ -724,14 +731,14 @@
     }
 
     .duty-300008 {
-        background: #0099cc;
+        background: gray;
         text-align: center;
         padding: 3px !important;
-        color: black;
+        color: white;
     }
 
     .duty-300009 {
-        background: #00cc00;
+        background: #99ffdd;
         text-align: center;
         padding: 3px !important;
         color: black;
@@ -765,7 +772,16 @@
             padding: 5px;
             font-size: 15px
         }
-    .context-menu-list{z-index:5000 !important;}
+
+    .context-menu-list {
+        z-index: 5000 !important;
+    }
+
+    .duty-rest {
+        background: linear-gradient(45deg, #aaa 1%, transparent 1%, transparent 49%, #aaa 49%, #aaa 51%, transparent 51%, transparent 99%, #aaa 99%);
+        background-size: 5px 5px;
+        background-position: 0 0;
+    }
 </style>
 
 <div class="box dutytimeline" style="height:100%;display:none;overflow-y:hidden">
@@ -776,31 +792,55 @@
     <div class="rowx content" style="clear:both; ">
         <div class="gantt2-main-container" id="content" style="width:100%; background:#fff;border :1px solid #ccc;border-top:1px solid #ccc">
             <div style=" float:left;width:150px">
-                <div style="border-bottom:1px solid #ccc;height:30px"> </div>
+                <div style="border-bottom:1px solid #ccc;height:35px"> </div>
+
                 <div class="thin-scroll col-res" style="background:#d9d9d9;overflow-y:hidden;overflow-x:hidden " ng-style="getLeftColumnStyle()">
                     <div class="reg-row" ng-repeat="res in ganttData.resources" style="text-align:left;padding:0px 0 0 10px;font-size:12px;  border-bottom:1px solid gray" ng-style="getResStyle(res)">
-                        <div style="font-size:11px;font-weight:bold" ng-style="getResCaptionStyle(res)">{{res.text }}</div>
+                        <div style="font-size:11px;font-weight:bold;margin-top:0px" >{{res.text }}</div>
+                        <table style="width:130px;margin-top:3px;">
+                            
+                            <tr>
+                                <td style="font-size:11px;font-weight:bold;text-align:center;width:10px">X</td>
+                                <td style="font-size:12px;text-align:center ">{{formatMinutes(res.FX)}}</td>
+                                <td style="font-size:11px;font-weight:bold;text-align:center;width:10px">B</td>
+                                <td style="font-size:12px;text-align:center">{{formatMinutes(res.BL)}}</td>
+                                <td style="font-size:11px;font-weight:bold;text-align:center;width:10px">F</td>
+                                <td style="font-size:12px;text-align:center">{{formatMinutes(res.FL)}}</td>
+                            </tr>
+                        </table>
                     </div>
                     <idv style="clear:both"></idv>
                 </div>
 
             </div>
             <div style=" float:right;width: calc(100% - 150px)">
-                <div class="thin-scroll row-date" style="overflow-x: hidden; border-bottom: 1px solid #ccc; height: 30px; background: #d9d9d9">
+                <div class="thin-scroll row-date" style="overflow-x: hidden; border-bottom: 1px solid #ccc; height: 35px; background: #d9d9d9">
                     <div calss="row-data-bar" ng-style="getDateBarStyle()">
                         <div style="display:inline-block;border-right:1px solid #b3b3b3;line-height:30px;text-align:center" ng-repeat="dt in ganttData.dates" ng-style="getDateCellStyle()">
-                            <span>{{dt.caption}}</span>
+                            <span style="font-size:13px">{{dt.day}}</span>
+                            <span style="font-size:13px;font-weight:bold">{{dt.caption}}</span>
+                            <span style="font-size:13px">({{dt.pdate}})</span>
                         </div>
                         <div style="clear:both"></div>
                     </div>
 
                 </div>
-                <div class="thin-scroll col-duty" style="overflow-y:auto;" ng-style="getRightColumnStyle()">
+
+                <div class="thin-scroll col-duty" style="overflow-y:auto; " ng-style="getRightColumnStyle()">
                     <div class="reg-row" ng-repeat="res in ganttData.resources" style="position:relative;text-align:left;font-size:12px;  border-bottom:1px solid gray" ng-style="getResStyle(res)">
                         <div style="display:inline-block;border-right:1px solid #b3b3b3;height:100%;position:relative" ng-repeat="dt in ganttData.dates" ng-style="getDateCellStyle()" class="context-menu-one" id="{{getCellId(res,dt)}}">
                             <div style="font-size:11px;display:inline-block;position:absolute;top:2px;right:2px;z-index:1000"><i ng-click="showProfile(res.item,dt.date)" ng-show="getCrewCerStatus(res,dt).IsExpired" class='fas fa-exclamation-circle' style='font-size:16px;color:red'></i>  </div>
                         </div>
                         <div style="display:inline-block;position:absolute; border:1px solid black;font-size:12px;" ng-repeat="duty in res.duties" ng-style="getDutyStyle(duty)" ng-class="getDutyClass(duty)" id="{{getCellDutyId(duty)}}">
+                            <div style="position:absolute;height:100%;top:0; " class="duty-rest" ng-style="getRestStyle(duty)">
+
+                            </div>
+
+                            <div style="text-align:center" ng-show="[100020].indexOf(duty.DutyType)!=-1">
+                                <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center">{{getDutyTitle(duty)}}</div>
+                                <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center">{{getRoute(duty.CanceledRoute)}} </div>
+
+                            </div>
                             <div style="text-align:center" ng-show="[1166,1169,100000,100002,100004,100005,100006,100007,100008,100009,100020,100021,100022,100023,100024,300008,300009].indexOf(duty.DutyType)!=-1">
                                 <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center">{{getDutyTitle(duty)}}</div>
                                 <div style="font-size:11px;font-weight:normal;padding:1px 0 1px 0;text-align:center"><span style="font-size:11px">{{getTime(duty.InitStart)}}</span>-<span style="font-size:11px">{{getTime(duty.InitEnd)}}</span></div>
@@ -813,34 +853,44 @@
 
                             </div>
 
-                            <div style="text-align:center" ng-show="[1165].indexOf(duty.DutyType)!=-1">
+                            <div style="text-align:center" ng-show="[1165].indexOf(duty.DutyType)!=-1" ng-click="show_info(duty)">
 
-                                <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center" ng-style="getHomeBase(duty)">{{getRoute(duty.InitRoute)}} </div>
-                                <div style="font-size:11px;font-weight:normal;padding:1px 0 1px 0;text-align:center"><span style="font-size:11px">{{getTime(duty.InitStart)}}</span>-<span style="font-size:11px">{{getTime(duty.InitEnd)}}</span></div>
+                                <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center" ng-style="getHomeBase(duty)">{{getRoute(duty.InitRoute,duty.InitFlts)}} </div>
+
+                                <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center"><span style="font-size:11px">{{getTime(duty.InitStart)}}</span>-<span style="font-size:11px">{{getTime(duty.InitEnd)}}</span></div>
                             </div>
 
 
                             <div style="text-align:center" ng-show="[1167,1168,1170,300013].indexOf(duty.DutyType)!=-1">
 
-                                <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center">{{getDutyTitle(duty)}}</div>
-                                <div style="font-size:11px;font-weight:normal;padding:1px 0 1px 0;text-align:center"><span style="font-size:11px">{{getTime(duty.InitStart)}}</span>-<span style="font-size:11px">{{getTime(duty.InitEnd)}}</span></div>
+                                <div style="font-size:11px;font-weight:bold;padding:8px 0 1px 0;text-align:center">{{getDutyTitle(duty)}}</div>
+                                <!--<div style="font-size:11px;font-weight:normal;padding:1px 0 1px 0;text-align:center"><span style="font-size:11px">{{getTime(duty.InitStart)}}</span>-<span style="font-size:11px">{{getTime(duty.InitEnd)}}</span></div>-->
                             </div>
+
+
 
                             <div style="text-align:center" ng-show="[5000,5001,100001,300014].indexOf(duty.DutyType)!=-1">
 
                                 <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center">{{getDutyTitle(duty)}}</div>
-                                <div style="font-size:11px;font-weight:normal;padding:1px 0 1px 0;text-align:center"><span style="font-size:11px">{{getTime(duty.InitStart)}}</span>-<span style="font-size:11px">{{getTime(duty.InitEnd)}}</span></div>
+                                <!--<div style="font-size:11px;font-weight:normal;padding:1px 0 1px 0;text-align:center"><span style="font-size:11px">{{getTime(duty.InitStart)}}</span>-<span style="font-size:11px">{{getTime(duty.InitEnd)}}</span></div>-->
                             </div>
+
+
 
                             <div style="text-align:center" ng-show="[100025,100003].indexOf(duty.DutyType)!=-1">
 
+
+
                                 <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center">{{getDutyTitle(duty)}}</div>
-                                <div style="font-size:11px;font-weight:normal;padding:1px 0 1px 0;text-align:center"><span style="font-size:11px">{{getTime(duty.InitStart)}}</span>-<span style="font-size:11px">{{getTime(duty.InitEnd)}}</span></div>
+                                <!--<div style="font-size:11px;font-weight:normal;padding:1px 0 1px 0;text-align:center"><span style="font-size:11px">{{getTime(duty.InitStart)}}</span>-<span style="font-size:11px">{{getTime(duty.InitEnd)}}</span></div>-->
                             </div>
 
 
                         </div>
                         <div style="clear:both"></div>
+
+
+
                     </div>
                 </div>
             </div>
@@ -959,12 +1009,14 @@
 
     <div id="popup_flt" dx-popup="popup_flt">
         <div>
-            
+
             <div class="col-lg-9" style="padding:0">
                 <div style="padding-bottom:5px;">
                     <div class="dx-border" dx-select-box="sb_crews"></div>
                 </div>
-                
+
+
+
 
                 <!--BEGIN GANTT-->
                 <div class="gantt3-main-container" id="content" style="width:100%; background:#fff;border :1px solid #ccc;border-top:1px solid #ccc">
@@ -1017,9 +1069,9 @@
                 <div style="margin-top:2px">
                     <table style="width:100%; border:1px solid #ccc">
                         <tr>
-                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:11px;font-weight:bold">OVERLAPPED</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:11px;font-weight:bold" ng-style="getOverlappedStyle()">OVERLAPPED</td>
                             <td style="border-right:1px solid #ccc;padding:5px;text-align:center;width:45px"><div dx-check-box="check_overlapping"></div></td>
-                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:11px;font-weight:bold">CONTINUITY</td>
+                            <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:11px;font-weight:bold" ng-style="getContiuityStyle()">CONTINUITY</td>
                             <td style="border-right:1px solid #ccc;padding:5px;text-align:center;width:45px"><div dx-check-box="check_continuity"></div></td>
                             <td style="border-right:1px solid #ccc;padding:5px;text-align:center;font-size:11px;font-weight:bold">WOCL</td>
                             <td style="border-right:1px solid #ccc;padding:5px;text-align:center;min-width:50px">{{FDPStat.WOCLStr}}</td>
@@ -1040,7 +1092,24 @@
                         </tr>
                     </table>
                 </div>
+                <div style="padding-bottom:2px;padding-top:2px">
+                    <table style="margin:0 auto 0 auto">
+                        <tr>
+                            <td ng-repeat="x in crew_duties_history" style="padding:2px;max-width:300px;">
+                                <div style="border:0px solid #ccc;padding:3px 10px 3px 10px;background:#ddd" ng-style="getHistoryCellStyle(x)">
+                                    <div style="text-align:center;font-size:12px;">{{formatDate(x.DateLocal)}}</div>
+                                    <div style="text-align:center" ng-show="[1165].indexOf(x.DutyType)!=-1">
+                                        <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center">{{getRoute(x.InitRoute)}} </div>
+                                    </div>
+                                    <div style="text-align:center" ng-show="[1165].indexOf(x.DutyType)==-1">
+                                        <div style="font-size:11px;font-weight:bold;padding:1px 0 1px 0;text-align:center">{{getDutyTitle(x)}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
 
+                    </table>
+                </div>
                 <!--END GANTT-->
             </div>
             <div class="col-lg-3" style="padding:0;padding-left:5px;">
@@ -1057,14 +1126,14 @@
                             <i style="color:#f7f7f7;font-size:18px;" class="fas fa-graduation-cap"></i>
                         </td>
                         <!--<td rowspan="2" style="text-align:center;  padding: 0 12px;background: #66c2ff;width:50px">
-        <i style="color:white;font-size:20px" class="fas fa-info"></i>
-    </td>-->
+                            <i style="color:white;font-size:20px" class="fas fa-info"></i>
+                        </td>-->
 
                     </tr>
                     <tr>
                         <td style="font-size: 12px; text-align: center; border : 1px solid gray; font-weight: bold; background: #b3ffe6; padding: 5px; text-align: center "> {{selected_crew.FTL.Ratio}}</td>
                         <td style="font-size: 12px; text-align: center; border : 1px solid gray; font-weight: bold; background: #f9f9f9; padding: 5px; text-align: center " ng-class="getCFTLStyle(selected_crew.FTL.Flight28Remain,1)"> {{selected_crew.FTL._Flight28Remain}}</td>
-                        
+
                         <td style="font-size: 12px; text-align: center; border: 1px solid gray; font-weight: bold; background: #f9f9f9; padding: 5px; text-align: center " ng-class="getCFTLStyle(selected_crew.FTL.Duty7Remain,0)">{{selected_crew.FTL._Duty7Remain}}</td>
                         <td style="font-size: 12px; text-align: center; border: 1px solid gray; font-weight: bold; background: #f9f9f9; padding: 5px; text-align: center " ng-class="getCFTLStyle(selected_crew.FTL.Duty14Remain,0)">{{selected_crew.FTL._Duty14Remain}}</td>
                         <td style="font-size: 12px; text-align: center; border : 1px solid gray; font-weight: bold; background: #f9f9f9; padding: 5px; text-align: center " ng-class="getCFTLStyle(selected_crew.FTL.Duty28Remain,0)">{{selected_crew.FTL._Duty28Remain}}</td>
@@ -1082,7 +1151,7 @@
                     </tr>
                 </table>
                 <div dx-data-grid="dg_flt" id="dg_flt" style="margin-top:5px;"></div>
-               <!-- <div dx-data-grid="dg_crew_abs" id="dg_crew_abs" class="content" style="overflow-y:hidden;margin-top:5px;"></div>-->
+                <!-- <div dx-data-grid="dg_crew_abs" id="dg_crew_abs" class="content" style="overflow-y:hidden;margin-top:5px;"></div>-->
                 <div style="border:1px solid #ccc;overflow-y:auto" class="thin-scroll2" ng-style="get_flt_fdps_style()">
                     <div ng-repeat="x in flt_fdps" style="border:0px solid #ccc">
                         <div style="padding:7px;background-color:skyblue;color:black;border-bottom:1px solid #ccc">{{x.flts}}</div>
@@ -1090,7 +1159,10 @@
                             <tr ng-repeat="c in x.item">
 
                                 <td style="border-bottom:1px solid #ccc;padding:7px;width:95px;text-align:center;border-right:1px solid #ccc">{{c.InitRank}}</td>
-                                <td style="border-bottom:1px solid #ccc;padding:7px">{{c.InitScheduleName}}</td>
+                                <td style="border-bottom:1px solid #ccc;padding:7px;border-right:1px solid #ccc">{{c.InitScheduleName}}</td>
+                                <td style="border-bottom:1px solid #ccc;text-align:center;padding:7px;width:70px; ">
+                                    <a href="" ng-click="removeFDP(c,x)"><i class="fas fa-minus-circle" style="color:red;font-size:19px; "></i></a>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -1146,7 +1218,7 @@
             </div>
             <div id="scroll_profile" dx-scroll-view="scroll_profile">
                 <div class="tabprofile profilemain">
-                    
+
                     <div dx-data-grid="dg_cer" id="dg_cer"></div>
                 </div>
 
@@ -1342,9 +1414,49 @@
             </div>
         </div>
         <div style="clear:both"></div>
-       
-    </div>
 
+    </div>
+    <div id="popup_info" dx-popup="popup_info">
+        <div ng-show="duty_info.duty.DutyType==1165">
+            <div style="border:1px solid #ccc">
+                <div style="font-weight:bold;font-size:12px;text-align:center;padding:5px">{{duty_info.duty.InitRoute}}</div>
+                <div style="font-weight:bold;font-size:12px;text-align:center;padding:5px">{{duty_info.duty.InitFlts}}</div>
+
+            </div>
+             
+            <table style="width:100%;border:1px solid #ccc;margin-top:5px;font-size:12px">
+                <tr>
+                    <td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc;background:#eee;padding:5px;text-align:center;font-size:12px">Start</td>
+                    <td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc;background:#eee;padding:5px;text-align:center;font-size:12px">End</td>
+                    <td style=" border-bottom:1px solid #ccc;background:#eee;padding:5px;text-align:center;font-size:12px">Rest</td>
+                </tr>
+                <tr>
+                    <td style="border-right:1px solid #ccc;text-align:center;font-size:12px  ">{{formatTime(duty_info.duty.InitStart)}}</td>
+                    <td style="border-right:1px solid #ccc;text-align:center;font-size:12px  ">{{formatTime(duty_info.duty.InitEnd)}}</td>
+                    <td style="   padding:5px;text-align:center;font-size:12px">{{formatTime(duty_info.duty.InitRestTo)}}</td>
+                </tr>
+
+            </table>
+            
+            <div style="background:#ccc;text-align:center;padding:5px;font-size:12px;margin-top:5px">FDPs</div>
+            <div style="border:1px solid #ccc;overflow-y:auto;height:350px" class="thin-scroll2">
+
+                <div ng-repeat="x in duty_info.fdps" style="border:0px solid #ccc">
+                    <div style="padding:5px;background-color:#eee;color:black;border-bottom:1px solid #ccc;text-align:center;font-size:12px">{{x.flts}}({{x.route}})</div>
+                    <table style="width:100%">
+                        <tr ng-repeat="c in x.item">
+
+                            <td style="border-bottom:1px solid #ccc;padding:4px;width:95px;text-align:center;border-right:1px solid #ccc;font-size:12px">{{c.InitRank}}</td>
+                            <td style="border-bottom:1px solid #ccc;padding:4px;border-right:1px solid #ccc;font-size:12px">{{c.InitScheduleName}}</td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 
     <div dx-load-panel="loadPanel"></div>
 

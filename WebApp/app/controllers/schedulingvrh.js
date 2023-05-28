@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.controller('schedulingController', ['$scope', '$location', '$routeParams', '$rootScope', '$timeout', 'schedulingService', 'flightService', 'weatherService', 'aircraftService', 'authService', 'notificationService', '$route', '$window', function ($scope, $location, $routeParams, $rootScope, $timeout, schedulingService, flightService, weatherService, aircraftService, authService, notificationService, $route, $window) {
+app.controller('schedulingvrhController', ['$scope', '$location', '$routeParams', '$rootScope', '$timeout', 'schedulingService', 'flightService', 'weatherService', 'aircraftService', 'authService', 'notificationService', '$route', '$window', function ($scope, $location, $routeParams, $rootScope, $timeout, schedulingService, flightService, weatherService, aircraftService, authService, notificationService, $route, $window) {
     //06-13
     $scope.IsCabin = true;
     $scope.IsCockpit = $rootScope.userName.toLowerCase() == 'ops.abdi' ? false : true;
@@ -1715,6 +1715,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
     };
     //dlutamiz
     $scope.removeStby = function (stby, type) {
+        alert('x');
         var crewId = stby.CrewId;
         var crewobj = Enumerable.From($scope.ds_crew).Where('$.Id==' + crewId).FirstOrDefault();
         $scope.dg_crew_stby_ds.push(JSON.parse(JSON.stringify(crewobj)));
@@ -1735,11 +1736,13 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
 
                 return x.Id != stby.Id;
             }).ToArray();
-
-        var dto = { fdp: stby.Id };
+        //2023
+        //var dto = { fdp: stby.Id };
+        var dto = { Id: stby.Id };
 
         $scope.loadingVisible = true;
-        schedulingService.saveDeleteFDP(dto).then(function (response) {
+       // schedulingService.saveDeleteFDP(dto).then(function (response) {
+        schedulingService.deleteFDP(dto).then(function (response) {
             $scope.loadingVisible = false;
             //khar
 
@@ -1752,6 +1755,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
     //06-13
     //2023 stby
     $scope.addStby = function (_crew, _type) {
+        alert('x');
         _crew = _crew.data;
         console.log(_crew);
         var dto = {
@@ -5572,10 +5576,12 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
         var _tmp = [];
         $.each(ordered, function (_i, _d) {
             var flt = Enumerable.From($scope.ati_flights).Where('$.ID==' + _d.Id).FirstOrDefault();
-            fdp.ids.push({ id: _d.Id, dh: _d.dh });
+            fdp.ids.push({ id: _d.Id, dh: _d.dh, pos: y.rank });
             _tmp.push(_d.Id + '*' + _d.dh);
             fdp.flights.push(flt.ID + '_' + _d.dh + '_' + $scope.DatetoStr(new Date(flt.STD)) + '_' + $scope.DatetoStr(new Date(flt.STA)) + '_' + flt.FlightNumber + '_' + flt.FromAirportIATA + '_' + flt.ToAirportIATA);
         });
+        alert('dddd');
+         
         fdp.key2 = _tmp.join('_');
         if ($scope.useExtension)
             fdp.extension = $scope.FDPStat.AllowedExtension;
@@ -5625,6 +5631,16 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
                         });
                         myDialog.show();
                     }
+                    else
+                        if (response.Code == 308) {
+                            var myDialog = DevExpress.ui.dialog.custom({
+                                rtlEnabled: true,
+                                title: "Error",
+                                message: "RERRP Error.",
+                                buttons: [{ text: "OK", onClick: function () { } }]
+                            });
+                            myDialog.show();
+                        }
                     else {
                         fdp.Id = response.data.Id;
 
@@ -6122,6 +6138,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
             value: 'ex48',
         }
     };
+     
     $scope.sb_offreason = {
         dataSource: $scope.offReasonDs,
         showClearButton: false,
@@ -6275,7 +6292,10 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
         var dto = { crewId: crew.Id, flights: fids, reason: reason, remark: remark, notify: notify, noflight: noflight };
         //2020-11-22
         dto.UserName = $rootScope.userName;
-
+        var reason_title = Enumerable.From($scope.offReasonDs).Where('$.id==' + dto.reason).FirstOrDefault();
+        dto.remark2 = reason_title ? reason_title.title : '';
+        console.log(dto);
+        
         $scope.loadingVisible = true;
         schedulingService.fdpsOffbyFlights(dto).then(function (response) {
             $scope.loadingVisible = false;
@@ -6850,7 +6870,7 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
         $.each(ordered, function (_i, _d) {
             var flt = Enumerable.From($scope.ati_flights).Where('$.ID==' + _d.Id).FirstOrDefault();
 
-            fdp.ids.push({ id: _d.Id, dh: _d.dh });
+            fdp.ids.push({ id: _d.Id, dh: _d.dh, pos: $scope.selectedPos.rank });
             _tmp.push(_d.Id + '*' + _d.dh);
             //2022-01-23
             fdp.flights.push(flt.ID + '_' + _d.dh + '_' + $scope.DatetoStr(new Date(flt.ChocksOut)) + '_' + $scope.DatetoStr(new Date(flt.ChocksIn)) + '_' + flt.FlightNumber + '_' + flt.FromAirportIATA + '_' + flt.ToAirportIATA);
@@ -6910,6 +6930,16 @@ app.controller('schedulingController', ['$scope', '$location', '$routeParams', '
                         });
                         myDialog.show();
                     }
+                    else
+                        if (response.Code == 308) {
+                            var myDialog = DevExpress.ui.dialog.custom({
+                                rtlEnabled: true,
+                                title: "Error",
+                                message: "RERRP Error.",
+                                buttons: [{ text: "OK", onClick: function () { } }]
+                            });
+                            myDialog.show();
+                        }
                     else {
                         fdp.Id = response.data.Id;
 

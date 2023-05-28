@@ -14,7 +14,7 @@ namespace Report
     
     public partial class ViewLogBook18
     {
-        public Nullable<System.DateTime> Date { get; set; }
+        public System.DateTime Date { get; set; }
         public string ArrStn { get; set; }
         public string Dep2 { get; set; }
         public string Arr2 { get; set; }

@@ -2467,7 +2467,7 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
         if (!dh)
             dh = 0;
         var deferred = $q.defer();
-        $http.get(serviceBase + 'odata/fdp/stat/' + ids + '/' + dh).then(function (response) {
+        $http.get(apiScheduling + 'api/fdp/stat/' + ids + '/' + dh).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 
@@ -2528,7 +2528,8 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
     };
     var _fdpsOffbyFlights = function (entity) {
         var deferred = $q.defer();
-        $http.post($rootScope.serviceUrl + 'odata/flights/off', entity).then(function (response) {
+        //$http.post($rootScope.serviceUrl + 'odata/flights/off', entity).then(function (response) {
+        $http.post(apiScheduling + 'api/flights/off', entity).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
 
@@ -3413,6 +3414,19 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
     };
     serviceFactory.getDutiesForGanttByDateNew = _getDutiesForGanttByDateNew;
 
+    var _getDutiesForGanttByDateCrewNew = function (df, dt, crew) {
+        var deferred = $q.defer();
+        $http.get(/*serviceBaseAPI + 'api/crew/valid/1?dt=' + dt*/apiScheduling + 'api/sch/crew/duties/gant/crew/?df=' + df + '&dt=' + dt + (  "&crewid=" + crew  )).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getDutiesForGanttByDateCrewNew = _getDutiesForGanttByDateCrewNew;
+
     //2023
     var _getSchFlights = function (df, dt) {
         var deferred = $q.defer();
@@ -3528,6 +3542,39 @@ app.factory('schedulingService', ['$http', '$q', 'ngAuthSettings', '$rootScope',
         return deferred.promise;
     };
     serviceFactory.saveEventGroup = _saveEventGroup;
+
+
+
+
+    var _getCrewFlightTime = function (rank, df,dt) {
+         
+        var deferred = $q.defer();
+        $http.get(zreportflight + 'api/crew/flights/rank/' + rank +'?df='+df+'&dt='+dt).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getCrewFlightTime = _getCrewFlightTime;
+
+
+
+    var _getCrewFlightTimeByCrew = function (id, df, dt) {
+
+        var deferred = $q.defer();
+        $http.get(zreportflight + 'api/crew/flights/grp/' + id + '?df=' + df + '&dt=' + dt).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getCrewFlightTimeByCrew = _getCrewFlightTimeByCrew;
     ///////////////////
 
     serviceFactory.getOFP = _getOFP;

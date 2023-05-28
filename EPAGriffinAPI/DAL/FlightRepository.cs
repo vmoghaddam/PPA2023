@@ -7792,6 +7792,7 @@ namespace EPAGriffinAPI.DAL
 
             public int? Total { get; set; }
         }
+
         internal object GetCrewFlightsReportAppGrouped(int id)
         {
             this.context.Database.CommandTimeout = 160;

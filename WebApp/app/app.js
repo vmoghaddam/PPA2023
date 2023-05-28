@@ -623,12 +623,12 @@ app.config(function ($routeProvider) {
     //});
 
     $routeProvider.when("/scheduling/admin", {
-        controller: "schedulingController",
+        controller: "schedulingvrhController",
         templateUrl: "/app/views/schedulingvrh.html",
         isAdmin: true,
     });
     $routeProvider.when("/scheduling", {
-        controller: "schedulingController",
+        controller: "schedulingvrhController",
         templateUrl: "/app/views/schedulingvrh.html",
         isAdmin: false,
     });
@@ -760,6 +760,10 @@ var serviceSKYBAG = 'https://localhost:5001/';
 var msgUrl = "http://localhost:13348/api/";
 var apiScheduling = "http://localhost:22560/";
 var apiapsb = 'http://localhost:22600/';
+
+var apireportflight = 'https://apireportflight.apvaresh.com/';
+var zreportflight=apireportflight ;
+
 
     //'http://localhost:58908/';
     //'http://localhost:40654/';
