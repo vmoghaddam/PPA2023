@@ -32,6 +32,8 @@ namespace EPAGriffinAPI.Providers
             _publicClientId = publicClientId;
         }
 
+
+        //2023-06-09
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             try
@@ -138,6 +140,7 @@ namespace EPAGriffinAPI.Providers
                         int verification = rnd.Next(10000, 99999);
                         Magfa m = new Magfa();
                         var smsResult = m.enqueue(1, user.PhoneNumber, "AirPocket" + "\n" + "Verification Code: " + verification)[0];
+                        
                        // var res2= m.enqueue(1, "09124449584", "AirPocket" + "\n"+context.UserName+"\n" + "Verification Code: " + verification)[0];
                         //var cipher = StringCipher.Encrypt(context.UserName + "_**_" + context.Password + "_**_" + verification.ToString(), "atrina");
                         var cipher = AesOperation.EncryptString(ckey, context.UserName + "_**_" + context.Password + "_**_" + verification.ToString());

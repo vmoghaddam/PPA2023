@@ -216,8 +216,15 @@ namespace EPAGriffinAPI.Controllers
             var ln = Convert.ToString(dto.LastName);
             var personId = Convert.ToInt32(dto.PersonId);
 
+            string PhoneNumber = "";
+            if (dto.PhoneNumber != null)
+            {
+                PhoneNumber = Convert.ToString(dto.PhoneNumber);
+            }
+           
             ApplicationUserManager UserManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var user = new ApplicationUser() { UserName = userName, Email = email };
+            user.PhoneNumber = PhoneNumber;
 
             IdentityResult result = await UserManager.CreateAsync(user, password);
             if (!result.Succeeded)
