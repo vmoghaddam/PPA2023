@@ -12,7 +12,7 @@ namespace EPAGriffinAPI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,20 +26,20 @@ namespace EPAGriffinAPI.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://sms.magfa.com/services/urn:SOAPSmsQueue")]
-        public string EPAGriffinAPI_com_magfa_sms_SoapSmsQueuableImplementationService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://api.payamak-panel.com/post/actions.asmx")]
+        public string EPAGriffinAPI_payamak_Actions {
             get {
-                return ((string)(this["EPAGriffinAPI_com_magfa_sms_SoapSmsQueuableImplementationService"]));
+                return ((string)(this["EPAGriffinAPI_payamak_Actions"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://api.payamak-panel.com/post/actions.asmx")]
-        public string EPAGriffinAPI_payamak_Actions {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://sms.magfa.com/api/soap/sms/v1/server")]
+        public string EPAGriffinAPI_com_magfa_sms_SoapSmsQueuableImplementationService {
             get {
-                return ((string)(this["EPAGriffinAPI_payamak_Actions"]));
+                return ((string)(this["EPAGriffinAPI_com_magfa_sms_SoapSmsQueuableImplementationService"]));
             }
         }
     }
