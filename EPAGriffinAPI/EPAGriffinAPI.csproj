@@ -1797,11 +1797,14 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Web References\com.magfa.sms\Reference.map">
+    <Content Include="Web References\com.magfa.sms\DeliveryStatus.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\com.magfa.sms\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
-    <None Include="Web References\com.magfa.sms\SOAPSmsQueue.wsdl" />
+    </None>
+    <None Include="Web References\com.magfa.sms\server.wsdl" />
     <None Include="Web References\payamak\actions.wsdl" />
     <Content Include="Web References\payamak\Branchs.datasource">
       <DependentUpon>Reference.map</DependentUpon>
@@ -1857,10 +1860,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EPAGriffinAPI_payamak_Actions</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://sms.magfa.com/services/urn:SOAPSmsQueue%3fwsdl">
+    <WebReferenceUrl Include="https://sms.magfa.com/api/soap/sms/v1/server%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\com.magfa.sms\</RelPath>
-      <UpdateFromURL>http://sms.magfa.com/services/urn:SOAPSmsQueue%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>https://sms.magfa.com/api/soap/sms/v1/server%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
