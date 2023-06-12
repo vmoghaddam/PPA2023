@@ -65,15 +65,18 @@ namespace EPAGriffinAPI
         {
             if (ConfigurationManager.AppSettings["ipaccess"] == "0")
                 return true;
+           
             //return true;
             var cacheKey = "ipaccess";
             username = username.ToLower();
-            //var access = GetFromCache<List<Models.ViewIPAccess>>(cacheKey, () => {
-            //    // load movie from DB
-            //    UnitOfWork unitOfWork = new UnitOfWork();
-            //    return unitOfWork.PersonRepository.GetIPAccess();
-            //});
-              UnitOfWork unitOfWork = new UnitOfWork();
+            if (username != "trans.varesh")
+                return true;
+                //var access = GetFromCache<List<Models.ViewIPAccess>>(cacheKey, () => {
+                //    // load movie from DB
+                //    UnitOfWork unitOfWork = new UnitOfWork();
+                //    return unitOfWork.PersonRepository.GetIPAccess();
+                //});
+            UnitOfWork unitOfWork = new UnitOfWork();
             //    ipsList = unitOfWork.PersonRepository.GetIPAccess();
             var access = unitOfWork.PersonRepository.GetIPAccess();
             var accall = access.Where(q => q.IP == "*" && q.UserName.ToLower() == "*").FirstOrDefault();
@@ -88,6 +91,8 @@ namespace EPAGriffinAPI
             var acc3 = access.Where(q => username.StartsWith(q.UserName.ToLower().Replace("*", "")) && ip.StartsWith(q.IP.Replace(".*", ""))).FirstOrDefault();
             if (acc3 != null)
                 return true;
+
+            //return true;
             return false;
         }
 
