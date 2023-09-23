@@ -75,7 +75,8 @@ namespace Report
                 insts.Add(course.Instructor);
             if (!string.IsNullOrEmpty(course.Instructor2))
                 insts.Add(course.Instructor2);
-            //  cellIns.Text = string.Join(", ", insts);
+              cellIns.Text = string.Join(", ", insts);
+            lblInstructor.Text = string.Join(", ", insts);
 
             lblStart.Text = course.DateStart.ToString("yyyy-MM-dd");
             lblEnd.Text = ((DateTime)course.DateEnd).ToString("yyyy-MM-dd");

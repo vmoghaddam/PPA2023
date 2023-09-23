@@ -94,10 +94,11 @@
             this.xrTableCell5 = new DevExpress.XtraReports.UI.XRTableCell();
             this.jsonDataSource1 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
-            this.lblRev = new DevExpress.XtraReports.UI.XRLabel();
-            this.lblDate = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrPictureBox2 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
+            this.lblDate = new DevExpress.XtraReports.UI.XRLabel();
+            this.lblRev = new DevExpress.XtraReports.UI.XRLabel();
             this.DetailReport = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Detail1 = new DevExpress.XtraReports.UI.DetailBand();
             this.table = new DevExpress.XtraReports.UI.XRTable();
@@ -316,6 +317,7 @@
             // ReportHeader
             // 
             this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPictureBox2,
             this.xrPictureBox1,
             this.xrLabel1,
             this.lblDate,
@@ -323,32 +325,22 @@
             this.ReportHeader.HeightF = 84.49999F;
             this.ReportHeader.Name = "ReportHeader";
             // 
-            // lblRev
+            // xrPictureBox2
             // 
-            this.lblRev.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblRev.ForeColor = System.Drawing.Color.Red;
-            this.lblRev.LocationFloat = new DevExpress.Utils.PointFloat(0F, 57.5F);
-            this.lblRev.Multiline = true;
-            this.lblRev.Name = "lblRev";
-            this.lblRev.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.lblRev.SizeF = new System.Drawing.SizeF(1142F, 22.83332F);
-            this.lblRev.StylePriority.UseFont = false;
-            this.lblRev.StylePriority.UseForeColor = false;
-            this.lblRev.StylePriority.UseTextAlignment = false;
-            this.lblRev.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPictureBox2.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox2.ImageSource"));
+            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrPictureBox2.Name = "xrPictureBox2";
+            this.xrPictureBox2.SizeF = new System.Drawing.SizeF(175F, 84.49999F);
+            this.xrPictureBox2.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
             // 
-            // lblDate
+            // xrPictureBox1
             // 
-            this.lblDate.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblDate.LocationFloat = new DevExpress.Utils.PointFloat(3.814697E-05F, 28.83334F);
-            this.lblDate.Multiline = true;
-            this.lblDate.Name = "lblDate";
-            this.lblDate.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.lblDate.SizeF = new System.Drawing.SizeF(1142F, 28.66666F);
-            this.lblDate.StylePriority.UseFont = false;
-            this.lblDate.StylePriority.UseTextAlignment = false;
-            this.lblDate.Text = "Crew Scheduling Department";
-            this.lblDate.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPictureBox1.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox1.ImageSource"));
+            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(3.814697E-05F, 0F);
+            this.xrPictureBox1.Name = "xrPictureBox1";
+            this.xrPictureBox1.SizeF = new System.Drawing.SizeF(175F, 84.49999F);
+            this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.xrPictureBox1.Visible = false;
             // 
             // xrLabel1
             // 
@@ -363,13 +355,32 @@
             this.xrLabel1.Text = "Crew Scheduling Department";
             this.xrLabel1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
-            // xrPictureBox1
+            // lblDate
             // 
-            this.xrPictureBox1.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox1.ImageSource"));
-            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrPictureBox1.Name = "xrPictureBox1";
-            this.xrPictureBox1.SizeF = new System.Drawing.SizeF(175F, 84.49999F);
-            this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.lblDate.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblDate.LocationFloat = new DevExpress.Utils.PointFloat(3.814697E-05F, 28.83334F);
+            this.lblDate.Multiline = true;
+            this.lblDate.Name = "lblDate";
+            this.lblDate.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.lblDate.SizeF = new System.Drawing.SizeF(1142F, 28.66666F);
+            this.lblDate.StylePriority.UseFont = false;
+            this.lblDate.StylePriority.UseTextAlignment = false;
+            this.lblDate.Text = "Crew Scheduling Department";
+            this.lblDate.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // lblRev
+            // 
+            this.lblRev.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblRev.ForeColor = System.Drawing.Color.Red;
+            this.lblRev.LocationFloat = new DevExpress.Utils.PointFloat(0F, 57.5F);
+            this.lblRev.Multiline = true;
+            this.lblRev.Name = "lblRev";
+            this.lblRev.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.lblRev.SizeF = new System.Drawing.SizeF(1142F, 22.83332F);
+            this.lblRev.StylePriority.UseFont = false;
+            this.lblRev.StylePriority.UseForeColor = false;
+            this.lblRev.StylePriority.UseTextAlignment = false;
+            this.lblRev.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // DetailReport
             // 
@@ -632,7 +643,7 @@
             this.DataSource = this.jsonDataSource1;
             this.Font = new System.Drawing.Font("Arial", 9.75F);
             this.Landscape = true;
-            this.Margins = new System.Drawing.Printing.Margins(13, 14, 18, 10);
+            this.Margins = new System.Drawing.Printing.Margins(12, 14, 18, 10);
             this.PageHeight = 827;
             this.PageWidth = 1169;
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;
@@ -693,5 +704,6 @@
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell10;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell11;
         private DevExpress.XtraReports.UI.XRLabel lblRev;
+        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox2;
     }
 }

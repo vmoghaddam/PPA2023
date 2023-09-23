@@ -6801,7 +6801,7 @@ namespace EPAGriffinAPI.Controllers
 
             if (/*dto.SendNiraSMS==1*/fresult.sendNira)
             {
-                await unitOfWork.FlightRepository.NotifyNira(dto.ID, dto.UserName);
+              //  await unitOfWork.FlightRepository.NotifyNira(dto.ID, dto.UserName);
             }
 
             var fg = await unitOfWork.FlightRepository.GetViewFlightGantts().Where(q => q.ID == fresult.flight).ToListAsync();

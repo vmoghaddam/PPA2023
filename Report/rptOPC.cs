@@ -27,9 +27,18 @@ namespace Report
              var ln = Convert.ToString(data.Person.LastName);
              lblName.Text = fn.ToUpper() + " " + ln.ToUpper();
 
+
             //var str = "https://fleet.caspianairlines.com/upload/clientsfiles/"+ _img;
-             img.ImageUrl =  "http://127.0.0.1/upload/clientsfiles/"   /*"C:\\inetpub\\wwwroot\\upload\\clientsfiles\\"*/ + _img;
-           // xrLabel22.Text = "C:\\inetpub\\wwwroot\\upload\\clientsfiles\\" + _img;
+
+            // img.ImageUrl = "https://fleet.flypersia.aero//airpocket/upload/clientsfiles/"+ _img;
+            //img.ImageUrl = "http://127.0.0.1/airpocket/upload/clientsfiles/" + _img;
+
+            img.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource(new Bitmap("E:\\ap\\upload\\clientsfiles\\"+_img));
+
+
+            /*"C:\\inetpub\\wwwroot\\upload\\clientsfiles\\"*/
+
+            // xrLabel22.Text = "C:\\inetpub\\wwwroot\\upload\\clientsfiles\\" + _img;
 
             //var fn= Convert.ToString(GetCurrentColumnValue("Person.FirstName"));
             //var ln = Convert.ToString(GetCurrentColumnValue("Person.LastName"));

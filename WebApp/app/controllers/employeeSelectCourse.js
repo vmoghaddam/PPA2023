@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.controller('employeeSelectCourseController', ['$scope', '$location', 'authService', '$routeParams', '$rootScope', function ($scope, $location, authService, $routeParams, $rootScope) {
+app.controller('employeeSelectCourseController', ['$scope', '$location', 'authService', '$routeParams', '$rootScope', 'trnService', function ($scope, $location, authService, $routeParams, $rootScope,trnService) {
 
 
 
@@ -25,11 +25,16 @@ app.controller('employeeSelectCourseController', ['$scope', '$location', 'authSe
         }
     };
     $scope.dg_columns = [
-        { dataField: 'JobGroup', caption: 'Group', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 150, sortIndex: 0, sortOrder: "asc" },
-        { dataField: 'LastName', caption: 'Last Name', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, sortIndex: 1, sortOrder: "asc" },
+        { dataField: 'GTitle', caption: '', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 120, sortIndex: 0, sortOrder: "asc" },
+        {
+            dataField: 'JobGroupCode', caption: '', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 120, sortIndex: 1, sortOrder: "asc", visible:false
+        },
+
+        { dataField: 'JobGroup', caption: 'Group', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 150, sortIndex: 2, sortOrder: "asc" },
+        { dataField: 'LastName', caption: 'Last Name', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, sortIndex: 3, sortOrder: "asc" },
         { dataField: 'FirstName', caption: 'First Name', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, width:170 },
-        { dataField: 'NID', caption: 'National Code', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 130 },
-        { dataField: 'PID', caption: 'Personnel Id', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 130 },
+        { dataField: 'NID', caption: 'NID', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 130 },
+        { dataField: 'PID', caption: 'PID', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, width: 130 },
         
         
     ];
@@ -150,22 +155,34 @@ app.controller('employeeSelectCourseController', ['$scope', '$location', 'authSe
     };
     ////////////////////////////
     $scope.bind = function () {
-        if (!$scope.dg_ds) {
-            $scope.dg_ds = {
-                store: {
-                    type: "odata",
-                    //url: $rootScope.serviceUrl + 'odata/employees/' + Config.CustomerId,
-                    url: serviceBaseTRN+ 'api/employee/groups/query/' +'0', //$scope.groups,
-                    key: "Id",
+
+        
+        $scope.loadingVisible = true;
+        trnService.getAllowedPeopleForCourse($scope.course_id).then(function (response) {
+            $scope.loadingVisible = false;
+            $scope.dg_ds = response.Data;
+            console.log(response);
+
+        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+        //if (!$scope.dg_ds) {
+        //    $scope.dg_ds = {
+        //        store: {
+        //            type: "odata",
+        //            //url: $rootScope.serviceUrl + 'odata/employees/' + Config.CustomerId,
+        //           // url: serviceBaseTRN+ 'api/employee/groups/query/' +'0', //$scope.groups,
+        //            url: serviceBaseTRN + 'api/course/allowed/employees/' + '0',
+        //            key: "Id",
                     
 
-                },
+        //        },
 
-            };
-        }
-        else {
-            $scope.dg_instance.clearSelection();
-        }
+        //    };
+        //}
+        //else {
+        //    $scope.dg_instance.clearSelection();
+        //}
 
 
 
@@ -176,6 +193,7 @@ app.controller('employeeSelectCourseController', ['$scope', '$location', 'authSe
 
         if (prms) {
             $scope.groups = prms.groups;
+            $scope.course_id = prms.id;
         }
         $scope.popup_add_visible = true;
 

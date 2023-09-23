@@ -250,6 +250,12 @@
     <Content Include="app\controllers\teachersController.js" />
     <Content Include="app\controllers\toAdd.js" />
     <Content Include="app\controllers\training.js" />
+    <Content Include="app\controllers\trnDashboard.js" />
+    <Content Include="app\controllers\trnexpiringgroups.js" />
+    <Content Include="app\controllers\trnexpiringtypes.js" />
+    <Content Include="app\controllers\trnschedule.js" />
+    <Content Include="app\controllers\trnScheduleCourse.js" />
+    <Content Include="app\controllers\trnScheduleCourseType.js" />
     <Content Include="app\controllers\trnStat.js" />
     <Content Include="app\controllers\usersController.js" />
     <Content Include="app\controllers\verify.js" />
@@ -457,6 +463,12 @@
     <Content Include="app\views\templates.html" />
     <Content Include="app\views\toAdd.html" />
     <Content Include="app\views\training.html" />
+    <Content Include="app\views\trnDashboard.html" />
+    <Content Include="app\views\trnexpiringgroups.html" />
+    <Content Include="app\views\trnexpiringtypes.html" />
+    <Content Include="app\views\trnschedule.html" />
+    <Content Include="app\views\trnScheduleCourse.html" />
+    <Content Include="app\views\trnScheduleCourseType.html" />
     <Content Include="app\views\trnStat.html" />
     <Content Include="app\views\users.html" />
     <Content Include="app\views\verify.html" />

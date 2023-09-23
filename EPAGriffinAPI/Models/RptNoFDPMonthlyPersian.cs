@@ -26,10 +26,10 @@ namespace EPAGriffinAPI.Models
         public Nullable<int> FX { get; set; }
         public Nullable<int> Count { get; set; }
         public string JobGroup { get; set; }
-        public Nullable<int> GroupId { get; set; }
+        public int GroupId { get; set; }
         public string JobGroupCode { get; set; }
         public string JobGroupRoot { get; set; }
-        public Nullable<int> RankOrder { get; set; }
+        public int RankOrder { get; set; }
         public int DutyType { get; set; }
     }
 }

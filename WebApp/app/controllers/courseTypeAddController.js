@@ -75,7 +75,7 @@ app.controller('courseTypeAddController', ['$scope', '$location', 'courseService
             visible: 'loadingVisible'
         }
     };
-    
+
     $scope.txt_Title = {
         hoverStateEnabled: false,
         bindingOptions: {
@@ -100,20 +100,21 @@ app.controller('courseTypeAddController', ['$scope', '$location', 'courseService
             value: 'entity.Duration',
         }
     };
-    $scope.sb_CalanderTypeId = {
-        showClearButton: true,
-        searchEnabled: true,
-        dataSource: $rootScope.getDatasourceOption(11),
-        displayExpr: "Title",
-        valueExpr: 'Id',
-        bindingOptions: {
-            value: 'entity.CalenderTypeId',
+    //$scope.sb_CalanderTypeId = {
+    //    showClearButton: true,
+    //    searchEnabled: true,
+    //    dataSource: $rootScope.getDatasourceOption(11),
+    //    displayExpr: "Title",
+    //    valueExpr: 'Id',
+    //    readOnly:true,
+    //    bindingOptions: {
+    //        value:'13', //'entity.CalenderTypeId',
 
-        }
-    };
+    //    }
+    //};
 
     $scope.sb_CerTypes = {
-        
+
         showClearButton: true,
         searchEnabled: true,
         dataSource: $rootScope.getDatasourceCertificateTypes(),
@@ -147,9 +148,9 @@ app.controller('courseTypeAddController', ['$scope', '$location', 'courseService
         }
     };
     $scope.dg_group_columns = [
-         
+
         { dataField: "Title", caption: "Title", allowResizing: true, alignment: "left", dataType: 'string', allowEditing: false, },
-       // { dataField: 'FullCode', caption: 'Code', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, encodeHtml: false, width: 200, sortIndex: 0, sortOrder: "asc" },
+        // { dataField: 'FullCode', caption: 'Code', allowResizing: true, alignment: 'center', dataType: 'string', allowEditing: false, encodeHtml: false, width: 200, sortIndex: 0, sortOrder: "asc" },
 
     ];
     $scope.dg_group_selected = null;
@@ -163,7 +164,7 @@ app.controller('courseTypeAddController', ['$scope', '$location', 'courseService
             showOperationChooser: true,
         },
         noDataText: '',
-        showColumnHeaders:false,
+        showColumnHeaders: false,
         allowColumnReordering: true,
         allowColumnResizing: true,
         scrolling: { mode: 'infinite' },
@@ -171,7 +172,7 @@ app.controller('courseTypeAddController', ['$scope', '$location', 'courseService
         showBorders: true,
         selection: { mode: 'single' },
 
-        
+
         columnAutoWidth: false,
         columns: $scope.dg_group_columns,
         onContentReady: function (e) {
@@ -219,7 +220,7 @@ app.controller('courseTypeAddController', ['$scope', '$location', 'courseService
         closeOnOutsideClick: false,
         onShowing: function (e) {
             var size = $rootScope.getWindowSize();
-            if (size.width <=  600) {
+            if (size.width <= 600) {
                 $scope.pop_width = size.width;
                 $scope.pop_height = size.height;
             }
@@ -249,9 +250,9 @@ app.controller('courseTypeAddController', ['$scope', '$location', 'courseService
                     _dt.JobGroups = response.Data;
                     $scope.bind(_dt);
                 }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-                
+
             }
-                
+
 
             if ($scope.dg_group_instance)
                 $scope.dg_group_instance.refresh();
@@ -298,6 +299,7 @@ app.controller('courseTypeAddController', ['$scope', '$location', 'courseService
         if ($scope.isNew)
             $scope.entity.Id = -1;
         $scope.entity.Mandatory = $scope.entity.Mandatory ? 1 : 0;
+        $scope.entity.CalenderTypeId = 13;
         $scope.loadingVisible = true;
         trnService.saveCourseType($scope.entity).then(function (response) {
             $scope.loadingVisible = false;
@@ -312,16 +314,16 @@ app.controller('courseTypeAddController', ['$scope', '$location', 'courseService
                 if (!$scope.isNew)
                     $scope.popup_add_visible = false;
             }
-            else { General.ShowNotify(response.Errors[0], 'error');}
-            
+            else { General.ShowNotify(response.Errors[0], 'error'); }
 
 
-           
+
+
 
 
 
         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
- 
+
 
     };
     ////////////////////////////

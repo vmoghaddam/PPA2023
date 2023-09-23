@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using DevExpress.XtraPrinting;
 using System.Web.Configuration;
+using System.Web;
 
 namespace Report
 {
@@ -17,12 +18,16 @@ namespace Report
         public rptFPC()
         {
             InitializeComponent();
+           // xrPictureBox1.ImageSource.Image.Save(HttpContext.Current.Server.MapPath("FPC.png"));
+
         }
         public string ClassId { get; set; }
         public string Id { get; set; }
         DateTime? expire = null;
         private void rptFPC_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
         {
+            //xrPictureBox1.ImageSource.Image.Save("FPC.png");
+
             var ds = this.DataSource as JsonDataSource;
             // ds.Fill();
             // var xx = new CustomJsonSource();
@@ -45,7 +50,7 @@ namespace Report
 
             lblIssue.Text = issue.ToString("dd MMM yyyy").ToUpper();
             lblExpire.Text = expire != null ? ((DateTime) expire).ToString("dd MMM yyyy").ToUpper() : "";
-            lblDate.Text = "Feb. 2022";//status != null ? ((DateTime)status).ToString("MMM.yyyy").ToUpper() : "";
+            lblDate.Text = "JUL. 2023";//status != null ? ((DateTime)status).ToString("MMM.yyyy").ToUpper() : "";
 
             DateTime? from = data.DateStart != null ? (Nullable<DateTime>)Convert.ToDateTime(data.DateStart) : null;
             DateTime? to = data.DateEnd != null ? (Nullable<DateTime>)Convert.ToDateTime(data.DateEnd) : null;
@@ -58,11 +63,18 @@ namespace Report
             lblDuration.Text = duration.ToString();
 
             lblFormNo.Text = "FPI-TRN-02";
-            lblIssueNo.Text = "01, Rev: 01";
+            lblIssueNo.Text = "01, Rev: 02";
 
             lblClassId.Text = Convert.ToString(data.No).ToUpper();
             this.ClassId = lblClassId.Text;
             lblCourseId.Text = Convert.ToString(data.CourseId).ToUpper();
+
+            string groupcode = Convert.ToString(data.JobGroupCode);
+            xrPictureBox3.Visible = groupcode.StartsWith("0000110") || groupcode.StartsWith("00101") || groupcode.StartsWith("00102") || groupcode.StartsWith("000010602");
+            lblOpsTrn.Visible= groupcode.StartsWith("0000110") || groupcode.StartsWith("00101") || groupcode.StartsWith("00102") || groupcode.StartsWith("000010602");
+            //xrPictureBox1.Visible = !xrPictureBox3.Visible;
+            xrPictureBox2.Visible = !xrPictureBox3.Visible;
+            xrPictureBox1.Visible = false;
 
         }
         string folder = WebConfigurationManager.AppSettings["folder"];
@@ -93,8 +105,14 @@ namespace Report
 
         private void xrPictureBox2_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
         {
-            if (expire != null)
-                e.Cancel = true;
+          //  if (expire != null)
+          //      e.Cancel = true;
+        }
+
+        private void xrPictureBox4_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+              if (expire != null)
+                   e.Cancel = true;
         }
     }
 }

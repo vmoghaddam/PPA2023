@@ -741,6 +741,207 @@ app.factory('trnService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functi
         return deferred.promise;
     };
     serviceFactory.saveCourseFP = _saveCourseFP;
+
+
+
+
+    ////////////////////////
+    /////////////////////////
+    var _getAllowedPeopleForCourse = function (id) {
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/course/allowed/employees/'+id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getAllowedPeopleForCourse = _getAllowedPeopleForCourse;
+
+
+    var _getTrnExpiringGroups = function () {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/monitoring/expiring/').then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getTrnExpiringGroups = _getTrnExpiringGroups;
+
+
+
+    var _getTrnSchedule = function (y,m) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/schedule/'+y+'/'+m).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getTrnSchedule = _getTrnSchedule;
+
+    var _getTrnYearScheduleType = function (y, t) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/schedule/year/type/' + y + '/' +t).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getTrnYearScheduleType = _getTrnYearScheduleType;
+
+
+    var _getTrnYearMonthScheduleType = function (y,m, t) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/schedule/year/month/type/' + y + '/'+m+'/' + t).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getTrnYearMonthScheduleType = _getTrnYearMonthScheduleType;
+
+
+
+    var _getTrnProfilesAbs = function (g) {
+        g = g.replace('/', 'x');
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/profiles/abs/' + g ).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getTrnProfilesAbs = _getTrnProfilesAbs;
+
+
+    var _getTrnYearSchedulePerson = function (y, p) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/schedule/year/person/' + y + '/' + p).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getTrnYearSchedulePerson = _getTrnYearSchedulePerson;
+
+
+    var _getTrnYearMonthSchedulePerson = function (y, m, p) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/schedule/year/month/person/' + y + '/' + m + '/' + p).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getTrnYearMonthSchedulePerson = _getTrnYearMonthSchedulePerson;
+
+
+    var _getTrnScheduleYear = function (y ) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/schedule/year/' + y ).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getTrnScheduleYear = _getTrnScheduleYear;
+
+
+
+    var _getTrnSummary = function (df,dt) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/dashboard/report/summary/' + '?df='+df+'&dt='+dt).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getTrnSummary = _getTrnSummary;
+
+
+    var _getRptCoursePerson = function (df, dt,pid) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/dashboard/report/person/' +pid+ '?df=' + df + '&dt=' + dt).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getRptCoursePerson = _getRptCoursePerson;
+
+
+    var _getRptCourseJobGroup = function (df, dt, ct,jg) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/dashboard/report/group/' + ct+'/'+jg + '?df=' + df + '&dt=' + dt).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getRptCourseJobGroup = _getRptCourseJobGroup;
+
+
+
+    var _getRptCourseType = function (df, dt ) {
+
+        var deferred = $q.defer();
+        $http.get(serviceBaseTRN + 'api/trn/dashboard/report/type/'   + '?df=' + df + '&dt=' + dt).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+
+            deferred.reject(Exceptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    };
+    serviceFactory.getRptCourseType = _getRptCourseType;
     /////////////////////////
     serviceFactory.getExpiring = _getExpiring;
     serviceFactory.getExpiringMain = _getExpiringMain;

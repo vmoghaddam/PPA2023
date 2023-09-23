@@ -462,6 +462,7 @@
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
             this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
+            this.xrPictureBox3 = new DevExpress.XtraReports.UI.XRPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable9)).BeginInit();
@@ -3008,6 +3009,7 @@
             // PageHeader
             // 
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPictureBox3,
             this.xrLabel21,
             this.xrLabel25,
             this.xrLabel24,
@@ -3114,7 +3116,7 @@
             this.xrLabel9.SizeF = new System.Drawing.SizeF(154.1667F, 23F);
             this.xrLabel9.StylePriority.UseFont = false;
             this.xrLabel9.StylePriority.UseTextAlignment = false;
-            this.xrLabel9.Text = "TABAN AIRLINES";
+            this.xrLabel9.Text = "VARESH AIRLINES";
             this.xrLabel9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrPictureBox1
@@ -3147,6 +3149,15 @@
             this.xrPageInfo1.SizeF = new System.Drawing.SizeF(824.0001F, 23.00001F);
             this.xrPageInfo1.StylePriority.UseTextAlignment = false;
             this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // xrPictureBox3
+            // 
+            this.xrPictureBox3.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox3.ImageSource"));
+            this.xrPictureBox3.LocationFloat = new DevExpress.Utils.PointFloat(405.0429F, 5F);
+            this.xrPictureBox3.Name = "xrPictureBox3";
+            this.xrPictureBox3.SizeF = new System.Drawing.SizeF(114.1668F, 88.33334F);
+            this.xrPictureBox3.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.xrPictureBox3.Visible = false;
             // 
             // rptASR
             // 
@@ -3403,5 +3414,6 @@
         private DevExpress.XtraReports.UI.PageFooterBand PageFooter;
         private DevExpress.XtraReports.UI.XRLine xrLine1;
         private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo1;
+        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox3;
     }
 }

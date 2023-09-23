@@ -89,6 +89,8 @@
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrPictureBox4 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.lblOpsTrn = new DevExpress.XtraReports.UI.XRLabel();
             this.lblClassId = new DevExpress.XtraReports.UI.XRLabel();
             this.lblCourseId = new DevExpress.XtraReports.UI.XRLabel();
             this.lblDate = new DevExpress.XtraReports.UI.XRLabel();
@@ -105,8 +107,9 @@
             this.lblCerNo = new DevExpress.XtraReports.UI.XRLabel();
             this.lblName = new DevExpress.XtraReports.UI.XRLabel();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
-            this.jsonDataSource1 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
             this.xrPictureBox2 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.xrPictureBox3 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.jsonDataSource1 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -122,6 +125,8 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPictureBox4,
+            this.lblOpsTrn,
             this.lblClassId,
             this.lblCourseId,
             this.lblDate,
@@ -138,9 +143,32 @@
             this.lblCerNo,
             this.lblName,
             this.xrPictureBox1,
-            this.xrPictureBox2});
-            this.Detail.HeightF = 7332.353F;
+            this.xrPictureBox2,
+            this.xrPictureBox3});
+            this.Detail.HeightF = 867.5002F;
             this.Detail.Name = "Detail";
+            // 
+            // xrPictureBox4
+            // 
+            this.xrPictureBox4.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox4.ImageSource"));
+            this.xrPictureBox4.LocationFloat = new DevExpress.Utils.PointFloat(814.0001F, 113F);
+            this.xrPictureBox4.Name = "xrPictureBox4";
+            this.xrPictureBox4.SizeF = new System.Drawing.SizeF(166.6666F, 62.68946F);
+            this.xrPictureBox4.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrPictureBox4_BeforePrint);
+            // 
+            // lblOpsTrn
+            // 
+            this.lblOpsTrn.Font = new System.Drawing.Font("Calibri", 15F, System.Drawing.FontStyle.Bold);
+            this.lblOpsTrn.LocationFloat = new DevExpress.Utils.PointFloat(394.9685F, 678F);
+            this.lblOpsTrn.Multiline = true;
+            this.lblOpsTrn.Name = "lblOpsTrn";
+            this.lblOpsTrn.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.lblOpsTrn.SizeF = new System.Drawing.SizeF(180.0034F, 67.85297F);
+            this.lblOpsTrn.StylePriority.UseFont = false;
+            this.lblOpsTrn.StylePriority.UseTextAlignment = false;
+            this.lblOpsTrn.Text = "DAVARI AMIN";
+            this.lblOpsTrn.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.lblOpsTrn.Visible = false;
             // 
             // lblClassId
             // 
@@ -165,7 +193,7 @@
             this.lblCourseId.SizeF = new System.Drawing.SizeF(176.4709F, 45.35297F);
             this.lblCourseId.StylePriority.UseFont = false;
             this.lblCourseId.StylePriority.UseTextAlignment = false;
-            this.lblCourseId.Text = "01, Rev: 1";
+            this.lblCourseId.Text = "01, Rev: 2";
             this.lblCourseId.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.lblCourseId.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.lblCourseId_BeforePrint);
             // 
@@ -179,7 +207,7 @@
             this.lblDate.SizeF = new System.Drawing.SizeF(135.2944F, 45.35297F);
             this.lblDate.StylePriority.UseFont = false;
             this.lblDate.StylePriority.UseTextAlignment = false;
-            this.lblDate.Text = "FEB.2022";
+            this.lblDate.Text = "JUL.2023";
             this.lblDate.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.lblDate.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.lblIssueNo_BeforePrint);
             // 
@@ -350,6 +378,24 @@
             this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
             this.xrPictureBox1.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrPictureBox1_BeforePrint);
             // 
+            // xrPictureBox2
+            // 
+            this.xrPictureBox2.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox2.ImageSource"));
+            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrPictureBox2.Name = "xrPictureBox2";
+            this.xrPictureBox2.SizeF = new System.Drawing.SizeF(1169F, 836.1113F);
+            this.xrPictureBox2.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.xrPictureBox2.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrPictureBox2_BeforePrint);
+            // 
+            // xrPictureBox3
+            // 
+            this.xrPictureBox3.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox3.ImageSource"));
+            this.xrPictureBox3.LocationFloat = new DevExpress.Utils.PointFloat(0.0001207987F, 0F);
+            this.xrPictureBox3.Name = "xrPictureBox3";
+            this.xrPictureBox3.SizeF = new System.Drawing.SizeF(1169F, 836.1113F);
+            this.xrPictureBox3.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.xrPictureBox3.Visible = false;
+            // 
             // jsonDataSource1
             // 
             this.jsonDataSource1.ConnectionName = "JsonConnection_CER";
@@ -411,15 +457,6 @@
             jsonSchemaNode1.Nodes.Add(jsonSchemaNode56);
             this.jsonDataSource1.Schema = jsonSchemaNode1;
             // 
-            // xrPictureBox2
-            // 
-            this.xrPictureBox2.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox2.ImageSource"));
-            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrPictureBox2.Name = "xrPictureBox2";
-            this.xrPictureBox2.SizeF = new System.Drawing.SizeF(1169F, 836.1113F);
-            this.xrPictureBox2.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
-            this.xrPictureBox2.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrPictureBox2_BeforePrint);
-            // 
             // rptFPC
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -467,5 +504,8 @@
         private DevExpress.XtraReports.UI.XRLabel lblCourseId;
         private DevExpress.XtraReports.UI.XRLabel lblClassId;
         private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox2;
+        private DevExpress.XtraReports.UI.XRLabel lblOpsTrn;
+        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox3;
+        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox4;
     }
 }

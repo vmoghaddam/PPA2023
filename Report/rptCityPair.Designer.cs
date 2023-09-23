@@ -52,13 +52,13 @@
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode20 = new DevExpress.DataAccess.Json.JsonSchemaNode("CargoWeight", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode21 = new DevExpress.DataAccess.Json.JsonSchemaNode("Freight", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode22 = new DevExpress.DataAccess.Json.JsonSchemaNode("IsDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<bool>));
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(rptCityPair));
             DevExpress.XtraReports.UI.XRSummary xrSummary2 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary3 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary4 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary5 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary6 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary7 = new DevExpress.XtraReports.UI.XRSummary();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(rptCityPair));
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
@@ -132,6 +132,7 @@
             this.xrTableCell60 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell61 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell62 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.pic_kish = new DevExpress.XtraReports.UI.XRPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
@@ -145,7 +146,7 @@
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 33.83331F;
+            this.BottomMargin.HeightF = 34F;
             this.BottomMargin.Name = "BottomMargin";
             // 
             // Detail
@@ -342,6 +343,7 @@
             // PageHeader
             // 
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.pic_kish,
             this.xrPictureBox2,
             this.lblMonth,
             this.lblYear,
@@ -363,7 +365,7 @@
             // xrPictureBox2
             // 
             this.xrPictureBox2.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox2.ImageSource"));
-            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(10F, 10F);
+            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(10F, 10.00001F);
             this.xrPictureBox2.Name = "xrPictureBox2";
             this.xrPictureBox2.SizeF = new System.Drawing.SizeF(92F, 79F);
             this.xrPictureBox2.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
@@ -411,7 +413,7 @@
             this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel8.SizeF = new System.Drawing.SizeF(183.2612F, 23F);
             this.xrLabel8.StylePriority.UseFont = false;
-            this.xrLabel8.Text = "TABAN AIRLINES";
+            this.xrLabel8.Text = "KISHAIR";
             // 
             // xrLabel7
             // 
@@ -492,7 +494,7 @@
             // 
             // xrTable2
             // 
-            this.xrTable2.BackColor = System.Drawing.Color.Orange;
+            this.xrTable2.BackColor = System.Drawing.Color.PaleGreen;
             this.xrTable2.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
@@ -772,7 +774,7 @@
             // 
             // xrTable1
             // 
-            this.xrTable1.BackColor = System.Drawing.Color.Orange;
+            this.xrTable1.BackColor = System.Drawing.Color.PaleGreen;
             this.xrTable1.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
@@ -886,6 +888,7 @@
             this.xrPictureBox1.Name = "xrPictureBox1";
             this.xrPictureBox1.SizeF = new System.Drawing.SizeF(92F, 79F);
             this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.xrPictureBox1.Visible = false;
             // 
             // GroupFooter1
             // 
@@ -896,7 +899,7 @@
             // 
             // xrTable4
             // 
-            this.xrTable4.BackColor = System.Drawing.Color.Bisque;
+            this.xrTable4.BackColor = System.Drawing.Color.PaleGreen;
             this.xrTable4.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
@@ -1045,6 +1048,14 @@
             this.xrTableCell62.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.xrTableCell62.Weight = 1.3871239326063716D;
             // 
+            // pic_kish
+            // 
+            this.pic_kish.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("pic_kish.ImageSource"));
+            this.pic_kish.LocationFloat = new DevExpress.Utils.PointFloat(10F, 10.00001F);
+            this.pic_kish.Name = "pic_kish";
+            this.pic_kish.SizeF = new System.Drawing.SizeF(92F, 79F);
+            this.pic_kish.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            // 
             // rptCityPair
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1142,5 +1153,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox2;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell33;
+        private DevExpress.XtraReports.UI.XRPictureBox pic_kish;
     }
 }

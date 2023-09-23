@@ -59,7 +59,6 @@
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode28 = new DevExpress.DataAccess.Json.JsonSchemaNode("TotalToneDistanceAvailable", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode29 = new DevExpress.DataAccess.Json.JsonSchemaNode("WeightLoadFactor", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode30 = new DevExpress.DataAccess.Json.JsonSchemaNode("Distance", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RptFormA));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode31 = new DevExpress.DataAccess.Json.JsonSchemaNode("root", true, DevExpress.DataAccess.Json.JsonNodeType.Array);
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode32 = new DevExpress.DataAccess.Json.JsonSchemaNode("Year", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode33 = new DevExpress.DataAccess.Json.JsonSchemaNode("Month", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
@@ -114,6 +113,38 @@
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode82 = new DevExpress.DataAccess.Json.JsonSchemaNode("TotalToneDistanceAvailableInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode83 = new DevExpress.DataAccess.Json.JsonSchemaNode("WeightLoadFactorInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode84 = new DevExpress.DataAccess.Json.JsonSchemaNode("DistanceInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode85 = new DevExpress.DataAccess.Json.JsonSchemaNode("root", true);
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode86 = new DevExpress.DataAccess.Json.JsonSchemaNode("Year", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode87 = new DevExpress.DataAccess.Json.JsonSchemaNode("Month", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode88 = new DevExpress.DataAccess.Json.JsonSchemaNode("MonthName", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode89 = new DevExpress.DataAccess.Json.JsonSchemaNode("YearMonthDay", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode90 = new DevExpress.DataAccess.Json.JsonSchemaNode("DistanceDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode91 = new DevExpress.DataAccess.Json.JsonSchemaNode("DistanceInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode92 = new DevExpress.DataAccess.Json.JsonSchemaNode("FlightCountDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode93 = new DevExpress.DataAccess.Json.JsonSchemaNode("FlightCountInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode94 = new DevExpress.DataAccess.Json.JsonSchemaNode("FlightHourDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode95 = new DevExpress.DataAccess.Json.JsonSchemaNode("FlightHourInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode96 = new DevExpress.DataAccess.Json.JsonSchemaNode("PaxTotalDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode97 = new DevExpress.DataAccess.Json.JsonSchemaNode("PaxTotalInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode98 = new DevExpress.DataAccess.Json.JsonSchemaNode("SeatTotalDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode99 = new DevExpress.DataAccess.Json.JsonSchemaNode("SeatTotalInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode100 = new DevExpress.DataAccess.Json.JsonSchemaNode("FreightToneDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode101 = new DevExpress.DataAccess.Json.JsonSchemaNode("FreightToneInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode102 = new DevExpress.DataAccess.Json.JsonSchemaNode("PassDistanceDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode103 = new DevExpress.DataAccess.Json.JsonSchemaNode("PassDistanceInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode104 = new DevExpress.DataAccess.Json.JsonSchemaNode("SeatDistanceDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode105 = new DevExpress.DataAccess.Json.JsonSchemaNode("SeatDistanceInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode106 = new DevExpress.DataAccess.Json.JsonSchemaNode("PaxLoadDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode107 = new DevExpress.DataAccess.Json.JsonSchemaNode("PaxLoadInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode108 = new DevExpress.DataAccess.Json.JsonSchemaNode("PassBagToneDistanceDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode109 = new DevExpress.DataAccess.Json.JsonSchemaNode("PassBagToneDistanceInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode110 = new DevExpress.DataAccess.Json.JsonSchemaNode("CargoDistanceDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode111 = new DevExpress.DataAccess.Json.JsonSchemaNode("CargoDistanceInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode112 = new DevExpress.DataAccess.Json.JsonSchemaNode("ToneDistanceAvailableDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode113 = new DevExpress.DataAccess.Json.JsonSchemaNode("ToneDistanceAvailableInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode114 = new DevExpress.DataAccess.Json.JsonSchemaNode("WeightLoadFactorDom", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode115 = new DevExpress.DataAccess.Json.JsonSchemaNode("WeightLoadFactorInt", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RptFormA));
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.xrTable2 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -406,18 +437,20 @@
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.jsonDataSource1 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
-            this.xrPictureBox2 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.pic_varesh = new DevExpress.XtraReports.UI.XRPictureBox();
             this.lblMonth = new DevExpress.XtraReports.UI.XRLabel();
             this.lblYear = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
+            this.lbl_airline = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.pic_taban = new DevExpress.XtraReports.UI.XRPictureBox();
             this.jsonDataSource2 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
+            this.jsonDataSource3 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
+            this.pic_kish = new DevExpress.XtraReports.UI.XRPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -661,7 +694,7 @@
             // xrTableCell26
             // 
             this.xrTableCell26.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Distance]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DistanceDom]")});
             this.xrTableCell26.Multiline = true;
             this.xrTableCell26.Name = "xrTableCell26";
             this.xrTableCell26.Weight = 1.3102738133916985D;
@@ -717,7 +750,7 @@
             // xrTableCell218
             // 
             this.xrTableCell218.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[LegsInt]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FlightCountInt]")});
             this.xrTableCell218.Multiline = true;
             this.xrTableCell218.Name = "xrTableCell218";
             this.xrTableCell218.Text = "xrTableCell218";
@@ -726,7 +759,7 @@
             // xrTableCell32
             // 
             this.xrTableCell32.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Legs]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FlightCountDom]")});
             this.xrTableCell32.Multiline = true;
             this.xrTableCell32.Name = "xrTableCell32";
             this.xrTableCell32.Weight = 1.3102738133916985D;
@@ -791,7 +824,7 @@
             // xrTableCell38
             // 
             this.xrTableCell38.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FlightHour]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FlightHourDom]")});
             this.xrTableCell38.Multiline = true;
             this.xrTableCell38.Name = "xrTableCell38";
             this.xrTableCell38.Weight = 1.3102738133916985D;
@@ -856,7 +889,7 @@
             // xrTableCell44
             // 
             this.xrTableCell44.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaxTotal]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaxTotalDom]")});
             this.xrTableCell44.Multiline = true;
             this.xrTableCell44.Name = "xrTableCell44";
             this.xrTableCell44.Weight = 1.3102738133916985D;
@@ -921,7 +954,7 @@
             // xrTableCell50
             // 
             this.xrTableCell50.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FreightTone]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FreightToneDom]")});
             this.xrTableCell50.Multiline = true;
             this.xrTableCell50.Name = "xrTableCell50";
             this.xrTableCell50.Weight = 1.3102738133916985D;
@@ -977,7 +1010,7 @@
             // xrTableCell222
             // 
             this.xrTableCell222.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaxTotalDistRoundInt]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PassDistanceInt]")});
             this.xrTableCell222.Multiline = true;
             this.xrTableCell222.Name = "xrTableCell222";
             this.xrTableCell222.Text = "xrTableCell222";
@@ -986,7 +1019,7 @@
             // xrTableCell56
             // 
             this.xrTableCell56.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaxTotalDistRound]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PassDistanceDom]")});
             this.xrTableCell56.Multiline = true;
             this.xrTableCell56.Name = "xrTableCell56";
             this.xrTableCell56.Weight = 1.3102738133916985D;
@@ -1042,7 +1075,7 @@
             // xrTableCell223
             // 
             this.xrTableCell223.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TotalSeatDistRoundInt]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[SeatDistanceInt]")});
             this.xrTableCell223.Multiline = true;
             this.xrTableCell223.Name = "xrTableCell223";
             this.xrTableCell223.Text = "xrTableCell223";
@@ -1051,7 +1084,7 @@
             // xrTableCell62
             // 
             this.xrTableCell62.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TotalSeatDistRound]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[SeatDistanceDom]")});
             this.xrTableCell62.Multiline = true;
             this.xrTableCell62.Name = "xrTableCell62";
             this.xrTableCell62.Weight = 1.3102738133916985D;
@@ -1116,7 +1149,7 @@
             // xrTableCell68
             // 
             this.xrTableCell68.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaxLoad]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaxLoadDom]")});
             this.xrTableCell68.Multiline = true;
             this.xrTableCell68.Name = "xrTableCell68";
             this.xrTableCell68.Weight = 1.3102738133916985D;
@@ -1230,7 +1263,7 @@
             // xrTableCell226
             // 
             this.xrTableCell226.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaxAllWeightDistanceInt]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PassBagToneDistanceInt]")});
             this.xrTableCell226.Multiline = true;
             this.xrTableCell226.Name = "xrTableCell226";
             this.xrTableCell226.Text = "xrTableCell226";
@@ -1239,7 +1272,7 @@
             // xrTableCell80
             // 
             this.xrTableCell80.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaxAllWeightDistance]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PassBagToneDistanceDom]")});
             this.xrTableCell80.Multiline = true;
             this.xrTableCell80.Name = "xrTableCell80";
             this.xrTableCell80.Weight = 1.3102738133916985D;
@@ -1294,6 +1327,8 @@
             // 
             // xrTableCell227
             // 
+            this.xrTableCell227.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CargoDistanceInt]")});
             this.xrTableCell227.Multiline = true;
             this.xrTableCell227.Name = "xrTableCell227";
             this.xrTableCell227.Text = "0";
@@ -1301,6 +1336,8 @@
             // 
             // xrTableCell86
             // 
+            this.xrTableCell86.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CargoDistanceDom]")});
             this.xrTableCell86.Multiline = true;
             this.xrTableCell86.Name = "xrTableCell86";
             this.xrTableCell86.Text = "0";
@@ -1419,7 +1456,7 @@
             // xrTableCell229
             // 
             this.xrTableCell229.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TotalToneDistanceInt]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CargoDistanceInt]+[PassBagToneDistanceInt]")});
             this.xrTableCell229.Multiline = true;
             this.xrTableCell229.Name = "xrTableCell229";
             this.xrTableCell229.Text = "xrTableCell229";
@@ -1428,7 +1465,7 @@
             // xrTableCell98
             // 
             this.xrTableCell98.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TotalToneDistance]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PassBagToneDistanceDom]+[CargoDistanceDom]")});
             this.xrTableCell98.Multiline = true;
             this.xrTableCell98.Name = "xrTableCell98";
             this.xrTableCell98.Weight = 1.3102738133916985D;
@@ -1484,7 +1521,7 @@
             // xrTableCell230
             // 
             this.xrTableCell230.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TotalToneDistanceAvailableInt]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ToneDistanceAvailableInt]")});
             this.xrTableCell230.Multiline = true;
             this.xrTableCell230.Name = "xrTableCell230";
             this.xrTableCell230.Text = "xrTableCell230";
@@ -1493,7 +1530,7 @@
             // xrTableCell104
             // 
             this.xrTableCell104.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TotalToneDistanceAvailable]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ToneDistanceAvailableDom]")});
             this.xrTableCell104.Multiline = true;
             this.xrTableCell104.Name = "xrTableCell104";
             this.xrTableCell104.Weight = 1.3102738133916985D;
@@ -1549,7 +1586,8 @@
             // xrTableCell231
             // 
             this.xrTableCell231.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[WeightLoadFactorInt]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "round( ([CargoDistanceInt]+[PassBagToneDistanceInt])*100\n/\n[ToneDistanceAvailable" +
+                    "Int]\n)")});
             this.xrTableCell231.Multiline = true;
             this.xrTableCell231.Name = "xrTableCell231";
             this.xrTableCell231.Text = "xrTableCell231";
@@ -1558,7 +1596,8 @@
             // xrTableCell110
             // 
             this.xrTableCell110.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[WeightLoadFactor]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "round(([PassBagToneDistanceDom]+[CargoDistanceDom])*100\n/\n[ToneDistanceAvailableD" +
+                    "om]\n\n)")});
             this.xrTableCell110.Multiline = true;
             this.xrTableCell110.Name = "xrTableCell110";
             this.xrTableCell110.Weight = 1.3102738133916985D;
@@ -2781,28 +2820,29 @@
             // PageHeader
             // 
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrPictureBox2,
+            this.pic_kish,
+            this.pic_varesh,
             this.lblMonth,
             this.lblYear,
             this.xrLabel7,
             this.xrLabel6,
-            this.xrLabel5,
+            this.lbl_airline,
             this.xrLabel4,
             this.xrLabel3,
             this.xrLabel2,
             this.xrLabel1,
-            this.xrPictureBox1});
+            this.pic_taban});
             this.PageHeader.HeightF = 121.8335F;
             this.PageHeader.Name = "PageHeader";
             // 
-            // xrPictureBox2
+            // pic_varesh
             // 
-            this.xrPictureBox2.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox2.ImageSource"));
-            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(156.131F, 10F);
-            this.xrPictureBox2.Name = "xrPictureBox2";
-            this.xrPictureBox2.SizeF = new System.Drawing.SizeF(92F, 79F);
-            this.xrPictureBox2.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
-            this.xrPictureBox2.Visible = false;
+            this.pic_varesh.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("pic_varesh.ImageSource"));
+            this.pic_varesh.LocationFloat = new DevExpress.Utils.PointFloat(10F, 10F);
+            this.pic_varesh.Name = "pic_varesh";
+            this.pic_varesh.SizeF = new System.Drawing.SizeF(100F, 79F);
+            this.pic_varesh.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.pic_varesh.Visible = false;
             // 
             // lblMonth
             // 
@@ -2856,18 +2896,18 @@
             this.xrLabel6.Text = "Year";
             this.xrLabel6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
             // 
-            // xrLabel5
+            // lbl_airline
             // 
-            this.xrLabel5.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold);
-            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(521.4747F, 38F);
-            this.xrLabel5.Multiline = true;
-            this.xrLabel5.Name = "xrLabel5";
-            this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel5.SizeF = new System.Drawing.SizeF(170.8334F, 23F);
-            this.xrLabel5.StylePriority.UseFont = false;
-            this.xrLabel5.StylePriority.UseTextAlignment = false;
-            this.xrLabel5.Text = "TABAN AIRLINES";
-            this.xrLabel5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
+            this.lbl_airline.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lbl_airline.LocationFloat = new DevExpress.Utils.PointFloat(521.4747F, 38F);
+            this.lbl_airline.Multiline = true;
+            this.lbl_airline.Name = "lbl_airline";
+            this.lbl_airline.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.lbl_airline.SizeF = new System.Drawing.SizeF(170.8334F, 23F);
+            this.lbl_airline.StylePriority.UseFont = false;
+            this.lbl_airline.StylePriority.UseTextAlignment = false;
+            this.lbl_airline.Text = "TABAN AIRLINES";
+            this.lbl_airline.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
             // 
             // xrLabel4
             // 
@@ -2915,13 +2955,14 @@
             this.xrLabel1.StylePriority.UseFont = false;
             this.xrLabel1.Text = "INTERNATIONAL CIVIL AVIATION ORGANIZATION";
             // 
-            // xrPictureBox1
+            // pic_taban
             // 
-            this.xrPictureBox1.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox1.ImageSource"));
-            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(10F, 10F);
-            this.xrPictureBox1.Name = "xrPictureBox1";
-            this.xrPictureBox1.SizeF = new System.Drawing.SizeF(100F, 79F);
-            this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.pic_taban.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("pic_taban.ImageSource"));
+            this.pic_taban.LocationFloat = new DevExpress.Utils.PointFloat(10F, 10F);
+            this.pic_taban.Name = "pic_taban";
+            this.pic_taban.SizeF = new System.Drawing.SizeF(100F, 79F);
+            this.pic_taban.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.pic_taban.Visible = false;
             // 
             // jsonDataSource2
             // 
@@ -2982,6 +3023,51 @@
             jsonSchemaNode31.Nodes.Add(jsonSchemaNode84);
             this.jsonDataSource2.Schema = jsonSchemaNode31;
             // 
+            // jsonDataSource3
+            // 
+            this.jsonDataSource3.ConnectionName = "JC_CAO";
+            this.jsonDataSource3.Name = "jsonDataSource3";
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode86);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode87);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode88);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode89);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode90);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode91);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode92);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode93);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode94);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode95);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode96);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode97);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode98);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode99);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode100);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode101);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode102);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode103);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode104);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode105);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode106);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode107);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode108);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode109);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode110);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode111);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode112);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode113);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode114);
+            jsonSchemaNode85.Nodes.Add(jsonSchemaNode115);
+            this.jsonDataSource3.Schema = jsonSchemaNode85;
+            // 
+            // pic_kish
+            // 
+            this.pic_kish.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("pic_kish.ImageSource"));
+            this.pic_kish.LocationFloat = new DevExpress.Utils.PointFloat(10F, 9.500173F);
+            this.pic_kish.Name = "pic_kish";
+            this.pic_kish.SizeF = new System.Drawing.SizeF(100F, 79F);
+            this.pic_kish.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
+            this.pic_kish.Visible = false;
+            // 
             // RptFormA
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -2991,13 +3077,15 @@
             this.PageHeader});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.jsonDataSource1,
-            this.jsonDataSource2});
-            this.DataSource = this.jsonDataSource2;
+            this.jsonDataSource2,
+            this.jsonDataSource3});
+            this.DataSource = this.jsonDataSource3;
             this.Margins = new System.Drawing.Printing.Margins(62, 62, 35, 33);
             this.PageHeight = 1169;
             this.PageWidth = 827;
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;
             this.Version = "19.2";
+            this.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.RptFormA_BeforePrint);
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -3270,7 +3358,7 @@
         private DevExpress.XtraReports.UI.XRLabel lblYear;
         private DevExpress.XtraReports.UI.XRLabel xrLabel7;
         private DevExpress.XtraReports.UI.XRLabel xrLabel6;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel5;
+        private DevExpress.XtraReports.UI.XRLabel lbl_airline;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.XtraReports.UI.XRLabel xrLabel8;
         private DevExpress.DataAccess.Json.JsonDataSource jsonDataSource2;
@@ -3308,7 +3396,9 @@
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell246;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell247;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell248;
-        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox1;
-        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox2;
+        private DevExpress.XtraReports.UI.XRPictureBox pic_taban;
+        private DevExpress.XtraReports.UI.XRPictureBox pic_varesh;
+        private DevExpress.DataAccess.Json.JsonDataSource jsonDataSource3;
+        private DevExpress.XtraReports.UI.XRPictureBox pic_kish;
     }
 }

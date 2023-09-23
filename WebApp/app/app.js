@@ -726,6 +726,32 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/reportflightdailystation.html"
     });
 
+
+    $routeProvider.when("/trn/expiring/groups", {
+        controller: "trnexpiringGroupController",
+        templateUrl: "/app/views/trnexpiringgroups.html"
+    });
+
+    $routeProvider.when("/trn/schedule", {
+        controller: "trnscheduleController",
+        templateUrl: "/app/views/trnschedule.html"
+    });
+
+    $routeProvider.when("/trn/schedule/coursetype", {
+        controller: "trnScheduleCourseTypeController",
+        templateUrl: "/app/views/trnschedulecoursetype.html"
+    });
+    $routeProvider.when("/trn/schedule/course", {
+        controller: "trnScheduleCourseController",
+        templateUrl: "/app/views/trnschedulecourse.html"
+    });
+
+
+    $routeProvider.when("/trn/dashboard", {
+        controller: "trnDashboardController",
+        templateUrl: "/app/views/trndashboard.html"
+    });
+
      
     $routeProvider.otherwise({ redirectTo: "/home" });
 

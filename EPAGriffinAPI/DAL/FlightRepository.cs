@@ -2840,9 +2840,12 @@ namespace EPAGriffinAPI.DAL
 
             return true;
         }
-
+        //2023-09-23
         public async Task<CustomActionResult> UpdateFlightLog(ViewModels.FlightSaveDto dto)
         {
+            var do_sleep = ConfigurationManager.AppSettings["run"];
+            if (do_sleep == "1")
+                System.Threading.Thread.Sleep(30000);
             List<int?> offCrewIds = new List<int?>();
             //marmar
             // return new CustomActionResult(HttpStatusCode.OK, null);
@@ -21803,12 +21806,13 @@ namespace EPAGriffinAPI.DAL
             }
 
 
-
+            //2023-09-12
 
             var query = from x in this.context.RptFDPMonthlyPersians
                         //    where x.PYear == year && x.PeriodFixTime == _period  
                        //  where x.FirstName == "ARASH"
                         select x;
+           
             var query2 = from x in this.context.RptNoFDPMonthlyPersians
                           //   where x.PYear == year && x.PeriodFixTime == _period  
                          //where x.FirstName == "BAHADOR"
@@ -22067,6 +22071,7 @@ namespace EPAGriffinAPI.DAL
                             FirstName = x.FirstName,
                             Misson = 0,
                             StandBy = 0,
+                            FixTimeTotal=0,
 
                         };
                         if (x.DutyTypeTitle == "StandBy")
@@ -22153,6 +22158,10 @@ namespace EPAGriffinAPI.DAL
             catch (Exception ex)
             {
                 int _ttt = 0;
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "     " + ex.InnerException.Message;
+                return msg;
             }
             _fixDs = _fixDs.OrderBy(q => q.RankOrder).ThenByDescending(q => q.FixTime).ThenBy(q => q.LastName).ToList();
             var fixDs = _fixDs.Select(q => new RptFDPMonthlyPersianX()
@@ -22332,7 +22341,8 @@ namespace EPAGriffinAPI.DAL
             return new
             {
                 fixDs,
-                noDs
+                noDs,
+               // noFDPs
             };
 
         }

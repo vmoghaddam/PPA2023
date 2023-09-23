@@ -1,7 +1,352 @@
 ﻿'use strict';
-app.controller('coursepersonController', ['$scope', '$location', '$routeParams', '$rootScope', 'courseService', 'authService', 'trnService', '$window', function ($scope, $location, $routeParams, $rootScope, courseService, authService, trnService, $window) {
+app.controller('coursepersonController', ['$scope', '$location', '$routeParams', '$rootScope', 'courseService', 'authService', 'trnService', '$window', '$compile', function ($scope, $location, $routeParams, $rootScope, courseService, authService, trnService, $window, $compile) {
     $scope.prms = $routeParams.prms;
     $scope.IsEditable = $rootScope.HasTrainingAdmin();
+    //////////////////////////////////
+    $scope.active_header = '_schedule_header';
+    $scope._header_click = function (h, tab) {
+        $('._xheader').removeClass('selected');
+        $('.' + h).addClass('selected');
+        $scope.active_header = h;
+        $('._header_child').hide();
+        $scope.dg_height = $scope.dg_height - 1 ;
+        $('.' + tab).fadeIn(300, function () {
+           // $scope.dg_height = $scope.dg_height - 10;
+            $scope.dg_height = $scope.dg_height + 1;
+        }); 
+    };
+    //////////////////////////////////
+    var tabs = [
+        { text: "Schedule", id: '_schedule', visible_btn: false },
+        { text: "List", id: '_list', visible_btn: false },
+        
+
+    ];
+
+    $scope.tabs = tabs;
+    $scope.selectedTabIndex = 0;
+    $scope.$watch("selectedTabIndex", function (newValue) {
+
+        try {
+             
+            $scope.selectedTab = tabs[newValue];
+            $('.tab').hide();
+            $('.' + $scope.selectedTab.id).fadeIn(100, function () {
+
+
+            });
+            $scope.dg_instance.repaint();
+            //$scope.dg_education_instance.repaint();
+            //$scope.dg_file_instance.repaint();
+            //$scope.dg_exp_instance.repaint();
+            //$scope.dg_rating_instance.repaint();
+            //$scope.dg_aircrafttype_instance.repaint();
+
+            
+
+
+
+            //$scope.btn_visible_education = newValue == 1;
+
+
+            //$scope.btn_visible_file = newValue == 2;
+            //$scope.btn_visible_experience = newValue == 3;
+            //$scope.btn_visible_rating = newValue == 4;
+            //$scope.btn_visible_aircrafttype = newValue == 5;
+
+            //$scope.btn_visible_course = newValue == 7;
+
+
+
+        }
+        catch (e) {
+
+        }
+
+    });
+    $scope.tabs_options = {
+
+
+        onItemClick: function (arg) {
+            //$scope.selectedTab = arg.itemData;
+
+        },
+        bindingOptions: {
+
+            dataSource: { dataPath: "tabs", deep: true },
+            selectedIndex: 'selectedTabIndex'
+        }
+
+    };
+
+
+    ////SCHEDULE ///////////////////////
+    $scope.getMainStyle = function () {
+        var h = $(window).height() - 140;
+        return {
+            height: h + 'px'
+        }
+    }
+    $scope.getScrollStyle = function () {
+        return { height: ($(window).height() - 210).toString() + 'px'  };
+    };
+
+
+
+
+
+    $scope.nextMonth = function (n) {
+        $scope.date = $scope.date.addMonths(n);
+        $scope.build($scope.date);
+    };
+
+    $scope.caption = "";
+
+    $scope.date = new Date();
+    $scope.month = null;
+    $scope.year = null;
+    $scope.calendar = [];
+    var GMonthDataSource = [
+        { Id: 0, Title: 'January' },
+        { Id: 1, Title: 'February' },
+        { Id: 2, Title: 'March' },
+        { Id: 3, Title: 'April' },
+        { Id: 4, Title: 'May' },
+        { Id: 5, Title: 'June' },
+        { Id: 6, Title: 'July' },
+        { Id: 7, Title: 'August' },
+        { Id: 8, Title: 'September' },
+        { Id: 9, Title: 'October' },
+        { Id: 10, Title: 'November' },
+        { Id: 11, Title: 'December' },
+
+    ];
+    //alert($scope.month + '   ' + $scope.year);
+    $scope.build = function (_date) {
+        var _ch = ($(window).height() - 190) * 1.0 / 6.4;
+
+
+        $scope.calendar = [];
+        try {
+            var today = moment(new Date()).format('YYYY-MM-DD');
+            $('.day-wrapper').html('');
+            $('.day-wrapper').hide();
+            $scope.date = new Date(_date);
+            $scope.month = $scope.date.getMonth();
+            $scope.year = $scope.date.getFullYear();
+            // alert($scope.year);
+            $scope.caption = GMonthDataSource[$scope.month].Title + ' ' + $scope.year;
+            // alert($scope.caption);
+            var day = new Date($scope.year, $scope.month, 1);
+            var lastDay = (new Date($scope.year, $scope.month + 1, 0)).getDate();
+            var dayWeek = day.getDay();
+            var dayIndex = dayWeek;
+            var dayMonth = day.getDate();
+
+            var c = dayIndex - 1;
+            var inactiveBack = (new Date($scope.year, $scope.month, 0)).getDate();
+            var inactiveBackYear = (new Date($scope.year, $scope.month, 0)).getFullYear();
+            var inactiveBackMonth = (new Date($scope.year, $scope.month, 0)).getMonth();
+            var inactiveForward = (new Date($scope.year, $scope.month + 1, 1)).getDate();
+            var inactiveForwardYear = (new Date($scope.year, $scope.month + 1, 1)).getFullYear();
+            var inactiveForwardMonth = (new Date($scope.year, $scope.month + 1, 1)).getMonth();
+
+            while (c >= 0) {
+                var data_date = inactiveBackYear + '-' + pad(Number(inactiveBackMonth) + 1) + '-' + pad(Number(inactiveBack));
+                var isToday = data_date == today ? ' today' : '';
+                var html = "<div class='day-wrapper" + isToday + "' data-date='" + data_date + "' style='min-height:" + _ch + "px'>"
+                    + "<div class='day-caption _inactive'>" + inactiveBack + "</div>"
+                    + "</div>";
+                $('#d' + c).html(html);
+                $scope.calendar.push({ cell: 'd' + c, date: data_date });
+                inactiveBack--;
+                c--;
+            }
+
+            while (dayMonth <= lastDay) {
+
+                var data_date = $scope.year + '-' + pad(Number($scope.month) + 1) + '-' + pad(Number(dayMonth));
+                var isToday = data_date == today ? ' today' : '';
+
+                var html = "<div class='day-wrapper" + isToday + "' data-date='" + data_date + "' style='min-height:" + _ch + "px'>"
+                    + "<div class='day-caption'>" + dayMonth + "</div>"
+                    //+ "<div class='event flight'><i class='fas fa-plane'></i><span>4<span></div>"
+                    //+ "<div class='event office'><span>OFFICE<span></div>"
+                    + "</div>";
+                //if (dayMonth == 12)
+                //    html = "<div class='day-wrapper'>"
+                //        + "<div class='day-caption'>" + dayMonth + "</div>"
+                //        + "<div class='event flight'><i class='fas fa-plane'></i><span>4<span></div>"
+                //        + "<div class='event office'><span>OFFICE<span></div>"
+                //        + "</div>";
+                $scope.calendar.push({ cell: 'd' + dayIndex, date: data_date });
+                $('#d' + dayIndex).html(html);
+
+                dayMonth++;
+                dayIndex++;
+            }
+
+            while (dayIndex <= 41) {
+                var data_date = inactiveForwardYear + '-' + pad(Number(inactiveForwardMonth) + 1) + '-' + pad(Number(inactiveForward));
+                var isToday = data_date == today ? ' today' : '';
+                var html = "<div class='day-wrapper" + isToday + "' data-date='" + data_date + "' style='min-height:" + _ch + "px'>"
+                    + "<div class='day-caption _inactive'>" + inactiveForward + "</div>"
+                    + "</div>";
+                $('#d' + dayIndex).html(html);
+                $scope.calendar.push({ cell: 'd' + dayIndex, date: data_date });
+                dayIndex++;
+                inactiveForward++;
+            }
+            $scope.isCalVisible = true;
+            $('.day-wrapper').show();
+
+             $scope.fill();
+
+        }
+        catch (e) { alert(e); }
+
+
+
+    };
+
+    $scope.schedule_cid = -1;
+    $scope.session_click = function (course_id) {
+        //alert(course_id);
+        $('._session').removeClass('selected');
+        $('._cid' + course_id).addClass('selected');
+        $scope.schedule_cid = course_id;
+    };
+    $scope.expired_click = function (m, n) {
+        var row = $scope.schedule_expired.Items[m].Items[n];
+        console.log(row);
+        //DateExpire
+        $scope.popup_day_title = row.CertificateType;
+        $scope.popup_day_date = row.DateExpire;
+        $scope.popup_day_ds = row.Items[0].employees;
+        $scope.popup_day_visible = true;
+    }
+    $scope.get_day_container_style = function () {
+        var h = $(window).height() - 250;
+        return {
+            height: h + 'px',
+        }
+    }
+    $scope.momentDate = function (date) {
+        if (!date)
+            return '-';
+        return moment(date).format('YYYY-MMM-DD');
+    };
+    $scope.fill = function () {
+       // alert($scope.date);
+        var y = moment(new Date($scope.date)).format("YYYY");
+        var m = moment(new Date($scope.date)).format("MM");
+        trnService.getTrnSchedule(y, m).then(function (response) {
+            $scope.loadingVisible = false;
+            console.log(response);
+            $.each(response.sessions, function (_i, _d) {
+                $.each(_d.Items, function (_j, _c) {
+                    var _element = "<div class='_event _session  _cid" + _c.CourseId+"' ng-click='session_click(" + _c.CourseId+")'>"
+                        + "<div class='_title'>" + (_c.Title.length <= 25 ? _c.Title : _c.Title.substr(0, 25) + "...") + "</div>"
+                        + "<div style='font-size:12px;'>" + moment(_c.DateStart).format('HH:mm') + " - " + moment(_c.DateEnd).format('HH:mm')+"</div>"
+                        + "</div>";
+                    var cell = Enumerable.From($scope.calendar).Where(function (x) { return x.date == moment(_d.Date).format('YYYY-MM-DD'); }).FirstOrDefault();
+                    if (cell) {
+                        $('#' + cell.cell).find('.day-wrapper').append(_element);
+                        console.log(_d.Date);
+                    }
+                });
+               
+            });
+
+
+
+            $.each(response.expired.Items, function (_i, _d) {
+                _d.id = _i;
+                $.each(_d.Items, function (_j, _c) {
+                    var _element = "<div class='_event _expired  _exid" + _d.id + " _itemid"+_j+"' ng-click='expired_click(" + _d.id+","+_j + ")'>"
+                        + "<div class='_title'>" + _c.CertificateType+"("+_c.Count+")" + "</div>"
+                         
+                        + "</div>";
+                    var cell = Enumerable.From($scope.calendar).Where(function (x) { return x.date == moment(_d.Date).format('YYYY-MM-DD'); }).FirstOrDefault();
+                    if (cell) {
+                        $('#' + cell.cell).find('.day-wrapper').append(_element);
+                        console.log(_d.Date);
+                    }
+                });
+
+            });
+            $scope.schedule_expired = response.expired;
+
+            $compile($('._event'))($scope);
+
+        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+    };
+
+    /////////////////////////////
+    $scope.popup_day_date = null;
+    $scope.popup_day_title = null;
+    $scope.popup_day_ds = [];
+    $scope.popup_day_visible = false;
+    $scope.popup_day = {
+        elementAttr: {
+            //  id: "elementId",
+            class: "popup_emp"
+        },
+        shading: true,
+        title: 'Details',
+        //position: { my: 'left', at: 'left', of: window, offset: '5 0' },
+        height: $(window).height() - 100,
+        width: $(window).width() - 300,
+        fullScreen: false,
+        showTitle: true,
+        dragEnabled: true,
+
+        toolbarItems: [
+
+
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'danger', text: 'Close', icon: 'remove', onClick: function (arg) {
+
+                        $scope.popup_day_visible = false;
+
+                    }
+                }, toolbar: 'bottom'
+            }
+        ],
+        visible: false,
+
+        closeOnOutsideClick: false,
+        onTitleRendered: function (e) {
+            // $(e.titleElement).addClass('vahid');
+            // $(e.titleElement).css('background-color', '#f2552c');
+        },
+        onShowing: function (e) {
+
+
+
+
+        },
+        onShown: function (e) {
+
+
+
+        },
+        onHiding: function () {
+            $scope.popup_day_date = null;
+            $scope.popup_day_ds = [];
+            $scope.popup_day_visible = false;
+
+        },
+        bindingOptions: {
+            visible: 'popup_day_visible',
+
+
+
+        }
+    };
+
     //////////////////////////////////
     $scope.dsUrl = null;
     $scope.filterVisible = false;
@@ -12,34 +357,80 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         width: 120,
 
         onClick: function (e) {
-            $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
-            if (!$scope.dg_selected) {
-                General.ShowNotify(Config.Text_NoRowSelected, 'error');
-                return;
+
+
+            if ($scope.active_header == '_list_header') {
+                $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
+                if (!$scope.dg_selected) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+
+                General.Confirm(Config.Text_DeleteConfirm, function (res) {
+                    if (res) {
+
+                        var dto = { Id: $scope.dg_selected.Id, };
+                        $scope.loadingVisible = true;
+                        trnService.deleteCourse(dto).then(function (response) {
+                            $scope.loadingVisible = false;
+                            if (response.IsSuccess) {
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.doRefresh = true;
+                                $scope.bind();
+                                $scope.build($scope.date);
+                            }
+                            else
+                                General.ShowNotify(response.Errors[0], 'error');
+
+
+
+
+                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                    }
+                });
+            }
+            else {
+                //07-09
+                if ($scope.schedule_cid == -1) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+                var id = $scope.schedule_cid;
+
+                
+
+                General.Confirm(Config.Text_DeleteConfirm, function (res) {
+                    if (res) {
+
+                        var dto = { Id: $scope.schedule_cid, };
+                        $scope.loadingVisible = true;
+                        trnService.deleteCourse(dto).then(function (response) {
+                            $scope.loadingVisible = false;
+                            if (response.IsSuccess) {
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.doRefresh = true;
+                                $scope.bind();
+                                $scope.build($scope.date);
+                            }
+                            else
+                                General.ShowNotify(response.Errors[0], 'error');
+
+
+
+
+                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                    }
+                });
+
+
+
             }
 
-            General.Confirm(Config.Text_DeleteConfirm, function (res) {
-                if (res) {
-
-                    var dto = { Id: $scope.dg_selected.Id, };
-                    $scope.loadingVisible = true;
-                    trnService.deleteCourse(dto).then(function (response) {
-                        $scope.loadingVisible = false;
-                        if (response.IsSuccess) {
-                            General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.doRefresh = true;
-                            $scope.bind();
-                        }
-                        else
-                            General.ShowNotify(response.Errors[0], 'error');
 
 
-
-
-                    }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
-                }
-            });
+            
         }
     };
     $scope.btn_new = {
@@ -73,21 +464,66 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
 
     };
     $scope.selectedCourse = null;
+    $scope.selected_intervals = [];
     $scope.btn_people = {
-        text: 'Participants',
+        text: 'Follow Up',
         type: 'default',
         icon: 'group',
         width: 200,
         onClick: function (e) {
 
-            $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
-            if (!$scope.dg_selected) {
-                General.ShowNotify(Config.Text_NoRowSelected, 'error');
-                return;
+            if ($scope.active_header == '_list_header') {
+                $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
+                if (!$scope.dg_selected) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+                $scope.courseEmployee.Id = $scope.dg_selected.Id;
+                $scope.selectedCourse = $scope.dg_selected;
+                $scope.selected_intervals = [];
+                if ($scope.selectedCourse.Intervals) {
+                    var p1 = $scope.selectedCourse.Intervals.split('-');
+                    $.each(p1, function (_i, _d) {
+                        var p2 = _d.split('_');
+                        $scope.selected_intervals.push({ title: p2[0], code: p2[1], value: p2[2] });
+                    });
+                }
+
+                $scope.popup_people_visible = true;
             }
-            $scope.courseEmployee.Id = $scope.dg_selected.Id;
-            $scope.selectedCourse = $scope.dg_selected;
-            $scope.popup_people_visible = true;
+            else {
+                //07-09
+                if ($scope.schedule_cid == -1) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+                $scope.courseEmployee.Id = $scope.schedule_cid;
+                
+                trnService.getCourseView($scope.schedule_cid).then(function (response) {
+                    $scope.loadingVisible = false;
+                    $scope.selectedCourse = response.Data;
+                    $scope.selected_intervals = [];
+                    if ($scope.selectedCourse.Intervals) {
+                        var p1 = $scope.selectedCourse.Intervals.split('-');
+                        $.each(p1, function (_i, _d) {
+                            var p2 = _d.split('_');
+                            $scope.selected_intervals.push({ title: p2[0], code: p2[1], value: p2[2] });
+                        });
+                    }
+
+                    $scope.popup_people_visible = true;
+
+                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+               
+            }
+
+
+
+
+
+            
 
         }
 
@@ -101,20 +537,48 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         width: 250,
         onClick: function (e) {
 
-            $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
-            if (!$scope.dg_selected) {
-                General.ShowNotify(Config.Text_NoRowSelected, 'error');
-                return;
+            if ($scope.active_header == '_list_header') {
+                $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
+                if (!$scope.dg_selected) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+                var id = $scope.dg_selected.Id;
+
+
+                $scope.loadingVisible = true;
+                trnService.courseNotifyTeachers(id).then(function (response) {
+                    $scope.loadingVisible = false;
+
+
+                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
             }
-            var id = $scope.dg_selected.Id;
+            else {
+                //07-09
+                if ($scope.schedule_cid == -1) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+                var id = $scope.schedule_cid;
+
+                $scope.loadingVisible = true;
+                trnService.courseNotifyTeachers(id).then(function (response) {
+                    $scope.loadingVisible = false;
 
 
-            $scope.loadingVisible = true;
-            trnService.courseNotifyTeachers(id).then(function (response) {
-                $scope.loadingVisible = false;
+                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
-            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+            }
+
+
+
+
+
+
+
+           
 
         }
 
@@ -126,20 +590,46 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         width: 250,
         onClick: function (e) {
 
-            $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
-            if (!$scope.dg_selected) {
-                General.ShowNotify(Config.Text_NoRowSelected, 'error');
-                return;
+
+
+            if ($scope.active_header == '_list_header') {
+                $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
+                if (!$scope.dg_selected) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+                var id = $scope.dg_selected.Id;
+
+
+                $scope.loadingVisible = true;
+                trnService.saveSessionsSyncTeachersGet(id).then(function (response) {
+                    $scope.loadingVisible = false;
+
+
+                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
             }
-            var id = $scope.dg_selected.Id;
+            else {
+                //07-09
+                if ($scope.schedule_cid == -1) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+                var id = $scope.schedule_cid;
+
+                $scope.loadingVisible = true;
+                trnService.saveSessionsSyncTeachersGet(id).then(function (response) {
+                    $scope.loadingVisible = false;
 
 
-            $scope.loadingVisible = true;
-            trnService.saveSessionsSyncTeachersGet(id).then(function (response) {
-                $scope.loadingVisible = false;
+                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
-            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+            }
+
+
+
+           
 
         }
 
@@ -151,13 +641,26 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         width: 150,
 
         onClick: function (e) {
-            $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
-            if (!$scope.dg_selected) {
-                General.ShowNotify(Config.Text_NoRowSelected, 'error');
-                return;
+
+            if ($scope.active_header == '_list_header') {
+                $scope.dg_selected = $rootScope.getSelectedRow($scope.dg_instance);
+                if (!$scope.dg_selected) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+                var data = $scope.dg_selected;
+                $rootScope.$broadcast('InitAddCourse', data);
             }
-            var data = $scope.dg_selected;
-            $rootScope.$broadcast('InitAddCourse', data);
+            else {
+                //07-09
+                if ($scope.schedule_cid == -1) {
+                    General.ShowNotify(Config.Text_NoRowSelected, 'error');
+                    return;
+                }
+                var data = { Id: $scope.schedule_cid};
+                $rootScope.$broadcast('InitAddCourse', data);
+            }
+            
         }
 
     };
@@ -187,7 +690,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
 
         bindingOptions: {},
         onClick: function (e) {
-
+            $scope.build($scope.date);
             $scope.$broadcast('getFilterQuery', null);
         }
 
@@ -220,7 +723,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         }
 
     };
-    //////////////////////////////////
+    //////////////////////////////////b
     $scope.loadingVisible = false;
     $scope.loadPanel = {
         message: 'Please wait...',
@@ -347,6 +850,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         Passed: '-'
     };
     $scope.dg_instance = null;
+    $scope.dg_height = $(window).height() - 155;
     $scope.dg_ds = null;
     $scope.dg = {
         headerFilter: {
@@ -370,7 +874,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         selection: { mode: 'single' },
 
         columnAutoWidth: false,
-        height: $(window).height() - 135,
+        //height: $(window).height() - 155,
 
         columns: $scope.dg_columns,
         onContentReady: function (e) {
@@ -422,7 +926,8 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
                 $window.open($rootScope.clientsFilesUrl + e.data.AttForm, '_blank');
         },
         bindingOptions: {
-            dataSource: 'dg_ds'
+            dataSource: 'dg_ds',
+            height:'dg_height'
         }
     };
 
@@ -978,7 +1483,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         paging: { pageSize: 100 },
         showBorders: true,
 
-        height: 680,
+        height: 640,
         columnAutoWidth: false,
 
         columns: $scope.dg_people_columns,
@@ -1043,6 +1548,324 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         }
     };
 
+    //////////////////////////
+
+    $scope.popup_syllabus_visible = false;
+    $scope.popup_syllabus = {
+        height: 450,
+        width: 500,
+        fullScreen: false,
+        showTitle: true,
+        title: 'Update',
+        toolbarItems: [
+
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'updsyl', onClick: function (e) {
+                        console.log($scope.syllabusDto);
+                        $scope.syllabusDto.Done = $scope.syllabusDto.Done ? 1 : 0;
+                        $scope.loadingVisible = true;
+                        trnService.saveSyllabus($scope.syllabusDto).then(function (response) {
+                            //$scope.selectedEmployees
+
+                            $scope.dg_syllabi_selected.Status = response.Data.Status;
+                            $scope.dg_syllabi_selected.Remark = response.Data.Remark;
+                            $scope.dg_syllabi_selected.InstructorId = response.Data.InstructorId;
+                            $scope.dg_syllabi_selected.SessionKey = response.Data.SessionKey;
+                            $scope.dg_syllabi_selected.Instructor = response.Data.Instructor;
+
+                            General.ShowNotify(Config.Text_SavedOk, 'success');
+
+                            $scope.loadingVisible = false;
+
+                            $scope.dg_syllabi_instance.clearSelection();
+                            $scope.dg_syllabi_instance.refresh();
+                            $scope.popup_syllabus_visible = false;
+                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                    }
+                }, toolbar: 'bottom'
+            },
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) {
+                        $scope.popup_syllabus_visible = false;
+                    }
+                }, toolbar: 'bottom'
+            }
+        ],
+
+        visible: false,
+        dragEnabled: false,
+        closeOnOutsideClick: false,
+        onShowing: function (e) {
+
+
+        },
+        onShown: function (e) {
+
+
+        },
+        onHidden: function () {
+            $scope.dg_syllabi_instance.refresh();
+        },
+        onHiding: function () {
+            //clearSelection()
+            $scope.syllabusDto = {
+                Id: null,
+                Remark: null,
+                Done: 0,
+                Instructor: null,
+                Session: null,
+            };
+
+            $scope.popup_syllabus_visible = false;
+            // $rootScope.$broadcast('onPersonHide', null);
+        },
+        bindingOptions: {
+            visible: 'popup_syllabus_visible',
+
+
+        }
+    };
+
+    $scope.syllabusDto = {
+        Id: null,
+        Remark: null,
+        Done: 0,
+        Instructor: null,
+        Session: null,
+    };
+    $scope.txt_syl_remark = {
+        hoverStateEnabled: false,
+        bindingOptions: {
+            value: 'syllabusDto.Remark',
+        }
+    };
+    $scope.chb_syl_done = {
+
+        text: 'Done',
+        bindingOptions: {
+            value: 'syllabusDto.Done',
+
+        }
+    };
+    $scope.sb_syl_ins = {
+
+        showClearButton: true,
+        searchEnabled: true,
+        searchExpr: ["Name"],
+        valueExpr: "Id",
+        displayExpr: "Name",
+
+        bindingOptions: {
+            value: 'syllabusDto.Instructor',
+            dataSource: 'ds_syl_teachers'
+
+        }
+
+    };
+    $scope.sb_syl_session = {
+
+        showClearButton: true,
+        searchEnabled: true,
+        //searchExpr: ["Name"],
+        //valueExpr: "Id",
+        //displayExpr: "Name",
+
+        bindingOptions: {
+            value: 'syllabusDto.Session',
+            dataSource: 'ds_syl_session'
+
+        }
+
+    };
+
+
+
+
+    $scope.dg_syllabi_columns = [
+        { dataField: 'Status', caption: 'Done', allowResizing: true, alignment: 'center', dataType: 'boolean', allowEditing: false, width: 100, fixed: true, fixedPosition: 'left' },
+        { dataField: 'Title', caption: 'Title', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, width: 300, fixed: true, fixedPosition: 'left' },
+        { dataField: 'Duration', caption: 'Duration (mm)', allowResizing: true, alignment: 'center', dataType: 'number', allowEditing: false, width: 120 },
+
+        { dataField: 'SessionKey', caption: 'Session', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, width: 200, fixed: false, fixedPosition: 'left' },
+        { dataField: 'Instructor', caption: 'Instructor', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, width: 250, fixed: false, fixedPosition: 'left' },
+        { dataField: 'Remark', caption: 'Remark', allowResizing: true, alignment: 'left', dataType: 'string', allowEditing: false, minWidth: 350, fixed: false, fixedPosition: 'left' },
+
+        {
+            dataField: "Id", caption: '',
+            width: 120,
+            allowFiltering: false,
+            allowSorting: false,
+            cellTemplate: 'updateSyllabusTemplate',
+            name: 'updatesyllabi',
+            fixed: true,
+            fixedPosition: 'right',
+            //visible:false,
+
+        }
+
+    ];
+    $scope.dg_syllabi_height = 700;
+    $scope.dg_syllabi_selected = null;
+    $scope.dg_syllabi_instance = null;
+    $scope.dg_syllabi_ds = [];
+    $scope.dg_syllabi = {
+        wordWrapEnabled: true,
+        headerFilter: {
+            visible: false
+        },
+        filterRow: {
+            visible: true,
+            showOperationChooser: true,
+        },
+        showRowLines: true,
+        showColumnLines: true,
+        sorting: { mode: 'none' },
+        selection: { mode: 'single' },
+        noDataText: '',
+        columnFixing: {
+            enabled: true
+        },
+        allowColumnReordering: true,
+        allowColumnResizing: true,
+        scrolling: { mode: 'infinite' },
+        paging: { pageSize: 100 },
+        showBorders: true,
+
+        height: 640,
+        columnAutoWidth: false,
+
+        columns: $scope.dg_syllabi_columns,
+        onContentReady: function (e) {
+            if (!$scope.dg_syllabi_instance)
+                $scope.dg_syllabi_instance = e.component;
+
+        },
+        onSelectionChanged: function (e) {
+            //nasiri
+            var data = e.selectedRowsData[0];
+
+            if (!data) {
+                $scope.dg_syllabi_selected = null;
+
+            }
+            else {
+                //soos
+                $scope.dg_syllabi_selected = data;
+
+            }
+
+
+        },
+        onCellClick: function (e) {
+            //7-27
+            /*var clmn = e.column;
+            var field = clmn.dataField;
+            if (field.indexOf("Session") != -1 && field.indexOf("SessionAttendance")==-1) {
+                var obj = { pid: e.data.PersonId, cid: $scope.selectedCourse.Id, sid: field };
+                $scope.loadingVisible = true;
+                trnService.saveCourseSessionPres(obj).then(function(response) {
+                    $scope.loadingVisible = false;
+                    e.data[field] = !e.data[field];
+
+                }, function(err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+            }
+            if (clmn.name == "ImgUrl" && e.data.ImgUrl)
+                $window.open($rootScope.clientsFilesUrl +  e.data.ImgUrl, '_blank');
+			*/
+        },
+        onCellPrepared: function (e) {
+
+
+        },
+        bindingOptions: {
+            dataSource: 'dg_syllabi_ds', //'dg_employees_ds',
+
+        }
+    };
+
+    $scope.updateSyllabus = function (row) {
+
+        if (!$scope.IsEditable) {
+            General.ShowNotify("You Do Not Have Enough Access Privileges.", 'error');
+            return;
+        }
+        $scope.dg_syllabi_selected = row.data;
+        //$scope.dg_selected
+        $scope.ds_syl_teachers = [];
+        if ($scope.dg_selected.CurrencyId)
+            $scope.ds_syl_teachers.push({ Id: $scope.dg_selected.CurrencyId, Name: $scope.dg_selected.Instructor });
+        if ($scope.dg_selected.Instructor2Id)
+            $scope.ds_syl_teachers.push({ Id: $scope.dg_selected.Instructor2Id, Name: $scope.dg_selected.Instructor2 });
+
+        //$scope.ds_syl_session=[];
+        $scope.syllabusDto = {
+            Id: $scope.dg_syllabi_selected.Id,
+            Remark: $scope.dg_syllabi_selected.Remark,
+            Done: $scope.dg_syllabi_selected.Status ? 1 : 0,
+            Instructor: $scope.dg_syllabi_selected.InstructorId,
+            Session: $scope.dg_syllabi_selected.SessionKey,
+        };
+
+
+
+        // $scope.resultId = $scope.dg_people_selected.CoursePeopleStatusId;
+        // $scope.resultIssue = $scope.dg_people_selected.DateIssue;
+        // $scope.resultExpire = $scope.dg_people_selected.DateExpire;
+        // $scope.resultRemark = $scope.dg_people_selected.StatusRemark;
+        // $scope.resultNo = $scope.dg_people_selected.CertificateNo;
+
+        $scope.popup_syllabus_visible = true;
+    };
+    //////////////////////////////
+
+    var tabs_folder = [
+        { text: "PARTICIPANTS", id: 'participants', visible_btn: false },
+        { text: "SYLLABI", id: 'syllabi', visible_btn: false },
+
+
+
+    ];
+    $scope.tabs_folder = tabs_folder;
+    $scope.selectedTabFolderIndex = -1;
+    $scope.$watch("selectedTabFolderIndex", function (newValue) {
+
+        try {
+            $scope.selectedTabFolder = tabs_folder[newValue];
+            $('.tabfolder').hide();
+            $('.' + $scope.selectedTabFolder.id).fadeIn(100, function () {
+
+
+            });
+
+            $scope.dg_people_instance.repaint();
+            $scope.dg_syllabi_instance.repaint();
+
+        }
+        catch (e) {
+
+        }
+
+    });
+    $scope.tabs_folder_options = {
+
+
+        onItemClick: function (arg) {
+            //$scope.selectedTab = arg.itemData;
+
+        },
+        bindingOptions: {
+
+            dataSource: { dataPath: "tabs_folder", deep: true },
+            selectedIndex: 'selectedTabFolderIndex'
+        }
+
+    };
     // $scope.IsEditable = false;
     $scope.IsUploadVisible = false;
     $scope.upload_url = "";
@@ -1052,7 +1875,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         width: $(window).width() - 200,
         fullScreen: false,
         showTitle: true,
-        title: 'People',
+        title: 'Follow Up',
         toolbarItems: [
 
             {
@@ -1062,7 +1885,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
                             General.ShowNotify("You Do Not Have Enough Access Privileges.", 'error');
                             return;
                         }
-                        var data = { groups: $scope.selectedCourse.JobGroupsCode };
+                        var data = { groups: $scope.selectedCourse.JobGroupsCode, id: $scope.selectedCourse.Id };
                         $rootScope.$broadcast('InitEmployeeSelectCourse', data);
                     }
                 }, toolbar: 'bottom'
@@ -1262,7 +2085,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         },
         onShown: function (e) {
 
-
+            $scope.selectedTabFolderIndex = 0;
             $scope.preparePeopleGrid();
 
         },
@@ -1293,6 +2116,10 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
 
         trnService.getCoursePeopleSessions($scope.selectedCourse.Id).then(function (response) {
             $scope.loadingVisible = false;
+
+            $scope.dg_syllabi_ds = response.Data.syllabi;
+
+
             $scope.dg_people_instance.addColumn({
                 cellTemplate: function (container, options) {
                     $("<div style='text-align:center'/>")
@@ -1306,8 +2133,9 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
 
             $scope.ds_sessions = response.Data.sessions;
 
-
+            $scope.ds_syl_session = [];
             $.each($scope.ds_sessions, function (_i, _d) {
+                $scope.ds_syl_session.push(_d.Key);
                 //2021-07-24-08-00-10-00
                 var prts = _d.Key.split("-");
                 var _caption = prts[0] + '-' + prts[1] + '-' + prts[2] + ' ' + prts[3] + ':' + prts[4] + '-' + prts[5] + ':' + prts[6];
@@ -1333,6 +2161,8 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
                 $scope.ds_people.push(dobj);
                 var obj = {
                     Id: _d.Id, PersonId: _d.PersonId, Name: _d.Name, FirstName: _d.FirstName, LastName: _d.LastName, JobGroup: _d.JobGroup,
+                    JobGroupCode: _d.JobGroupCode,
+                    JobGroupCode2: _d.JobGroupCode2,
                     CoursePeopleStatus: _d.CoursePeopleStatus,
                     CoursePeopleStatusId: _d.CoursePeopleStatusId,
                     DateIssue: _d.DateIssue,
@@ -1429,7 +2259,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
 
     $scope.popup_result_visible = false;
     $scope.popup_result = {
-        height: 440,
+        height: 490,
         width: 550,
         fullScreen: false,
         showTitle: true,
@@ -1455,6 +2285,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
                             Issue: $scope.resultIssue ? moment($scope.resultIssue).format('YYYY-MM-DD') : '',
                             Expire: $scope.resultExpire ? moment($scope.resultExpire).format('YYYY-MM-DD') : '',
                             No: $scope.resultNo,
+                            Group: $scope.dg_people_selected.JobGroupCode
 
                         };
 
@@ -1833,6 +2664,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
 
 
     ///////////////
+    $scope.related_interval = null;
     $scope.updateResult = function (row) {
         if (!$scope.IsEditable) {
             General.ShowNotify("You Do Not Have Enough Access Privileges.", 'error');
@@ -1845,6 +2677,12 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         $scope.resultRemark = $scope.dg_people_selected.StatusRemark;
         $scope.resultNo = $scope.dg_people_selected.CertificateNo;
 
+        console.log('PERSON', $scope.dg_people_selected);
+        //2023-07-18
+        $scope.related_interval = null; //Enumerable.From($scope.selected_intervals).Where(function (x) { return $scope.dg_people_selected.JobGroupCode.startsWith(x.code); }).FirstOrDefault();
+        if (!$scope.related_interval)
+            $scope.related_interval = { value: $scope.selectedCourse.Interval };
+        console.log('related_interval', $scope.related_interval);
         $scope.popup_result_visible = true;
     };
 
@@ -1858,6 +2696,68 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
     $scope.resultExpire = null;
     $scope.resultRemark = null;
     $scope.resultNo = null;
+    $scope.res_date_disabled = true;
+
+
+    $scope.set_expire  = function () {
+        if ($scope.resultIssue &&  $scope.related_interval && $scope.related_interval.value) {
+            //$scope.resultIssue = (new Date($scope.selectedCourse.DateEnd)).addDays(0);
+            $scope.resultExpire = (new Date($scope.resultIssue)).addMonths(Number($scope.related_interval.value));
+            //  alert($scope.resultIssue);
+            //  alert($scope.resultExpire);
+            //  alert($scope.related_interval.value);
+            //if ($scope.selectedCourse.CalanderTypeId == 12) {
+            //    $scope.resultExpire = (new Date($scope.resultIssue)).addYears($scope.selectedCourse.Interval);
+
+            //}
+            //if ($scope.selectedCourse.CalanderTypeId == 13)
+            //    $scope.resultExpire = (new Date($scope.resultIssue)).addMonths($scope.selectedCourse.Interval);
+            //if ($scope.selectedCourse.CalanderTypeId == 14)
+            //    $scope.resultExpire = (new Date($scope.resultIssue)).addDays($scope.selectedCourse.Interval);
+
+            var expMonth = $scope.resultExpire.getMonth();
+            var expDay = $scope.resultExpire.getDate();
+            var expYear = $scope.resultExpire.getFullYear();
+
+            var expDt = new Date(expYear, expMonth + 1, 0);
+            $scope.resultExpire = expDt;
+
+
+        }
+    };
+
+    $scope.set_expire_first = function () {
+        var m = 0;
+        if ($scope.related_interval && $scope.related_interval.value)
+            m = Number($scope.related_interval.value);
+        if ($scope.selectedCourse.Continual)
+            m = 1200;
+       
+        if (!$scope.resultIssue && /*$scope.related_interval && $scope.related_interval.value*/ m!=0) {
+            $scope.resultIssue = (new Date($scope.selectedCourse.DateEnd)).addDays(0);
+            $scope.resultExpire = (new Date($scope.resultIssue)).addMonths(/*Number($scope.related_interval.value)*/m);
+          //  alert($scope.resultIssue);
+          //  alert($scope.resultExpire);
+          //  alert($scope.related_interval.value);
+            //if ($scope.selectedCourse.CalanderTypeId == 12) {
+            //    $scope.resultExpire = (new Date($scope.resultIssue)).addYears($scope.selectedCourse.Interval);
+
+            //}
+            //if ($scope.selectedCourse.CalanderTypeId == 13)
+            //    $scope.resultExpire = (new Date($scope.resultIssue)).addMonths($scope.selectedCourse.Interval);
+            //if ($scope.selectedCourse.CalanderTypeId == 14)
+            //    $scope.resultExpire = (new Date($scope.resultIssue)).addDays($scope.selectedCourse.Interval);
+
+            var expMonth = $scope.resultExpire.getMonth();
+            var expDay = $scope.resultExpire.getDate();
+            var expYear = $scope.resultExpire.getFullYear();
+
+            var expDt = new Date(expYear, expMonth + 1, 0);
+            $scope.resultExpire = expDt;
+
+
+        }
+    };
     $scope.sb_result = {
         showClearButton: true,
         searchEnabled: false,
@@ -1866,27 +2766,30 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         valueExpr: 'id',
         onSelectionChanged: function (e) {
             if (e.selectedItem && e.selectedItem.id == 1) {
-                if (!$scope.resultIssue) {
-                    $scope.resultIssue = (new Date($scope.selectedCourse.DateEnd)).addDays(0);
-                    if ($scope.selectedCourse.CalanderTypeId == 12) {
-                        $scope.resultExpire = (new Date($scope.resultIssue)).addYears($scope.selectedCourse.Interval);
+                $scope.set_expire_first();
+                //if (!$scope.resultIssue) {
+                //    $scope.resultIssue = (new Date($scope.selectedCourse.DateEnd)).addDays(0);
+                //    if ($scope.selectedCourse.CalanderTypeId == 12) {
+                //        $scope.resultExpire = (new Date($scope.resultIssue)).addYears($scope.selectedCourse.Interval);
 
-                    }
-                    if ($scope.selectedCourse.CalanderTypeId == 13)
-                        $scope.resultExpire = (new Date($scope.resultIssue)).addMonths($scope.selectedCourse.Interval);
-                    if ($scope.selectedCourse.CalanderTypeId == 14)
-                        $scope.resultExpire = (new Date($scope.resultIssue)).addDays($scope.selectedCourse.Interval);
+                //    }
+                //    if ($scope.selectedCourse.CalanderTypeId == 13)
+                //        $scope.resultExpire = (new Date($scope.resultIssue)).addMonths($scope.selectedCourse.Interval);
+                //    if ($scope.selectedCourse.CalanderTypeId == 14)
+                //        $scope.resultExpire = (new Date($scope.resultIssue)).addDays($scope.selectedCourse.Interval);
 
-                    var expMonth = $scope.resultExpire.getMonth();
-                    var expDay = $scope.resultExpire.getDate();
-                    var expYear = $scope.resultExpire.getFullYear();
+                //    var expMonth = $scope.resultExpire.getMonth();
+                //    var expDay = $scope.resultExpire.getDate();
+                //    var expYear = $scope.resultExpire.getFullYear();
 
-                    var expDt = new Date(expYear, expMonth + 1, 0);
-                    $scope.resultExpire = expDt;
+                //    var expDt = new Date(expYear, expMonth + 1, 0);
+                //    $scope.resultExpire = expDt;
 
 
-                }
+                //}
             }
+
+            $scope.res_date_disabled= $scope.resultId != 1;
         },
         bindingOptions: {
             value: 'resultId',
@@ -1898,10 +2801,14 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
     $scope.date_resultissue = {
         width: '100%',
         type: 'date',
-
+        //$scope.set_expire
+        onValueChanged: function (e) {
+             
+            $scope.set_expire();
+        },
         bindingOptions: {
             value: 'resultIssue',
-            // disabled: 'isCertidicateDisabled',
+            disabled: 'res_date_disabled',
         }
     };
     $scope.date_resultexpire = {
@@ -1910,6 +2817,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
 
         bindingOptions: {
             value: 'resultExpire',
+            disabled: 'res_date_disabled',
             // disabled: 'isCertidicateDisabled',
         }
     };
@@ -2090,7 +2998,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         if (!$scope.dg_ds && $scope.doRefresh) {
             $scope.dg_ds = {
                 store: {
-                    type: "odata",
+                    type: "odata", 
                     url: serviceBaseTRN + 'api/course/query/',
                     key: "Id",
                     //version: 4,
@@ -2500,7 +3408,7 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
         $scope.doRefresh = true;
     });
     $scope.$on('onCourseHide', function (event, prms) {
-
+        $scope.build($scope.date);
         $scope.bind();
 
     });
@@ -2508,6 +3416,41 @@ app.controller('coursepersonController', ['$scope', '$location', '$routeParams',
     $('.sum-wrapper').height($(window).height() - 200);
 
     $rootScope.$broadcast('PersonLoaded', null);
+
+
+    $scope.$on('$viewContentLoaded', function () {
+        setTimeout(function () {
+
+            $('._schedule_wrapper').show();
+            $('._schedule').fadeIn(300, function () {
+                $scope.initDate = new Date();
+
+               // $('._cal').on('click', '.day-wrapper', function (event) {
+                //    $scope.click($(this).data('date'));
+               // });
+
+                $scope.build($scope.initDate);
+
+            });
+            $scope.$broadcast('getFilterQuery', null);
+        },  500);
+
+       // $scope.selectedTabIndex = 0;
+       
+
+        //  if ($scope.isFullScreen)
+
+
+        //  else
+        //      $scope.scrollStyle = { height: ($scope.popup_height - 190).toString() + 'px' };
+
+
+
+
+    });
+
+
+
     ///end
 
 

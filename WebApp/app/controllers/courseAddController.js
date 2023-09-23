@@ -16,6 +16,17 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
         }
 
     };
+    $scope.sb_director = {
+        dataSource: ['SHAHRZAD AMINI', 'MAHDI BASIRAT'],
+        showClearButton: true,
+        searchEnabled: true,
+
+        bindingOptions: {
+            value: 'entity.TrainingDirector',
+
+        }
+
+    };
 
 
     $scope.entity = {
@@ -83,6 +94,7 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
 
 
         Sessions: [],
+        Syllabi: [],
     };
 
 
@@ -151,10 +163,17 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
         $scope.entity.CourseAircraftTypes = [];
 
         $scope.entity.Sessions = [];
+        $scope.entity.Syllabi = [];
 
     };
 
-    $scope.bind = function (data, sessions) {
+    $scope.bind = function (data, sessions, syllabi) {
+        //2023-07-29
+        if ($scope.tempData.ReadOnly == 100)
+            $scope.IsEditable = false;
+        ////////////////////////////
+
+
         $scope.entity.Id = data.Id;
         $scope.entity.CourseTypeId = data.CourseTypeId;
         $scope.entity.DateStart = data.DateStart;
@@ -206,6 +225,7 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
         $scope.entity.CourseAircraftTypes = data.CourseAircraftTypes;
 
         $scope.entity.Sessions = sessions;
+        $scope.entity.Syllabi = syllabi;
 
         //04-30
         $scope.entity.HoldingType = data.HoldingType;
@@ -423,7 +443,7 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
 
 
         },
-        height: 635,
+        height: 270,
         bindingOptions: {
 
             dataSource: 'entity.Sessions',
@@ -435,6 +455,10 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
     $scope.getSessionKey = function (obj) {
         return moment(obj.DateStart).format('YYYY-MM-DD-HH-mm-') + moment(obj.DateEnd).format('HH-mm');
     };
+
+
+
+
 
     $scope.popup_session_visible = false;
     $scope.popup_session_title = 'Session';
@@ -569,6 +593,173 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
             value: 'sessionEnd',
 
         }
+    };
+
+    //////////////////////////////
+    $scope.dg_syllabi_columns = [
+
+        { dataField: "Title", caption: "Title", allowResizing: true, alignment: "left", dataType: 'string', allowEditing: false, sortIndex: 0, sortOrder: "asc" },
+
+        { dataField: 'Duration', caption: 'Duration(mm)', allowResizing: true, alignment: 'center', dataType: 'number', allowEditing: false, encodeHtml: false, width: 100, },
+
+    ];
+    $scope.dg_syllabi_selected = null;
+    $scope.dg_syllabi_instance = null;
+    $scope.dg_syllabi = {
+        showRowLines: true,
+        showColumnLines: true,
+        sorting: { mode: 'multiple' },
+
+        noDataText: '',
+        showColumnHeaders: true,
+        allowColumnReordering: true,
+        allowColumnResizing: true,
+        scrolling: { mode: 'infinite' },
+        paging: { pageSize: 100 },
+        showBorders: true,
+        selection: { mode: 'single' },
+
+        filterRow: { visible: false, showOperationChooser: true, },
+        columnAutoWidth: false,
+        columns: $scope.dg_syllabi_columns,
+        onContentReady: function (e) {
+            if (!$scope.dg_syllabi_instance)
+                $scope.dg_syllabi_instance = e.component;
+
+        },
+        onSelectionChanged: function (e) {
+            var data = e.selectedRowsData[0];
+
+            if (!data) {
+                $scope.dg_syllabi_selected = null;
+            }
+            else
+                $scope.dg_syllabi_selected = data;
+
+
+        },
+        height: 270,
+        bindingOptions: {
+
+            dataSource: 'entity.Syllabi',
+            // height: 'dg_height',
+        },
+        // dataSource:ds
+
+    };
+    $scope.syllabi_hrs = null;
+    $scope.syllabi_title = null;
+    $scope.hrs_syllabi = {
+        type: "time",
+        width: '100%',
+        //divargar-ok
+        displayFormat: "HH:mm",
+        interval: 15,
+        onValueChanged: function (arg) {
+
+        },
+        bindingOptions: {
+            value: 'syllabi_hrs',
+
+        }
+    };
+    $scope.txt_syllabi = {
+        hoverStateEnabled: false,
+        bindingOptions: {
+            value: 'syllabi_title',
+        }
+    };
+    $scope.popup_syllabus_visible = false;
+    $scope.popup_syllabus_title = 'Syllabus';
+    $scope.popup_syllabus = {
+        elementAttr: {
+            //  id: "elementId",
+            class: "popup_syllabus"
+        },
+        shading: true,
+        //position: { my: 'left', at: 'left', of: window, offset: '5 0' },
+        height: 300,
+        width: 400,
+        fullScreen: false,
+        showTitle: true,
+        dragEnabled: true,
+        toolbarItems: [
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'crsyllabi', bindingOptions: { disabled: 'IsApproved' }, onClick: function (arg) {
+
+                        var result = arg.validationGroup.validate();
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
+                        // moment($scope.selectedDate).format('YYYY-MM-DDTHH:mm:ss')
+
+                        var hrs = (new Date($scope.syllabi_hrs)).getTimePartArray();
+                        var mm = hrs[0] * 60 + hrs[1];
+
+                        var id = -1 * ($scope.entity.Syllabi.length + 1);
+
+                        var obj = { Id: id, Duration: mm, Title: $scope.syllabi_title };
+
+                        console.log(obj);
+                        $scope.entity.Syllabi.push(obj);
+
+                        $scope.syllabi_hrs = null;
+                        $scope.syllabi_title = null;
+
+                    }
+                }, toolbar: 'bottom'
+            },
+
+            { widget: 'dxButton', location: 'after', options: { type: 'danger', text: 'Close', icon: 'remove', }, toolbar: 'bottom' }
+        ],
+
+        visible: false,
+
+        closeOnOutsideClick: false,
+        onTitleRendered: function (e) {
+
+        },
+        onShowing: function (e) {
+
+        },
+        onShown: function (e) {
+
+
+        },
+        onHiding: function () {
+
+
+            $scope.popup_syllabus_visible = false;
+
+        },
+        bindingOptions: {
+            visible: 'popup_syllabus_visible',
+
+            title: 'popup_syllabus_title',
+
+        }
+    };
+
+    //close button
+    $scope.popup_syllabus.toolbarItems[1].options.onClick = function (e) {
+
+        $scope.popup_syllabus_visible = false;
+
+    };
+
+
+    $scope.addSyllabus = function () {
+        $scope.popup_syllabus_visible = true;
+    };
+    $scope.removeSyllabus = function () {
+        var dg_selected = $rootScope.getSelectedRow($scope.dg_syllabi_instance);
+        if (!dg_selected) {
+            General.ShowNotify(Config.Text_NoRowSelected, 'error');
+            return;
+        }
+        $scope.entity.Syllabi = Enumerable.From($scope.entity.Syllabi).Where('$.Id!="' + dg_selected.Id + '"').ToArray();
     };
     /////////////////////////////
     $scope.scroll_height = 200;
@@ -758,7 +949,7 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
                 trnService.getCourseViewObject($scope.tempData.Id).then(function (response) {
                     $scope.loadingVisible = false;
 
-                    $scope.bind(response.Data.course, response.Data.sessions);
+                    $scope.bind(response.Data.course, response.Data.sessions, response.Data.syllabi);
 
                 }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
             }
@@ -855,6 +1046,7 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
         dto.IsNotificationEnabled = $scope.entity.IsNotificationEnabled;
         dto.CurrencyId = $scope.entity.CurrencyId;
         dto.Sessions = Enumerable.From($scope.entity.Sessions).Select('$.Key').ToArray();
+        dto.Syllabi = Enumerable.From($scope.entity.Syllabi).ToArray();
         //04-30
         dto.HoldingType = $scope.entity.HoldingType;
         dto.Instructor2Id = $scope.entity.Instructor2Id;
@@ -1583,12 +1775,12 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
             value: 'entity.Instructor',
         }
     };
-    $scope.txt_TrainingDirector = {
-        hoverStateEnabled: false,
-        bindingOptions: {
-            value: 'entity.TrainingDirector',
-        }
-    };
+    /* $scope.txt_TrainingDirector = {
+         hoverStateEnabled: false,
+         bindingOptions: {
+             value: 'entity.TrainingDirector',
+         }
+     };*/
     $scope.txt_Location = {
         hoverStateEnabled: false,
         bindingOptions: {
@@ -1784,6 +1976,7 @@ app.controller('courseAddController', ['$scope', '$location', 'courseService', '
 
                 $scope.ctgroups = e.selectedItem.JobGroups;
             }
+            console.log(e.selectedItem);
 
         },
         bindingOptions: {

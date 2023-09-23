@@ -21,6 +21,151 @@
     .cell-img {
         height: 40px;
     }
+
+
+
+
+
+    .row_odd .cal_day {
+        background: #ffe6cc;
+    }
+
+    .row_even .cal_day {
+        background: #ccf2ff;
+    }
+
+
+    ._cal .days-row {
+        border: 1px solid #eee;
+    }
+
+        ._cal .days-row td {
+            text-align: center;
+            border: 1px solid gray;
+            padding: 5px;
+            width: 14.28571%;
+            background: #ddd;
+        }
+
+    ._cal .days {
+        border: 1px solid #eee;
+    }
+
+        ._cal .days td {
+            border: 1px solid #ccc;
+            width: 14.28571%;
+            padding: 3px;
+        }
+
+            ._cal .days td .day-wrapper {
+                padding: 2px;
+                /*min-height: 65px;*/
+            }
+
+
+            ._cal .days td .day-caption {
+                color: black;
+                text-align: right;
+                padding: 1px;
+            }
+
+            ._cal .days td .today .day-caption {
+                color: green;
+                font-weight: bold;
+            }
+
+            ._cal .days td .day-caption._inactive {
+                color: #ccc !important;
+            }
+
+            ._cal .days td .today .day-caption._inactive {
+                color: green !important;
+                font-weight: bold;
+            }
+
+            ._cal .days td:has(> .today) {
+                background: #ccffe6;
+            }
+
+    ._cal .event {
+        padding: 3px;
+        margin: 2px 0 0 0;
+        text-align: center;
+    }
+
+        ._cal .event.d1165 {
+            background-color: #00cc99;
+        }
+
+        ._cal .event.d10000 {
+            background-color: #66ff66;
+        }
+
+        ._cal .event span {
+            display: inline-block;
+            margin-left: 5px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        ._cal .event i {
+            font-size: 15px;
+        }
+
+    .thin-scroll0::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+    }
+
+    .thin-scroll0::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+        outline: 1px solid slategrey;
+    }
+
+    ._xheader.selected {
+        background: #b3ffd9;
+        border-bottom: 2px solid #00cc66 !important;
+    }
+
+    ._header_child {
+        display: none;
+    }
+
+
+    ._event {
+        margin: 3px;
+    }
+
+    ._session {
+        padding: 5px;
+        background: #adebeb;
+        color: black;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    ._expired {
+        padding: 5px;
+        background: #ffc34d;
+        color: black;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    ._session ._title {
+        font-size: 13px;
+        text-transform: uppercase;
+    }
+
+    ._expired ._title {
+        font-size: 11px;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    ._session.selected {
+        background: #99ff33;
+    }
 </style>
 
 <div class="box courseperson" style="height:100%;display:none;overflow-y:hidden">
@@ -40,7 +185,159 @@
 
         </div>
         <div class=" col-lg-12  col1 col-grid" style="padding-right:2px;padding-left:2px;">
-            <div dx-data-grid="dg" id="grid"></div>
+            <!--<div dx-tabs="tabs_options">
+
+            </div>-->
+            <div>
+                <table style="width:100%;">
+                    <tr>
+                        <td style="padding:6px;width:50%;font-weight:normal;text-align:center;border-bottom:1px solid #ccc" class="_schedule_header _xheader selected" ng-click="_header_click('_schedule_header','_schedule')">SCHEDULE</td>
+                        <td style="padding: 6px; width: 50%; font-weight: normal; text-align: center; border-bottom: 1px solid #ccc" class="_list_header _xheader" ng-click="_header_click('_list_header','_list')">TABLE</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="_schedule  _header_child" style="border:none;border-right:1px solid #ccc;padding:3px; overflow-y:hidden; " ng-style="getMainStyle()">
+
+                <div style="padding:0px;display:none" class="_schedule_wrapper">
+
+                    <div>
+                        <table style="width:100%;background:#ddd">
+                            <tr>
+                                <td style="padding:5px" ng-click="nextMonth(-1)"><i class="fas fa-chevron-circle-left main-color" style="font-size:22px;"></i></td>
+                                <td style="text-align:center;font-size:16px;padding:5px">{{caption}}</td>
+                                <td style="padding:5px;text-align:right;" ng-click="nextMonth(1)"><i class="fas fa-chevron-circle-right main-color" style="font-size:22px;"></i></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="_cal">
+
+                        <table style="width:100%" class="days-row">
+                            <tr>
+                                <td style="font-size:12px;">SUN</td>
+                                <td style="font-size:12px;">MON</td>
+                                <td style="font-size:12px;">TUE</td>
+                                <td style="font-size:12px;">WED</td>
+                                <td style="font-size:12px;">THU</td>
+                                <td style="font-size:12px;">FRI</td>
+                                <td style="font-size:12px;">SAT</td>
+                            </tr>
+                        </table>
+                        <div id="scrollview" class="thin-scroll0" style="overflow-y:auto;margin-top:0px;" ng-style="getScrollStyle()">
+                            <table style="width:100%" class="days" id="_days">
+                                <tr id="w1">
+                                    <td id="d0">
+                                        <div class="day-wrapper"></div>
+                                    </td>
+                                    <td id="d1">
+                                    </td>
+                                    <td id="d2">
+                                    </td>
+                                    <td id="d3">
+                                    </td>
+                                    <td id="d4">
+                                    </td>
+                                    <td id="d5">
+                                    </td>
+                                    <td id="d6">
+                                    </td>
+                                </tr>
+
+                                <tr id="w2">
+                                    <td id="d7">
+                                    </td>
+                                    <td id="d8">
+                                    </td>
+                                    <td id="d9">
+                                    </td>
+                                    <td id="d10">
+                                    </td>
+                                    <td id="d11">
+                                    </td>
+                                    <td id="d12">
+                                    </td>
+                                    <td id="d13">
+                                    </td>
+                                </tr>
+
+                                <tr id="w3">
+                                    <td id="d14">
+                                    </td>
+                                    <td id="d15">
+                                    </td>
+                                    <td id="d16">
+                                    </td>
+                                    <td id="d17">
+                                    </td>
+                                    <td id="d18">
+                                    </td>
+                                    <td id="d19">
+                                    </td>
+                                    <td id="d20">
+                                    </td>
+                                </tr>
+                                <tr id="w4">
+                                    <td id="d21">
+                                    </td>
+                                    <td id="d22">
+                                    </td>
+                                    <td id="d23">
+                                    </td>
+                                    <td id="d24">
+                                    </td>
+                                    <td id="d25">
+                                    </td>
+                                    <td id="d26">
+                                    </td>
+                                    <td id="d27">
+                                    </td>
+                                </tr>
+                                <tr id="w5">
+                                    <td id="d28">
+                                    </td>
+                                    <td id="d29">
+                                    </td>
+                                    <td id="d30">
+                                    </td>
+                                    <td id="d31">
+                                    </td>
+                                    <td id="d32">
+                                    </td>
+                                    <td id="d33">
+                                    </td>
+                                    <td id="d34">
+                                    </td>
+                                </tr>
+                                <tr id="w6">
+                                    <td id="d35">
+                                    </td>
+                                    <td id="d36">
+                                    </td>
+                                    <td id="d37">
+                                    </td>
+                                    <td id="d38">
+                                    </td>
+                                    <td id="d39">
+                                    </td>
+                                    <td id="d40">
+                                    </td>
+                                    <td id="d41">
+                                    </td>
+                                </tr>
+
+
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="_header_child _list">
+                <div dx-data-grid="dg" id="grid"></div>
+            </div>
+
 
         </div>
         <!--<div class=" col-lg-2 col1 col-row-sum" style="padding-right:2px;padding-left:2px;">
@@ -158,15 +455,32 @@
 
     <div id="popup_people" dx-popup="popup_people">
         <div class="   padding-7" style="padding:0;margin-top:3px;">
-            <div dx-data-grid="dg_people" id="dg_people" dx-item-alias="row">
+            <div dx-tabs="tabs_folder_options">
 
-                <div data-options="dxTemplate:{ name:'updateResultTemplate' }">
-                    <a ng-click="updateResult(row)" href="" class='w3-button w3-block w3-blue' style=' margin:0 auto 0px auto;text-decoration:none;padding:5px 5px !important; text-align:center'>Update Result</a>
-                </div>
-                <div data-options="dxTemplate:{ name:'AttendanceTemplate' }">
-                    <a ng-click="updateAttendance(row)" href="" class='w3-button w3-block w3-blue' style=' margin:0 auto 0px auto;text-decoration:none;padding:5px 5px !important; text-align:center'>Attendance</a>
+            </div>
+            <div class="tabfolder participants">
+                <div dx-data-grid="dg_people" id="dg_people" dx-item-alias="row">
+
+                    <div data-options="dxTemplate:{ name:'updateResultTemplate' }">
+                        <a ng-click="updateResult(row)" href="" class='w3-button w3-block w3-blue' style=' margin:0 auto 0px auto;text-decoration:none;padding:5px 5px !important; text-align:center'>Update Result</a>
+                    </div>
+                    <div data-options="dxTemplate:{ name:'AttendanceTemplate' }">
+                        <a ng-click="updateAttendance(row)" href="" class='w3-button w3-block w3-blue' style=' margin:0 auto 0px auto;text-decoration:none;padding:5px 5px !important; text-align:center'>Attendance</a>
+                    </div>
                 </div>
             </div>
+
+
+            <div class="tabfolder syllabi" style="display:none;">
+                <div dx-data-grid="dg_syllabi" id="dg_syllabi" dx-item-alias="row">
+                    <div data-options="dxTemplate:{ name:'updateSyllabusTemplate' }">
+                        <a ng-click="updateSyllabus(row)" href="" class='w3-button w3-block w3-blue' style=' margin:0 auto 0px auto;text-decoration:none;padding:5px 5px !important; text-align:center'>Update</a>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 
@@ -450,14 +764,19 @@
             <label>Remark</label>
             <div dx-text-box="txt_resultremark"></div>
         </div>
+
         <div class="col-lg-6 col-md-6 col-sm-12 col-12  margin-bottom-5 padding-7">
             <label>Issue Date</label>
             <div dx-date-box="date_resultissue" class="center"></div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-12  margin-bottom-5 padding-7">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12  margin-bottom-5 padding-7" ng-show="!selectedCourse.Continual">
             <label>Expire Date</label>
             <div dx-date-box="date_resultexpire" class="center"></div>
         </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12  margin-bottom-5 padding-7" ng-show="!selectedCourse.Continual">
+            <span>Interval:</span><span style="display:inline-block;margin-left:5px;margin-right:5px">{{related_interval.value}}</span><span>Month(s)</span>
+        </div>
+        <div style="clear:both"></div>
         <div class="col-lg-6 col-md-12 col-sm-12 col-12  margin-bottom-5 padding-7">
             <label>Certificate No.</label>
             <div dx-text-box="txt_resultno" class="center"></div>
@@ -487,9 +806,84 @@
         </div>
     </div>
 
+    <div id="popup_syllabus" dx-popup="popup_syllabus">
+        <div class="dx-border   padding-7" style="padding:0;margin-top:3px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12  margin-bottom-5 padding-7">
+                <label>Session</label>
+                <div dx-select-box="sb_syl_session"></div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12  margin-bottom-5 padding-7">
+                <label>Instructor</label>
+                <div dx-select-box="sb_syl_ins"></div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12  margin-bottom-5 padding-7">
+                <label>Remark</label>
+                <div dx-text-box="txt_syl_remark"></div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12  margin-bottom-5 padding-7">
+
+                <div dx-check-box="chb_syl_done"></div>
+            </div>
+        </div>
+    </div>
 
 
-    <div ng-include="'app/views/courseAdd.html?v=12511050'" ng-init="type = 'active';"></div>
+
+    <div id="popup_day" dx-popup="popup_day">
+        <div>
+            <div style="padding:5px;background:#ccc;border:1px solid gray;font-weight:bold;text-align:center;border-bottom:none">
+                {{momentDate(popup_day_date)}}
+            </div>
+            <div style="padding:5px;background:#ccc;border:1px solid gray;font-weight:bold;text-align:center;border-top:none">
+                {{popup_day_title}}
+            </div>
+            <div class="thin-scroll2 item-cont" style="overflow-y:auto;" ng-style="get_day_container_style()">
+                <table style="width:100%;border-left:1px solid #ccc;border-right:1px solid #ccc">
+                    <thead>
+                        <tr style="border-bottom:1px solid #ccc">
+                            <th style="width:20%;text-align:center;padding:5px;border-right:1px solid #ccc">
+                                Main Group
+                            </th>
+                            <th style="width:20%;text-align:center;padding:5px;border-right:1px solid #ccc">
+                                Group
+                            </th>
+                            <th style="text-align:left;padding:5px;border-right:1px solid #ccc">
+                                Last Name
+                            </th>
+                            <th style="width: 20%; text-align: left; padding: 5px; border-right: 1px solid #ccc">
+                                First Name
+                            </th>
+                            <th style="width:10%;text-align:center;padding:5px;border-right:1px solid #ccc">
+                                NID
+                            </th>
+                            <th style="width:10%;text-align:center;padding:5px">
+                                Mobile
+                            </th>
+                        </tr>
+
+
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="emp in popup_day_ds" style="border-bottom:1px solid #ccc">
+                            <td style="text-align:center;padding:5px;border-right:1px solid #ccc">{{emp.JobGroupMain}}</td>
+                            <td style="text-align:center;padding:5px;border-right:1px solid #ccc">{{emp.JobGroup}}</td>
+                            <td style="text-align:left;padding:5px;border-right:1px solid #ccc">{{emp.LastName}}</td>
+                            <td style="text-align:left;padding:5px;border-right:1px solid #ccc">{{emp.FirstName}}</td>
+                            <td style="text-align:center;padding:5px;border-right:1px solid #ccc">{{emp.NID}}</td>
+                            <td style="text-align:center;padding:5px">{{emp.Mobile}}</td>
+
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div ng-include="'app/views/courseAdd.html?v=1256887'" ng-init="type = 'active';"></div>
     <div ng-include="'app/views/employeeSelectCourse.html?v=100'"></div>
     <div dx-load-panel="loadPanel"></div>
 </div>

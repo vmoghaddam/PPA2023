@@ -3,6 +3,7 @@ using DevExpress.XtraPrinting.Caching;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -19,13 +20,16 @@ namespace Report
 
 
 
-            try { 
+            try {
+                
             string apiUrl = WebConfigurationManager.AppSettings["api_url"];
             string apiUrlv2 = WebConfigurationManager.AppSettings["api_urlv2"];
             string apiUrlExt = WebConfigurationManager.AppSettings["api_url_ext"];
             string apiUrlExtTemp = WebConfigurationManager.AppSettings["api_url_ext_temp"];
             string apiUrlTrn = WebConfigurationManager.AppSettings["api_url_trn"];
             string apiReportFlight= WebConfigurationManager.AppSettings["api_reportflight"];
+            string apiCao = WebConfigurationManager.AppSettings["api_cao"];
+
                 string type = Request.QueryString["type"];
             if (string.IsNullOrEmpty(type))
                 type = "1";
@@ -41,7 +45,7 @@ namespace Report
                         var rptopc = new rptOPC();
                         dataSource = new JsonDataSource();
 
-                        dataSource.JsonSource = new UriJsonSource(new Uri("http://127.0.0.1/api/odata/employee/nid/4/" + _x_nid));
+                        dataSource.JsonSource = new UriJsonSource(new Uri("http://127.0.0.1/zprofile/api/profile/opc/nid/" + _x_nid));
                         dataSource.Fill();
                         rptopc.DataSource = dataSource;
                         ASPxWebDocumentViewer1.OpenReport(rptopc);
@@ -56,9 +60,9 @@ namespace Report
                    // break;
                case "att":
                         string coid2 = Request.QueryString["cid"];
-                        //var reportAtt2 = new RptCourseProfile(coid2);
+                        var reportAtt2 = new RptCourseProfile(coid2);
                         //atlas
-                        var reportAtt2 = new RptCourseProfileAtlas(coid2);
+                        //var reportAtt2 = new RptCourseProfileAtlas(coid2);
                         ASPxWebDocumentViewer1.OpenReport(reportAtt2);
                         break;
                     //api/courses/passed/history
@@ -124,7 +128,7 @@ namespace Report
 
                     var rptroster = new rptRoster(rosterDate, rosterRev);
                     dataSource = new JsonDataSource();
-                    var rosterurl = /*"https://fleet.flypersia.aero/expapi/"*/"https://api.apchabahar.ir/" + "api/roster/report/date/?df=" + rosterDate + "&revision=" + rosterRev;
+                    var rosterurl = /*"https://fleet.flypersia.aero/expapi/"*//*"https://api.apchabahar.ir/"*/"http://127.0.0.1/zapi/" + "api/roster/report/date/?df=" + rosterDate + "&revision=" + rosterRev;
                     dataSource.JsonSource = new UriJsonSource(new Uri(rosterurl));
                     dataSource.Fill();
                     rptroster.DataSource = dataSource;
@@ -136,7 +140,7 @@ namespace Report
 
                     var rptrosterSec = new rptRosterSecurity();
                     dataSource = new JsonDataSource();
-                    var rosterurlsec = "https://fleet.flypersia.aero/expapi/" + "api/roster/report/date/?df=" + rosterDate1 + "&revision=" + rosterRev1;
+                    var rosterurlsec = "http://127.0.0.1/expapi/" + "api/roster/report/date/?df=" + rosterDate1 + "&revision=" + rosterRev1;
                     dataSource.JsonSource = new UriJsonSource(new Uri(rosterurlsec));
                     dataSource.Fill();
                     rptrosterSec.DataSource = dataSource;
@@ -233,15 +237,33 @@ namespace Report
                 case "1":
                     try
                     {
-                        string year = Request.QueryString["year"];
-                        string month = Request.QueryString["month"];
+                            using (StreamWriter _testData = new StreamWriter(HttpContext.Current.Server.MapPath("~/_error1.txt"), true))
+                            {
+                                _testData.WriteLine("A"); // Write the file.
+                            }
+
+
+                            string year = Request.QueryString["year"];
+                         string month = Request.QueryString["month"];
                         var rptFlight = new RptFormA();
-                        dataSource = new JsonDataSource();
-                        dataSource.JsonSource = new UriJsonSource(new Uri(apiUrl + "odata/forma/month/" + year + "/" + month));
-                        dataSource.Fill();
-                        rptFlight.DataSource = dataSource;
-                        ASPxWebDocumentViewer1.OpenReport(rptFlight);
-                    }
+                         dataSource = new JsonDataSource();
+                            using (StreamWriter _testData = new StreamWriter(HttpContext.Current.Server.MapPath("~/_error2.txt"), true))
+                            {
+                                _testData.WriteLine("B"); // Write the file.
+                            }
+                            dataSource.JsonSource = new UriJsonSource(new Uri(apiCao + "api/cao/report/forma/" + year + "/" + month));
+                            dataSource.Fill();
+                            using (StreamWriter _testData = new StreamWriter(HttpContext.Current.Server.MapPath("~/_error3.txt"), true))
+                            {
+                                _testData.WriteLine("C"); // Write the file.
+                            }
+                            rptFlight.DataSource = dataSource;
+                       ASPxWebDocumentViewer1.OpenReport(rptFlight);
+                            using (StreamWriter _testData = new StreamWriter(HttpContext.Current.Server.MapPath("~/_error4.txt"), true))
+                            {
+                                _testData.WriteLine("D"); // Write the file.
+                            }
+                        }
                     catch (Exception ex)
                     {
 
@@ -262,8 +284,9 @@ namespace Report
                     string month2 = Request.QueryString["month"];
                     var rptmovaled = new RptMovaled();
                     dataSource = new JsonDataSource();
-                    dataSource.JsonSource = new UriJsonSource(new Uri(apiUrl + "odata/forma/month/" + year2 + "/" + month2));
-                    dataSource.Fill();
+                        //dataSource.JsonSource = new UriJsonSource(new Uri(apiUrl + "odata/forma/month/" + year2 + "/" + month2));
+                        dataSource.JsonSource = new UriJsonSource(new Uri(apiCao + "api/cao/report/forma/" + year2 + "/" + month2));
+                        dataSource.Fill();
                     rptmovaled.DataSource = dataSource;
                     ASPxWebDocumentViewer1.OpenReport(rptmovaled);
                     break;
@@ -386,7 +409,15 @@ namespace Report
             }
             catch(Exception ex)
             {
-                throw new Exception(ex.Message);
+                var exmsg = ex.Message;
+                if (ex.InnerException != null)
+                    exmsg += "   " + ex.InnerException.Message;
+
+                using (StreamWriter _testData = new StreamWriter(HttpContext.Current.Server.MapPath("~/_error.txt"), true))
+                {
+                    _testData.WriteLine(exmsg); // Write the file.
+                }
+               // throw new Exception(ex.Message);
             }
 
         }

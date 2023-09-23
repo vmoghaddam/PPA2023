@@ -16,7 +16,10 @@ namespace Report
         private void GroupHeader1_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
         {
             var str = Convert.ToString(GetCurrentColumnValue("ImageUrl"));
-            img.ImageUrl = str;
+           // img.ImageUrl = str;
+
+            img.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource(new Bitmap("E:\\ap\\upload\\clientsfiles\\" + str));
+
 
 
             var rank = Convert.ToString(GetCurrentColumnValue("JobGroup"));
