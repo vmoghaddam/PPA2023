@@ -753,6 +753,25 @@ app.config(function ($routeProvider) {
     });
 
      
+	   $routeProvider.when("/qa/dashboard", {
+        controller: "qaDashboard",
+        templateUrl: "app/views/qaDashboard.html"
+    });
+
+
+    $routeProvider.when("/qa/status/:type", {
+        controller: "qaReportStatus",
+        templateUrl: "app/views/qaReportStatus.html"
+    });
+
+
+    $routeProvider.when("/qa/report", {
+        controller: "qaReports",
+        templateUrl: "app/views/qaReport.html"
+    });
+
+   
+	 
     $routeProvider.otherwise({ redirectTo: "/home" });
 
 });   
@@ -790,6 +809,7 @@ var apiapsb = 'http://localhost:22600/';
 var apireportflight = 'https://apireportflight.apvaresh.com/';
 var zreportflight=apireportflight ;
 
+var apiQA = 'http://localhost:9063/';
 
     //'http://localhost:58908/';
     //'http://localhost:40654/';
