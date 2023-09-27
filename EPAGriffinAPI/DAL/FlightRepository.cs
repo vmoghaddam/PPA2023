@@ -2493,10 +2493,10 @@ namespace EPAGriffinAPI.DAL
             flight.JLLanding = landing;
             flight.PFLR = pflr;
 
-            flight.FuelArrival =_FuelArrival==null?null: (Nullable< decimal>)_FuelArrival;
-             flight.FuelDeparture =_FuelDeparture==null?null: (Nullable<decimal>)_FuelDeparture;
-             flight.UsedFuel =_UsedFuel==null?null: (Nullable< decimal>)_UsedFuel;
-            flight.FPFuel =_FPFuel==null?null: (Nullable< decimal>)_FPFuel;
+            flight.FuelArrival = _FuelArrival == null ? null : (Nullable<decimal>)_FuelArrival;
+            flight.FuelDeparture = _FuelDeparture == null ? null : (Nullable<decimal>)_FuelDeparture;
+            flight.UsedFuel = _UsedFuel == null ? null : (Nullable<decimal>)_UsedFuel;
+            flight.FPFuel = _FPFuel == null ? null : (Nullable<decimal>)_FPFuel;
             flight.FuelUnitID = unitId;
 
             return true;
@@ -2845,7 +2845,7 @@ namespace EPAGriffinAPI.DAL
         {
             var do_sleep = ConfigurationManager.AppSettings["run"];
             if (do_sleep == "1")
-                System.Threading.Thread.Sleep(30000);
+                System.Threading.Thread.Sleep(20000);
             List<int?> offCrewIds = new List<int?>();
             //marmar
             // return new CustomActionResult(HttpStatusCode.OK, null);
@@ -2914,9 +2914,9 @@ namespace EPAGriffinAPI.DAL
             flight.ChocksOut = dto.ChocksOut;
             flight.Takeoff = dto.Takeoff;
             flight.GWTO = dto.GWTO;
-            
+
             //flight.FuelDeparture = dto.FuelDeparture;
-           // flight.FuelArrival = dto.FuelArrival;
+            // flight.FuelArrival = dto.FuelArrival;
             flight.PaxAdult = dto.PaxAdult;
             flight.PaxInfant = dto.PaxInfant;
             flight.PaxChild = dto.PaxChild;
@@ -2931,8 +2931,8 @@ namespace EPAGriffinAPI.DAL
             flight.FPFlightHH = dto.FPFlightHH;
             flight.FPFlightMM = dto.FPFlightMM;
             //flight.FPFuel = dto.FPFuel;
-             flight.Defuel = dto.Defuel;
-           // flight.UsedFuel = dto.UsedFuel;
+            flight.Defuel = dto.Defuel;
+            // flight.UsedFuel = dto.UsedFuel;
             flight.JLBLHH = dto.JLBLHH;
             flight.JLBLMM = dto.JLBLMM;
             flight.PFLR = dto.PFLR;
@@ -3400,7 +3400,7 @@ namespace EPAGriffinAPI.DAL
                              ).ToList();
 
 
-           
+
 
             return new CustomActionResult(HttpStatusCode.OK, new updateLogResult()
             {
@@ -3418,9 +3418,9 @@ namespace EPAGriffinAPI.DAL
             var intervalDays = GetInvervalDates((int)dto.interval, (DateTime)dto.intervalFrom, (DateTime)dto.intervalTo, dto.days).Select(q => (Nullable<DateTime>)q).ToList();
             var baseFlights = await this.context.FlightInformations.Where(q => dto.fids.Contains(q.ID)).ToListAsync();
             var basegroups = (from x in baseFlights
-                             group x by new { x.FlightNumber, x.STD } into grp
-                             select 
-                                  grp.Key.FlightNumber+"_"+((DateTime) grp.Key.STD).ToString("HHmm")
+                              group x by new { x.FlightNumber, x.STD } into grp
+                              select
+                                   grp.Key.FlightNumber + "_" + ((DateTime)grp.Key.STD).ToString("HHmm")
                              ).ToList();
             var fltNumbers = baseFlights.Select(q => q.FlightNumber).ToList();
             var fltIds = new List<int>();
@@ -3434,8 +3434,8 @@ namespace EPAGriffinAPI.DAL
             var flights = await this.context.FlightInformations.Where(q => fltIds.Contains(q.ID)).ToListAsync();
 
             flights = (from x in flights
-                      where basegroups.Contains(x.FlightNumber + "_" + ((DateTime)x.STD).ToString("HHmm")) 
-                      select x).ToList();
+                       where basegroups.Contains(x.FlightNumber + "_" + ((DateTime)x.STD).ToString("HHmm"))
+                       select x).ToList();
             fltIds = flights.Select(q => q.ID).ToList();
 
             var legs = await this.context.ViewLegTimes.Where(q => fltIds.Contains(q.ID)).ToListAsync();
@@ -3537,7 +3537,7 @@ namespace EPAGriffinAPI.DAL
                              ).ToList();
 
 
-            
+
 
             return new CustomActionResult(HttpStatusCode.OK, new updateLogResult()
             {
@@ -3634,7 +3634,7 @@ namespace EPAGriffinAPI.DAL
 
 
 
-           
+
 
             return new CustomActionResult(HttpStatusCode.OK, new updateLogResult()
             {
@@ -3758,7 +3758,7 @@ namespace EPAGriffinAPI.DAL
             var nullfids = fltIds.Select(q => (Nullable<int>)q).ToList();
 
 
-           
+
 
             return new CustomActionResult(HttpStatusCode.OK, new updateLogResult()
             {
@@ -4320,9 +4320,9 @@ namespace EPAGriffinAPI.DAL
             var fltNumbers = baseFlights.Select(q => q.FlightNumber).ToList();
             var fltIds = new List<int>();
             fltIds = baseFlights.Select(q => q.ID).ToList();
-            var baseFlightsSTD =( from x in baseFlights
-                                 group x by new {x.FlightNumber,XSTD= ((DateTime) x.STD).ToString("HHmm") } into grp
-                                 select new {grp.Key.FlightNumber, grp.Key.XSTD }).ToList();
+            var baseFlightsSTD = (from x in baseFlights
+                                  group x by new { x.FlightNumber, XSTD = ((DateTime)x.STD).ToString("HHmm") } into grp
+                                  select new { grp.Key.FlightNumber, grp.Key.XSTD }).ToList();
 
             var _flightIds = await (from x in this.context.ViewLegTimes
                                     where fltNumbers.Contains(x.FlightNumber) && intervalDays.Contains(x.STDDay)
@@ -5366,7 +5366,7 @@ namespace EPAGriffinAPI.DAL
             }
             var fdpitems = context.FDPItems.Where(q => q.FlightId == entityToDelete.ID).Select(q => q.FDPId).ToList();
             var fdps = context.FDPs.Where(q => fdpitems.Contains(q.Id)).ToList();
-            var offs=context.OffItems.Where(q => q.FlightId == entityToDelete.ID).ToList();
+            var offs = context.OffItems.Where(q => q.FlightId == entityToDelete.ID).ToList();
             context.OffItems.RemoveRange(offs);
             context.FDPs.RemoveRange(fdps);
             this.context.FlightInformations.Remove(entityToDelete);
@@ -7798,79 +7798,94 @@ namespace EPAGriffinAPI.DAL
 
         internal object GetCrewFlightsReportAppGrouped(int id)
         {
-            this.context.Database.CommandTimeout = 160;
-
-
-            var query = (
-                from x in this.context.ViewFlightCrewXes
-
-                where x.CrewId == id && x.DateConfirmed != null
-                group x by new { x.STDDay, x.STDDayEnd } into grp
-                select new appAll() { Start = grp.Key.STDDay, End = grp.Key.STDDayEnd, Total = grp.Count(), Type = 1165 }
-
-                ).ToList();
-
-            var dayOffs = this.context.FDPs.Where(q => q.CrewId == id && (q.DutyType == 10000 || q.DutyType == 10001) && q.DateConfirmed != null).ToList();
-            var ds = dayOffs.Select(q => new appAll()
+            try
             {
-                Start = ((DateTime)q.DateStart).AddMinutes(Helper.GetTimeOffset((DateTime)q.DateStart)),
-                End = ((DateTime)q.DateEnd).AddMinutes(Helper.GetTimeOffset((DateTime)q.DateEnd)),
-                Total = 0,
-                Type = 10000,
+                this.context.Database.CommandTimeout = 160;
 
-            }).ToList();
 
-            var allowedTypes = new List<int>() { 1167, 1168, 5001, 5000, 300009, 300008,1170,1169, 100002 };
-            //var others = this.context.FDPs.Where(q => q.CrewId == id && (q.DutyType != 1165 && q.DutyType != 10001 && q.DutyType != 10000)).ToList();
-            var others = this.context.FDPs.Where(q => q.CrewId == id && allowedTypes.Contains(q.DutyType) && q.DateConfirmed != null).ToList();
-            var ds2 = others.Select(q => new appAll()
-            {
-                Start = ((DateTime)q.DateStart).AddMinutes(Helper.GetTimeOffset((DateTime)q.DateStart)),
-                End = ((DateTime)q.DateEnd).AddMinutes(Helper.GetTimeOffset((DateTime)q.DateEnd)),
-                Total = 0,
-                Type = q.DutyType,
+                var query = (
+                    from x in this.context.ViewFlightCrewXes
 
-            }).ToList();
-            foreach (var x in ds2)
-            {
-                switch (x.Type)
+                    where x.CrewId == id && x.DateConfirmed != null
+                    group x by new { x.STDDay, x.STDDayEnd } into grp
+                    select new appAll() { Start = grp.Key.STDDay, End = grp.Key.STDDayEnd, Total = grp.Count(), Type = 1165 }
+
+                    ).ToList();
+
+                var dayOffs = this.context.FDPs.Where(q => q.CrewId == id && (q.DutyType == 10000 || q.DutyType == 10001 || q.DutyType == 100008 || q.DutyType == 300009) && q.DateConfirmed != null).ToList();
+                var ds = dayOffs.Select(q => new appAll()
                 {
-                    case 100002:
-                        x.TypeStr = "SICK";
-                        break;
-                    case 1167:
-                        x.TypeStr = "STBYP";
-                        break;
-                    case 1168:
-                        x.TypeStr = "STBYA";
-                        break;
-                    case 5001:
-                        x.TypeStr = "OFC";
-                        break;
-                    case 5000:
-                        x.TypeStr = "TRN";
-                        break;
-                    case 300008:
-                        x.TypeStr = "DTY";
-                        break;
-                    case 300009:
-                        x.TypeStr = "RST";
-                        break;
-                    case 1169:
-                        x.TypeStr = "VAC";
-                        break;
-                    case 1170:
-                        x.TypeStr = "RES";
-                        break;
-                    default:
-                        x.TypeStr = "DTY";
-                        break;
+                    Start = ((DateTime)q.DateStart).AddMinutes(Helper.GetTimeOffset((DateTime)q.DateStart)),
+                    End = ((DateTime)q.DateEnd).AddMinutes(Helper.GetTimeOffset((DateTime)q.DateEnd)),
+                    Total = 0,
+                    Type = 10000,
+
+                }).ToList();
+
+                var allowedTypes = new List<int>() { 1167, 1168, 5001, 5000,   300008, 1170, 1169, 100002,   100001, 100003, 100004, 100005, 100006  };
+                //var others = this.context.FDPs.Where(q => q.CrewId == id && (q.DutyType != 1165 && q.DutyType != 10001 && q.DutyType != 10000)).ToList();
+                var others = this.context.FDPs.Where(q => q.CrewId == id && allowedTypes.Contains(q.DutyType) && q.DateConfirmed != null).ToList();
+                var ds2 = others.Select(q => new appAll()
+                {
+                    Start = ((DateTime)q.DateStart).AddMinutes(Helper.GetTimeOffset((DateTime)q.DateStart)),
+                    End = ((DateTime)q.DateEnd).AddMinutes(Helper.GetTimeOffset((DateTime)q.DateEnd)),
+                    Total = 0,
+                    Type = q.DutyType,
+
+                }).ToList();
+                foreach (var x in ds2)
+                {
+                    switch (x.Type)
+                    {
+                        case 100002:
+                            x.TypeStr = "SICK";
+                            break;
+                        case 1167:
+                            x.TypeStr = "STBYP";
+                            break;
+                        case 1168:
+                            x.TypeStr = "STBYA";
+                            break;
+                        case 5001:
+                            x.TypeStr = "OFC";
+                            break;
+                        case 5000:
+                            x.TypeStr = "TRN";
+                            break;
+                        case 300008:
+                            x.TypeStr = "DTY";
+                            break;
+                        case 300009:
+                            x.TypeStr = "RST";
+                            break;
+                        case 1169:
+                            x.TypeStr = "VAC";
+                            break;
+                        case 1170:
+                            x.TypeStr = "RES";
+                            break;
+                        case 100004: 
+                        case 100005:
+                        case 100006:
+                            x.TypeStr = "EXP";
+                                break;
+                        default:
+                            x.TypeStr = "DTY";
+                            break;
+                    }
                 }
+
+                query = query.Concat(ds).Concat(ds2).ToList();
+
+                return query;
             }
-
-            query = query.Concat(ds).Concat(ds2).ToList();
-
-            return query;
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return msg;
+            }
         }
 
         internal List<ViewFDPAB> GetValidFDPForCrew(int pid, int year, int month)
