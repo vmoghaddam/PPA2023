@@ -29,7 +29,7 @@
 
                 <div class="container">
                     <div class="visible-xs">
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date: </td>
                                 <td style="padding:7px;text-align:left;"><div dx-date-box="txt_date" class="center"></div></td>
@@ -73,20 +73,20 @@
 
                         </table>
 
-                        <div style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                 Damage By:
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in damageBy">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="dmgOptions[x.Id]" ng-change="chkDamageBy($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDamageBy(x)" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
-                            <div ng-show="showOther" style="margin:1%;border:1px solid #eee;width:98%;color:lightgray" dx-text-area="txt_eventOther"></div>
+                            <div ng-show="showOther" style="margin: 1%; border: 1px solid #eee; width: 98%; color: black" dx-text-area="txt_eventOther"></div>
 
                         </div>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     DETAILS OF DAMAGE
@@ -98,7 +98,7 @@
 
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="9">
                                     NUMBER OF CASUALTIES
@@ -127,7 +127,7 @@
 
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
                                     VEHICLE/RAMP EQUIMPMENT DETAILS AND CONDITIONS REPORT(گزارش شرایط و جزئیات وسائل نقلیه و تجهیزات رمپ)
@@ -213,7 +213,7 @@
                             </tr>
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
                                     DETAILS OF PERSONNEL INVOLVED (مشخصات کارکنان درگیر)
@@ -287,7 +287,7 @@
                             </tr>
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
                                     CONDITIONS
@@ -308,42 +308,42 @@
                             </tr>
 
                         </table>
-                        <div style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                 Weather (هوا):
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in weather">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="wxOptions[x.Id]" ng-change="chkWeather($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkWeather(x)" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
                         <div style="clear:both"></div>
 
-                        <div style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                 Surface (سطح) :
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in surface">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="surfaceOptions[x.Id]" ng-change="chkSurface($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkSurface(x)" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
                         <div style="clear:both"></div>
 
-                        <div style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                 :
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in lighting">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="lightingOptions[x.Id]" ng-change="chkLighting($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkLighting(x)" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     CONTRIBUTORY FACTORS (عوامل کمکی)
@@ -373,7 +373,7 @@
 
                         </table>-->
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     EVENT
@@ -391,7 +391,7 @@
 
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     CORRECTIVE ACTION TAKEN (اقدامات اصلاحی صورت گرفته)
@@ -403,7 +403,7 @@
 
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     OTHER INFORMATION & SUGGESTIONS FOR PREVENTIVE ACTIONS (سایر اطلاعات و پیشنهادهایی جهت اقدامات پیشگیرانه)
@@ -423,7 +423,7 @@
 
                 <div class="container">
                     <div class="visible-sm visible-md">
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
 
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date: </td>
@@ -458,20 +458,20 @@
 
                         </table>
 
-                        <div style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                 Damage By:
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in damageBy">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="dmgOptions[x.Id]" ng-change="chkDamageBy($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDamageBy(x)" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
-                            <div ng-show="showOther" style="margin:1%;border:1px solid #eee;width:98%;color:lightgray" dx-text-area="txt_eventOther"></div>
+                            <div ng-show="showOther" style="margin: 1%; border: 1px solid #eee; width: 98%; color: black" dx-text-area="txt_eventOther"></div>
 
                         </div>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     DETAILS OF DAMAGE
@@ -483,7 +483,7 @@
 
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="9">
                                     NUMBER OF CASUALTIES
@@ -514,7 +514,7 @@
 
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
                                     VEHICLE/RAMP EQUIMPMENT DETAILS AND CONDITIONS REPORT(گزارش شرایط و جزئیات وسائل نقلیه و تجهیزات رمپ)
@@ -588,7 +588,7 @@
                             </tr>
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
                                     DETAILS OF PERSONNEL INVOLVED (مشخصات کارکنان درگیر)
@@ -650,7 +650,7 @@
                             </tr>
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
                                     CONDITIONS
@@ -671,42 +671,42 @@
                             </tr>
 
                         </table>
-                        <div style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                 Weather (هوا):
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in weather">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="wxOptions[x.Id]" ng-change="chkWeather($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkWeather(x)" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
                         <div style="clear:both"></div>
 
-                        <div style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                 Surface (سطح) :
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in surface">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="surfaceOptions[x.Id]" ng-change="chkSurface($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkSurface(x)" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
                         <div style="clear:both"></div>
 
-                        <div style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                 :
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in lighting">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="lightingOptions[x.Id]" ng-change="chkLighting($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkLighting(x)" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     CONTRIBUTORY FACTORS (عوامل کمکی)
@@ -736,7 +736,7 @@
 
                         </table>-->
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     EVENT
@@ -754,7 +754,7 @@
 
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     CORRECTIVE ACTION TAKEN (اقدامات اصلاحی صورت گرفته)
@@ -766,7 +766,7 @@
 
                         </table>
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:lightgray" class="dx-border">
+                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
                                     OTHER INFORMATION & SUGGESTIONS FOR PREVENTIVE ACTIONS (سایر اطلاعات و پیشنهادهایی جهت اقدامات پیشگیرانه)

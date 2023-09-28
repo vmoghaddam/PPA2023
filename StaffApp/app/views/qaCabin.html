@@ -233,7 +233,7 @@
 
                             <div class="col-xs-3 col-sm-3 col-md-3" ng-repeat="x in flightPhase">
 
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="fpoptions[x.Id]" ng-change="chkFlightPhase($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkFlightPhase(x)" /> {{x.Title}}
 
                             </div>
                             <div style="clear:both"></div>

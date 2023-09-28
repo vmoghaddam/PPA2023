@@ -41,37 +41,7 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'default', text: 'Sign', icon: 'fas fa-signature', onClick: function (e) {
-                        $scope.followUpEntity.EntityId = $scope.entity.Id;
-                        $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
-                        $scope.followUpEntity.DateReferr = new Date();
-                        $scope.followUpEntity.DateConfirmation = new Date();
-
-                        const currentDate = new Date();
-                        const year = currentDate.getFullYear();
-                        const month = currentDate.getMonth() + 1; // Add 1 to adjust for zero-based months
-                        const day = currentDate.getDate();
-                        $scope.entity.DateSign = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
-
-                        QAService.saveSHR($scope.entity).then(function (res) {
-                            $scope.entity.Id = res.Data.Id;
-                            $scope.loadingVisible = false;
-                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
-
-
-                        $scope.loadingVisible = true
-                        QAService.saveFollowUp($scope.followUpEntity).then(function (res) {
-                            $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-                    }
-                }, toolbar: 'bottom'
-            },
-
-            {
-                widget: 'dxButton', location: 'after', options: {
-                    type: 'default', text: 'Save', icon: 'check', validationGroup: 'qaSecurity', onClick: function (e) {
+                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
 
                         //var result = e.validationGroup.validate();
 
@@ -80,15 +50,30 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
                         //    return;
                         //}
 
-                        //$scope.entity.User = $rootScope.userTitle;
-                        //$scope.entity.FlightId = $scope.tempData.FlightId;
-                        $scope.loadingVisible = true;
-                        $scope.entity.EmployeeId = $scope.tempData.crewId;
-                        $scope.entity.FlightId = $scope.tempData.FlightId;
+
+                        $scope.entity.Signed = "1";
+                        $scope.followUpEntity.EntityId = $scope.entity.Id;
+                        $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
+                        $scope.followUpEntity.DateReferr = new Date();
+                        $scope.followUpEntity.DateConfirmation = new Date();
+
+                        var reasonid = Enumerable.From($scope.shrReason).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.ReasonId = reasonid ? reasonid : null;
+
+                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
+
+                        $scope.loadingVisible = true
                         QAService.saveSHR($scope.entity).then(function (res) {
+
                             $scope.entity.Id = res.Data.Id;
-                            $scope.loadingVisible = false;
+                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+
+                                $scope.loadingVisible = false;
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.popup_add_visible = false;
+                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
 
 
 
@@ -97,12 +82,36 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
             },
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) {
-                        $scope.popup_add_visible = false;
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'chradd', onClick: function (e) {
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
+                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
+
+                        var reasonid = Enumerable.From($scope.shrReason).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.ReasonId = reasonid ? reasonid : null;
+                        $scope.entity.Signed = $scope.entity.DateSign ? "1" : null;
+                        $scope.loadingVisible = true;
+                        QAService.saveSHR($scope.entity).then(function (res) {
+                            $scope.loadingVisible = false;
+                            $scope.entity.Id = res.Data.Id;
+                            General.ShowNotify(Config.Text_SavedOk, 'success');
+                            $scope.popup_add_visible = false;
+                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
 
                     }
                 }, toolbar: 'bottom'
+            },
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) {
+                        $scope.popup_add_visible = false;
+                    }
+                }, toolbar: 'bottom'
             }
+
         ],
 
         visible: false,
@@ -229,8 +238,24 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
     /////////////////////////////////
 
 
-    $scope.chkReason = function (index) {
-        
+    $scope.chkReason = function (obj) {
+
+
+        var _id = obj.Id;
+        var _val = obj.checked;
+
+        $.each($scope.shrReason, function (_i, _d) {
+
+            if (_d.Id == _id) {
+                _d.checked = _val;
+                if (_val)
+                    $scope.entity.ReasonId = _id;
+            }
+            else
+                _d.checked = false;
+
+        });
+
         $.each($scope.shrReason, function (_i, _d) {
             if (_d.Title.includes('سایر')) {
                 if (_d.checked)
@@ -239,15 +264,18 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
                     $scope.showOther = false;
             }
         });
-
-        $scope.shrReason[index].checked = !$scope.shrReason[index].checked;
-        $scope.entity.ReasonId = $scope.shrReason[index].Id;
     }
 
 
 
+ 
+
     $scope.txt_reportDate = {
         hoverStateEnabled: false,
+        useMaskBehavior: true,
+        type: 'datetime',
+        pickerType: "rollers",
+        displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateReport',
         }
@@ -256,10 +284,11 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
     $scope.txt_hazardDate = {
         hoverStateEnabled: false,
         useMaskBehavior: true,
-        displayFormat: 'yyyy-MM-dd HH:mm',
         type: 'datetime',
+        pickerType: "rollers",
+        displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
-            value: 'entity.DateTimeHazard',
+            value: 'entity.DateOccurrence',
         }
     }
     $scope.txt_area = {
@@ -378,7 +407,7 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
     $scope.txt_telNumber = {
         hoverStateEnabled: false,
         bindingOptions: {
-            value: 'entity.telNumber',
+            value: 'entity.TelNumber',
         }
     }
 

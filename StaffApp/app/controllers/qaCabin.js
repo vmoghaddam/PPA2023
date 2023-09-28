@@ -56,7 +56,7 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
                        
                         const currentDate = new Date();
                         const year = currentDate.getFullYear();
-                        const month = currentDate.getMonth() + 1; // Add 1 to adjust for zero-based months
+                        const month = currentDate.getMonth() + 1; 
                         const day = currentDate.getDate();
 
                         //$scope.entity.DateSign = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
@@ -215,7 +215,9 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 			 else
 				 _d.checked=false;
 		 });
-		 
+
+         console.log($scope.entity.FlightPhaseId);
+
        // $scope.flightPhase[index].checked = !$scope.flightPhase[index].checked;
        // console.log($scope.fpoptions);
        // $scope.entity.FlightPhaseId = $scope.flightPhase[index].Id;
@@ -246,10 +248,6 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
     $scope.fill = function (data) {
         console.log(data);
         $scope.entity = data.result;
-        console.log(data.result.PhaseId);
-        console.log($scope.flightPhase);
-        //$scope.entity.Time = new Date(data.result.OccurrenceDateTime).getHours() + ":" + new Date(data.result.OccurrenceDateTime).getMinutes();
-        //$scope.entity.OccurrenceDate = new Date(data.result.OccurrenceDateTime).toDateString();
         $scope.entity.EventTitleIds = [];
          $.each($scope.flightPhase, function (_i, _d) {
              if (_d.Id == data.result.PhaseId)
@@ -307,18 +305,6 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 			
 
         });
- 
-       
-
-        //QAService.getFlightInformation($scope.tempData.FlightId).then(function (res) {
-        //    console.log(res);
-        //    $scope.entity.FlightNumber = res.Result.Data.FlightNumber;
-        //    $scope.entity.FlightSeg = res.Result.Data.FromAirportIATA + " - " + res.Result.Data.ToAirportIATA;
-        //    $scope.entity.PAXNum = res.Result.Data.PaxTotal;
-        //    $scope.entity.ACType = res.Result.Data.AircraftType + " - " + res.Result.Data.Register;
-        //});
-
-
     };
     ////////////////////////////////
     $scope.scroll_qaCabin_height = $(window).height() - 130;
@@ -347,16 +333,6 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 
     /////////////////////////////////
 
-
-
-
-
-
-
-
-
-   
-    
 
     $scope.txt_repFieldBy = {
         hoverStateEnabled: false,

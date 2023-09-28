@@ -38,53 +38,67 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'default', text: 'Sign', icon: 'fas fa-signature', onClick: function (e) {
+                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
+
+                        //var result = e.validationGroup.validate();
+
+                        //if (!result.isValid) {
+                        //    General.ShowNotify(Config.Text_FillRequired, 'error');
+                        //    return;
+                        //}
+
+
+                        $scope.entity.Signed = "1";
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
                         $scope.followUpEntity.DateReferr = new Date();
                         $scope.followUpEntity.DateConfirmation = new Date();
-                        const currentDate = new Date();
-                        const year = currentDate.getFullYear();
-                        const month = currentDate.getMonth() + 1; // Add 1 to adjust for zero-based months
-                        const day = currentDate.getDate();
+                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
 
-                        $scope.entity.DateSign = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
-                        QAService.saveMOR($scope.entity).then(function (res) {
-                            $scope.loadingVisible = false
-                            $scope.entity.Id = res.Data.Id;
-                            console.log(res)
-                        });
+
 
                         $scope.loadingVisible = true
-                        QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
-                            console.log(response);
-                            $scope.loadingVisible = false;
+                        QAService.saveMaintenance($scope.entity).then(function (res) {
+
+                            $scope.entity.Id = res.Data.Id;
+                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+
+                                $scope.loadingVisible = false;
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.popup_add_visible = false;
+                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
+
+
                     }
                 }, toolbar: 'bottom'
             },
-
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'default', text: 'Save', icon: 'check', validationGroup: 'moradd', onClick: function (e) {
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'chradd', onClick: function (e) {
 
-                        //var result = e.validationGroup.validate();
-                        $scope.loadingVisible = true;
                         $scope.entity.FlightId = $scope.tempData.FlightId;
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
-                        QAService.saveMOR($scope.entity).then(function (res) {
-                            $scope.loadingVisible = false
+                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
+
+                        $scope.entity.Signed = $scope.entity.DateSign ? "1" : null;
+
+                        $scope.loadingVisible = true;
+                        QAService.saveMaintenance($scope.entity).then(function (res) {
+                            $scope.loadingVisible = false;
                             $scope.entity.Id = res.Data.Id;
-                            console.log(res)
-                        });
+                            General.ShowNotify(Config.Text_SavedOk, 'success');
+                            $scope.popup_add_visible = false;
+                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
 
                     }
                 }, toolbar: 'bottom'
             },
+
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) {
@@ -92,8 +106,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
                     }
                 }, toolbar: 'bottom'
             }
-        ],
 
+        ],
         visible: false,
         dragEnabled: true,
         closeOnOutsideClick: false,
@@ -149,7 +163,7 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
     $scope.fill = function (data) {
         console.log(data);
         $scope.entity = data;
-       
+
     };
     $scope.isLockVisible = false;
     $scope.bind = function () {
@@ -160,7 +174,7 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         QAService.getMORCompnSpec().then(function (res) {
             //$scope.componentSpecification = res.Data;
             $scope.dsComponentSpect = [];
-            console.log("res",res.Data);
+            console.log("res", res.Data);
             $.each(res.Data, function (_i, _d) {
                 $scope.dsComponentSpect.push({ "id": _d.Id, "title": _d.Title });
             });
@@ -185,7 +199,7 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
 
         });
 
-        
+
     };
     ////////////////////////////////
     $scope.scroll_qaMaintenance_height = $(window).height() - 130;
@@ -213,7 +227,7 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
     };
 
     /////////////////////////////////
-  
+
     $scope.OPTCompn = []
 
     $scope.chkCompnSpec = function (index) {
@@ -234,8 +248,9 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         useMaskBehavior: true,
         displayFormat: 'yyyy-MM-dd HH:mm',
         type: 'datetime',
+        pickerType: "rollers",
         bindingOptions: {
-            value: 'entity.OccurrenceDateTime',
+            value: 'entity.DateOccurrence',
         }
     }
 
@@ -353,13 +368,13 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.ComponentSpecificationId',
-            dataSource:'dsComponentSpect'
+            dataSource: 'dsComponentSpect'
         }
     };
 
     ////////////////////////////////
 
-   
+
     $scope.$on('onSign', function (event, prms) {
 
         if (prms.doc == 'mor')
@@ -384,7 +399,7 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         console.log($scope.tempData);
 
         $scope.popup_add_visible = true;
-        
+
     });
 
 

@@ -136,7 +136,7 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
-    var _saveMOR = function (entity) {
+    var _saveMaintenance = function (entity) {
 
         var deferred = $q.defer();
         $http.post(apiQA+'/api/save/mor', entity).then(function (response) {
@@ -159,7 +159,7 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
-    var _saveGIA = function (entity) {
+    var _saveGround = function (entity) {
 
         var deferred = $q.defer();
         $http.post(apiQA+'/api/save/gia', entity).then(function (response) {
@@ -222,7 +222,7 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     var _saveCHR = function (entity) {
 
         var deferred = $q.defer();
-        $http.post(apiQA+'/api/save/chr', entity).then(function (response) {
+        $http.post(apiQA+'api/save/chr', entity).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
             deferred.reject(Exceptions.getMessage(err));
@@ -304,7 +304,7 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     }
 
 
-    var _saveDHR = function (entity) {
+    var _saveDispatch = function (entity) {
 
         var deferred = $q.defer();
         $http.post(apiQA+'/api/save/dhr', entity).then(function (response) {
@@ -384,7 +384,7 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     serviceFactory.getFlightInformation = _getFlightInformation;
 
     serviceFactory.getGIAByFlightId = _getGIAByFlightId;
-    serviceFactory.saveGIA = _saveGIA;
+    serviceFactory.saveGround = _saveGround;
     serviceFactory.getDamageBy = _getDamageBy;
     serviceFactory.getWeather = _getWeather;
     serviceFactory.getSurface = _getSurface;
@@ -408,11 +408,11 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     serviceFactory.getVHRById = _getVHRById;
     serviceFactory.saveVHR = _saveVHR;
 
-    serviceFactory.saveMOR = _saveMOR;
+    serviceFactory.saveMaintenance = _saveMaintenance;
     serviceFactory.getMORByFlightId = _getMORByFlightId;
     serviceFactory.getMORCompnSpec = _getMORCompnSpec;
 
-    serviceFactory.saveDHR = _saveDHR;
+    serviceFactory.saveDispatch = _saveDispatch;
     serviceFactory.getDHRByFlightId = _getDHRByFlightId;
     serviceFactory.getOPCatagory = _getOPCatagory;
     serviceFactory.getDISCatagory = _getDISCatagory;

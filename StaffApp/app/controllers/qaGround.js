@@ -22,10 +22,6 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         Type: 1,
     }
 
-    $scope.dmgOptions = [];
-    $scope.wxOptions = [];
-    $scope.surfaceOptions = [];
-    $scope.lightingOptions = [];
 
 
     ////////////////////////
@@ -43,40 +39,7 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'default', text: 'Sign', icon: 'fas fa-signature', onClick: function (e) {
-                        $scope.followUpEntity.EntityId = $scope.entity.Id;
-                        $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
-                        $scope.followUpEntity.DateReferr = new Date();
-                        $scope.followUpEntity.DateConfirmation = new Date();
-
-                        const currentDate = new Date();
-                        const year = currentDate.getFullYear();
-                        const month = currentDate.getMonth() + 1; // Add 1 to adjust for zero-based months
-                        const day = currentDate.getDate();
-
-                        $scope.entity.DateSign = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
-
-                        
-                        $scope.loadingVisible = true
-                        QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
-                            console.log(response);
-                            $scope.loadingVisible = false;
-                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
-                        QAService.saveGIA($scope.entity).then(function (res) {
-                            console.log(res);
-                            $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                        })
-
-
-                    }
-                }, toolbar: 'bottom'
-            },
-
-            {
-                widget: 'dxButton', location: 'after', options: {
-                    type: 'default', text: 'Save', icon: 'check', validationGroup: 'qaGround', onClick: function (e) {
+                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
 
                         //var result = e.validationGroup.validate();
 
@@ -85,14 +48,40 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                         //    return;
                         //}
 
-                        $scope.entity.FlightId = $scope.tempData.FlightId;
-                        $scope.entity.EmployeeId = $scope.tempData.crewId;
-                        $scope.loadingVisible = true;
-                        QAService.saveGIA($scope.entity).then(function (res) {
-                            console.log(res);
-                            $scope.loadingVisible = false;
+
+                        $scope.entity.Signed = "1";
+                        $scope.followUpEntity.EntityId = $scope.entity.Id;
+                        $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
+                        $scope.followUpEntity.DateReferr = new Date();
+                        $scope.followUpEntity.DateConfirmation = new Date();
+
+                        var damageid = Enumerable.From($scope.damageBy).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.DamageById = damageid ? damageid : null;
+
+                        var lightingid = Enumerable.From($scope.lighting).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.WXLightingId = lightingid ? lightingid : null;
+
+                        var weatherid = Enumerable.From($scope.weather).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.WXWeatherId = weatherid ? weatherid : null;
+
+                        var surfaceid = Enumerable.From($scope.surface).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.WXSurfaceId = surfaceid ? surfaceid : null;
+
+                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
+
+                        $scope.loadingVisible = true
+                        QAService.saveGround($scope.entity).then(function (res) {
+
                             $scope.entity.Id = res.Data.Id;
-                        })
+                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+
+                                $scope.loadingVisible = false;
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.popup_add_visible = false;
+                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
 
 
                     }
@@ -100,17 +89,52 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
             },
             {
                 widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'chradd', onClick: function (e) {
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
+                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
+
+
+
+                        var damageid = Enumerable.From($scope.damageBy).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.DamageById = damageid ? damageid : null;
+
+                        var lightingid = Enumerable.From($scope.lighting).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.WXLightingId = lightingid ? lightingid : null;
+
+                        var weatherid = Enumerable.From($scope.weather).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.WXWeatherId = weatherid ? weatherid : null;
+
+                        var surfaceid = Enumerable.From($scope.surface).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
+                        $scope.entity.WXSurfaceId = surfaceid ? surfaceid : null;
+
+
+
+                        $scope.entity.Signed = $scope.entity.DateSign ? "1" : null;
+
+                        $scope.loadingVisible = true;
+                        QAService.saveGround($scope.entity).then(function (res) {
+                            $scope.loadingVisible = false;
+                            $scope.entity.Id = res.Data.Id;
+                            General.ShowNotify(Config.Text_SavedOk, 'success');
+                            $scope.popup_add_visible = false;
+                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+
+                    }
+                }, toolbar: 'bottom'
+            },
+
+            {
+                widget: 'dxButton', location: 'after', options: {
                     type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) {
                         $scope.popup_add_visible = false;
-                        $scope.dmgOptions = [];
-                        $scope.wxOptions = [];
-                        $scope.surfaceOptions = [];
-                        $scope.lightingOptions = [];
                     }
                 }, toolbar: 'bottom'
             }
-        ],
 
+        ],
         visible: false,
         dragEnabled: true,
         closeOnOutsideClick: false,
@@ -165,43 +189,140 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     /////////////////////////////////
 
+    $scope.chkDamageBy = function (obj) {
+
+        var _id = obj.Id;
+        var _val = obj.checked;
+
+        $.each($scope.damageBy, function (_i, _d) {
+
+            if (_d.Id == _id) {
+                _d.checked = _val;
+                if (_val)
+                    $scope.entity.DamageById = _id;
+            }
+            else
+                _d.checked = false;
+
+        });
+
+
+        $.each($scope.damageBy, function (_i, _d) {
+            if (_d.Title.includes('Other')) {
+                if (_d.checked)
+                    $scope.showOther = true;
+                else
+                    $scope.showOther = false;
+            }
+        });
+    }
+
+    $scope.chkLighting = function (obj) {
+        var _id = obj.Id;
+        var _val = obj.checked;
+
+        $.each($scope.lighting, function (_i, _d) {
+
+            if (_d.Id == _id) {
+                _d.checked = _val;
+                if (_val)
+                    $scope.entity.WXLightingId = _id;
+            }
+            else
+                _d.checked = false;
+
+        });
+    }
+
+    $scope.chkWeather = function (obj) {
+
+        var _id = obj.Id;
+        var _val = obj.checked;
+
+        $.each($scope.weather, function (_i, _d) {
+
+            if (_d.Id == _id) {
+                _d.checked = _val;
+                if (_val)
+                    $scope.entity.WXWeatherId = _id;
+            }
+            else
+                _d.checked = false;
+
+        });
+    }
+
+    $scope.chkSurface = function (obj) {
+
+        console.log(obj);
+        console.log($scope.surface);
+
+        var _id = obj.Id;
+        var _val = obj.checked;
+
+        $.each($scope.surface, function (_i, _d) {
+
+            if (_d.Id == _id) {
+                _d.checked = _val;
+                if (_val)
+                    $scope.entity.WXSurfaceId = _id;
+            }
+            else
+                _d.checked = false;
+
+        });
+    }
+
 
 
     $scope.flight = null;
     $scope.fill = function (data) {
-        console.log(data);
         $scope.entity = data;
-        $scope.dmgOptions[data.DamageById] = true;
-        $scope.wxOptions[data.WXWeatherId] = true;
-        $scope.surfaceOptions[data.WXSurfaceId] = true;
-        $scope.lightingOptions[data.WXLightingId] = true;
-        console.log($scope.lightingOptions)
+
+        $.each($scope.damageBy, function (_i, _d) {
+            if (_d.Id == data.DamageById)
+                _d.checked = true;
+        });
+
+        $.each($scope.weather, function (_i, _d) {
+            if (_d.Id == data.WXWeatherId)
+                _d.checked = true;
+        });
+
+        $.each($scope.surface, function (_i, _d) {
+            console.log(_d);
+
+            if (_d.Id == data.WXSurfaceId)
+                _d.checked = true;
+        });
+
+        $.each($scope.lighting, function (_i, _d) {
+            if (_d.Id == data.WXLightingId)
+                _d.checked = true;
+        });
+
     };
+
+
     $scope.isLockVisible = false;
     $scope.bind = function () {
         $scope.entity.FlightId = $scope.tempData.FlightId;
 
         QAService.getDamageBy().then(function (res) {
             $scope.damageBy = res.Data;
-            console.log($scope.damageBy);
-            console.log(res);
         })
 
         QAService.getSurface().then(function (res) {
             $scope.surface = res.Data;
-            console.log($scope.surface);
-            console.log(res);
         })
 
         QAService.getWeather().then(function (res) {
             $scope.weather = res.Data;
-            console.log($scope.weather);
-            console.log(res);
         })
 
         QAService.getLighting().then(function (res) {
             $scope.lighting = res.Data;
-            console.log($scope.lighting);
+
             QAService.getGIAByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
                 if (res.Data.Id != null)
                     $scope.fill(res.Data);
@@ -247,50 +368,14 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     };
 
     /////////////////////////////////
-
-
-
-
-    $scope.chkDamageBy = function (index) {
-
-        $.each($scope.damageBy, function (_i, _d) {
-            if (_d.Title.includes('Other')) {
-                if (_d.checked)
-                    $scope.showOther = true;
-                else
-                    $scope.showOther = false;
-            }
-        });
-
-        $scope.damageBy[index].checked = !$scope.damageBy[index].checked;
-        $scope.entity.DamageById = $scope.damageBy[index].Id;
-
-    }
-
-    $scope.chkLighting = function (index) {
-        $scope.lighting[index].checked = !$scope.lighting[index].checked;
-        $scope.entity.WXLightingId = $scope.lighting[index].Id;
-    }
-
-    $scope.chkWeather = function (index) {
-        $scope.weather[index].checked = !$scope.weather[index].checked;
-        $scope.entity.WXWeatherId = $scope.weather[index].Id;
-    }
-
-    $scope.chkSurface = function (index) {
-        $scope.surface[index].checked = !$scope.surface[index].checked;
-        $scope.entity.WXSurfaceId = $scope.surface[index].Id;
-    }
-
-
-
     $scope.txt_date = {
         hoverStateEnabled: false,
         useMaskBehavior: true,
-        displayFormat: 'yyyy-MM-dd HH:mm',
         type: 'datetime',
+        pickerType: "rollers",
+        displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
-            value: 'entity.DamageDate',
+            value: 'entity.DateOccurrence',
         }
     }
 
