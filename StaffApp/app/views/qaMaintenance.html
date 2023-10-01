@@ -20,6 +20,10 @@
     .ctd-selected {
         background-color: red;
     }
+
+    .dx-toolbar-center {
+        width: 100%;
+    }
 </style>
 <div ng-controller="qaMaintenanceController">
     <div id="popup_add" dx-popup="popup_add" class="no-padding">
@@ -33,7 +37,7 @@
 
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Occurrence: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_OccurrenceDate" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_OccurrenceDate" class="center" dx-validator="{validationGroup:'maintenance',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <!--<tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> UTC Time / Local Time: </td>
@@ -171,7 +175,7 @@
 
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Occurrence: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_OccurrenceDate" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_OccurrenceDate" class="center" dx-validator="{validationGroup:'maintenance',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Station: </td>
                                 <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_station"></div></td>
                                 <!--<td style="padding: 7px;text-align:left; font-weight: bold"> UTC Time / Local Time: </td>

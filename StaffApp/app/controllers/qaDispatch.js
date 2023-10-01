@@ -1,7 +1,7 @@
 ﻿'use strict';
 app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
     $scope.isNew = true;
-    $scope.isEditable = true;
+    $scope.isEditable = false;
     $scope.isLockVisible = false;
     $scope.isContentVisible = false;
     $scope.isFullScreen = false;
@@ -41,14 +41,14 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
+                    type: 'success', text: 'Sign', validationGroup: 'dispatch', icon: 'fas fa-signature', onClick: function (e) {
 
-                        //var result = e.validationGroup.validate();
+                        var result = e.validationGroup.validate();
 
-                        //if (!result.isValid) {
-                        //    General.ShowNotify(Config.Text_FillRequired, 'error');
-                        //    return;
-                        //}
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
 
 
                         $scope.entity.Signed = "1";
@@ -88,7 +88,14 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
             },
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'chradd', onClick: function (e) {
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'dispatch', onClick: function (e) {
+                        var result = e.validationGroup.validate();
+
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+
+                        }
                         $scope.entity.FlightId = $scope.tempData.FlightId;
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
@@ -177,8 +184,8 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
             title: 'popup_add_title',
             height: 'popup_height',
             width: 'popup_width',
-            //'toolbarItems[0].visible': 'isLockVisible',
-            //'toolbarItems[1].visible': 'isEditable',
+            'toolbarItems[0].visible': 'isEditable',
+            'toolbarItems[1].visible': 'isEditable',
 
         }
     };
@@ -218,11 +225,13 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
             QAService.getDHRByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
                 if (res.Data.Id != null) {
                     $scope.fill(res.Data);
+                    $scope.isEditable = !$scope.entity.DateSign;
                 }
                 else {
                     $scope.entity.FlightNumber = res.Data.FlightNumber;
                     $scope.entity.Route = res.Data.Route;
                     $scope.entity.Register = res.Data.Register;
+                    $scope.isEditable = true;
                 }
 
             });

@@ -1,7 +1,7 @@
 ﻿'use strict';
 app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
     $scope.isNew = true;
-    $scope.isEditable = true;
+    $scope.isEditable = false;
     $scope.isLockVisible = false;
     $scope.isContentVisible = false;
     $scope.isFullScreen = false;
@@ -39,14 +39,14 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
+                    type: 'success', text: 'Sign', validationGroup: 'catering', icon: 'fas fa-signature', onClick: function (e) {
 
-                        //var result = e.validationGroup.validate();
+                        var result = e.validationGroup.validate();
 
-                        //if (!result.isValid) {
-                        //    General.ShowNotify(Config.Text_FillRequired, 'error');
-                        //    return;
-                        //}
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
 
                         
                         $scope.entity.Signed = "1";
@@ -82,15 +82,13 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
             },
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'chradd', onClick: function (e) {
-                        // console.log($scope.entity.EventTitleIds);
-                        // return;
-                        //var result = e.validationGroup.validate();
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'catering', onClick: function (e) {
+                        var result = e.validationGroup.validate();
 
-                        //if (!result.isValid) {
-                        //    General.ShowNotify(Config.Text_FillRequired, 'error');
-                        //    return;
-                        //}
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
 
 
                         //$scope.entity.OccurrenceDateTime = $scope.entity.OccurrenceDate + " " + $scope.entity.Time + ":00";
@@ -231,11 +229,13 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                 console.log(res);
                 if (res.Data.Id != null) {
                     $scope.fill(res.Data);
+                    $scope.isEditable = !$scope.entity.DateSign;
                 }
                 else {
                     $scope.entity.FlightNumber = res.Data.FlightNumber;
                     $scope.entity.Route = res.Data.Route;
                     $scope.entity.Register = res.Data.Register;
+                    $scope.isEditable = true;
                 }
 
             });
@@ -444,7 +444,10 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
         $scope.tempData = null;
         $scope.tempData = prms;
+        
 
+
+        console.log($scope.tempData);
 
         $scope.popup_add_visible = true;
 

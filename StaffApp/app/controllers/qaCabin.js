@@ -45,7 +45,7 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'success', text: 'Sign',validationGroup: 'csradd', icon: 'fas fa-signature', onClick: function (e) {
+                    type: 'success', text: 'Sign',validationGroup: 'cabin', icon: 'fas fa-signature', onClick: function (e) {
 
                           var result = e.validationGroup.validate();
 
@@ -95,7 +95,7 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
             },
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: 'Save', icon: 'check',validationGroup: 'csradd', onClick: function (e) {
+                    type: 'success', text: 'Save', icon: 'check',validationGroup: 'cabin', onClick: function (e) {
                         // console.log($scope.entity.EventTitleIds);
 						// return;
                          var result = e.validationGroup.validate();

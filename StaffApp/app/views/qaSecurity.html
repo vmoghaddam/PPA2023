@@ -20,6 +20,10 @@
     .ctd-selected {
         background-color: red;
     }
+
+    .dx-toolbar-center {
+        width: 100%;
+    }
 </style>
 <div ng-controller="qaSecurityController">
     <div id="popup_add" dx-popup="popup_add" class="no-padding">
@@ -60,11 +64,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_reportDate" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_reportDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}" ></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ گزارش </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardDate" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ و ساعت بروز رویداد/مخاطره </td>
                             </tr>
                             <tr>
@@ -208,9 +212,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_reportDate" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_reportDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}" ></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ گزارش </td>
-                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardDate" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ و ساعت بروز رویداد/مخاطره </td>
                             </tr>
                             <tr>

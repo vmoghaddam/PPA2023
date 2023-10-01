@@ -20,6 +20,9 @@
     .ctd-selected {
         background-color: red;
     }
+    .dx-toolbar-center {
+        width: 100%;
+    }
 </style>
 <div ng-controller="qaVoluntaryController">
     <div id="popup_add" dx-popup="popup_add" class="no-padding">
@@ -58,11 +61,11 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Hazard identified: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Affected area of Incident/Hazard: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Report Date: </td>
@@ -128,13 +131,13 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Hazard identified: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Affected area of Incident/Hazard: </td>
                                 <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Report Date: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_repDate"></div></td>
+                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_repDate" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                         </table>
 

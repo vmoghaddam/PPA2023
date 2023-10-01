@@ -1,7 +1,7 @@
 ﻿'use strict';
 app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
     $scope.isNew = true;
-    $scope.isEditable = true;
+    $scope.isEditable = false;
     $scope.isLockVisible = false;
     $scope.isContentVisible = false;
     $scope.isFullScreen = false;
@@ -37,46 +37,53 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
         toolbarItems: [
             {
-                widget: 'dxButton', location: 'before', options: {
-                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
+                //widget: 'dxButton', location: 'before', options: {
+                //    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
 
-                        //var result = e.validationGroup.validate();
+                //        //var result = e.validationGroup.validate();
 
-                        //if (!result.isValid) {
-                        //    General.ShowNotify(Config.Text_FillRequired, 'error');
-                        //    return;
-                        //}
-
-
-                        $scope.entity.Signed = "1";
-                        $scope.followUpEntity.EntityId = $scope.entity.Id;
-                        $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
-                        $scope.followUpEntity.DateReferr = new Date();
-                        $scope.followUpEntity.DateConfirmation = new Date();
-
-                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
-
-                        $scope.loadingVisible = true
-                        QAService.saveVHR($scope.entity).then(function (res) {
-
-                            $scope.entity.Id = res.Data.Id;
-                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
-
-                                $scope.loadingVisible = false;
-                                General.ShowNotify(Config.Text_SavedOk, 'success');
-                                $scope.popup_add_visible = false;
-                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                //        //if (!result.isValid) {
+                //        //    General.ShowNotify(Config.Text_FillRequired, 'error');
+                //        //    return;
+                //        //}
 
 
+                //        $scope.entity.Signed = "1";
+                //        $scope.followUpEntity.EntityId = $scope.entity.Id;
+                //        $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
+                //        $scope.followUpEntity.DateReferr = new Date();
+                //        $scope.followUpEntity.DateConfirmation = new Date();
+
+                //        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
+
+                //        $scope.loadingVisible = true
+                //        QAService.saveVHR($scope.entity).then(function (res) {
+
+                //            $scope.entity.Id = res.Data.Id;
+                //            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+
+                //                $scope.loadingVisible = false;
+                //                General.ShowNotify(Config.Text_SavedOk, 'success');
+                //                $scope.popup_add_visible = false;
+                //            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                //        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
-                    }
-                }, toolbar: 'bottom'
+
+
+                //    }
+                //}, toolbar: 'bottom'
             },
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'chradd', onClick: function (e) {
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'voluntary', onClick: function (e) {
+                        var result = e.validationGroup.validate();
+
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
+
                         $scope.entity.FlightId = $scope.tempData.FlightId;
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');

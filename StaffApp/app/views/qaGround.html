@@ -20,6 +20,11 @@
     .ctd-selected {
         background-color: red;
     }
+
+    .dx-toolbar-center {
+        width: 100%;
+    }
+
 </style>
 <div ng-controller="qaGroundController">
     <div id="popup_add" dx-popup="popup_add" class="no-padding">
@@ -32,7 +37,7 @@
                         <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_date" class="center"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_date" class="center" dx-validator="{validationGroup:'ground',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <!--<tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Time of occurrence: </td>
@@ -455,7 +460,7 @@
 
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_date" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_date" class="center" dx-validator="{validationGroup:'ground',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Flight Delay: </td>
                                 <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_fltDelay"></div></td>
                                 <!--<td style="padding: 7px;text-align:left; font-weight: bold"> Time of occurrence: </td>

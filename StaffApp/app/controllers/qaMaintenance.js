@@ -1,7 +1,7 @@
 ﻿'use strict';
 app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
     $scope.isNew = true;
-    $scope.isEditable = true;
+    $scope.isEditable = false;
     $scope.isLockVisible = false;
     $scope.isContentVisible = false;
     $scope.isFullScreen = false;
@@ -38,14 +38,14 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
+                    type: 'success', text: 'Sign', validationGroup: 'maintenance', icon: 'fas fa-signature', onClick: function (e) {
 
-                        //var result = e.validationGroup.validate();
+                        var result = e.validationGroup.validate();
 
-                        //if (!result.isValid) {
-                        //    General.ShowNotify(Config.Text_FillRequired, 'error');
-                        //    return;
-                        //}
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
 
 
                         $scope.entity.Signed = "1";
@@ -77,7 +77,14 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
             },
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'chradd', onClick: function (e) {
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'maintenance', onClick: function (e) {
+
+                        var result = e.validationGroup.validate();
+
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
 
                         $scope.entity.FlightId = $scope.tempData.FlightId;
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
@@ -150,8 +157,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
             title: 'popup_add_title',
             height: 'popup_height',
             width: 'popup_width',
-            //'toolbarItems[0].visible': 'isLockVisible',
-            //'toolbarItems[1].visible': 'isEditable',
+            'toolbarItems[0].visible': 'isEditable',
+            'toolbarItems[1].visible': 'isEditable',
 
         }
     };
@@ -181,9 +188,10 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
 
             QAService.getMORByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
 
-                console.log(res);
-                if (res.Data.Id != null)
+                if (res.Data.Id != null) {
                     $scope.fill(res.Data);
+                    $scope.isEditable = !$scope.entity.DateSign;
+                }
                 else {
                     $scope.entity = {
                         Id: -1,
@@ -193,7 +201,9 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
                         ScheduledGroundTime: res.Data.ScheduledGroundTime,
                         flightCancelled: res.Data.flightCancelled,
                         FlightRoute: res.Data.FlightRoute,
+                        
                     }
+                    $scope.isEditable = true;
                 }
             });
 

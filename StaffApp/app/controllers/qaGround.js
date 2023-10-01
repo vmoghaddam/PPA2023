@@ -1,7 +1,7 @@
 ﻿'use strict';
 app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
     $scope.isNew = true;
-    $scope.isEditable = true;
+    $scope.isEditable = false;
     $scope.isLockVisible = false;
     $scope.isContentVisible = false;
     $scope.isFullScreen = false;
@@ -39,14 +39,14 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
+                    type: 'success', text: 'Sign', validationGroup: 'ground', icon: 'fas fa-signature', onClick: function (e) {
 
-                        //var result = e.validationGroup.validate();
+                        var result = e.validationGroup.validate();
 
-                        //if (!result.isValid) {
-                        //    General.ShowNotify(Config.Text_FillRequired, 'error');
-                        //    return;
-                        //}
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
 
 
                         $scope.entity.Signed = "1";
@@ -89,7 +89,14 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
             },
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'chradd', onClick: function (e) {
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'ground', onClick: function (e) {
+
+                        var result = e.validationGroup.validate();
+
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
                         $scope.entity.FlightId = $scope.tempData.FlightId;
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
@@ -179,8 +186,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
             title: 'popup_add_title',
             height: 'popup_height',
             width: 'popup_width',
-            //'toolbarItems[0].visible': 'isLockVisible',
-            //'toolbarItems[1].visible': 'isEditable',
+            'toolbarItems[0].visible': 'isEditable',
+            'toolbarItems[1].visible': 'isEditable',
 
         }
     };
@@ -324,9 +331,10 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
             $scope.lighting = res.Data;
 
             QAService.getGIAByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
-                if (res.Data.Id != null)
+                if (res.Data.Id != null) {
                     $scope.fill(res.Data);
-                else {
+                    $scope.isEditable = !$scope.entity.DateSign;
+                } else {
                     $scope.entity = {
                         Id: -1,
                         FlightNumber: res.Data.FlightNumber,
@@ -334,7 +342,9 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                         Register: res.Data.Register,
                         ScheduledGroundTime: res.Data.ScheduledGroundTime,
                         flightCancelled: res.Data.flightCancelled,
+
                     }
+                    $scope.isEditable = true
                 }
             });
         })

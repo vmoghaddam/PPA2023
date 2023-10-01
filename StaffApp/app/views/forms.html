@@ -47,8 +47,8 @@
             </div>
 			<div style='clear:both'></div>
             <div id="scrollview" dx-scroll-view="scroll_main">
-                <div style=" margin:5px 5px 0 5px; border:1px solid #ccc" ng-class="getFormClass(x)" ng-repeat="x in ds_active" >
-				  <div   >
+                <div style=" margin:5px 5px 0 5px; border:1px solid #ccc" ng-class="getFormClass(x)" ng-repeat="x in ds_active" ng-click="showForm(x)">
+				  <div>
 				      <div style='font-weight:bold;text-align:center;padding:5px;' ng-class="getHeaderClass(x)"> 
 					     <table style='width:100%;'>
 						    <tr>
