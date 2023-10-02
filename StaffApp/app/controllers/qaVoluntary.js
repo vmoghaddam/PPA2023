@@ -145,6 +145,8 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
             };
             $scope.popup_add_visible = false;
             $rootScope.$broadcast('onVhrHide', null);
+            $scope.isLockVisible = false
+
         },
         onContentReady: function (e) {
             if (!$scope.popup_instance)
@@ -177,10 +179,11 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
             QAService.getVHRById($scope.tempData.EntityId).then(function (res) {
                 $scope.fill(res.Data);
                 $scope.isEditable = !$scope.entity.DateSign;
-                $scope.isLockVisible = !$scope.entity.DateSign;
-                //if ($scope.tempData.Status == "Not Signed") {
-                //    $scope.isLockVisible = true
-                //}
+                //$scope.isLockVisible = !$scope.entity.DateSign;
+                if ($scope.tempData.Status == "Not Signed") 
+                    $scope.isLockVisible = true
+               
+               
             });
         }
     };
