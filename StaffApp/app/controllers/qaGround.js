@@ -334,6 +334,7 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                 if (res.Data.Id != null) {
                     $scope.fill(res.Data);
                     $scope.isEditable = !$scope.entity.DateSign;
+                   
                 } else {
                     $scope.entity = {
                         Id: -1,

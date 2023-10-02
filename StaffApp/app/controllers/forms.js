@@ -108,7 +108,8 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
         var data = {
             FlightId: obj.FlightId,
             crewId: $rootScope.employeeId,
-            Status: obj.Status
+            Status: obj.Status,
+            EntityId: obj.EntityId,
         };
 
         switch (obj.type) {
@@ -119,7 +120,7 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
                 $rootScope.$broadcast('InitQAGround', data);
                 break;
             case 2:
-                $rootScope.$broadcast('InitVHR', data);
+                $rootScope.$broadcast('InitQAVoluntary', data);
                 break;
             case 3:
                 $rootScope.$broadcast('InitQAMaintenance', data);
