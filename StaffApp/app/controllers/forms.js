@@ -286,17 +286,17 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
         }
     };
 
-    $scope.ds_active = [];
+    $rootScope.ds_active = [];
     $scope.bind_closed = function () {
-        $scope.ds_active = Enumerable.From($scope.ds).Where(function (x) { return x.Status == 'Closed'; }).ToArray();
+        $rootScope.ds_active = Enumerable.From($scope.ds).Where(function (x) { return x.Status == 'Closed'; }).ToArray();
 
     };
     $scope.bind_inprogress = function () {
-        $scope.ds_active = Enumerable.From($scope.ds).Where(function (x) { return x.Status == 'In Progress'; }).ToArray();
+        $rootScope.ds_active = Enumerable.From($scope.ds).Where(function (x) { return x.Status == 'In Progress'; }).ToArray();
 
     };
     $scope.bind_notsigned = function () {
-        $scope.ds_active = Enumerable.From($scope.ds).Where(function (x) { return x.Status == 'Not Signed'; }).ToArray();
+        $rootScope.ds_active = Enumerable.From($scope.ds).Where(function (x) { return x.Status == 'Not Signed'; }).ToArray();
 
     };
     $scope.bind = function () {
@@ -538,6 +538,40 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
     $scope.$on('$viewContentLoaded', function () {
 
         $scope.bind();
+    });
+
+    /////////////////
+
+    $scope.$on('onQACabinHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQACateringHide', function () {
+
+        //$scope.bind();
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+
+    });
+    $scope.$on('onQAGroundHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQAMaintenanceHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQADispatchHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQASecurityHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQAVoluntaryHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
     });
 
 

@@ -77,6 +77,11 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                                 $scope.loadingVisible = false;
                                 General.ShowNotify(Config.Text_SavedOk, 'success');
                                 $scope.popup_add_visible = false;
+                                if ($scope.tempData.Status == "Not Signed") {
+                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "In Progress";
+                                }
+
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -167,7 +172,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
 
 
             $scope.popup_add_visible = false;
-            $rootScope.$broadcast('onDHRHide', null);
+            $rootScope.$broadcast('onQADispatchHide', null);
 
 
         },
@@ -364,7 +369,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         displayFormat: 'HH:mm',
         type: 'time',
         bindingOptions: {
-            value: 'entity.DateTimeHazard',
+            value: 'entity.OPTimeReceived',
         }
     }
 
@@ -387,92 +392,92 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         { id: 1, title: "YES" }
     ];
 
-    $scope.sb_fltCancelled = {
-        hoverStateEnabled: false,
-        dataSource: $scope.ds_status,
-        placeholder: '',
-        displayExpr: 'title',
-        valueExpr: 'id',
-        bindingOptions: {
-            value: 'entity',
-        }
-    }
+    //$scope.sb_fltCancelled = {
+    //    hoverStateEnabled: false,
+    //    dataSource: $scope.ds_status,
+    //    placeholder: '',
+    //    displayExpr: 'title',
+    //    valueExpr: 'id',
+    //    bindingOptions: {
+    //        value: 'entity',
+    //    }
+    //}
 
-    $scope.txt_fltCancelledTime = {
-        hoverStateEnabled: false,
-        useMaskBehavior: true,
-        displayFormat: 'HH:mm',
-        type: 'time',
-        bindingOptions: {
-            value: 'entity',
-        }
-    }
-
-
-    $scope.sb_acChanged = {
-        hoverStateEnabled: false,
-        dataSource: $scope.ds_status,
-        placeholder: '',
-        displayExpr: 'title',
-        valueExpr: 'id',
-        bindingOptions: {
-            value: 'entity',
-        }
-    }
-
-    $scope.txt_acChangeTime = {
-        hoverStateEnabled: false,
-        useMaskBehavior: true,
-        displayFormat: 'HH:mm',
-        type: 'time',
-        bindingOptions: {
-            value: 'entity',
-        }
-    }
+    //$scope.txt_fltCancelledTime = {
+    //    hoverStateEnabled: false,
+    //    useMaskBehavior: true,
+    //    displayFormat: 'HH:mm',
+    //    type: 'time',
+    //    bindingOptions: {
+    //        value: 'entity',
+    //    }
+    //}
 
 
-    $scope.sb_crewChanged = {
-        hoverStateEnabled: false,
-        dataSource: $scope.ds_status,
-        placeholder: '',
-        displayExpr: 'title',
-        valueExpr: 'id',
-        bindingOptions: {
-            value: 'entity',
-        }
-    }
+    //$scope.sb_acChanged = {
+    //    hoverStateEnabled: false,
+    //    dataSource: $scope.ds_status,
+    //    placeholder: '',
+    //    displayExpr: 'title',
+    //    valueExpr: 'id',
+    //    bindingOptions: {
+    //        value: 'entity',
+    //    }
+    //}
 
-    $scope.txt_crewChangeTime = {
-        hoverStateEnabled: false,
-        useMaskBehavior: true,
-        displayFormat: 'HH:mm',
-        type: 'time',
-        bindingOptions: {
-            value: 'entity',
-        }
-    }
+    //$scope.txt_acChangeTime = {
+    //    hoverStateEnabled: false,
+    //    useMaskBehavior: true,
+    //    displayFormat: 'HH:mm',
+    //    type: 'time',
+    //    bindingOptions: {
+    //        value: 'entity',
+    //    }
+    //}
 
 
-    $scope.sb_fltPerformed = {
-        hoverStateEnabled: false,
-        dataSource: $scope.ds_status,
-        placeholder: '',
-        displayExpr: 'title',
-        valueExpr: 'id',
-        bindingOptions: {
-            value: 'entity',
-        }
-    }
+    //$scope.sb_crewChanged = {
+    //    hoverStateEnabled: false,
+    //    dataSource: $scope.ds_status,
+    //    placeholder: '',
+    //    displayExpr: 'title',
+    //    valueExpr: 'id',
+    //    bindingOptions: {
+    //        value: 'entity',
+    //    }
+    //}
 
-    $scope.txt_fltPerformedTime = {
-        hoverStateEnabled: false,
-        useMaskBehavior: true,
-        displayFormat: 'HH:mm',
-        type: 'time',
-        bindingOptions: {
-            value: 'entity',
-        }
-    }
+    //$scope.txt_crewChangeTime = {
+    //    hoverStateEnabled: false,
+    //    useMaskBehavior: true,
+    //    displayFormat: 'HH:mm',
+    //    type: 'time',
+    //    bindingOptions: {
+    //        value: 'entity',
+    //    }
+    //}
+
+
+    //$scope.sb_fltPerformed = {
+    //    hoverStateEnabled: false,
+    //    dataSource: $scope.ds_status,
+    //    placeholder: '',
+    //    displayExpr: 'title',
+    //    valueExpr: 'id',
+    //    bindingOptions: {
+    //        value: 'entity',
+    //    }
+    //}
+
+    //$scope.txt_fltPerformedTime = {
+    //    hoverStateEnabled: false,
+    //    useMaskBehavior: true,
+    //    displayFormat: 'HH:mm',
+    //    type: 'time',
+    //    bindingOptions: {
+    //        value: 'entity',
+    //    }
+    //}
 
     $scope.txt_opEventSummery = {
         hoverStateEnabled: false,

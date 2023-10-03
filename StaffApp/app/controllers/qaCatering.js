@@ -71,6 +71,13 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                                 $scope.loadingVisible = false;
                                 General.ShowNotify(Config.Text_SavedOk, 'success');
                                 $scope.popup_add_visible = false;
+
+                                if ($scope.tempData.Status == "Not Signed") {
+                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "In Progress";
+                                }
+
+
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -159,7 +166,7 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
             $scope.fpoptions = [];
             $scope.etoptions = [];
             $scope.popup_add_visible = false;
-            $rootScope.$broadcast('onQACabinHide', null);
+            $rootScope.$broadcast('onQACateringHide', null);
         },
         onContentReady: function (e) {
             if (!$scope.popup_instance)

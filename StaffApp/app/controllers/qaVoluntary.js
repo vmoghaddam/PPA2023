@@ -65,6 +65,10 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
                                 $scope.loadingVisible = false;
                                 General.ShowNotify(Config.Text_SavedOk, 'success');
                                 $scope.popup_add_visible = false;
+                                if ($scope.tempData.Status == "Not Signed") {
+                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "In Progress";
+                                }
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -144,7 +148,7 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
             };
             $scope.popup_add_visible = false;
-            $rootScope.$broadcast('onVhrHide', null);
+            $rootScope.$broadcast('onQAVoluntaryHide', null);
             $scope.isLockVisible = false
 
         },
@@ -180,10 +184,9 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
                 $scope.fill(res.Data);
                 $scope.isEditable = !$scope.entity.DateSign;
                 //$scope.isLockVisible = !$scope.entity.DateSign;
-                if ($scope.tempData.Status == "Not Signed") 
+                if ($scope.tempData.Status == "Not Signed")
                     $scope.isLockVisible = true
-               
-               
+
             });
         }
     };

@@ -81,11 +81,11 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date And Time Of Event: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opEventDate" class="center"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opEventDate" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Time Of Received Event Report(UTC): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opReportTime" class="center"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opReportTime" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Event Reported By: </td>

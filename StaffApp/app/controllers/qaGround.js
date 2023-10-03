@@ -78,6 +78,11 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                                 $scope.loadingVisible = false;
                                 General.ShowNotify(Config.Text_SavedOk, 'success');
                                 $scope.popup_add_visible = false;
+                                if ($scope.tempData.Status == "Not Signed") {
+                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "In Progress";
+                                }
+
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
