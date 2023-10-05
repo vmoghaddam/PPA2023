@@ -97,6 +97,15 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
                     }
                 }, toolbar: 'bottom'
             },
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: '', icon: 'check', onClick: function (e) {
+                        $rootScope.$broadcast('InitAttachmentPopup', 'data');
+                    }
+                }, toolbar: 'bottom'
+            },
+
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'success', text: 'Save', icon: 'check',validationGroup: 'cabin', onClick: function (e) {

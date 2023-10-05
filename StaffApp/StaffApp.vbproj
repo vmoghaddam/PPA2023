@@ -113,6 +113,7 @@
     <Content Include="app\controllers\indexController.js" />
     <Content Include="app\controllers\loginController.js" />
     <Content Include="app\controllers\pdfViewer.js" />
+    <Content Include="app\controllers\qaAttachment.js" />
     <Content Include="app\controllers\qaCabin.js" />
     <Content Include="app\controllers\qaCatering.js" />
     <Content Include="app\controllers\qaDispatch.js" />
@@ -160,6 +161,7 @@
     <Content Include="app\views\messageitem.html" />
     <Content Include="app\views\orders.html" />
     <Content Include="app\views\pdfviewer.html" />
+    <Content Include="app\views\qaAttachment.html" />
     <Content Include="app\views\qaCabin.html" />
     <Content Include="app\views\qaCatering.html" />
     <Content Include="app\views\qaDispatch.html" />
