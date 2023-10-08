@@ -1,11 +1,11 @@
 ﻿'use strict';
-app.controller('qaAttachmentPopup', ['$scope', 'qaService', '$routeParams', '$rootScope', function ($scope, qaService, $routeParams, $rootScope) {
+app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$rootScope', function ($scope, QAService, $routeParams, $rootScope) {
 
-    $scope.isNotLocked = true;
+    $scope.files = [];
 
     $scope.popup_attachment_visible = false;
-    $scope.popup_height = $(window).height() - 100;
-    $scope.popup_width = 1500;
+    $scope.popup_height = $(window).height() - 300;
+    $scope.popup_width = $(window).width() - 0;
     $scope.popup_attachment_title = 'Attachment';
     $scope.popup_instance = null;
 
@@ -17,87 +17,13 @@ app.controller('qaAttachmentPopup', ['$scope', 'qaService', '$routeParams', '$ro
         toolbarItems: [
 
             {
-                widget: 'dxButton', location: 'before', options: {
-                    type: 'default', text: 'Referre', onClick: function (e) {
-
-                        $rootScope.$broadcast('InitQAEmployee', { Type: $scope.followUpEntity.Type, Id: $scope.entity.Id, Category: $scope.followUpEntity.Category });
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) {
+                        $scope.popup_attachment_visible = false;
                     }
                 }, toolbar: 'bottom'
-            },
-            {
-                widget: 'dxButton', location: 'before', options: {
-                    type: 'default', text: 'Action', onClick: function (e) {
+            }
 
-                    }
-                }, toolbar: 'bottom'
-            },
-            {
-                widget: 'dxButton', location: 'before', options: {
-                    type: 'default', text: 'Close The Report', validationGroup: 'result', onClick: function (e) {
-
-                        $scope.loadingVisible = true;
-
-                        $scope.entity.Category = $scope.tempData.Category;
-                        $scope.entity.Id = $scope.tempData.Id;
-                        $scope.entity.Type = $scope.tempData.Type;
-                        $scope.entity.EmployeeId = $scope.tempData.EmployeeId;
-                        $scope.entity.isResponsible = $scope.followUpEntity.isResponsible;
-                        console.log($scope.entity.result);
-
-                        qaService.acceptQA($scope.entity).then(function (response) {
-                            $scope.loadingVisible = false;
-                            General.ShowNotify(Config.Text_QAAccept, 'success');
-
-                            if ($scope.followUpEntity.isResponsible == true) {
-
-                                if (response.IsSuccess == true && $scope.followUpEntity.Category == 'open') {
-                                    var row = Enumerable.From($rootScope.dg_open_ds).Where("$.Id==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "Closed";
-                                    row.EmployeeStatus = "Closed";
-                                    row.Status = 1;
-                                    $rootScope.dg_determined_ds.push(row);
-                                    $rootScope.dg_open_ds = Enumerable.From($rootScope.dg_open_ds).Where(function (x) {
-                                        return x.Id != $scope.entity.Id;
-                                    }).ToArray();
-                                }
-
-                                if (response.IsSuccess == true && $scope.followUpEntity.Category == 'new') {
-                                    var row = Enumerable.From($rootScope.dg_new_ds).Where("$.Id==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "Closed";
-                                    row.EmployeeStatus = "Closed";
-                                    row.Status = 1;
-                                    $rootScope.dg_determined_ds.push(row);
-                                    $rootScope.dg_new_ds = Enumerable.From($rootScope.dg_new_ds).Where(function (x) {
-                                        return x.Id != $scope.entity.Id;
-                                    }).ToArray();
-                                }
-                            } else {
-                                if (response.IsSuccess == true && $scope.followUpEntity.Category == 'open') {
-                                    var row = Enumerable.From($rootScope.dg_open_ds).Where("$.Id==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "Closed";
-                                    row.EmployeeStatus = "Closed";
-                                    $rootScope.dg_determined_ds.push(row);
-                                    $rootScope.dg_open_ds = Enumerable.From($rootScope.dg_open_ds).Where(function (x) {
-                                        return x.Id != $scope.entity.Id;
-                                    }).ToArray();
-                                }
-
-                                if (response.IsSuccess == true && $scope.followUpEntity.Category == 'new') {
-                                    var row = Enumerable.From($rootScope.dg_new_ds).Where("$.Id==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "Closed";
-                                    row.EmployeeStatus = "Closed";
-                                    $rootScope.dg_determined_ds.push(row);
-                                    $rootScope.dg_new_ds = Enumerable.From($rootScope.dg_new_ds).Where(function (x) {
-                                        return x.Id != $scope.entity.Id;
-                                    }).ToArray();
-                                }
-                            }
-
-
-                        });
-                    }
-                }, toolbar: 'bottom'
-            },
 
         ],
 
@@ -118,8 +44,8 @@ app.controller('qaAttachmentPopup', ['$scope', 'qaService', '$routeParams', '$ro
             if ($scope.tempData != null)
                 $scope.bind();
 
-            $rootScope.referred_list_instance.repaint();
-            $rootScope.$broadcast('InitTest', $scope.tempData);
+            //$rootScope.referred_list_instance.repaint();
+            //$rootScope.$broadcast('InitTest', $scope.tempData);
 
 
 
@@ -132,6 +58,7 @@ app.controller('qaAttachmentPopup', ['$scope', 'qaService', '$routeParams', '$ro
             };
             $scope.entity.Result = null;
             $scope.popup_attachment_visible = false;
+            $rootScope.$broadcast('onAttachmentHide', $scope.files);
         },
         onContentReady: function (e) {
             if (!$scope.popup_instance)
@@ -152,14 +79,148 @@ app.controller('qaAttachmentPopup', ['$scope', 'qaService', '$routeParams', '$ro
         }
     };
 
+    $scope.scroll_qaAttachment_height = $(window).height() - 260;
+    $scope.scroll_qaAttachment = {
+        width: '100%',
+        bounceEnabled: false,
+        showScrollbar: 'never',
+        pulledDownText: '',
+        pullingDownText: '',
+        useNative: true,
+        refreshingText: 'Updating...',
+        onPullDown: function (options) {
+
+            options.component.release();
+
+        },
+        onInitialized: function (e) {
+
+
+        },
+        bindingOptions: {
+            height: 'scroll_qaAttachment_height'
+        }
+
+    };
+
+    $scope.bind = function () {
+        QAService.getImportedFile($scope.entity.EntityId, $scope.entity.EmployeeId, $scope.entity.Type).then(function (response) {
+            console.log(response)
+        });
+    }
+
+
+
+
+    $scope.txt_fileRemark = {
+        height: 100,
+        biningOptions: {
+            value: 'txt_testRemark'
+        }
+    };
+
+    $scope.txt_remark = {
+        height: 80,
+        bindingOptions: {
+            value: 'Remark'
+        }
+    }
+
+
+    $scope.btn_delete = {
+        text: 'Delete',
+        type: 'danger',
+        width: '100%',
+        // width: $scope.popup_width = $(window).width() / 2.3,
+    };
+
+    $scope.deleteFile = function (id) {
+        $scope.files = Enumerable.From($scope.files).Where(function (x) {
+            return x.Id != id;
+        }).ToArray();
+    }
+
+
+    $scope.btn_download = {
+        text: 'Download',
+        type: 'success',
+        //  width: $scope.popup_width = $(window).width() / 2.3,
+        width:'100%',
+        onClick: function (e) {
+            alert("Download");
+        }
+    };
+
+    var id = -1;
+    $scope.btn_add = {
+        text: '',
+        icon: 'plus',
+        width: 35,
+        type: 'success',
+        onClick: function (e) {
+            $scope.loadingVisible = true;
+
+            $scope.files.push({ Id: id = id + 1, FileName: $scope.file.name, FileType: $scope.file.type, Description: $scope.Remark });
+            console.log($scope.files);
+            //QAService.importAttachment($scope.entity).then(function (response) {
+            //    $scope.loadingVisible = false;
+            //    console.log(response);
+            //});
+        }
+    };
+
+
+
+    $scope.uploaderValueDocument = [];
+    $scope.fileList = [];
+    $scope.fileNames = [];
+    $scope.fileCount = 0
+    $scope.uploader_document_instance = null;
+    $scope.uploader_document = {
+        multiple: true,
+        labelText: '',
+        selectButtonText: 'Select',
+        uploadMethod: 'POST',
+        uploadMode: "instantly",
+
+        uploadUrl: apiQA + 'api/qa/uploadfile?t=clientfiles',
+
+
+
+        onUploadStarted: function (res) {
+            $scope.loadingVisible = true;
+            $scope.fileList.push(res.file);
+            $scope.fileCount = $scope.fileList.length;
+            console.log(res);
+        },
+
+
+
+        onUploaded: function (e) {
+            console.log(e);
+            $scope.file = e.file;
+
+            $scope.entity.FileName = e.file.name;
+            $scope.entity.FileType = e.file.type;
+            $scope.loadingVisible = false;
+        },
+
+        bindingOptions: {
+            value: 'uploaderValueDocument'
+        }
+    };
+
+
+
     $scope.$on('InitAttachmentPopup', function (event, prms) {
         $scope.tempData = prms;
-        console.log($scope.tempData);
+
+        $scope.entity.EntityId = $scope.tempData.EntityId;
+        $scope.entity.Type = $scope.tempData.Type;
+        $scope.entity.EmployeeId = $scope.tempData.EmployeeId;
+
         $scope.popup_attachment_visible = true;
     });
-
-
-
 }]);
 
 

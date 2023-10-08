@@ -92,6 +92,20 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                     }
                 }, toolbar: 'bottom'
             },
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: '', icon: '', onClick: function (e) {
+                        var data = {
+                            EmployeeId: $scope.tempData.crewId,
+                            Type: $scope.followUpEntity.Type,
+                            EntityId: $scope.entity.Id,
+                        }
+                        $rootScope.$broadcast('InitAttachmentPopup', data);
+                    }
+                }, toolbar: 'bottom'
+            },
+
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'success', text: 'Save', icon: 'check', validationGroup: 'ground', onClick: function (e) {
@@ -901,6 +915,10 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     });
 
+
+    $scope.$on('onAttachmentHide', function (event, prms) {
+        $scope.entity.files = prms;
+    });
 
 
 }]);

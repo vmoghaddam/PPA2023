@@ -87,6 +87,20 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                     }
                 }, toolbar: 'bottom'
             },
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: '', icon: '', onClick: function (e) {
+                        var data = {
+                            EmployeeId: $scope.tempData.crewId,
+                            Type: $scope.followUpEntity.Type,
+                            EntityId: $scope.entity.Id,
+                        }
+                        $rootScope.$broadcast('InitAttachmentPopup', data);
+                    }
+                }, toolbar: 'bottom'
+            },
+
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'success', text: 'Save', icon: 'check', validationGroup: 'catering', onClick: function (e) {
@@ -458,6 +472,10 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
         $scope.popup_add_visible = true;
 
+    });
+
+    $scope.$on('onAttachmentHide', function (event, prms) {
+        $scope.entity.files = prms;
     });
 
 

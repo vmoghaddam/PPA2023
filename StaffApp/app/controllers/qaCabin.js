@@ -100,8 +100,13 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: '', icon: 'check', onClick: function (e) {
-                        $rootScope.$broadcast('InitAttachmentPopup', 'data');
+                    type: 'success', text: '', icon: '', onClick: function (e) {
+                        var data = {
+                            EmployeeId: $scope.tempData.crewId,
+                            Type: $scope.followUpEntity.Type,
+                            EntityId: $scope.entity.Id,
+                        }
+                        $rootScope.$broadcast('InitAttachmentPopup', data);
                     }
                 }, toolbar: 'bottom'
             },
@@ -512,6 +517,10 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 
         $scope.popup_add_visible = true;
 
+    });
+
+    $scope.$on('onAttachmentHide', function (event, prms) {
+        $scope.entity.files = prms;
     });
 
 

@@ -365,9 +365,33 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 	
+	 var _importAttachment = function (entity) {
+
+        var deferred = $q.defer();
+         $http.post(apiQA +'api/import/attachment', entity).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
 	
 	
-	var _getCreatorHistory = function (cid) {
+	
+	var _getImportedFile = function (entityId, employeeId, type) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/get/imported/file/' + entityId + '/' + employeeId + '/' + type).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+    var _getCreatorHistory = function (cid) {
 
         var deferred = $q.defer();
         $http.get(apiQA+'/api/creator/history/'+cid).then(function (response) {
@@ -418,6 +442,9 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     serviceFactory.getDISCatagory = _getDISCatagory;
 
     serviceFactory.saveFollowUp = _saveFollowUp;
+
+    serviceFactory.importAttachment = _importAttachment;
+    serviceFactory.getImportedFile = _getImportedFile;
 
 
 
