@@ -378,6 +378,19 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     }
 	
 	
+	 var _deleteAttachment = function (entity) {
+
+        var deferred = $q.defer();
+         $http.post(apiQA +'api/delete/attachment', entity).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+	
+	
 	
 	var _getImportedFile = function (entityId, employeeId, type) {
 
@@ -445,6 +458,7 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
 
     serviceFactory.importAttachment = _importAttachment;
     serviceFactory.getImportedFile = _getImportedFile;
+    serviceFactory.deleteAttachment = _deleteAttachment;
 
 
 

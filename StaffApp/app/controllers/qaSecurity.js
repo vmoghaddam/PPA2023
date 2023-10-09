@@ -92,6 +92,7 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
                             EmployeeId: $scope.tempData.crewId,
                             Type: $scope.followUpEntity.Type,
                             EntityId: $scope.entity.Id,
+                            isEditable: $scope.isEditable,
                         }
                         $rootScope.$broadcast('InitAttachmentPopup', data);
                     }

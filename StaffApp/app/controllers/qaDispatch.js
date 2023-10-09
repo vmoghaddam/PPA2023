@@ -99,6 +99,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                             EmployeeId: $scope.tempData.crewId,
                             Type: $scope.followUpEntity.Type,
                             EntityId: $scope.entity.Id,
+                            isEditable: $scope.isEditable,
                         }
                         $rootScope.$broadcast('InitAttachmentPopup', data);
                     }
@@ -204,7 +205,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
             height: 'popup_height',
             width: 'popup_width',
             'toolbarItems[0].visible': 'isEditable',
-            'toolbarItems[1].visible': 'isEditable',
+            'toolbarItems[2].visible': 'isEditable',
 
         }
     };
