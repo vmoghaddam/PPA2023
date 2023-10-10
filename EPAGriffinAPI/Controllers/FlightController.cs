@@ -5452,13 +5452,16 @@ namespace EPAGriffinAPI.Controllers
             string _days = Convert.ToString(dto.Days);
             var days = _days.Split('_').Select(q => Convert.ToInt32(q)).ToList();
             var checkTime = (int)dto.CheckTime;
+            var username = Convert.ToString(dto.UserName);
 
             var flightId = Convert.ToInt32(dto.Id);
-            var result = await unitOfWork.FlightRepository.DeleteFlightGroup(intervalFrom, intervalTo, days, flightId, interval, checkTime);
+            List<int> result = await unitOfWork.FlightRepository.DeleteFlightGroup(intervalFrom, intervalTo, days, flightId, interval, checkTime,username);
             var saveResult = await unitOfWork.SaveAsync();
             if (saveResult.Code != HttpStatusCode.OK)
                 return saveResult;
+            unitOfWork.FlightRepository.UpdateLogUser(result, username);
 
+            await unitOfWork.SaveAsync();
 
 
             return Ok(result);
@@ -5549,6 +5552,7 @@ namespace EPAGriffinAPI.Controllers
             foreach (var dt in intervalDays)
             {
                 entity = new FlightInformation();
+                entity.JLNo = dto.UserName;
                 unitOfWork.FlightRepository.Insert(entity);
                 flights.Add(entity);
                 if (entity.STD != null)
@@ -5964,7 +5968,7 @@ namespace EPAGriffinAPI.Controllers
                        // _std = _std.AddMinutes(fltOffset);
                         _std = _std.AddDays(_addDay).AddDays(utcDiff).AddMinutes(fltOffset);
 
-
+                        entity.JLNo = dto.UserName;
                         entity.STD = _std; //newSTD;
                         entity.STA = _std.AddMinutes(duration); //newSTA;
                         entity.ChocksOut = entity.STD;
@@ -5990,6 +5994,7 @@ namespace EPAGriffinAPI.Controllers
                     }
                     else if (exec)
                     {
+                        entity.JLNo = dto.UserName;
                         entity.ChrCode = dto.ChrCode;
                         entity.ChrTitle = dto.ChrTitle;
                     }

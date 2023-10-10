@@ -281,6 +281,14 @@ namespace EPAGriffinAPI.Controllers
         [Route("odata/library/book/{id}")]
         public async Task<IHttpActionResult> GetBook(int id)
         {
+            var course = await unitOfWork.BookRepository.GetBookDtoNew(id);
+            return Ok(course);
+        }
+
+
+        [Route("odata/library/book/old/{id}")]
+        public async Task<IHttpActionResult> GetBookOld(int id)
+        {
             var course = await unitOfWork.BookRepository.GetBookDto(id);
             return Ok(course);
         }
@@ -296,6 +304,84 @@ namespace EPAGriffinAPI.Controllers
 
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> PostBook(ViewModels.Book dto)
+        {
+            // return Ok(client);
+            if (dto == null)
+                return Exceptions.getNullException(ModelState);
+            if (!ModelState.IsValid)
+            {
+                // return BadRequest(ModelState);
+                return Exceptions.getModelValidationException(ModelState);
+            }
+            var validate = unitOfWork.BookRepository.Validate(dto);
+            if (validate.Code != HttpStatusCode.OK)
+                return validate;
+
+            Book entity = null;
+
+            if (dto.Id == -1)
+            {
+                entity = new Book();
+                unitOfWork.BookRepository.Insert(entity);
+            }
+
+            else
+            {
+                entity = await unitOfWork.BookRepository.GetByID(dto.Id);
+
+            }
+
+            if (entity == null)
+                return Exceptions.getNotFoundException();
+
+            //ViewModels.Location.Fill(entity, dto);
+            ViewModels.Book.Fill(entity, dto);
+
+
+            unitOfWork.BookRepository.FillBookRelatedAircraftTypes(entity, dto);
+
+            unitOfWork.BookRepository.FillBookRelatedEmployees(entity, dto);
+            unitOfWork.BookRepository.FillBookRelatedGroupsNew(entity, dto);
+            //unitOfWork.BookRepository.FillBookRelatedTypeGroups(entity, dto);
+            unitOfWork.BookRepository.FillBookRelatedStudyFields(entity, dto);
+            unitOfWork.BookRepository.FillBookAuthors(entity, dto);
+            unitOfWork.BookRepository.FillBookKeywords(entity, dto);
+            unitOfWork.BookRepository.FillBookFiles(entity, dto);
+
+
+
+            var saveResult = await unitOfWork.SaveAsync();
+            if (saveResult.Code != HttpStatusCode.OK)
+                return saveResult;
+            await unitOfWork.BookRepository.UpdateChapters(entity.BookKey, entity.Id);
+            saveResult = await unitOfWork.SaveAsync();
+            if (saveResult.Code != HttpStatusCode.OK)
+                return saveResult;
+
+            //string webUrl = ConfigurationManager.AppSettings["web"] + "downloadhandler.ashx?t=bookarchive&id=" + entity.Id;
+            //object input = new
+            //{
+
+            //};
+            //string inputJson = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+
+            //WebClient client = new WebClient();
+            //client.Headers["Content-type"] = "application/json";
+            //client.Encoding = Encoding.UTF8;
+
+            //string json = client.UploadString(webUrl, inputJson);
+
+
+            dto.Id = entity.Id;
+            return Ok(dto);
+        }
+
+
+
+        [Route("odata/library/book/save/old")]
+
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostBookOLD(ViewModels.Book dto)
         {
             // return Ok(client);
             if (dto == null)

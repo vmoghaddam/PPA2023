@@ -61,6 +61,8 @@ namespace EPAGriffinAPI.ViewModels
         public DateTime? DateValidUntil { get; set; }
         public DateTime? DeadLine { get; set; }
 
+        public List<string> BookGrps { get; set; }
+
         List<ViewBookFileX> bookFiles = null;
         public List<ViewBookFileX> BookFiles
         {
@@ -141,7 +143,28 @@ namespace EPAGriffinAPI.ViewModels
             set { bookRelatedGroups = value; }
         }
 
-        
+        public class _bookgrp {
+            public string title { get; set; }
+            public string code { get; set; }
+            public string code2 { get; set; }
+            public string code3 { get; set; }
+            public bool selected {get;set;}
+        }
+
+        List<_bookgrp> bookGroups = null;
+        public List<_bookgrp> BookGroups
+        {
+            get
+            {
+                if (bookGroups == null)
+                    bookGroups = new List<_bookgrp>();
+                return bookGroups;
+
+            }
+            set { bookGroups = value; }
+        }
+
+
 
         List<string> bookKeywords = null;
         public List<string> BookKeywords

@@ -1981,6 +1981,7 @@ namespace EPAGriffinAPI.DAL
                     {
                         flight.FlightDate = oldSTD;
                     }
+                    flight.JLNo = dto.userName;
                     flight.STD = dtoSTD;
                     flight.STA = dtoSTA;
                     flight.ChocksIn = null;
@@ -2907,6 +2908,7 @@ namespace EPAGriffinAPI.DAL
 
             //////////////////////////////////////////////////////////////
             flight.GUID = Guid.NewGuid();
+            flight.JLNo = dto.UserName;
             flight.DateCreate = DateTime.Now.ToUniversalTime();
             flight.FlightStatusUserId = dto.UserId;
             flight.ChocksIn = dto.ChocksIn;
@@ -3479,7 +3481,7 @@ namespace EPAGriffinAPI.DAL
                 flight.CancelReasonId = dto.reason;
                 flight.DepartureRemark += (!string.IsNullOrEmpty(flight.DepartureRemark) ? "\r\n" : "") + dto.remark + "(CNL REMARK BY:" + dto.userName + ")";
                 //2020-11-24
-
+                flight.JLNo = dto.userName;
 
 
 
@@ -3716,7 +3718,7 @@ namespace EPAGriffinAPI.DAL
                 flight.DepartureRemark += (!string.IsNullOrEmpty(flight.DepartureRemark) ? "\r\n" : "") + dto.remark + "(ACTV REMARK BY:" + dto.userName + ")";
                 //2020-11-24
 
-
+                flight.JLNo = dto.userName;
 
 
                 if (flight.FlightStatusID != null && /*dto.UserId != null*/ !string.IsNullOrEmpty(dto.userName))
@@ -4398,7 +4400,7 @@ namespace EPAGriffinAPI.DAL
                 changeLog.NewTakeOff = y.Takeoff;
                 changeLog.NewLanding = y.Landing;
 
-
+                x.JLNo = dto.UserName;
                 x.RegisterID = dto.NewRegisterId;
                 x.DateCreate = DateTime.Now.ToUniversalTime();
                 x.FlightStatusUserId = dto.UserId;
@@ -5371,7 +5373,22 @@ namespace EPAGriffinAPI.DAL
             context.FDPs.RemoveRange(fdps);
             this.context.FlightInformations.Remove(entityToDelete);
         }
-        public async Task<object> DeleteFlightGroup(/*dynamic dto,*/DateTime intervalFrom, DateTime intervalTo, List<int> days, int flightId, int interval, int checkTime)
+
+        public  object  UpdateLogUser(List<int> ids,string username)
+        {
+            try
+            {
+                var _ids = string.Join(",", ids);
+                this.context.Database.ExecuteSqlCommand("update flightlogmain set username='" + username + "' where flightid in (" + _ids + ")") ;
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public async Task<List<int>> DeleteFlightGroup(/*dynamic dto,*/DateTime intervalFrom, DateTime intervalTo, List<int> days, int flightId, int interval, int checkTime,string username)
         {
 
             List<int> result = new List<int>();
@@ -8736,7 +8753,7 @@ namespace EPAGriffinAPI.DAL
         internal async Task<List<SMSDeliveryStatus>> GetSMSStatus(List<Int64> refIds)
         {
             var ids = refIds.Where(w=>w!=-1).Select(q => q.ToString()).ToList();
-            var smses = await this.context.SMSHistories.Where(q => ids.Contains(q.Ref)).ToListAsync();
+            var smses = await this.context.SMSHistories.Where(q => ids.Contains(q.Ref) )  .ToListAsync();
             Magfa m = new Magfa();
             var status = m.getStatus(refIds);
             List<SMSDeliveryStatus> result = new List<SMSDeliveryStatus>();

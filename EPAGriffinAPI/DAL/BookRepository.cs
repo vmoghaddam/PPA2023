@@ -187,6 +187,116 @@ namespace EPAGriffinAPI.DAL
             return book;
         }
 
+
+        public async Task<ViewModels.Book> GetBookDtoNew(int id)
+        {
+            var book = new ViewModels.Book();
+            var dbbook = await context.Books.FirstOrDefaultAsync(q => q.Id == id);
+            ViewModels.Book.FillDto(dbbook, book);
+            var dbbookfiles = await this.context.ViewBookFiles.Where(q => q.BookId == id).ToListAsync();
+            book.BookFiles = new List<ViewBookFileX>();
+            foreach (var x in dbbookfiles)
+            {
+                var bf = new ViewBookFileX();
+                ViewBookFileX.FillDto(x, bf);
+                book.BookFiles.Add(bf);
+            }
+
+            book.BookKeywords = await context.BookKeywords.Where(q => q.BookId == id).Select(q => q.Value).ToListAsync();
+            book.BookAuthors = await context.BookAutors.Where(q => q.BookId == id).Select(q => q.PersonMiscId).ToListAsync();
+
+            book.BookRelatedAircraftTypes = (await (from x in context.BookRelatedAircraftTypes
+                                                    join y in context.ViewAircraftTypes on x.AircraftTypeId equals y.Id
+                                                    where x.BookId == id
+                                                    select y).ToListAsync()).Select(q => new ViewModels.AircraftType()
+                                                    {
+                                                        Id = q.Id,
+                                                        Manufacturer = q.Manufacturer,
+                                                        ManufacturerId = q.ManufacturerId,
+                                                        Remark = q.Remark,
+                                                        Type = q.Type
+                                                    }).ToList();
+
+
+            book.BookRelatedEmployees = (await (from x in context.BookRelatedEmployees
+                                                join y in context.ViewEmployees on x.EmployeeId equals y.Id
+                                                where x.BookId == id
+                                                select y).ToListAsync()).Select(q => new ViewModels.EmployeeView()
+                                                {
+                                                    Name = q.Name,
+                                                    NID = q.NID,
+                                                    PID = q.PID,
+                                                    Location = q.Location,
+                                                    CaoCardNumber = q.CaoCardNumber,
+                                                    NDTNumber = q.NDTNumber,
+                                                    DateJoinCompany = q.DateJoinCompany,
+                                                    Id = q.Id,
+                                                    IDNo = q.IDNo,
+
+
+                                                }).ToList();
+            //book.BookRelatedGroups = (await (from x in context.BookRelatedGroups
+            //                                 join y in context.ViewJobGroups on x.GroupId equals y.Id
+            //                                 where x.BookId == id
+            //                                 select new { y, x.TypeId }).ToListAsync()).Select(q => new ViewModels./*JobGroup*/BookTypeGroup()
+            //                                 {
+            //                                     Title = q.y.Title,
+            //                                     FullCode = q.y.FullCode,
+            //                                     Remark = q.y.Remark,
+            //                                     Parent = q.y.Parent,
+            //                                     Id = q.y.Id,
+            //                                     TypeId = q.TypeId ?? -1,
+            //                                     Type = getTypeByTypeId(q.TypeId)
+            //                                 }).ToList();
+
+
+            var grps =  await (from x in context.BookRelatedGroups
+                                             join y in context.ViewJobGroups on x.GroupId equals y.Id
+                                             where x.BookId == id
+                                             select    y.FullCode   
+                                             
+                                             
+                                             )  .ToListAsync();
+
+            book.BookGrps = new List<string>();
+            foreach (var x in grps)
+            {
+                if (x.StartsWith("00101"))
+                    book.BookGrps.Add("00101");
+                else if (x.StartsWith("00102"))
+                    book.BookGrps.Add("00102");
+                else if (x.StartsWith("00103"))
+                    book.BookGrps.Add("00103");
+                else if (x.StartsWith("00210"))
+                    book.BookGrps.Add("00210");
+                else if (x.StartsWith("00220"))
+                    book.BookGrps.Add("00220");
+                else book.BookGrps.Add(x.Substring(0,3));
+            }
+
+
+            book.BookGrps = book.BookGrps.Distinct().ToList();
+
+
+
+
+
+            book.BookRelatedStudyFields = (await (from x in context.BookRelatedStudyFields
+                                                  join y in context.ViewOptions on x.StudyFieldId equals y.Id
+                                                  where x.BookId == id
+                                                  select y).ToListAsync()).Select(q => new ViewModels.Option()
+                                                  {
+                                                      Title = q.Title,
+
+                                                      Parent = q.Parent,
+                                                      Id = q.Id,
+
+                                                  }).ToList();
+            book.Chapters = await context.ViewBookChapters.Where(q => q.BookId == id).OrderBy(q => q.Fullcode).ToListAsync();
+
+            return book;
+        }
+
         public async Task<ViewModels.Book> GetEmployeeBookDto(int id,int employeeId)
         {
             var book = new ViewModels.Book();
@@ -336,6 +446,56 @@ namespace EPAGriffinAPI.DAL
                     Book = entity,
                     GroupId = x.Id,
                      TypeId=x.TypeId,
+
+                });
+        }
+
+        internal void FillBookRelatedGroupsNew(Models.Book entity, ViewModels.Book dto)
+        {
+            var existing = this.context.BookRelatedGroups.Where(q => q.BookId == entity.Id).ToList();
+            //while (existing.Count > 0)
+            //{
+            //    var i = existing.First();
+            //    this.context.BookRelatedGroups.Remove(i);
+            //    existing.Remove(i);
+            //}
+            this.context.BookRelatedGroups.RemoveRange(existing);
+
+            //var groups=from x in this.context.JobGroups
+            //           where x.FullCode.StartsWith
+            var _grps = new List<Models.JobGroup>();
+            foreach(var x in dto.BookGroups)
+            {
+                var qry = from q in this.context.JobGroups
+                          select q;
+                if (x.code == "-1")
+                {
+                    //var grps = this.context.JobGroups.Where(q => q.FullCode.StartsWith(x)).ToList();
+                    var grps = this.context.JobGroups.ToList();
+                    _grps = grps.Concat(grps).ToList();
+                }
+                else
+                {
+                      qry=qry.Where(q => q.FullCode.StartsWith(x.code));
+                    var grps = qry.ToList();
+                    _grps = grps.Concat(grps).ToList();
+
+                    if (!string.IsNullOrEmpty(x.code2))
+                    {
+                        _grps = _grps.Concat(this.context.JobGroups.Where(w => w.FullCode == x.code2)).ToList();
+                    }
+
+                }
+                
+            }
+
+            //foreach (var x in dto.BookRelatedGroups)
+            foreach (var x in _grps)
+                this.context.BookRelatedGroups.Add(new Models.BookRelatedGroup()
+                {
+                    Book = entity,
+                    GroupId = x.Id,
+                    TypeId =null,// x.TypeId,
 
                 });
         }
