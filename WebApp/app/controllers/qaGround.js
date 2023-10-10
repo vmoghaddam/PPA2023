@@ -1,33 +1,27 @@
 ﻿'use strict';
-app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
-    $scope.isNew = true;
-    $scope.isEditable = false;
-    $scope.isLockVisible = false;
-    $scope.isContentVisible = false;
-    $scope.isFullScreen = false;
-    var detector = new MobileDetect(window.navigator.userAgent);
-
-    //if (detector.mobile() && !detector.tablet())
+app.controller('qaGroundController', ['$scope', '$location', 'qaService', 'authService', '$routeParams', '$rootScope', '$window', '$sce', function ($scope, $location, qaService, authService, $routeParams, $rootScope, $window, $sce) {
     $scope.isFullScreen = true;
 
     $scope.entity = {
         Id: -1,
-        Status: null,
-        StatusEmployeeId: null,
-        DateStatus: null,
-        DateSign: null
     };
 
-    $scope.followUpEntity = {
+    $rootScope.followUpEntity = {
         Type: 1,
     }
+
+    $scope.dmgOptions = [];
+    $scope.wxOptions = [];
+    $scope.surfaceOptions = [];
+    $scope.lightingOptions = [];
+
 
 
 
     ////////////////////////
     $scope.popup_add_visible = false;
-    $scope.popup_height = $(window).height() - 300;
-    $scope.popup_width = $(window).width() - 0;
+    $scope.popup_height = $(window).height() - 100;
+    $scope.popup_width = 1500;
     $scope.popup_add_title = 'Ground Incident/Accident/Damage';
     $scope.popup_instance = null;
 
@@ -37,148 +31,102 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         showTitle: true,
 
         toolbarItems: [
+
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'success', text: 'Sign', validationGroup: 'ground', icon: 'fas fa-signature', onClick: function (e) {
+                    type: 'default', text: 'Referre', onClick: function (e) {
 
-                        var result = e.validationGroup.validate();
+                        $rootScope.$broadcast('InitQAEmployee', { Type: $rootScope.followUpEntity.Type, Id: $scope.entity.Id, Category: $rootScope.followUpEntity.Category });
+                    }
+                }, toolbar: 'bottom'
+            },
+            {
+                widget: 'dxButton', location: 'before', options: {
+                    type: 'default', text: 'Action', onClick: function (e) {
 
-                        if (!result.isValid) {
-                            General.ShowNotify(Config.Text_FillRequired, 'error');
-                            return;
-                        }
+                    }
+                }, toolbar: 'bottom'
+            },
+            {
+                widget: 'dxButton', location: 'before', options: {
+                    type: 'danger', text: 'closed', validationGroup: 'result', onClick: function (e) {
+                        $scope.loadingVisible = true;
 
+                        $scope.entity.Category = $scope.tempData.Category;
+                        $scope.entity.Id = $scope.tempData.Id;
+                        $scope.entity.Type = $scope.tempData.Type;
+                        $scope.entity.EmployeeId = $scope.tempData.EmployeeId;
+                        $scope.entity.isResponsible = $scope.followUpEntity.isResponsible;
+                        console.log($scope.entity.result);
 
-                        $scope.entity.Signed = "1";
-                        $scope.followUpEntity.EntityId = $scope.entity.Id;
-                        $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
-                        $scope.followUpEntity.DateReferr = new Date();
-                        $scope.followUpEntity.DateConfirmation = new Date();
+                        qaService.acceptQA($scope.entity).then(function (response) {
+                            $scope.loadingVisible = false;
+                            General.ShowNotify(Config.Text_QAAccept, 'success');
 
-                        var damageid = Enumerable.From($scope.damageBy).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
-                        $scope.entity.DamageById = damageid ? damageid : null;
+                            if ($scope.followUpEntity.isResponsible == true) {
 
-                        var lightingid = Enumerable.From($scope.lighting).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
-                        $scope.entity.WXLightingId = lightingid ? lightingid : null;
-
-                        var weatherid = Enumerable.From($scope.weather).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
-                        $scope.entity.WXWeatherId = weatherid ? weatherid : null;
-
-                        var surfaceid = Enumerable.From($scope.surface).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
-                        $scope.entity.WXSurfaceId = surfaceid ? surfaceid : null;
-
-                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
-
-                        $scope.loadingVisible = true
-                        QAService.saveGround($scope.entity).then(function (res) {
-
-                            $scope.entity.Id = res.Data.Id;
-                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
-
-                                $scope.loadingVisible = false;
-                                General.ShowNotify(Config.Text_SavedOk, 'success');
-                                $scope.popup_add_visible = false;
-                                if ($scope.tempData.Status == "Not Signed") {
-                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "In Progress";
+                                if (response.IsSuccess == true && $scope.followUpEntity.Category == 'open') {
+                                    var row = Enumerable.From($rootScope.dg_open_ds).Where("$.Id==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "Closed";
+                                    row.EmployeeStatus = "Closed";
+                                    row.Status = 1;
+                                    $rootScope.dg_determined_ds.push(row);
+                                    $rootScope.dg_open_ds = Enumerable.From($rootScope.dg_open_ds).Where(function (x) {
+                                        return x.Id != $scope.entity.Id;
+                                    }).ToArray();
                                 }
 
-                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                                if (response.IsSuccess == true && $scope.followUpEntity.Category == 'new') {
+                                    var row = Enumerable.From($rootScope.dg_new_ds).Where("$.Id==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "Closed";
+                                    row.EmployeeStatus = "Closed";
+                                    row.Status = 1;
+                                    $rootScope.dg_determined_ds.push(row);
+                                    $rootScope.dg_new_ds = Enumerable.From($rootScope.dg_new_ds).Where(function (x) {
+                                        return x.Id != $scope.entity.Id;
+                                    }).ToArray();
+                                }
+                            } else {
+                                if (response.IsSuccess == true && $scope.followUpEntity.Category == 'open') {
+                                    var row = Enumerable.From($rootScope.dg_open_ds).Where("$.Id==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "Closed";
+                                    row.EmployeeStatus = "Closed";
+                                    $rootScope.dg_determined_ds.push(row);
+                                    $rootScope.dg_open_ds = Enumerable.From($rootScope.dg_open_ds).Where(function (x) {
+                                        return x.Id != $scope.entity.Id;
+                                    }).ToArray();
+                                }
+
+                                if (response.IsSuccess == true && $scope.followUpEntity.Category == 'new') {
+                                    var row = Enumerable.From($rootScope.dg_new_ds).Where("$.Id==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "Closed";
+                                    row.EmployeeStatus = "Closed";
+                                    $rootScope.dg_determined_ds.push(row);
+                                    $rootScope.dg_new_ds = Enumerable.From($rootScope.dg_new_ds).Where(function (x) {
+                                        return x.Id != $scope.entity.Id;
+                                    }).ToArray();
+                                }
+                            }
 
 
-
-
+                        });
                     }
                 }, toolbar: 'bottom'
             },
-
-            {
-                widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: '', icon: '', onClick: function (e) {
-                        var data = {
-                            EmployeeId: $scope.tempData.crewId,
-                            Type: $scope.followUpEntity.Type,
-                            EntityId: $scope.entity.Id,
-                            isEditable: $scope.isEditable,
-                        }
-                        $rootScope.$broadcast('InitAttachmentPopup', data);
-                    }
-                }, toolbar: 'bottom'
-            },
-
-            {
-                widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'ground', onClick: function (e) {
-
-                        var result = e.validationGroup.validate();
-
-                        if (!result.isValid) {
-                            General.ShowNotify(Config.Text_FillRequired, 'error');
-                            return;
-                        }
-                        $scope.entity.FlightId = $scope.tempData.FlightId;
-                        $scope.entity.EmployeeId = $scope.tempData.crewId;
-                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
-
-
-
-                        var damageid = Enumerable.From($scope.damageBy).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
-                        $scope.entity.DamageById = damageid ? damageid : null;
-
-                        var lightingid = Enumerable.From($scope.lighting).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
-                        $scope.entity.WXLightingId = lightingid ? lightingid : null;
-
-                        var weatherid = Enumerable.From($scope.weather).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
-                        $scope.entity.WXWeatherId = weatherid ? weatherid : null;
-
-                        var surfaceid = Enumerable.From($scope.surface).Where(function (x) { return x.checked; }).Select('$.Id').FirstOrDefault();
-                        $scope.entity.WXSurfaceId = surfaceid ? surfaceid : null;
-
-
-
-                        $scope.entity.Signed = $scope.entity.DateSign ? "1" : null;
-
-                        $scope.loadingVisible = true;
-                        QAService.saveGround($scope.entity).then(function (res) {
-                            $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                            General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.popup_add_visible = false;
-                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
-
-
-                    }
-                }, toolbar: 'bottom'
-            },
-
-            {
-                widget: 'dxButton', location: 'after', options: {
-                    type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) {
-                        $scope.popup_add_visible = false;
-                    }
-                }, toolbar: 'bottom'
-            }
-
+          
         ],
+
         visible: false,
         dragEnabled: true,
         closeOnOutsideClick: false,
         onShowing: function (e) {
             $rootScope.IsRootSyncEnabled = false;
-            $scope.popup_instance.repaint();
-
 
         },
         onShown: function (e) {
-
-            if ($scope.isNew) {
-                $scope.isContentVisible = true;
-            }
             if ($scope.tempData != null)
                 $scope.bind();
-
+            $rootScope.$broadcast('InitTest', $scope.tempData);
 
 
 
@@ -186,28 +134,29 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         },
         onHiding: function () {
             $rootScope.IsRootSyncEnabled = true;
-            //$scope.clearEntity();
             $scope.entity = {
                 Id: -1,
             };
 
+            $rootScope.followUpEntity.Result = null;
             $scope.popup_add_visible = false;
-            $rootScope.$broadcast('onQAGroundHide', null);
+            $rootScope.$broadcast('onGRFHide', null);
         },
         onContentReady: function (e) {
             if (!$scope.popup_instance)
                 $scope.popup_instance = e.component;
 
         },
-        // fullScreen:false,
+
         bindingOptions: {
             visible: 'popup_add_visible',
             fullScreen: 'isFullScreen',
             title: 'popup_add_title',
             height: 'popup_height',
             width: 'popup_width',
-            'toolbarItems[0].visible': 'isEditable',
-            'toolbarItems[2].visible': 'isEditable',
+            'toolbarItems[0].visible': 'isNotLocked',
+            'toolbarItems[1].visible': 'isNotLocked',
+            'toolbarItems[2].visible': 'isNotLocked',
 
         }
     };
@@ -216,23 +165,11 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     /////////////////////////////////
 
-    $scope.chkDamageBy = function (obj) {
 
-        var _id = obj.Id;
-        var _val = obj.checked;
 
-        $.each($scope.damageBy, function (_i, _d) {
-
-            if (_d.Id == _id) {
-                _d.checked = _val;
-                if (_val)
-                    $scope.entity.DamageById = _id;
-            }
-            else
-                _d.checked = false;
-
-        });
-
+    $scope.flight = null;
+    $scope.fill = function (data) {
+        $scope.entity = data;
 
         $.each($scope.damageBy, function (_i, _d) {
             if (_d.Title.includes('Other')) {
@@ -242,141 +179,47 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                     $scope.showOther = false;
             }
         });
-    }
 
-    $scope.chkLighting = function (obj) {
-        var _id = obj.Id;
-        var _val = obj.checked;
-
-        $.each($scope.lighting, function (_i, _d) {
-
-            if (_d.Id == _id) {
-                _d.checked = _val;
-                if (_val)
-                    $scope.entity.WXLightingId = _id;
-            }
-            else
-                _d.checked = false;
-
-        });
-    }
-
-    $scope.chkWeather = function (obj) {
-
-        var _id = obj.Id;
-        var _val = obj.checked;
-
-        $.each($scope.weather, function (_i, _d) {
-
-            if (_d.Id == _id) {
-                _d.checked = _val;
-                if (_val)
-                    $scope.entity.WXWeatherId = _id;
-            }
-            else
-                _d.checked = false;
-
-        });
-    }
-
-    $scope.chkSurface = function (obj) {
-
-        console.log(obj);
-        console.log($scope.surface);
-
-        var _id = obj.Id;
-        var _val = obj.checked;
-
-        $.each($scope.surface, function (_i, _d) {
-
-            if (_d.Id == _id) {
-                _d.checked = _val;
-                if (_val)
-                    $scope.entity.WXSurfaceId = _id;
-            }
-            else
-                _d.checked = false;
-
-        });
-    }
-
-
-
-    $scope.flight = null;
-    $scope.fill = function (data) {
-        $scope.entity = data;
-
-        $.each($scope.damageBy, function (_i, _d) {
-            if (_d.Id == data.DamageById)
-                _d.checked = true;
-        });
-
-        $.each($scope.weather, function (_i, _d) {
-            if (_d.Id == data.WXWeatherId)
-                _d.checked = true;
-        });
-
-        $.each($scope.surface, function (_i, _d) {
-            console.log(_d);
-
-            if (_d.Id == data.WXSurfaceId)
-                _d.checked = true;
-        });
-
-        $.each($scope.lighting, function (_i, _d) {
-            if (_d.Id == data.WXLightingId)
-                _d.checked = true;
-        });
-
+        $scope.dmgOptions[data.DamageById] = true;
+        $scope.wxOptions[data.WXWeatherId] = true;
+        $scope.surfaceOptions[data.WXSurfaceId] = true;
+        $scope.lightingOptions[data.WXLightingId] = true;
     };
 
 
-    $scope.isLockVisible = false;
     $scope.bind = function () {
-        $scope.entity.FlightId = $scope.tempData.FlightId;
 
-        QAService.getDamageBy().then(function (res) {
+        qaService.getDamageBy().then(function (res) {
             $scope.damageBy = res.Data;
-        })
+        });
 
-        QAService.getSurface().then(function (res) {
+        qaService.getSurface().then(function (res) {
             $scope.surface = res.Data;
-        })
+        });
 
-        QAService.getWeather().then(function (res) {
+        qaService.getWeather().then(function (res) {
             $scope.weather = res.Data;
-        })
+        });
 
-        QAService.getLighting().then(function (res) {
+        qaService.getLighting().then(function (res) {
             $scope.lighting = res.Data;
-
-            QAService.getGIAByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
-                if (res.Data.Id != null) {
-                    $scope.fill(res.Data);
-                    $scope.isEditable = !$scope.entity.DateSign;
-                   
-                } else {
-                    $scope.entity = {
-                        Id: -1,
-                        FlightNumber: res.Data.FlightNumber,
-                        AircraftType: res.Data.AircraftType,
-                        Register: res.Data.Register,
-                        ScheduledGroundTime: res.Data.ScheduledGroundTime,
-                        flightCancelled: res.Data.flightCancelled,
-
-                    }
-                    $scope.isEditable = true
-                }
+            qaService.getGIAById($rootScope.followUpEntity.Id).then(function (res) {
+                $scope.fill(res.Data);
             });
-        })
+        });
 
+        qaService.getIsResponsible($rootScope.followUpEntity.EmployeeId, $rootScope.followUpEntity.Type, $rootScope.followUpEntity.Id).then(function (response) {
+            if (response.IsSuccess == true)
+                $rootScope.followUpEntity.isResponsible = true
 
-
+        });
     };
+
     ////////////////////////////////
-    $scope.scroll_qaGround_height = $(window).height() - 130;
+
+    $scope.scroll_qaGround_height = $scope.popup_height - 12;
     $scope.scroll_qaGround = {
-        width: '100%',
+        //width: 900,
         bounceEnabled: false,
         showScrollbar: 'never',
         pulledDownText: '',
@@ -398,20 +241,63 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     };
 
+
+
+
     /////////////////////////////////
+
+
+
+
+    $scope.chkDamageBy = function (index) {
+
+        $.each($scope.damageBy, function (_i, _d) {
+            if (_d.Title.includes('Other')) {
+                if (_d.checked)
+                    $scope.showOther = true;
+                else
+                    $scope.showOther = false;
+            }
+        });
+
+        $scope.damageBy[index].checked = !$scope.damageBy[index].checked;
+        $scope.entity.DamageById = $scope.damageBy[index].Id;
+
+    }
+
+    $scope.chkLighting = function (index) {
+        $scope.lighting[index].checked = !$scope.lighting[index].checked;
+        $scope.entity.WXLightingId = $scope.lighting[index].Id;
+    }
+
+    $scope.chkWeather = function (index) {
+        $scope.weather[index].checked = !$scope.weather[index].checked;
+        $scope.entity.WXWeatherId = $scope.weather[index].Id;
+    }
+
+    $scope.chkSurface = function (index) {
+        $scope.surface[index].checked = !$scope.surface[index].checked;
+        $scope.entity.WXSurfaceId = $scope.surface[index].Id;
+    }
+
+
+
     $scope.txt_date = {
         hoverStateEnabled: false,
         useMaskBehavior: true,
+        displayFormat: 'yyyy-MM-dd HH:mm',
         type: 'datetime',
-        pickerType: "rollers",
-        displayFormat: "yyyy-MMM-dd  HH:mm",
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
-            value: 'entity.DateOccurrence',
+            value: 'entity.DamageDate',
         }
     }
 
     $scope.txt_optPhase = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.OperationPhase',
         }
@@ -419,6 +305,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_occurrecneTime = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.OccurrenceTime',
         }
@@ -426,6 +314,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_area = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.Area',
         }
@@ -433,6 +323,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_acRegister = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.Register',
         }
@@ -440,6 +332,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_acType = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.AircraftType',
         }
@@ -447,6 +341,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_fltNum = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.FlightNumber',
         }
@@ -454,6 +350,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_gndTime = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.ScheduledGroundTime',
         }
@@ -461,6 +359,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_fltDelay = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.FlightDelay',
         }
@@ -474,6 +374,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_fltCancelled = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsFlightCancelled,
         placeholder: '',
         displayExpr: 'title',
@@ -486,6 +388,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_damageDetail = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.DamageDetails',
         }
@@ -493,6 +397,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_eeCasualty = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.EmployeesFatalityNr',
         }
@@ -500,6 +406,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_eeNonCasualty = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.EmployeesNonFatalityNr',
         }
@@ -507,6 +415,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_paxCasualty = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PassengersFatalityNr',
         }
@@ -514,6 +424,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_paxNonCasualty = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PassengersNonFatalityNr',
         }
@@ -521,6 +433,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_otherCasualty = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.OthersFatalityNr',
         }
@@ -528,6 +442,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_otherNonCasualty = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.OthersNonFatalityNr',
         }
@@ -535,6 +451,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_veFleetSerial = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.VESerialFleetNr',
         }
@@ -542,6 +460,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_veType = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.VEType',
         }
@@ -549,6 +469,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_veOwner = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.VEOwner',
         }
@@ -556,6 +478,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_eqArea = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.VEArea',
         }
@@ -563,6 +487,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_veAga = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.VEAge',
         }
@@ -570,6 +496,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_veLastOverhaul = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.VELastOverhaul',
         }
@@ -578,6 +506,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.txt_veRemarks = {
         hoverStateEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.VERemarks',
         }
@@ -595,6 +525,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veTyer = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -607,6 +539,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veBrake = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -621,6 +555,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veSteering = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -635,6 +571,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veLight = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -649,6 +587,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veWiper = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -663,6 +603,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veProtection = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -677,6 +619,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veWarningDevices = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -689,6 +633,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veStab = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -702,6 +648,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veTow = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -715,6 +663,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.sb_veVision = {
         showClearButton: true,
         searchEnabled: false,
+        readOnly: true,
+        focusStateEnabled: false,
         dataSource: $scope.dsVehicleDetail,
         placeholder: '',
         displayExpr: 'title',
@@ -726,36 +676,48 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
 
     $scope.txt_eventOther = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.DamageRemark',
         }
     }
 
     $scope.txt_p1Name = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelName1',
         }
     }
 
     $scope.txt_p1Job = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelJobTitle1',
         }
     }
 
     $scope.txt_p1Compony = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelCompany1',
         }
     }
 
     $scope.txt_p1StaffNum = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelStaffNr1',
         }
     }
 
     $scope.txt_p1License = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelLicense1',
         }
@@ -764,75 +726,96 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
 
     $scope.txt_p2Name = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelName2',
         }
     }
 
     $scope.txt_p2Job = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelJobTitle2',
         }
     }
 
     $scope.txt_p2Compony = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelCompany2',
         }
     }
 
     $scope.txt_p2StaffNum = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelStaffNr2',
         }
     }
 
     $scope.txt_p2License = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelLicense2',
         }
     }
 
-
-
-
     $scope.txt_p3Name = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelName3',
         }
     }
 
     $scope.txt_p3Job = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelJobTitle3',
         }
     }
 
     $scope.txt_p3Compony = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelCompany3',
         }
     }
 
     $scope.txt_p3StaffNum = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelStaffNr3',
         }
     }
 
     $scope.txt_p3License = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.PersonnelLicense3',
         }
     }
 
     $scope.txt_VISByMeter = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.WXVisibilityM',
         }
     }
 
     $scope.txt_VISByKiloMeter = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.WXVisibilityKM',
         }
@@ -840,87 +823,86 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
 
     $scope.txt_wind = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.WXWind',
         }
     }
 
     $scope.txt_temp = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.WXTemperature',
         }
     }
 
     $scope.txt_contributFact = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.ContributoryFactors',
         }
     }
 
-    //$scope.sketch = {
-    //    bindingOptions: {
-    //        value: 'entity.sketch',
-    //    }
-    //}
-
     $scope.txt_Event = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.Event',
         }
     }
 
     $scope.txt_correctiveAction = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.CorrectiveActionTaken',
         }
     }
 
     $scope.txt_otherRMK = {
+        readOnly: true,
+        focusStateEnabled: false,
         bindingOptions: {
             value: 'entity.OtherSuggestions',
         }
     }
 
 
-
-
+    $scope.txt_result = {
+        bindingOptions: {
+            value: 'entity.Result'
+        }
+    }
 
 
     ////////////////////////////////
 
     $scope.tempData = null;
-    $scope.$on('onSign', function (event, prms) {
 
-        if (prms.doc == 'grf')
-            flightService.signDocLocal(prms, prms.doc).then(function (response) {
-                // $scope.isEditable = false;
-                // $scope.isLockVisible = false;
-                $scope.url_sign = signFiles + prms.PICId + ".jpg";
-                $scope.PIC = prms.PIC;
-                $scope.signDate = moment(new Date(prms.JLDatePICApproved)).format('YYYY-MM-DD HH:mm');
-            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
-    });
     $scope.$on('InitQAGround', function (event, prms) {
-
-
-        $scope.tempData = null;
-
-
-
 
         $scope.tempData = prms;
 
+        $scope.followUpEntity.Category = $scope.tempData.Category;
+        $scope.followUpEntity.Id = $scope.tempData.Id;
+        $scope.followUpEntity.Type = $scope.tempData.Type;
+        $scope.followUpEntity.EmployeeId = $scope.tempData.EmployeeId;
+        $scope.isNotLocked = $scope.tempData.isNotLocked;
 
         $scope.popup_add_visible = true;
-
     });
 
-
-    $scope.$on('onAttachmentHide', function (event, prms) {
-        $scope.entity.files = prms;
+    $scope.$on('onEmployeeSelectHide', function (event, prms) {
+        console.log(prms);
+        $scope.followUpEntity.Category = prms;
     });
 
+    $scope.testLoaded = function () {
+        $rootScope.$broadcast('InitTest', $scope.tempData);
+    }
 
 }]);
 

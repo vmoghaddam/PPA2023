@@ -45,7 +45,7 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'success', text: 'Sign',validationGroup: 'csradd', icon: 'fas fa-signature', onClick: function (e) {
+                    type: 'success', text: 'Sign',validationGroup: 'cabin', icon: 'fas fa-signature', onClick: function (e) {
 
                           var result = e.validationGroup.validate();
 
@@ -56,7 +56,7 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
                        
                         const currentDate = new Date();
                         const year = currentDate.getFullYear();
-                        const month = currentDate.getMonth() + 1; // Add 1 to adjust for zero-based months
+                        const month = currentDate.getMonth() + 1; 
                         const day = currentDate.getDate();
 
                         //$scope.entity.DateSign = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
@@ -84,6 +84,10 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
                               $scope.loadingVisible = false;
 							  General.ShowNotify(Config.Text_SavedOk, 'success');
 							  $scope.popup_add_visible = false;
+                                if ($scope.tempData.Status == "Not Signed") {
+                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "In Progress";
+                                }
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -93,9 +97,24 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
                     }
                 }, toolbar: 'bottom'
             },
+
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: 'Save', icon: 'check',validationGroup: 'csradd', onClick: function (e) {
+                    type: 'success', text: '', icon: '', onClick: function (e) {
+                        var data = {
+                            EmployeeId: $scope.tempData.crewId,
+                            Type: $scope.followUpEntity.Type,
+                            EntityId: $scope.entity.Id,
+                            isEditable: $scope.isEditable,
+                        }
+                        $rootScope.$broadcast('InitAttachmentPopup', data);
+                    }
+                }, toolbar: 'bottom'
+            },
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: 'Save', icon: 'check',validationGroup: 'cabin', onClick: function (e) {
                         // console.log($scope.entity.EventTitleIds);
 						// return;
                          var result = e.validationGroup.validate();
@@ -190,7 +209,7 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
             height: 'popup_height',
             width: 'popup_width',
              'toolbarItems[0].visible': 'isEditable',
-            'toolbarItems[1].visible': 'isEditable',
+            'toolbarItems[2].visible': 'isEditable',
 
         }
     };
@@ -215,7 +234,9 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 			 else
 				 _d.checked=false;
 		 });
-		 
+
+         console.log($scope.entity.FlightPhaseId);
+
        // $scope.flightPhase[index].checked = !$scope.flightPhase[index].checked;
        // console.log($scope.fpoptions);
        // $scope.entity.FlightPhaseId = $scope.flightPhase[index].Id;
@@ -246,10 +267,6 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
     $scope.fill = function (data) {
         console.log(data);
         $scope.entity = data.result;
-        console.log(data.result.PhaseId);
-        console.log($scope.flightPhase);
-        //$scope.entity.Time = new Date(data.result.OccurrenceDateTime).getHours() + ":" + new Date(data.result.OccurrenceDateTime).getMinutes();
-        //$scope.entity.OccurrenceDate = new Date(data.result.OccurrenceDateTime).toDateString();
         $scope.entity.EventTitleIds = [];
          $.each($scope.flightPhase, function (_i, _d) {
              if (_d.Id == data.result.PhaseId)
@@ -307,18 +324,6 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 			
 
         });
- 
-       
-
-        //QAService.getFlightInformation($scope.tempData.FlightId).then(function (res) {
-        //    console.log(res);
-        //    $scope.entity.FlightNumber = res.Result.Data.FlightNumber;
-        //    $scope.entity.FlightSeg = res.Result.Data.FromAirportIATA + " - " + res.Result.Data.ToAirportIATA;
-        //    $scope.entity.PAXNum = res.Result.Data.PaxTotal;
-        //    $scope.entity.ACType = res.Result.Data.AircraftType + " - " + res.Result.Data.Register;
-        //});
-
-
     };
     ////////////////////////////////
     $scope.scroll_qaCabin_height = $(window).height() - 130;
@@ -347,16 +352,6 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 
     /////////////////////////////////
 
-
-
-
-
-
-
-
-
-   
-    
 
     $scope.txt_repFieldBy = {
         hoverStateEnabled: false,
@@ -523,6 +518,10 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 
         $scope.popup_add_visible = true;
 
+    });
+
+    $scope.$on('onAttachmentHide', function (event, prms) {
+        $scope.entity.files = prms;
     });
 
 

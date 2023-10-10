@@ -38,35 +38,7 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'default', text: 'Sign', icon: 'fas fa-signature', onClick: function (e) {
-                        $scope.followUpEntity.EntityId = $scope.entity.Id;
-                        $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
-                        $scope.followUpEntity.DateReferr = new Date();
-                        $scope.followUpEntity.DateConfirmation = new Date();
-                        const currentDate = new Date();
-                        const year = currentDate.getFullYear();
-                        const month = currentDate.getMonth() + 1; // Add 1 to adjust for zero-based months
-                        const day = currentDate.getDate();
-
-                        $scope.entity.DateSign = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
-                        QAService.saveVHR($scope.entity).then(function (res) {
-                            $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                        });
-
-
-                        $scope.loadingVisible = true
-                        QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
-                            console.log(response);
-                            $scope.loadingVisible = false;
-                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-                    }
-                }, toolbar: 'bottom'
-            },
-
-            {
-                widget: 'dxButton', location: 'after', options: {
-                    type: 'default', text: 'Save', icon: 'check', validationGroup: 'vhradd', onClick: function (e) {
+                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
 
                         //var result = e.validationGroup.validate();
 
@@ -75,20 +47,82 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
                         //    return;
                         //}
 
-                        //$scope.entity.User = $rootScope.userTitle;
 
-                        $scope.loadingVisible = true;
-                        $scope.entity.EmployeeId = $scope.tempData.crewId;
+                        $scope.entity.Signed = "1";
+                        $scope.followUpEntity.EntityId = $scope.entity.Id;
+                        $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
+                        $scope.followUpEntity.DateReferr = new Date();
+                        $scope.followUpEntity.DateConfirmation = new Date();
+
+                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
+
+                        $scope.loadingVisible = true
                         QAService.saveVHR($scope.entity).then(function (res) {
-                            $scope.loadingVisible = false;
+
                             $scope.entity.Id = res.Data.Id;
-                        });
+                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+
+                                $scope.loadingVisible = false;
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.popup_add_visible = false;
+                                if ($scope.tempData.Status == "Not Signed") {
+                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                    row.Status = "In Progress";
+                                }
+                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
 
 
 
                     }
                 }, toolbar: 'bottom'
             },
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: '', icon: '', onClick: function (e) {
+                        var data = {
+                            EmployeeId: $scope.tempData.crewId,
+                            Type: $scope.followUpEntity.Type,
+                            EntityId: $scope.entity.Id,
+                            isEditable: $scope.isEditable,
+                        }
+                        $rootScope.$broadcast('InitAttachmentPopup', data);
+                    }
+                }, toolbar: 'bottom'
+            },
+
+            {
+                widget: 'dxButton', location: 'after', options: {
+                    type: 'success', text: 'Save', icon: 'check', validationGroup: 'voluntary', onClick: function (e) {
+                        var result = e.validationGroup.validate();
+
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
+
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
+                        $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
+
+                        $scope.entity.Signed = $scope.entity.DateSign ? "1" : null;
+
+                        $scope.loadingVisible = true;
+                        QAService.saveVHR($scope.entity).then(function (res) {
+                            $scope.loadingVisible = false;
+                            $scope.entity.Id = res.Data.Id;
+                            General.ShowNotify(Config.Text_SavedOk, 'success');
+                            $scope.popup_add_visible = false;
+                        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+
+
+                    }
+                }, toolbar: 'bottom'
+            },
+
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) {
@@ -96,6 +130,7 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
                     }
                 }, toolbar: 'bottom'
             }
+
         ],
 
         visible: false,
@@ -128,7 +163,9 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
             };
             $scope.popup_add_visible = false;
-            $rootScope.$broadcast('onVhrHide', null);
+            $rootScope.$broadcast('onQAVoluntaryHide', null);
+            $scope.isLockVisible = false
+
         },
         onContentReady: function (e) {
             if (!$scope.popup_instance)
@@ -142,8 +179,8 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
             title: 'popup_add_title',
             height: 'popup_height',
             width: 'popup_width',
-            //'toolbarItems[0].visible': 'isLockVisible',
-            //'toolbarItems[1].visible': 'isEditable',
+            'toolbarItems[0].visible': 'isLockVisible',
+            'toolbarItems[2].visible': 'isEditable',
 
         }
     };
@@ -152,14 +189,21 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
     /////////////////////////////////
     $scope.flight = null;
-    //$scope.fill = function (data) {
-    //    $scope.entity = data;
-    //};
+    $scope.fill = function (data) {
+        $scope.entity = data;
+    };
     $scope.isLockVisible = false;
     $scope.bind = function () {
-        
+        if ($scope.tempData.EntityId != null) {
+            QAService.getVHRById($scope.tempData.EntityId).then(function (res) {
+                $scope.fill(res.Data);
+                $scope.isEditable = !$scope.entity.DateSign;
+                //$scope.isLockVisible = !$scope.entity.DateSign;
+                if ($scope.tempData.Status == "Not Signed")
+                    $scope.isLockVisible = true
 
-
+            });
+        }
     };
     ////////////////////////////////
     $scope.scroll_qaVoluntary_height = $(window).height() - 130;
@@ -187,26 +231,38 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
     };
 
     /////////////////////////////////
-    
+
 
 
 
     $scope.txt_hazardDate = {
         hoverStateEnabled: false,
+        useMaskBehavior: true,
+        type: 'datetime',
+        pickerType: "rollers",
+        displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
-            value: 'entity.HazardDate',
+            value: 'entity.DateReport',
         }
     }
 
     $scope.txt_repDate = {
         hoverStateEnabled: false,
+        useMaskBehavior: true,
+        type: 'datetime',
+        pickerType: "rollers",
+        displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
-            value: 'entity.ReportDate',
+            value: 'entity.DateOccurrence',
         }
     }
 
     $scope.txt_affectedArea = {
         hoverStateEnabled: false,
+        useMaskBehavior: true,
+        type: 'datetime',
+        pickerType: "rollers",
+        displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.AffectedArea',
         }
@@ -226,7 +282,7 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         }
     }
 
-    
+
     $scope.txt_telNumber = {
         hoverStateEnabled: false,
         bindingOptions: {
@@ -241,17 +297,10 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         }
     }
 
-     $scope.txt_email = {
+    $scope.txt_email = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Email',
-        }
-    }
-
-    $scope.txt_telNumber = {
-        hoverStateEnabled: false,
-        bindingOptions: {
-            value: 'entity.TelNumber',
         }
     }
 
@@ -276,15 +325,16 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
 
         $scope.tempData = null;
-
-
-
-
         $scope.tempData = prms;
 
+        console.log($scope.tempData);
 
         $scope.popup_add_visible = true;
 
+    });
+
+    $scope.$on('onAttachmentHide', function (event, prms) {
+        $scope.entity.files = prms;
     });
 
 }]);

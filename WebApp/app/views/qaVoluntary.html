@@ -20,28 +20,25 @@
     .ctd-selected {
         background-color: red;
     }
-    .dx-toolbar-center {
-        width: 100%;
-    }
 </style>
 <div ng-controller="qaVoluntaryController">
     <div id="popup_add" dx-popup="popup_add" class="no-padding">
         <div style="padding:5px;">
 
-            <div id="scroll_qaVoluntary" dx-scroll-view="scroll_qaVoluntary" style="margin-top:5px">
+            <div id="scroll_vhradd" dx-scroll-view="scroll_vhradd" style="margin-top: 5px; float: left; overflow: hidden;width:60%">
 
                 <div class="container">
                     <div class="visible-xs">
 
                         <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="2">
+                                <td style="background-color:black;padding:7px;text-align:left;color:black;font-weight:bold">
                                     Contact Information (Optionally) (اطلاعات تماس (اختیاری
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Email (آدرس ایمیل): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Tel No. (شماره تلفن): </td>
@@ -49,32 +46,32 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Full Name (نام و نام‌خانوادگی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_name"></div></td>
+                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_Name"></div></td>
                             </tr>
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="2">
+                                <td style="background-color:black;padding:7px;text-align:left;color:black;font-weight:bold">
                                     Hazard Details جزئیات پتانسیل خطر :
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Hazard identified: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Affected area of Incident/Hazard: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Report Date: </td>
                                 <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_repDate"></div></td>
                             </tr>
                         </table>
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td style="background-color:black;padding:7px;text-align:left;color:black;font-weight:bold">
                                     Description of Incident/Hazard
                                 </td>
                             </tr>
@@ -84,14 +81,26 @@
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td style="background-color:black;padding:7px;text-align:left;color:black;font-weight:bold">
                                     Recommended action to mitigate hazard
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_recAction"></div></td>
+                            </tr>
+
+                        </table>
+
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
+                            <tr>
+                                <td style="background-color:black;padding:7px;text-align:left;color:black;font-weight:bold">
+                                    Result
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_result" dx-validator="{validationGroup:'result',  validationRules: [{ type: 'required',}]}"></div></td>
                             </tr>
 
                         </table>
@@ -103,11 +112,11 @@
                     </div>
                 </div>
 
-                <div class="container">
-                    <div class="visible-sm visible-md">
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                <div>
+                    <div class="visible-sm visible-md visible-lg">
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="4">
+                                <td style="background-color: lightgray; padding: 7px; text-align: left; color: black; font-weight: bold" colspan="4">
                                     Contact Information (Optionally) (اطلاعات تماس (اختیاری
                                 </td>
                             </tr>
@@ -123,29 +132,29 @@
                             </tr>
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="4">
+                                <td style="background-color: lightgray; padding: 7px; text-align: left; color: black; font-weight: bold" colspan="4">
                                     Hazard Details جزئیات پتانسیل خطر :
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Hazard identified: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center"></div></td>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Affected area of Incident/Hazard: </td>
                                 <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Report Date: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_repDate" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_repDate"></div></td>
                             </tr>
                         </table>
 
 
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td style="background-color: lightgray; padding: 7px; text-align: left; color: black; font-weight: bold">
                                     Description of Incident/Hazard
                                 </td>
                             </tr>
@@ -155,14 +164,26 @@
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td style="background-color: lightgray; padding: 7px; text-align: left; color: black; font-weight: bold">
                                     Recommended action to mitigate hazard
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_recAction"></div></td>
+                            </tr>
+
+                        </table>
+
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
+                            <tr>
+                                <td style="background-color: lightgray; padding: 7px; text-align: left; color: black; font-weight: bold">
+                                    Result
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_result"></div></td>
                             </tr>
 
                         </table>
@@ -176,25 +197,11 @@
 
 
 
-                <table ng-show="url_sign" style="width:100%;margin-top:10px;border:1px solid #eee;">
-                    <tr>
-                        <td style="padding:10px;border-bottom:1px solid #eeee;text-align:center" colspan="3">
-                            <div ng-show="url_sign" style="text-align:center;font-size:14px;padding:0px;">The document signed and approved by</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:25%;"></td>
-                        <td style="width:50%; text-align:center;padding:10px">
 
-                            <div ng-show="url_sign" style="text-align:center;font-size:16px;padding:5px;">{{PIC}}</div>
-                            <div ng-show="url_sign" style="text-align:center;font-size:16px;padding:5px;">{{signDate}}</div>
-                            <img style="height:auto;display: block; width: 50%;margin:0 auto 0 auto" ng-show="url_sign" ng-src="{{url_sign}}" />
-                        </td>
-                        <td style="width:25%;"></td>
-                    </tr>
-                </table>
             </div>
-            <div style="clear:both"></div>
+            <div style="float: right;width:40%">
+                <div ng-include="'app/views/qaRefer.html?vx=2'" onload="testLoaded()"></div>
+            </div>
         </div>
     </div>
 

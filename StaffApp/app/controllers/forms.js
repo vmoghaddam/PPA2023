@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.controller('formsController', ['$scope', '$location', '$routeParams', '$rootScope', '$window', 'flightService', 'authService', 'notificationService', '$route', 'activityService','QAService', function ($scope, $location, $routeParams, $rootScope, $window, flightService, authService, notificationService, $route, activityService,QAService) {
+app.controller('formsController', ['$scope', '$location', '$routeParams', '$rootScope', '$window', 'flightService', 'authService', 'notificationService', '$route', 'activityService', 'QAService', function ($scope, $location, $routeParams, $rootScope, $window, flightService, authService, notificationService, $route, activityService, QAService) {
     $scope.prms = $routeParams.prms;
 
     $scope.formatDate = function (dt) {
@@ -7,17 +7,17 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
             return "";
         return moment(dt).format('YYYY-MMM-DD');
     };
-	
-	$scope.formatDateTime = function (dt) {
+
+    $scope.formatDateTime = function (dt) {
         if (!dt)
             return "";
         return moment(dt).format('YYYY-MMM-DD HH:mm');
     };
 
-var tabs = [
-     
-       { text: "Closed", id: 'closed' },
-		  { text: "In Progress", id: 'inprogress' },
+    var tabs = [
+
+        { text: "Closed", id: 'closed' },
+        { text: "In Progress", id: 'inprogress' },
         { text: "Not Signed", id: 'notsigned' },
 
 
@@ -27,7 +27,7 @@ var tabs = [
     $scope.$watch("selectedTabIndex", function (newValue) {
         $('.tabc').hide();
         var id = tabs[newValue].id;
-         
+
         switch (id) {
             case 'closed':
                 $scope.bind_closed();
@@ -102,6 +102,44 @@ var tabs = [
         }
     };
 
+    $scope.showForm = function (obj) {
+        console.log(obj);
+
+        var data = {
+            FlightId: obj.FlightId,
+            crewId: $rootScope.employeeId,
+            Status: obj.Status,
+            EntityId: obj.EntityId,
+        };
+
+        switch (obj.type) {
+            case 0:
+                $rootScope.$broadcast('InitQACabin', data);
+                break;
+            case 1:
+                $rootScope.$broadcast('InitQAGround', data);
+                break;
+            case 2:
+                $rootScope.$broadcast('InitQAVoluntary', data);
+                break;
+            case 3:
+                $rootScope.$broadcast('InitQAMaintenance', data);
+                break;
+            case 4:
+                $rootScope.$broadcast('InitQACatering', data);
+                break;
+            case 5:
+                $rootScope.$broadcast('InitQASecurity', data);
+                break;
+            case 6:
+                $rootScope.$broadcast('InitQADispatch', data);
+                break;
+
+        }
+    }
+
+
+
     $scope.popup_newform_visible = false;
     $scope.popup_newform = {
         height: 450,
@@ -125,7 +163,7 @@ var tabs = [
                             Reason: $scope.reason,
                             Remark: $scope.remark,
                             OperatorId: -1,
-                            Id:-1,
+                            Id: -1,
                         };
                         $scope.loadingVisible = true;
                         flightService.updateFormVacation(dto).then(function (response) {
@@ -168,17 +206,17 @@ var tabs = [
         onContentReady: function (e) {
 
         },
-        fullScreen:true,
+        fullScreen: true,
         bindingOptions: {
             visible: 'popup_newform_visible',
 
 
         }
     };
-	
-	
-	
-	
+
+
+
+
 
 
     $scope.dt_from = new Date();
@@ -187,9 +225,9 @@ var tabs = [
         width: '100%',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd",
-        
+
         onValueChanged: function (arg) {
-            
+
         },
         bindingOptions: {
             value: 'dt_from',
@@ -214,13 +252,13 @@ var tabs = [
     $scope.reasons = [
         { id: 1, title: 'Vacation' },
         { id: 2, title: 'Medical Care' },
-		{ id: 4, title: 'Standby AM' },
-		{ id: 5, title: 'Standby PM' },
-		{ id: 6, title: 'Standby AM (KIH)' },
-		{ id: 7, title: 'Standby PM (KIH)' },
-		{ id: 8, title: 'Off' },
-		{ id: 9, title: 'THR Flight' },
-		{ id: 10, title: 'KIH Flight' },
+        { id: 4, title: 'Standby AM' },
+        { id: 5, title: 'Standby PM' },
+        { id: 6, title: 'Standby AM (KIH)' },
+        { id: 7, title: 'Standby PM (KIH)' },
+        { id: 8, title: 'Off' },
+        { id: 9, title: 'THR Flight' },
+        { id: 10, title: 'KIH Flight' },
         { id: 3, title: 'Other' },
     ];
 
@@ -240,29 +278,29 @@ var tabs = [
 
     $scope.remark = '';
     $scope.txt_remark = {
-        rtlEnabled:true,
+        rtlEnabled: true,
         bindingOptions: {
             value: 'remark',
             height: '120',
 
         }
     };
-    
-	$scope.ds_active=[];
-	$scope.bind_closed=function(){
-		$scope.ds_active=Enumerable.From($scope.ds).Where(function(x){ return x.Status=='Closed';}).ToArray();
-		
-	};
-	$scope.bind_inprogress=function(){
-		$scope.ds_active=Enumerable.From($scope.ds).Where(function(x){ return x.Status=='In Progress';}).ToArray();
-		
-	};
-	$scope.bind_notsigned=function(){
-		$scope.ds_active=Enumerable.From($scope.ds).Where(function(x){ return x.Status=='Not Signed';}).ToArray();
-		
-	};
+
+    $rootScope.ds_active = [];
+    $scope.bind_closed = function () {
+        $rootScope.ds_active = Enumerable.From($scope.ds).Where(function (x) { return x.Status == 'Closed'; }).ToArray();
+
+    };
+    $scope.bind_inprogress = function () {
+        $rootScope.ds_active = Enumerable.From($scope.ds).Where(function (x) { return x.Status == 'In Progress'; }).ToArray();
+
+    };
+    $scope.bind_notsigned = function () {
+        $rootScope.ds_active = Enumerable.From($scope.ds).Where(function (x) { return x.Status == 'Not Signed'; }).ToArray();
+
+    };
     $scope.bind = function () {
-       
+
         $scope.loadingVisible = true;
         /*flightService.getForms($rootScope.employeeId).then(function (response) {
             $scope.loadingVisible = false;
@@ -272,50 +310,50 @@ var tabs = [
             console.log(response);
 
         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });*/
-		
-		QAService.getCreatorHistory($rootScope.employeeId).then(function (res) {
-			$scope.loadingVisible = false;
-			console.log(res);
-			$scope.ds=res.Data;
-			$scope.bind_closed();
-		}, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });	
-		
+
+        QAService.getCreatorHistory($rootScope.employeeId).then(function (res) {
+            $scope.loadingVisible = false;
+            console.log(res);
+            $scope.ds = res.Data;
+            $scope.bind_closed();
+        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
     };
     $scope.FormClick = function (x) {
-		alert('x');
-       /* $.each($scope.ds, function (_i, _d) {
-            _d.selected = false;
-            if (_d.Id == x.Id)
-                _d.selected = true;
-        });*/
+        alert('x');
+        /* $.each($scope.ds, function (_i, _d) {
+             _d.selected = false;
+             if (_d.Id == x.Id)
+                 _d.selected = true;
+         });*/
     };
     $scope.getFormClass = function (x) {
         //return x.selected ? "form-selected":"";
-		return "";
+        return "";
     };
-	$scope.getHeaderClass=function(x){
-		
-		switch (x.Status){
-			case 'Closed':
-			   return 'closed';
-			   case 'In Progress':
-			   return 'inprogress';
-			   case 'Not Signed':
-			   return 'notsigned';
-			default:
-			  return "";
-		}
-	};
+    $scope.getHeaderClass = function (x) {
+
+        switch (x.Status) {
+            case 'Closed':
+                return 'closed';
+            case 'In Progress':
+                return 'inprogress';
+            case 'Not Signed':
+                return 'notsigned';
+            default:
+                return "";
+        }
+    };
     $scope.getStatusClass = function (x) {
         if (!x.Status)
             return "";
-        return x.Status=='Accepted' ? "st-accepted" : "st-rejected";
+        return x.Status == 'Accepted' ? "st-accepted" : "st-rejected";
     };
     $scope.$on('new_form', function (evt, data) {
-       // $scope.popup_newform_visible = true;
-	   
-	   $scope.popup_select_visible = true;
-        
+        // $scope.popup_newform_visible = true;
+
+        $scope.popup_select_visible = true;
+
     });
 
     $scope.$on('delete_form', function (evt, data) {
@@ -323,39 +361,39 @@ var tabs = [
 
         if (item) {
             if (item.Status) {
-                General.ShowNotify('The selected Request cannot be deleted.', 'error'); 
+                General.ShowNotify('The selected Request cannot be deleted.', 'error');
                 return;
             }
             $scope.loadingVisible = true;
-            flightService.deleteFormVacation({ id: item.Id}).then(function (response) {
+            flightService.deleteFormVacation({ id: item.Id }).then(function (response) {
                 $scope.loadingVisible = false;
 
                 $scope.ds = Enumerable.From($scope.ds).Where('$.Id!=' + item.Id).ToArray();
 
             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-          
+
         }
 
     });
-	
-	
-	$scope.df = new Date(); 
+
+
+    $scope.df = new Date();
     $scope.date_from = {
         displayFormat: "yyyy MMM dd",
         adaptivityEnabled: true,
         type: "date",
         pickerType: "rollers",
-		max: new Date(),
+        max: new Date(),
         useMaskBehavior: true,
         onValueChanged: function (e) {
             //$scope.bind();
-			$scope.bind_flts();
+            $scope.bind_flts();
         },
         bindingOptions: {
             value: 'df'
         }
     };
-	 $scope.scroll_height = $(window).height()-270;
+    $scope.scroll_height = $(window).height() - 270;
     $scope.scroll_ft = {
         width: '100%',
         bounceEnabled: true,
@@ -366,79 +404,78 @@ var tabs = [
         refreshingText: 'Updating...',
         onPullDown: function (options) {
             //$scope.bind();
-             
+
             options.component.release();
 
         },
         bindingOptions: { height: 'scroll_height', }
     };
-	
-	
-	$scope.flt_no=null;
-	$scope.flt =null;
-	$scope.txt_route  = {
+
+
+    $scope.flt_no = null;
+    $scope.flt = null;
+    $scope.txt_route = {
         hoverStateEnabled: false,
-		 
+
         bindingOptions: {
             value: 'flt_route',
         }
     };
-	
-	$scope.ds_flts=null;
-	$scope.bind_flts=function(){
-			$scope.flt_no = null;
-				$scope.flt_route = null;
-		var df=moment(new Date($scope.df)).format('YYYY-MM-DD');
-		$scope.loadingVisible = true;
+
+    $scope.ds_flts = null;
+    $scope.bind_flts = function () {
+        $scope.flt_no = null;
+        $scope.flt_route = null;
+        var df = moment(new Date($scope.df)).format('YYYY-MM-DD');
+        $scope.loadingVisible = true;
         flightService.getFlightsByDate(df).then(function (response) {
             $scope.loadingVisible = false;
-            
-            $scope.ds_flts = response ;
-           
+
+            $scope.ds_flts = response;
+
             console.log(response);
 
         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-	};
-	 $scope.sb_flts = {
-        
+    };
+    $scope.sb_flts = {
+
         showClearButton: true,
         searchEnabled: true,
         searchExpr: ["FlightNumber"],
-        	placeholder:'Flight No',
+        placeholder: 'Flight No',
         displayExpr: "FlightNumber",
         onSelectionChanged: function (e) {
 
-            if (!e.selectedItem)
-			{
-				$scope.flt_no = null;
-				$scope.flt_route = null;
-			}
-             
+            if (!e.selectedItem) {
+                $scope.flt_no = null;
+                $scope.flt_route = null;
+            }
+
             $scope.flt_no = e.selectedItem.FlightNumber;
-			$scope.flt_route = e.selectedItem.FromAirportIATA+'-'+e.selectedItem.ToAirportIATA+' ('+e.selectedItem.Register+') ('+
-			moment(new Date(e.selectedItem.STDLocal)).format('HH:mm')+')';
-            
+            $scope.flt_route = e.selectedItem.FromAirportIATA + '-' + e.selectedItem.ToAirportIATA + ' (' + e.selectedItem.Register + ') (' +
+                moment(new Date(e.selectedItem.STDLocal)).format('HH:mm') + ')';
+
 
         },
         bindingOptions: {
             value: 'flt',
-			dataSource:'ds_flts',
+            dataSource: 'ds_flts',
 
         }
 
     };
-	$scope.selected_type='';
-	$scope.type_click=function($event,type){
-		 
-		$('._form_type').removeClass('selected');
-		$($event.currentTarget).addClass('selected');
-		$scope.selected_type=type;
-		
-	}
-	
-	
-	
-	 $scope.popup_select_visible = false;
+    $scope.selected_type = '';
+    $scope.type_click = function ($event, type) {
+
+        $('._form_type').removeClass('selected');
+        $($event.currentTarget).addClass('selected');
+        $scope.selected_type = type;
+
+    }
+
+
+
+    $scope.popup_select_visible = false;
     $scope.popup_select = {
         height: 450,
         width: 400,
@@ -446,19 +483,19 @@ var tabs = [
         showTitle: true,
 
         toolbarItems: [
-          
 
-             {
+
+            {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'normal', text: 'Select', onClick: function (e) {
-                         var data = { FlightId: $scope.flt.ID,crewId:$rootScope.employeeId };
+                        var data = { FlightId: $scope.flt.ID, crewId: $rootScope.employeeId };
 
-                         $rootScope.$broadcast($scope.selected_type, data);
+                        $rootScope.$broadcast($scope.selected_type, data);
 
                     }
                 }, toolbar: 'bottom'
             },
-             
+
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'danger', text: 'Close', icon: 'remove', onClick: function (e) {
@@ -476,7 +513,7 @@ var tabs = [
 
         },
         onShown: function (e) {
-			
+
             $scope.bind_flts();
         },
         onHiding: function () {
@@ -489,18 +526,52 @@ var tabs = [
         onContentReady: function (e) {
 
         },
-        fullScreen:true,
+        fullScreen: true,
         bindingOptions: {
             visible: 'popup_select_visible',
 
 
         }
     };
-	
-	
+
+
     $scope.$on('$viewContentLoaded', function () {
 
-         $scope.bind();
+        $scope.bind();
+    });
+
+    /////////////////
+
+    $scope.$on('onQACabinHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQACateringHide', function () {
+
+        //$scope.bind();
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+
+    });
+    $scope.$on('onQAGroundHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQAMaintenanceHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQADispatchHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQASecurityHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
+    $scope.$on('onQAVoluntaryHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
     });
 
 

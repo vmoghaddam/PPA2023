@@ -52,7 +52,7 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Occurrence: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_OccurrenceDate" class="center" dx-validator="{validationGroup:'csradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_OccurrenceDate" class="center" dx-validator="{validationGroup:'cabin',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <!--<tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Approximate local time of event: </td>
@@ -104,7 +104,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-6" ng-repeat="x in eventTitle" style='padding-bottom:6px'>
 
                                 <!--<input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="etoptions[$index]" ng-change="chkEventTitle($index)" /> {{x.Title}}-->
-								 <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkEventTitle(x)"  /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkEventTitle(x)" /> {{x.Title}}
 
                             </div>
                             <div style="clear:both"></div>
@@ -198,7 +198,7 @@
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Report field by: </td>
                                 <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_repFieldBy"></div></td>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Occurrence: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_OccurrenceDate" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_OccurrenceDate" class="center" dx-validator="{validationGroup:'cabin',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <!--<td style="padding: 7px;text-align:left; font-weight: bold"> Approximate local time of event: </td>
@@ -233,7 +233,7 @@
 
                             <div class="col-xs-3 col-sm-3 col-md-3" ng-repeat="x in flightPhase">
 
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="fpoptions[x.Id]" ng-change="chkFlightPhase($index)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkFlightPhase(x)" /> {{x.Title}}
 
                             </div>
                             <div style="clear:both"></div>
@@ -321,6 +321,6 @@
         </div>
     </div>
 
-
+    <div ng-include="'app/views/qaAttachment.html?vx.2'"></div>
     <div dx-load-panel="loadPanel"></div>
 </div>
