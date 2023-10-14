@@ -7744,6 +7744,8 @@ namespace EPAGriffinAPI.DAL
             return query;
         }
 
+
+        //2023-10-14
         internal object GetCrewFlightsReportAppX(DateTime from, DateTime to, int id)
         {
             this.context.Database.CommandTimeout = 160;
@@ -7812,7 +7814,7 @@ namespace EPAGriffinAPI.DAL
 
             public int? Total { get; set; }
         }
-
+        //2023-10-14
         internal object GetCrewFlightsReportAppGrouped(int id)
         {
             try
@@ -7823,7 +7825,7 @@ namespace EPAGriffinAPI.DAL
                 var query = (
                     from x in this.context.ViewFlightCrewXes
 
-                    where x.CrewId == id && x.DateConfirmed != null
+                    where x.CrewId == id //&& x.DateConfirmed != null
                     group x by new { x.STDDay, x.STDDayEnd } into grp
                     select new appAll() { Start = grp.Key.STDDay, End = grp.Key.STDDayEnd, Total = grp.Count(), Type = 1165 }
 
