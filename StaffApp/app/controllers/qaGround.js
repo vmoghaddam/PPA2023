@@ -95,7 +95,7 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: '', icon: '', onClick: function (e) {
+                    type: 'success', text: '', icon: 'fas fa-file', onClick: function (e) {
                         var data = {
                             EmployeeId: $scope.tempData.crewId,
                             Type: $scope.followUpEntity.Type,

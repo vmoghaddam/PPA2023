@@ -100,7 +100,7 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: '', icon: '', onClick: function (e) {
+                    type: 'success', text: '', icon: 'fas fa-file', onClick: function (e) {
                         var data = {
                             EmployeeId: $scope.tempData.crewId,
                             Type: $scope.followUpEntity.Type,
@@ -142,10 +142,10 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
                             $scope.loadingVisible = false;
                             $scope.entity.Id = res.Data.Id;
 							General.ShowNotify(Config.Text_SavedOk, 'success');
-							$scope.popup_add_visible = false;
+                            $scope.popup_add_visible = false;
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
-
+                       
 
                     }
                 }, toolbar: 'bottom'
