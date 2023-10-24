@@ -472,13 +472,13 @@ namespace EPAGriffinAPI.DAL
                 {
                     //var grps = this.context.JobGroups.Where(q => q.FullCode.StartsWith(x)).ToList();
                     var grps = this.context.JobGroups.ToList();
-                    _grps = grps.Concat(grps).ToList();
+                    _grps = _grps.Concat(grps).ToList();
                 }
                 else
                 {
                       qry=qry.Where(q => q.FullCode.StartsWith(x.code));
                     var grps = qry.ToList();
-                    _grps = grps.Concat(grps).ToList();
+                    _grps = _grps.Concat(grps).ToList();
 
                     if (!string.IsNullOrEmpty(x.code2))
                     {
