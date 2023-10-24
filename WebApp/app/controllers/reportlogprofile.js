@@ -1060,7 +1060,8 @@ app.controller('reportlogprofile', ['$scope', '$location', '$routeParams', '$roo
         bindingOptions: {
             dataSource: 'dg_profile_ds'
         },
-        columnChooser: {
+        columnChooser: {   
+            //dfgdfgdfg
             enabled: true
         },
 
