@@ -31,21 +31,16 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
         dragEnabled: true,
         closeOnOutsideClick: false,
         onShowing: function (e) {
-            $rootScope.IsRootSyncEnabled = false;
+           
             $scope.popup_instance.repaint();
 
 
         },
         onShown: function (e) {
 
-            if ($scope.isNew) {
-                $scope.isContentVisible = true;
-            }
+            
             if ($scope.tempData != null)
                 $scope.bind();
-
-            //$rootScope.referred_list_instance.repaint();
-            //$rootScope.$broadcast('InitTest', $scope.tempData);
 
 
 
@@ -53,10 +48,8 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
         onHiding: function () {
             $scope.entity = {
                 Id: -1,
-                EventTitleIds: [],
-
             };
-            $scope.entity.Result = null;
+           
             $scope.popup_attachment_visible = false;
             $rootScope.$broadcast('onAttachmentHide', $scope.files);
             $scope.files = [];
@@ -246,6 +239,8 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
 
     $scope.$on('InitAttachmentPopup', function (event, prms) {
         $scope.tempData = prms;
+
+        console.log($scope.tempData);
 
         $scope.entity.EntityId = $scope.tempData.EntityId;
         $scope.entity.Type = $scope.tempData.Type;

@@ -116,6 +116,7 @@
     <Content Include="app\controllers\qaAttachment.js" />
     <Content Include="app\controllers\qaCabin.js" />
     <Content Include="app\controllers\qaCatering.js" />
+    <Content Include="app\controllers\qaCyberSecurity.js" />
     <Content Include="app\controllers\qaDispatch.js" />
     <Content Include="app\controllers\qaGround.js" />
     <Content Include="app\controllers\qaMaintenance.js" />
@@ -164,6 +165,7 @@
     <Content Include="app\views\qaAttachment.html" />
     <Content Include="app\views\qaCabin.html" />
     <Content Include="app\views\qaCatering.html" />
+    <Content Include="app\views\qaCyberSecurity.html" />
     <Content Include="app\views\qaDispatch.html" />
     <Content Include="app\views\qaGround.html" />
     <Content Include="app\views\qaMaintenance.html" />

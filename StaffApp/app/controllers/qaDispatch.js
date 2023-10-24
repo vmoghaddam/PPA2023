@@ -94,7 +94,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
 
             {
                 widget: 'dxButton', location: 'after', options: {
-                    type: 'success', text: '', icon: '', onClick: function (e) {
+                    type: 'success', text: '', icon: 'fas fa-file', onClick: function (e) {
                         var data = {
                             EmployeeId: $scope.tempData.crewId,
                             Type: $scope.followUpEntity.Type,

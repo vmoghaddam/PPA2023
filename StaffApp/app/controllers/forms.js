@@ -573,6 +573,10 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
         $scope.bind_inprogress();
         $scope.bind_notsigned();
     });
+    $scope.$on('onQACyberSecurityHide', function () {
+        $scope.bind_inprogress();
+        $scope.bind_notsigned();
+    });
 
 
     var appWindow = angular.element($window);
