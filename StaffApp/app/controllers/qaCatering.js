@@ -50,7 +50,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
                         
                         $scope.entity.Signed = "1";
-                        console.log($scope.entity)
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
                         $scope.followUpEntity.DateReferr = new Date();
@@ -66,6 +67,7 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                         QAService.saveCHR($scope.entity).then(function (res) {
 
                             $scope.entity.Id = res.Data.Id;
+                            $scope.followUpEntity.EntityId = res.Data.Id;
                             QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
                                 $scope.loadingVisible = false;
@@ -77,7 +79,7 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                                     row.Status = "In Progress";
                                 }
 
-
+                                $scope.popup_add_visible = false;
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -129,7 +131,7 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                             $scope.loadingVisible = false;
                             $scope.entity.Id = res.Data.Id;
                             General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.popup_add_visible = false;
+                            
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -257,6 +259,9 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                     $scope.entity.FlightNumber = res.Data.FlightNumber;
                     $scope.entity.Route = res.Data.Route;
                     $scope.entity.Register = res.Data.Register;
+                    $scope.entity.EmployeeName = res.Data.EmployeeName;
+                    $scope.entity.Email = res.Data.Email;
+                    $scope.entity.Mobile = res.Data.Mobile;
                     $scope.isEditable = true;
                 }
 
@@ -266,6 +271,9 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
       
 
     };
+
+
+
     ////////////////////////////////
     $scope.scroll_qaCatering_height = $(window).height() - 130;
     $scope.scroll_qaCatering = {
@@ -295,12 +303,13 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.txt_reportDate = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateReport',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -308,17 +317,20 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.ReasonDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_dateOccurrence = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -327,6 +339,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Place',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -334,6 +348,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Route',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -341,6 +357,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Register',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -348,6 +366,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.FlightNumber',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -355,6 +375,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Trolley',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -362,6 +384,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Equipment',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -369,6 +393,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Transporter',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -377,6 +403,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.TrolleyEquipmentTransporterDecs',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -384,6 +412,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.SaftyEquipmentUseage',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -391,6 +421,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.SaftyEquipmentType',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -398,6 +430,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.InjuryDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -405,6 +439,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.WorkBreak',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -412,6 +448,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.WorkBreakPeriod',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -419,11 +457,15 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.PreventiveActions',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_email = {
         hoverStateEnabled: false,
+        useMaskBehavior: false,
+        readOnly: true,
         bindingOptions: {
             value: 'entity.Email',
         }
@@ -431,16 +473,20 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.txt_telNumber = {
         hoverStateEnabled: false,
+        useMaskBehavior: false,
+        readOnly: true,
         bindingOptions: {
-            value: 'entity.TelNumber ',
+            value: 'entity.Mobile ',
         }
     }
 
       $scope.txt_name = {
-        hoverStateEnabled: false,
+          hoverStateEnabled: false,
+          useMaskBehavior: false,
+          readOnly: true,
         bindingOptions: {
-            value: 'entity.Name ',
-        }
+            value: 'entity.EmployeeName ',
+           }
     }
 
 

@@ -42,15 +42,21 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Email (آدرس ایمیل): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px; text-align: center;"><div dx-text-box="txt_email" class="center"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Tel No. (شماره تلفن): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_telNumber" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px;text-align:center;"><div dx-text-box="txt_telNumber" class="center" ></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Full Name (نام و نام‌خانوادگی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_name"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px; text-align: center;"> <div dx-text-box="txt_name" class="center"></div></td>
                             </tr>
                         </table>
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
@@ -80,19 +86,25 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Date And Time Of Event: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opEventDate" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="2"> Date And Time Of Event: </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Time Of Received Event Report(UTC): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opReportTime" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;" colspan="2"><div dx-date-box="txt_opEventDate" class="center" ng-if="entity.Type == 0" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Event Reported By: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_opReporterName" class="center"></div></td>
+                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="2"> Time Of Received Event Report(UTC): </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Location Of Event: </td>
+                                <td style="padding:7px;text-align:left;" colspan="2" ><div dx-date-box="txt_opReportTime" class="center" ng-if="entity.Type == 0" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="2"> Event Reported By: </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px;text-align:left;" colspan="2" ><div dx-text-box="txt_opReporterName" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="2"> Location Of Event: </td>
                             </tr>
                             <tr>
                                 <td style="padding:7px;text-align:left;" colspan="2"><div dx-text-box="txt_eventLocation" class="center"></div></td>
@@ -156,7 +168,7 @@
                                 Event Catagory:
                             </div>
                             <div style="padding: 1%;text-align:left" ng-repeat="x in opCatagory">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkOPCatagory(x)" /> <p style="margin-right:5px;display:inline-block">{{x.Title}}</p>
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkOPCatagory(x)" ng-disabled="!isEditable" /> <p style="margin-right:5px;display:inline-block">{{x.Title}}</p>
                             </div>
                             <div style="clear:both"></div>
                         </div>
@@ -170,7 +182,9 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date And Time Of Event: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opEventDate" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opEventDate" ng-if="entity.Type == 1" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Location Of Event: </td>
@@ -194,31 +208,10 @@
                             </div>
 
                             <div style="padding: 1%;text-align:left" ng-repeat="x in disCatagory">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDISCatagory(x)" /> <p style="margin-right:5px;display:inline-block">{{x.Title}}</p>
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDISCatagory(x)" ng-disabled="!isEditable" /> <p style="margin-right:5px;display:inline-block">{{x.Title}}</p>
                             </div>
                             <div style="clear:both"></div>
                         </div>
-
-
-
-                        <table ng-show="url_sign" style="width:100%;margin-top:10px;border:1px solid #eee;">
-                            <tr>
-                                <td style="padding:10px;border-bottom:1px solid #eeee;text-align:center" colspan="3">
-                                    <div ng-show="url_sign" style="text-align:center;font-size:14px;padding:0px;">The document signed and approved by</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width:25%;"></td>
-                                <td style="width:50%; text-align:center;padding:10px">
-
-                                    <div ng-show="url_sign" style="text-align:center;font-size:16px;padding:5px;">{{PIC}}</div>
-                                    <div ng-show="url_sign" style="text-align:center;font-size:16px;padding:5px;">{{signDate}}</div>
-                                    <img style="height:auto;display: block; width: 50%;margin:0 auto 0 auto" ng-show="url_sign" ng-src="{{url_sign}}" />
-                                </td>
-                                <td style="width:25%;"></td>
-                            </tr>
-                        </table>
-                        <div style="clear:both"></div>
 
                         <div style="clear:both"></div>
 
@@ -252,9 +245,9 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date And Time Of Event: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opEventDate" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opEventDate"  ng-if="entity.Type == 0" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Time Of Received Event Report(UTC): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opReportTime" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opReportTime" ng-if="entity.Type == 0" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Event Reported By: </td>
@@ -309,7 +302,7 @@
                                 Event Catagory:
                             </div>
                             <div style="padding: 1%;text-align:left" ng-repeat="x in opCatagory">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkOPCatagory(x)" /> <p style="margin-right:5px;display:inline-block">{{x.Title}}</p>
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkOPCatagory(x)" ng-disabled="!isEditable"/> <p style="margin-right:5px;display:inline-block">{{x.Title}}</p>
                             </div>
                             <div style="clear:both"></div>
                         </div>
@@ -323,15 +316,21 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date And Time Of Event: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opEventDate" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_opEventDate" ng-if="entity.Type == 1" class="center" dx-validator="{validationGroup:'dispatch',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Location Of Event: </td>
+                            </tr>
+                            <tr>
                                 <td style="padding:7px;text-align:left;"><div dx-text-box="txt_eventLocation" class="center"></div></td>
                             </tr>
 
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Action Taken, Result And Any Subsequent Event(s): </td>
+                            </tr>
+                            <tr>
                                 <td style="padding:7px;text-align:left;" colspan="3"><div dx-text-area="txt_ActionTaken" class="center"></div></td>
                             </tr>
                         </table>
@@ -341,7 +340,7 @@
                             </div>
 
                             <div style="padding: 1%;text-align:left" ng-repeat="x in disCatagory">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDISCatagory(x)" /> <p style="margin-right:5px;display:inline-block">{{x.Title}}</p>
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDISCatagory(x)" ng-disabled="!isEditable" /> <p style="margin-right:5px;display:inline-block">{{x.Title}}</p>
                             </div>
                             <div style="clear:both"></div>
                         </div>

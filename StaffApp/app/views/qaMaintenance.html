@@ -69,7 +69,7 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Station: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_station"></div></td>
+                                <td style="padding: 7px;text-align:left;"> <div  dx-select-box="sb_station"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Reference: </td>
@@ -131,14 +131,20 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Name: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_name"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:center;"> <div dx-text-box="txt_name" class="center"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> CAA License No.: </td>
+                            </tr>
+                            <tr>
                                 <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_CAALicense"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Authorization No.: </td>
+                            </tr>
+                            <tr>
                                 <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_authNum"></div></td>
                             </tr>
                         </table>
@@ -177,7 +183,7 @@
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Occurrence: </td>
                                 <td style="padding:7px;text-align:left;"><div dx-date-box="txt_OccurrenceDate" class="center" dx-validator="{validationGroup:'maintenance',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Station: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_station"></div></td>
+                                <td style="padding: 7px;text-align:left;"> <div dx-select-box="sb_station"></div></td>
                                 <!--<td style="padding: 7px;text-align:left; font-weight: bold"> UTC Time / Local Time: </td>
                                 <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_time"></div></td>-->
                             </tr>

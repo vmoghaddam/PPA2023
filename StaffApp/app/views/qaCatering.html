@@ -42,15 +42,21 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Email (آدرس ایمیل): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center" ></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px; text-align: center;"><div dx-text-box="txt_email" class="center"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Tel No. (شماره تلفن): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_telNumber" class="center" ></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px;text-align:center;"><div dx-text-box="txt_telNumber" class="center"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Full Name (نام و نام‌خانوادگی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_name"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px; text-align: center;"> <div dx-text-box="txt_name" class="center"></div></td>
                             </tr>
                         </table>
 
@@ -58,7 +64,7 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color: lightgray; padding: 7px; text-align: right; color: black; font-weight: bold" colspan="4">
-                                    اطلاعات اولیه
+                                    :اطلاعات اولیه
                                 </td>
                             </tr>
                             <tr>
@@ -71,7 +77,7 @@
                             </tr>
                             <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_area" class="center" ></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بخض رویداد/مخاطره </td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بروز رویداد/مخاطره </td>
                             </tr>
                             <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_register" class="center" ></div></td>
@@ -88,12 +94,12 @@
                         </table>
 
                         <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                            <div style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold">
                                 :عامل بروز مخاطره/رویداد
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%;text-align:right" ng-repeat="x in chrReason">
-                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" />
+                            <div class="col-xs-6 col-sm-6 col-md-6" style="padding: 1%;text-align:right" ng-repeat="x in chrReason">
+                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" ng-disabled="!isEditable" />
                             </div>
                             <div style="clear:both"></div>
                             <div ng-show="showOther" style="margin: 1%; border: 1px solid #eee; width: 98%; color: black" dx-text-area="txt_eventOther"></div>
@@ -101,22 +107,22 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="6">
-                                    جزئیات پتانسیل خطر
+                                    :جزئیات پتانسیل خطر
                                 </td>
                             </tr>
 
 
                             <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_trolley" class="center"></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> ترولی: </td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :ترولی </td>
                             </tr>
                             <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_equipment" class="center"></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> دستگاه/تجهیزات: </td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :دستگاه/تجهیزات </td>
                             </tr>
                             <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_transporter" class="center"></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> خودرو حمل کننده: </td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :خودرو حمل کننده </td>
                             </tr>
                         </table>
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
@@ -160,8 +166,8 @@
                                     آیا رویداد منجر به وقفه کاری شده است؟
                                 </td>
                             </tr>
-                            <tr style="float:right; padding: 0px !important">
-                                <td class="col-sm-6 col-md-6" style="padding:7px;text-align:right;"><div dx-number-box="txt_workBreakPeriod" class="center" ></div></td>
+                            <tr style="padding: 0px !important;text-align:center; width:100%">
+                                <td class="col-sm-12 col-xs-12" style="padding:7px;text-align:right;"><div dx-number-box="txt_workBreakPeriod"class="center" ></div></td>
                             </tr>
                         </table>
 
@@ -214,7 +220,7 @@
                             </tr>
                             <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_area" class="center" ></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بخض رویداد/مخاطره </td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بروز رویداد/مخاطره </td>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_register" class="center" ></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :علامت ثبت هواپیما </td>
                             </tr>
@@ -232,7 +238,7 @@
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%;text-align:right" ng-repeat="x in chrReason">
-                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" />
+                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" ng-disabled="!isEditable" />
                             </div>
                             <div style="clear:both"></div>
                             <div ng-show="showOther" style="margin:1%;border:1px solid #eee;width:98%;color:lightgray" dx-text-area="txt_eventOther"></div>

@@ -103,7 +103,6 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
     };
 
     $scope.showForm = function (obj) {
-        console.log(obj);
 
         var data = {
             FlightId: obj.FlightId,
@@ -133,6 +132,9 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
                 break;
             case 6:
                 $rootScope.$broadcast('InitQADispatch', data);
+                break;
+            case 7:
+                $rootScope.$broadcast('InitQACyberSecurity', data);
                 break;
 
         }
@@ -313,9 +315,16 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
 
         QAService.getCreatorHistory($rootScope.employeeId).then(function (res) {
             $scope.loadingVisible = false;
-            console.log(res);
             $scope.ds = res.Data;
-            $scope.bind_closed();
+
+            if ($scope.selectedTabIndex == 0)
+                $scope.bind_closed();
+            if ($scope.selectedTabIndex == 1)
+                $scope.bind_inprogress();
+            if ($scope.selectedTabIndex == 2)
+                $scope.bind_notsigned();
+
+
         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
     };
@@ -440,8 +449,8 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
     $scope.sb_flts = {
 
         showClearButton: true,
-        searchEnabled: true,
-        searchExpr: ["FlightNumber"],
+        //searchEnabled: true,
+        //searchExpr: ["FlightNumber"],
         placeholder: 'Flight No',
         displayExpr: "FlightNumber",
         onSelectionChanged: function (e) {
@@ -520,8 +529,9 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
 
             //$scope.clearEntity();
 
-            $scope.popup_newform_visible = false;
 
+            $scope.popup_newform_visible = false;
+            $scope.bind();
         },
         onContentReady: function (e) {
 
@@ -543,39 +553,46 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
     /////////////////
 
     $scope.$on('onQACabinHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQACateringHide', function () {
 
-        //$scope.bind();
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
 
     });
     $scope.$on('onQAGroundHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQAMaintenanceHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQADispatchHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQASecurityHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQAVoluntaryHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQACyberSecurityHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
 
 

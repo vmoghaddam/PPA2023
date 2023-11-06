@@ -84,7 +84,7 @@
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in damageBy">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDamageBy(x)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDamageBy(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                             <div ng-show="showOther" style="margin: 1%; border: 1px solid #eee; width: 98%; color: black" dx-text-area="txt_eventOther"></div>
@@ -346,8 +346,8 @@
                                 Weather (هوا):
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in weather">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkWeather(x)" /> {{x.Title}}
+                            <div class="col-xs-4 col-sm-4 col-md-4" style="padding: 1%" ng-repeat="x in weather">
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkWeather(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
@@ -358,8 +358,8 @@
                                 Surface (سطح) :
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in surface">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkSurface(x)" /> {{x.Title}}
+                            <div class="col-xs-4 col-sm-4 col-md-4" style="padding: 1%" ng-repeat="x in surface">
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkSurface(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
@@ -367,11 +367,11 @@
 
                         <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
-                                :
+                                Lighting:
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in lighting">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkLighting(x)" /> {{x.Title}}
+                            <div class="col-xs-4 col-sm-4 col-md-4" style="padding: 1%" ng-repeat="x in lighting">
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkLighting(x)" ng-disabled="!isEditable"  /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
@@ -497,7 +497,7 @@
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in damageBy">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDamageBy(x)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDamageBy(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                             <div ng-show="showOther" style="margin: 1%; border: 1px solid #eee; width: 98%; color: black" dx-text-area="txt_eventOther"></div>
@@ -709,7 +709,7 @@
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in weather">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkWeather(x)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkWeather(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
@@ -721,7 +721,7 @@
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in surface">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkSurface(x)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkSurface(x)" ng-disabled="!isEditable"/> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
@@ -729,11 +729,11 @@
 
                         <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
-                                :
+                                Lighting:
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in lighting">
-                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkLighting(x)" /> {{x.Title}}
+                                <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkLighting(x)" ng-disabled="!isEditable"/> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>

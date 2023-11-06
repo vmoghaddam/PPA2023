@@ -42,15 +42,21 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Email (آدرس ایمیل): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center" ></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px; text-align: center;"><div dx-text-box="txt_email" class="center"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Tel No. (شماره تلفن): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_telNumber" class="center" ></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px;text-align:center;"><div dx-text-box="txt_telNumber" class="center"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Full Name (نام و نام‌خانوادگی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_name"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px; text-align: center;"> <div dx-text-box="txt_name" class="center"></div></td>
                             </tr>
                         </table>
 
@@ -64,7 +70,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_reportDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_reportDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ گزارش </td>
                             </tr>
                             <tr>
@@ -72,30 +78,30 @@
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ و ساعت بروز رویداد/مخاطره </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_area" class="center" ></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بخض رویداد/مخاطره </td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_area" class="center"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بروز رویداد/مخاطره </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_register" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_register" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :علامت ثبت هواپیما </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_route" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_route" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :مسیر پرواز </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_flightNumber" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_flightNumber" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :شماره پرواز </td>
                             </tr>
                         </table>
 
                         <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                            <div style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold">
                                 :عامل بروز مخاطره/رویداد
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%;text-align:right" ng-repeat="x in shrReason">
-                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" />
+                            <div class="col-xs-6 col-sm-6 col-md-6" style="padding: 1%;text-align:right" ng-repeat="x in shrReason">
+                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" ng-disabled="!isEditable" />
                             </div>
                             <div style="clear:both"></div>
                             <div ng-show="showOther" style="margin: 1%; border: 1px solid #eee; width: 98%; color: black" dx-text-area="txt_eventOther"></div>
@@ -103,30 +109,30 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="6">
-                                    جزئیات پتانسیل خطر
+                                    :جزئیات پتانسیل خطر
                                 </td>
                             </tr>
 
 
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_camera" class="center" ></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> دوربین: </td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_camera" class="center"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :دوربین </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_carryingBox" class="center" ></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> جعبه حمل اشیاء ممنوعه: </td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_carryingBox" class="center"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :جعبه حمل اشیاء ممنوعه </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_handRocket" class="center" ></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> راکت‌دستی بازرسی کترینگ: </td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_handRocket" class="center"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :راکت‌دستی بازرسی کترینگ </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_comail" class="center" ></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> Co mail: </td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_comail" class="center"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :Co mail </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_other" class="center" ></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> سایر: </td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_other" class="center"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :سایر </td>
                             </tr>
                         </table>
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
@@ -147,7 +153,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-area="txt_injuryDescription" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-area="txt_injuryDescription" class="center"></div></td>
                             </tr>
                         </table>
 
@@ -158,8 +164,8 @@
                                     آیا رویداد منجر به وقفه کاری شده است؟
                                 </td>
                             </tr>
-                            <tr style="float:right; padding: 0px !important">
-                                <td class="col-sm-6 col-md-6" style="padding:7px;text-align:right;"><div dx-number-box="txt_workBreakPeriod" class="center" ></div></td>
+                            <tr style="padding: 0px !important;text-align:center;width:100%">
+                                <td class="col-sm-12 col-xs-12 col-md-12" style="padding:7px;text-align:right;"><div dx-number-box="txt_workBreakPeriod" class="center"></div></td>
                                 <!-- <td class="col-sm-3 col-md-3" style="padding: 7px;text-align:left; font-weight: bold"> :چه مدت؟ </td>-->
                             </tr>
                         </table>
@@ -171,7 +177,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-area="txt_preventiveActions" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-area="txt_preventiveActions" class="center"></div></td>
                             </tr>
 
                         </table>
@@ -208,25 +214,25 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color: lightgray; padding: 7px; text-align: right; color: black; font-weight: bold" colspan="4">
-                                    اطلاعات اولیه
+                                    :اطلاعات اولیه
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_reportDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_reportDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ گزارش </td>
                                 <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ و ساعت بروز رویداد/مخاطره </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_area" class="center" ></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بخض رویداد/مخاطره </td>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_register" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_area" class="center"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بروز رویداد/مخاطره </td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_register" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :علامت ثبت هواپیما </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_route" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_route" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :مسیر پرواز </td>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_flightNumber" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_flightNumber" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :شماره پرواز </td>
                             </tr>
                         </table>
@@ -237,7 +243,7 @@
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%;text-align:right" ng-repeat="x in shrReason">
-                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" />
+                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" ng-disabled="!isEditable"/>
                             </div>
                             <div style="clear:both"></div>
                             <div ng-show="showOther" style="margin: 1%; border: 1px solid #eee; width: 98%; color: black" dx-text-area="txt_eventOther"></div>
@@ -251,17 +257,17 @@
 
 
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_camera" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_camera" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> دوربین: </td>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_carryingBox" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_carryingBox" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> جعبه حمل اشیاء ممنوعه: </td>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_handRocket" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_handRocket" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> راکت‌دستی بازرسی کترینگ: </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_comail" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_comail" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> Co mail: </td>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_other" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_other" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> سایر: </td>
                             </tr>
                         </table>
@@ -283,7 +289,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-area="txt_injuryDescription" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-area="txt_injuryDescription" class="center"></div></td>
                             </tr>
                         </table>
 
@@ -295,7 +301,7 @@
                                 </td>
                             </tr>
                             <tr style="float:right; padding: 0px !important">
-                                <td class="col-sm-6 col-md-6" style="padding:7px;text-align:right;"><div dx-number-box="txt_workBreakPeriod" class="center" ></div></td>
+                                <td class="col-sm-6 col-md-6" style="padding:7px;text-align:right;"><div dx-number-box="txt_workBreakPeriod" class="center"></div></td>
                                 <!-- <td class="col-sm-3 col-md-3" style="padding: 7px;text-align:left; font-weight: bold"> :چه مدت؟ </td>-->
                             </tr>
                         </table>
@@ -307,7 +313,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-area="txt_preventiveActions" class="center" ></div></td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-area="txt_preventiveActions" class="center"></div></td>
                             </tr>
 
                         </table>

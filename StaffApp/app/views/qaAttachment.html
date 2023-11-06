@@ -34,9 +34,10 @@
         <div id="scroll_qaAttachment" dx-scroll-view="scroll_qaAttachment" style="margin-top:5px">
 
             <div style="padding: 5%; display:inline-block; width: 100%" ng-repeat="f in files">
+                <div ng-bind="f.FileName" style="text-align: center; width: 100%; border:1px solid Lightgray; border-bottom: 0!important;padding:10px"></div>
                 <div dx-text-area="txt_fileRemark" ng-bind="f.Description" style="border: 1px solid lightgray"></div>
                 <div class="col-md-6 col-sm-6 col-xs-6" style="display: inline-block; float: left; margin-top: 7px; padding: 0 3px 0 0">
-                    <div dx-button="btn_download" ng-show="isEditable"></div>
+                    <div dx-button="btn_download" ng-click="download(f)"></div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6" style="display: inline-block; float: right; margin-top: 7px;padding: 0 0 0 3px">
                     <div dx-button="btn_delete" ng-click="deleteFile(f)" ng-show="isEditable"></div>
@@ -55,4 +56,6 @@
             </div>
         </div>
     </div>
+
+    <div dx-load-panel="loadPanel"></div>
 </div>

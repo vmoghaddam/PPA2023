@@ -55,6 +55,8 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
 
                       
                         $scope.entity.Signed = "1";
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
                         $scope.followUpEntity.DateReferr = new Date();
@@ -68,15 +70,18 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
                         QAService.saveCyber($scope.entity).then(function (res) {
 
                             $scope.entity.Id = res.Data.Id;
+                            $scope.followUpEntity.EntityId = res.Data.Id;
                             QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
                                 $scope.loadingVisible = false;
                                 General.ShowNotify(Config.Text_SavedOk, 'success');
-                                $scope.popup_add_visible = false;
+                               
                                 if ($scope.tempData.Status == "Not Signed") {
                                     var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
                                     row.Status = "In Progress";
                                 }
+
+                                $scope.popup_add_visible = false;
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -117,7 +122,6 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
                             $scope.loadingVisible = false;
                             $scope.entity.Id = res.Data.Id;
                             General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.popup_add_visible = false;
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -288,6 +292,10 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
                     $scope.entity.FlightSegment = res.Data.FlightSegment;
                     $scope.entity.PaxTotal = res.Data.PaxTotal;
                     $scope.entity.TypeRegisteration = res.Data.TypeRegisteration;
+                    $scope.entity.EmployeeName = res.Data.EmployeeName;
+                    $scope.entity.Email = res.Data.Email;
+                    $scope.entity.Mobile = res.Data.Mobile;
+
                     $scope.isEditable = true;
 
                 }
@@ -328,8 +336,10 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
 
     $scope.txt_name = {
         hoverStateEnabled: false,
+        useMaskBehavior: false,
+        readOnly: true,
         bindingOptions: {
-            value: 'entity.Name',
+            value: 'entity.EmployeeName',
         }
     }
 
@@ -337,36 +347,50 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.JobTitle',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
-    $scope.txt_contactInfo = {
+    $scope.txt_mobile = {
         hoverStateEnabled: false,
+        useMaskBehavior: false,
+        readOnly: true,
         bindingOptions: {
-            value: 'entity.ContactInfo',
-        }
+            value: 'entity.Mobile',
+         }
+    }
+
+     $scope.txt_email = {
+         hoverStateEnabled: false,
+         useMaskBehavior: false,
+         readOnly: true,
+        bindingOptions: {
+            value: 'entity.Email',
+           }
     }
 
     $scope.txt_dateEvent = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
-
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_dateIncident = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateIncident',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -374,6 +398,8 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.AttackDescriptipn',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -381,24 +407,32 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.ImpactDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
     $scope.txt_breached = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.BreachedDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
     $scope.txt_containment = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.AccessDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
     $scope.txt_other = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Other',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -419,7 +453,7 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
 
     });
     $scope.$on('InitQACyberSecurity', function (event, prms) {
-
+        console.log("qa cyber called");
 
         $scope.tempData = null;
 

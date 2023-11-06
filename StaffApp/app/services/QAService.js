@@ -491,6 +491,44 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
 
         return deferred.promise;
     }
+
+    
+     var _downloadQa = function (filename, filetype) {
+        var deferred = $q.defer();
+        var name = filename + "." + filetype;
+         $http.get(apiQA + 'api/download/qa/' + filename + "/" + filetype, { responseType: 'arraybuffer' }).then(function (response) {
+            deferred.resolve(response.data);
+            console.log(response);
+            //var headers = response.config.headers;
+            //var filename = headers['content-disposition'].split('=')[1];
+            
+            var blob = new Blob([response.data], { type: "application/octet-stream" });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }, function (err, status) {
+            // deferred.reject(Exeptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    }
+
+    var _getStation = function (cid) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + '/api/get/station').then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+
     serviceFactory.getCreatorHistory = _getCreatorHistory;
 
   
@@ -541,6 +579,10 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     serviceFactory.getCyberIncident = _getCyberIncident;
     serviceFactory.getCyberAccess = _getCyberAccess;
     serviceFactory.getCyberMethod = _getCyberMethod;
+
+    serviceFactory.downloadQa = _downloadQa;
+
+    serviceFactory.getStation = _getStation;
 
     return serviceFactory;
 

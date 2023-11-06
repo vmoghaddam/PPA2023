@@ -49,6 +49,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
 
 
                         $scope.entity.Signed = "1";
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
                         $scope.followUpEntity.DateReferr = new Date();
@@ -61,15 +63,17 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
                         QAService.saveMaintenance($scope.entity).then(function (res) {
 
                             $scope.entity.Id = res.Data.Id;
+                            $scope.followUpEntity.EntityId = res.Data.Id;
                             QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
                                 $scope.loadingVisible = false;
                                 General.ShowNotify(Config.Text_SavedOk, 'success');
-                                $scope.popup_add_visible = false;
+                               
                                 if ($scope.tempData.Status == "Not Signed") {
                                     var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
                                     row.Status = "In Progress";
                                 }
+                                $scope.popup_add_visible = false;
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -116,7 +120,7 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
                             $scope.loadingVisible = false;
                             $scope.entity.Id = res.Data.Id;
                             General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.popup_add_visible = false;
+                            
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -195,10 +199,13 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
     $scope.bind = function () {
         $scope.entity.FlightId = $scope.tempData.FlightId;
 
-        console.log($scope.entity.FlightId)
+        QAService.getStation().then(function (response) {
+            console.log(response);
+            $scope.ds_station = response.Data;
+        });
+      
 
         QAService.getMORCompnSpec().then(function (res) {
-            //$scope.componentSpecification = res.Data;
             $scope.dsComponentSpect = [];
             console.log("res", res.Data);
             $.each(res.Data, function (_i, _d) {
@@ -219,6 +226,7 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
                         Register: res.Data.Register,
                         ScheduledGroundTime: res.Data.ScheduledGroundTime,
                         flightCancelled: res.Data.flightCancelled,
+                        EmployeeName: res.Data.EmployeeName,
                         FlightRoute: res.Data.FlightRoute,
                         
                     }
@@ -230,6 +238,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
 
 
     };
+
+
     ////////////////////////////////
     $scope.scroll_qaMaintenance_height = $(window).height() - 130;
     $scope.scroll_qaMaintenance = {
@@ -265,21 +275,33 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         console.log($scope.componentSpecification);
     }
 
-    $scope.txt_station = {
-        bindingOptions: {
-            value: "entity.station"
 
+   
+    $scope.sb_station = {
+        hoverStateEnabled: false,
+        
+        placeholder: '',
+        displayExpr: 'Name',
+        valueExpr: 'Id',
+        bindingOptions: {
+            value: "entity.StationId",
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable',
+            dataSource: 'ds_station',
         }
-    };
+    }
+
+ 
 
     $scope.txt_OccurrenceDate = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         displayFormat: 'yyyy-MM-dd HH:mm',
         type: 'datetime',
         pickerType: "rollers",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -287,6 +309,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.AircraftType',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -294,6 +318,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Register',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -301,6 +327,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.ATLNo',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -308,6 +336,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.TaskNo',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -315,6 +345,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Reference',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -322,6 +354,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.UTCTime',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -329,6 +363,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.FlightRoute',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -336,6 +372,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.FlightNumber',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -345,20 +383,25 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.EventDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
     $scope.txt_actionTaken = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.ActionTakenDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_name = {
         hoverStateEnabled: false,
         readOnly: true,
+        useMaskBehavior: false,
         bindingOptions: {
-            value: 'entity.Name',
+            value: 'entity.EmployeeName',
         }
     }
 
@@ -366,6 +409,8 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.CAALicenceNo',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -373,18 +418,24 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.AuthorizationNo',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.nb_serialNumber = {
         bindingOptions: {
-            value: 'entity.SerialNumber'
+            value: 'entity.SerialNumber',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.nb_partNumber = {
         bindingOptions: {
-            value: 'entity.PartNumber'
+            value: 'entity.PartNumber',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -397,7 +448,9 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.ComponentSpecificationId',
-            dataSource: 'dsComponentSpect'
+            dataSource: 'dsComponentSpect',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     };
 

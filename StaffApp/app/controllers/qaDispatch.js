@@ -50,8 +50,9 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                             return;
                         }
 
-
                         $scope.entity.Signed = "1";
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
                         $scope.followUpEntity.DateReferr = new Date();
@@ -72,6 +73,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                         QAService.saveDispatch($scope.entity).then(function (res) {
 
                             $scope.entity.Id = res.Data.Id;
+                            $scope.followUpEntity.EntityId = res.Data.Id;
                             QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
                                 $scope.loadingVisible = false;
@@ -81,6 +83,8 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                                     var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
                                     row.Status = "In Progress";
                                 }
+
+                                $scope.popup_add_visible = false;
 
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
@@ -114,8 +118,8 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                         if (!result.isValid) {
                             General.ShowNotify(Config.Text_FillRequired, 'error');
                             return;
-
                         }
+                       
                         $scope.entity.FlightId = $scope.tempData.FlightId;
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
@@ -137,7 +141,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                             $scope.loadingVisible = false;
                             $scope.entity.Id = res.Data.Id;
                             General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.popup_add_visible = false;
+                            
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -251,6 +255,10 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                     $scope.entity.FlightNumber = res.Data.FlightNumber;
                     $scope.entity.Route = res.Data.Route;
                     $scope.entity.Register = res.Data.Register;
+                    $scope.entity.EmployeeName = res.Data.EmployeeName;
+                    $scope.entity.Email = res.Data.Email;
+                    $scope.entity.Mobile = res.Data.Mobile;
+
                     $scope.isEditable = true;
                 }
 
@@ -261,6 +269,8 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
 
 
     };
+
+
     ////////////////////////////////
     $scope.scroll_qaDispatch_height = $(window).height() - 130;
     $scope.scroll_qaDispatch = {
@@ -337,6 +347,8 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateReport',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -353,38 +365,43 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.Type',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_hazardDate = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateTimeHazard',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_opEventDate = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_opReportTime = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         displayFormat: 'HH:mm',
         type: 'time',
         bindingOptions: {
             value: 'entity.OPTimeReceived',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -392,6 +409,8 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.OPReportedBy',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -399,6 +418,8 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.OPLocation',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -498,11 +519,15 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.OPSummary',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_email = {
         hoverStateEnabled: false,
+        useMaskBehavior: false,
+        readOnly: true,
         bindingOptions: {
             value: 'entity.Email',
         }
@@ -510,15 +535,20 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.txt_telNumber = {
         hoverStateEnabled: false,
+        useMaskBehavior: false,
+        readOnly: true,
         bindingOptions: {
-            value: 'entity.TelNumber',
-        }
+            value: 'entity.Mobile',
+           }
     }
 
     $scope.txt_name = {
         hoverStateEnabled: false,
+        useMaskBehavior: false,
+        readOnly: true,
         bindingOptions: {
-            value: 'entity.Name',
+            value: 'entity.EmployeeName',
+            
         }
     }
 

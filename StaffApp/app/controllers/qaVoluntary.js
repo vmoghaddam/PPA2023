@@ -38,7 +38,7 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         toolbarItems: [
             {
                 widget: 'dxButton', location: 'before', options: {
-                    type: 'success', text: 'Sign', validationGroup: 'chradd', icon: 'fas fa-signature', onClick: function (e) {
+                    type: 'success', text: 'Sign', validationGroup: 'voluntary', icon: 'fas fa-signature', onClick: function (e) {
 
                         //var result = e.validationGroup.validate();
 
@@ -49,6 +49,8 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
 
                         $scope.entity.Signed = "1";
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
                         $scope.followUpEntity.DateReferr = new Date();
@@ -60,15 +62,18 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
                         QAService.saveVHR($scope.entity).then(function (res) {
 
                             $scope.entity.Id = res.Data.Id;
+                            $scope.followUpEntity.EntityId = res.Data.Id;
                             QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
                                 $scope.loadingVisible = false;
                                 General.ShowNotify(Config.Text_SavedOk, 'success');
-                                $scope.popup_add_visible = false;
+                                
                                 if ($scope.tempData.Status == "Not Signed") {
                                     var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
                                     row.Status = "In Progress";
                                 }
+
+                                $scope.popup_add_visible = false;
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -114,7 +119,7 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
                             $scope.loadingVisible = false;
                             $scope.entity.Id = res.Data.Id;
                             General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.popup_add_visible = false;
+                          
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -179,7 +184,7 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
             title: 'popup_add_title',
             height: 'popup_height',
             width: 'popup_width',
-            'toolbarItems[0].visible': 'isLockVisible',
+            'toolbarItems[0].visible': 'isEditable',
             'toolbarItems[2].visible': 'isEditable',
 
         }
@@ -205,6 +210,8 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
             });
         }
     };
+
+
     ////////////////////////////////
     $scope.scroll_qaVoluntary_height = $(window).height() - 130;
     $scope.scroll_qaVoluntary = {
@@ -237,34 +244,37 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
     $scope.txt_hazardDate = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateReport',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_repDate = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_affectedArea = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.AffectedArea',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -272,6 +282,8 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.HazardDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -279,6 +291,8 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.RecommendedAction',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -287,6 +301,8 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.TelNumber',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -294,6 +310,8 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Name',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -301,6 +319,8 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Email',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 

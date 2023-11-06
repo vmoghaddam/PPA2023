@@ -50,6 +50,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
 
                         $scope.entity.Signed = "1";
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
                         $scope.followUpEntity.DateReferr = new Date();
@@ -73,16 +75,17 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                         QAService.saveGround($scope.entity).then(function (res) {
 
                             $scope.entity.Id = res.Data.Id;
+                            $scope.followUpEntity.EntityId = res.Data.Id;
                             QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
                                 $scope.loadingVisible = false;
                                 General.ShowNotify(Config.Text_SavedOk, 'success');
-                                $scope.popup_add_visible = false;
                                 if ($scope.tempData.Status == "Not Signed") {
                                     var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
                                     row.Status = "In Progress";
                                 }
 
+                                $scope.popup_add_visible = false;
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -144,7 +147,6 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                             $scope.loadingVisible = false;
                             $scope.entity.Id = res.Data.Id;
                             General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.popup_add_visible = false;
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -354,7 +356,7 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                 if (res.Data.Id != null) {
                     $scope.fill(res.Data);
                     $scope.isEditable = !$scope.entity.DateSign;
-                   
+
                 } else {
                     $scope.entity = {
                         Id: -1,
@@ -373,6 +375,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
 
     };
+
+
     ////////////////////////////////
     $scope.scroll_qaGround_height = $(window).height() - 130;
     $scope.scroll_qaGround = {
@@ -401,12 +405,16 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     /////////////////////////////////
     $scope.txt_date = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
+
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+           
+
         }
     }
 
@@ -414,6 +422,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.OperationPhase',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -421,6 +431,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.OccurrenceTime',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -428,6 +440,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Area',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -435,6 +449,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Register',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -442,6 +458,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.AircraftType',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -449,6 +467,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.FlightNumber',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -456,6 +476,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.ScheduledGroundTime',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -463,6 +485,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.FlightDelay',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -480,6 +504,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.flightCancelled',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -488,6 +514,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.DamageDetails',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -495,6 +523,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.EmployeesFatalityNr',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -502,6 +532,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.EmployeesNonFatalityNr',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -509,6 +541,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.PassengersFatalityNr',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -516,6 +550,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.PassengersNonFatalityNr',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -523,6 +559,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.OthersFatalityNr',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -530,6 +568,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.OthersNonFatalityNr',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -537,6 +577,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.VESerialFleetNr',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -544,6 +586,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.VEType',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -551,13 +595,17 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.VEOwner',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
-    $scope.txt_eqArea = {
+    $scope.txt_veArea = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.VEArea',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -565,6 +613,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.VEAge',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -572,6 +622,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.VELastOverhaul',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -580,6 +632,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.VERemarks',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -601,6 +655,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VETyresCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -613,6 +669,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VEBrakesCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -627,6 +685,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VESteeringCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -641,6 +701,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VELightsCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -655,6 +717,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VEWipersCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -669,6 +733,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VEProtectionCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -683,6 +749,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VEWarningDevicesCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -695,6 +763,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VEStabilizersCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -708,6 +778,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VETowHitchCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -721,6 +793,8 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         valueExpr: 'id',
         bindingOptions: {
             value: 'entity.VEFieldofVisionCon',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -728,36 +802,48 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.txt_eventOther = {
         bindingOptions: {
             value: 'entity.DamageRemark',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p1Name = {
         bindingOptions: {
             value: 'entity.PersonnelName1',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p1Job = {
         bindingOptions: {
             value: 'entity.PersonnelJobTitle1',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p1Compony = {
         bindingOptions: {
             value: 'entity.PersonnelCompany1',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p1StaffNum = {
         bindingOptions: {
             value: 'entity.PersonnelStaffNr1',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p1License = {
         bindingOptions: {
             value: 'entity.PersonnelLicense1',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -766,30 +852,40 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.txt_p2Name = {
         bindingOptions: {
             value: 'entity.PersonnelName2',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p2Job = {
         bindingOptions: {
             value: 'entity.PersonnelJobTitle2',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p2Compony = {
         bindingOptions: {
             value: 'entity.PersonnelCompany2',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p2StaffNum = {
         bindingOptions: {
             value: 'entity.PersonnelStaffNr2',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p2License = {
         bindingOptions: {
             value: 'entity.PersonnelLicense2',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -799,42 +895,56 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.txt_p3Name = {
         bindingOptions: {
             value: 'entity.PersonnelName3',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p3Job = {
         bindingOptions: {
             value: 'entity.PersonnelJobTitle3',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p3Compony = {
         bindingOptions: {
             value: 'entity.PersonnelCompany3',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p3StaffNum = {
         bindingOptions: {
             value: 'entity.PersonnelStaffNr3',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_p3License = {
         bindingOptions: {
             value: 'entity.PersonnelLicense3',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_VISByMeter = {
         bindingOptions: {
             value: 'entity.WXVisibilityM',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_VISByKiloMeter = {
         bindingOptions: {
             value: 'entity.WXVisibilityKM',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -842,18 +952,24 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.txt_wind = {
         bindingOptions: {
             value: 'entity.WXWind',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_temp = {
         bindingOptions: {
             value: 'entity.WXTemperature',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_contributFact = {
         bindingOptions: {
             value: 'entity.ContributoryFactors',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -866,18 +982,24 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.txt_Event = {
         bindingOptions: {
             value: 'entity.Event',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_correctiveAction = {
         bindingOptions: {
             value: 'entity.CorrectiveActionTaken',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_otherRMK = {
         bindingOptions: {
             value: 'entity.OtherSuggestions',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
