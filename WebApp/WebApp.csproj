@@ -240,6 +240,7 @@
     <Content Include="app\controllers\reportFlightDaily.js" />
     <Content Include="app\controllers\reportFlightDailyStation.js" />
     <Content Include="app\controllers\reportFlights.js" />
+    <Content Include="app\controllers\reportlogprofile.js" />
     <Content Include="app\controllers\roster2.js" />
     <Content Include="app\controllers\rosterController.js" />
     <Content Include="app\controllers\rosterDailyController.js" />
@@ -467,6 +468,7 @@
     <Content Include="app\views\reportFlightDaily.html" />
     <Content Include="app\views\reportFlightDailyStation.html" />
     <Content Include="app\views\reportFlights.html" />
+    <Content Include="app\views\reportlogprofile.html" />
     <Content Include="app\views\roster.html" />
     <Content Include="app\views\rosterdaily.html" />
     <Content Include="app\views\rosterReport.html" />
