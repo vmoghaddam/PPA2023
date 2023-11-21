@@ -36,8 +36,8 @@
 
                         <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="2">
-                                    Contact Information (Optionally) (اطلاعات تماس (اختیاری
+                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="2">
+                                    :گزارش دهنده
                                 </td>
                             </tr>
                             <tr>
@@ -66,7 +66,7 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color: lightgray; padding: 7px; text-align: right; color: black; font-weight: bold" colspan="4">
-                                    اطلاعات اولیه
+                                    :اطلاعات اولیه
                                 </td>
                             </tr>
                             <tr>
@@ -75,11 +75,15 @@
                             </tr>
                             <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ و ساعت بروز رویداد/مخاطره </td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ بروز رویداد/ مخاطره </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardTime" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :ساعت بروز رویداد/ مخاطره </td>
                             </tr>
                             <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_area" class="center"></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بروز رویداد/مخاطره </td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بخش بروز رویداد/ مخاطره </td>
                             </tr>
                             <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_register" class="center"></div></td>
@@ -93,6 +97,12 @@
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_flightNumber" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :شماره پرواز </td>
                             </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:right; font-weight: bold" colspan="2"> :شرح مخاطره / رویداد </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px;text-align:right;" colspan="2"><div dx-text-area="txt_description" class="center"></div></td>
+                            </tr>
                         </table>
 
                         <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
@@ -100,16 +110,16 @@
                                 :عامل بروز مخاطره/رویداد
                             </div>
 
-                            <div class="col-xs-6 col-sm-6 col-md-6" style="padding: 1%;text-align:right" ng-repeat="x in shrReason">
+                            <div class="col-xs-6 col-sm-6 col-md-6" style="padding: 7px; text-align: right;" ng-repeat="x in shrReason">
                                 <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" ng-disabled="!isEditable" />
                             </div>
                             <div style="clear:both"></div>
-                            <div ng-show="showOther" style="margin: 1%; border: 1px solid #eee; width: 98%; color: black" dx-text-area="txt_eventOther"></div>
+                            <div style="padding: 7px" dx-text-area="txt_eventOther" class="center"></div>
                         </div>
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="6">
-                                    :جزئیات پتانسیل خطر
+                                    :مشخصات/نوع و شماره تجهیزات/ابزار
                                 </td>
                             </tr>
 
@@ -138,7 +148,7 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="4">
-                                    گزارش شرایط و جزئیات تجهیزات مرتبط با مخاطره/رویداد
+                                    :گزارش شرایط و جزئیات تجهیزات مرتبط با مخاطره/رویداد
                                 </td>
                             </tr>
                             <tr>
@@ -149,10 +159,13 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="4">
-                                    (آیا رویداد منجر به جرح/مصدومیت یا آسیب‌دیدگی پرسنل گردیدهاست؟ (توضیح داده شود
+                                    آیا رویداد منجر به جرح/مصدومیت یا آسیب‌دیدگی پرسنل گردیدهاست؟ (توضیح داده شود)
                                 </td>
                             </tr>
                             <tr>
+                                <td style="padding:7px;text-align:right;"><div dx-select-box="sb_injuryOccuring" class="center"></div></td>
+                            </tr>
+                            <tr ng-show="entity.InjuryOccuring == true">
                                 <td style="padding:7px;text-align:right;"><div dx-text-area="txt_injuryDescription" class="center"></div></td>
                             </tr>
                         </table>
@@ -161,19 +174,21 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="4">
-                                    آیا رویداد منجر به وقفه کاری شده است؟
+                                    آیا رویداد منجر به وقفه کاری شده است؟ (چه مدت؟ بر حسب دقیقه)
                                 </td>
                             </tr>
-                            <tr style="padding: 0px !important;text-align:center;width:100%">
+                            <tr>
+                                <td style="padding:7px;text-align:right;"><div dx-select-box="sb_workBreak" class="center"></div></td>
+                            </tr>
+                            <tr style="padding: 0px !important;text-align:center;width:100%" ng-show="WorkBreak == true">
                                 <td class="col-sm-12 col-xs-12 col-md-12" style="padding:7px;text-align:right;"><div dx-number-box="txt_workBreakPeriod" class="center"></div></td>
-                                <!-- <td class="col-sm-3 col-md-3" style="padding: 7px;text-align:left; font-weight: bold"> :چه مدت؟ </td>-->
                             </tr>
                         </table>
 
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="4">
-                                    اقدامات پیشگیرانه/پیشنهادی یا اصلاحی لازم
+                                    :اقدامات پیشگیرانه/پیشنهادی یا اصلاحی لازم
                                 </td>
                             </tr>
                             <tr>
@@ -182,28 +197,6 @@
 
                         </table>
 
-
-                        <div style="clear:both"></div>
-
-
-
-                        <table ng-show="url_sign" style="width:100%;margin-top:10px;border:1px solid #eee;">
-                            <tr>
-                                <td style="padding:10px;border-bottom:1px solid #eeee;text-align:center" colspan="3">
-                                    <div ng-show="url_sign" style="text-align:center;font-size:14px;padding:0px;">The document signed and approved by</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width:25%;"></td>
-                                <td style="width:50%; text-align:center;padding:10px">
-
-                                    <div ng-show="url_sign" style="text-align:center;font-size:16px;padding:5px;">{{PIC}}</div>
-                                    <div ng-show="url_sign" style="text-align:center;font-size:16px;padding:5px;">{{signDate}}</div>
-                                    <img style="height:auto;display: block; width: 50%;margin:0 auto 0 auto" ng-show="url_sign" ng-src="{{url_sign}}" />
-                                </td>
-                                <td style="width:25%;"></td>
-                            </tr>
-                        </table>
                         <div style="clear:both"></div>
 
                     </div>
@@ -211,6 +204,26 @@
 
                 <div class="container">
                     <div class="visible-sm visible-md">
+                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
+                            <tr>
+                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="2">
+                                    :گزارش دهنده
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left; font-weight: bold"> Email (آدرس ایمیل): </td>
+                                <td style="padding: 7px; text-align: center;"><div dx-text-box="txt_email" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left; font-weight: bold"> Tel No. (شماره تلفن): </td>
+                                <td style="padding:7px;text-align:center;"><div dx-text-box="txt_telNumber" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left; font-weight: bold"> Full Name (نام و نام‌خانوادگی): </td>
+                                <td style="padding: 7px; text-align: center;"> <div dx-text-box="txt_name" class="center"></div></td>
+                            </tr>
+                        </table>
+
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color: lightgray; padding: 7px; text-align: right; color: black; font-weight: bold" colspan="4">
@@ -218,22 +231,30 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ بروز رویداد/ مخاطره </td>
+                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardTime" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :ساعت بروز رویداد/مخاطره </td>
+                            </tr>
+                            <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-date-box="txt_reportDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ گزارش </td>
-                                <td style="padding:7px;text-align:right;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :تاریخ و ساعت بروز رویداد/مخاطره </td>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_area" class="center"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بخش بروز رویداد/ مخاطره </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_area" class="center"></div></td>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :محل و بروز رویداد/مخاطره </td>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_register" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :علامت ثبت هواپیما </td>
-                            </tr>
-                            <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_route" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :مسیر پرواز </td>
+                            </tr>
+                            <tr>
                                 <td style="padding:7px;text-align:right;"><div dx-text-box="txt_flightNumber" class="center"></div></td>
                                 <td style="padding: 7px;text-align:right; font-weight: bold"> :شماره پرواز </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :شرح مخاطره / رویداد </td>
+                                <td style="padding:7px;text-align:right;" colspan="2"><div dx-text-area="txt_description" class="center"></div></td>
                             </tr>
                         </table>
 
@@ -242,16 +263,16 @@
                                 :عامل بروز مخاطره/رویداد
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%;text-align:right" ng-repeat="x in shrReason">
-                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" ng-disabled="!isEditable"/>
+                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 7px; text-align: right;" ng-repeat="x in shrReason">
+                                <p style="margin-right:5px;display:inline-block">{{x.Title}}</p><input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkReason(x)" ng-disabled="!isEditable" />
                             </div>
                             <div style="clear:both"></div>
-                            <div ng-show="showOther" style="margin: 1%; border: 1px solid #eee; width: 98%; color: black" dx-text-area="txt_eventOther"></div>
+                            <div style="padding: 7px; text-align: left;" dx-text-area="txt_eventOther" class="center"></div>
                         </div>
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="6">
-                                    جزئیات پتانسیل خطر
+                                    :مشخصات/نوع و شماره تجهیزات/ابزار
                                 </td>
                             </tr>
 
@@ -274,7 +295,7 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="4">
-                                    گزارش شرایط و جزئیات تجهیزات مرتبط با مخاطره/رویداد
+                                    :گزارش شرایط و جزئیات تجهیزات مرتبط با مخاطره/رویداد
                                 </td>
                             </tr>
                             <tr>
@@ -285,10 +306,13 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="4">
-                                    (آیا رویداد منجر به جرح/مصدومیت یا آسیب‌دیدگی پرسنل گردیدهاست؟ (توضیح داده شود
+                                    آیا رویداد منجر به جرح/مصدومیت یا آسیب‌دیدگی پرسنل گردیدهاست؟ (توضیح داده شود)
                                 </td>
                             </tr>
                             <tr>
+                                <td style="padding:7px;text-align:right;"><div dx-select-box="sb_injuryOccuring" class="center"></div></td>
+                            </tr>
+                            <tr ng-if="entity.InjuryOccuring == true">
                                 <td style="padding:7px;text-align:right;"><div dx-text-area="txt_injuryDescription" class="center"></div></td>
                             </tr>
                         </table>
@@ -297,19 +321,22 @@
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="4">
-                                    آیا رویداد منجر به وقفه کاری شده است؟
+                                    آیا رویداد منجر به وقفه کاری شده است؟ (چه مدت؟ بر حسب دقیقه)
                                 </td>
                             </tr>
-                            <tr style="float:right; padding: 0px !important">
-                                <td class="col-sm-6 col-md-6" style="padding:7px;text-align:right;"><div dx-number-box="txt_workBreakPeriod" class="center"></div></td>
-                                <!-- <td class="col-sm-3 col-md-3" style="padding: 7px;text-align:left; font-weight: bold"> :چه مدت؟ </td>-->
+                            <tr>
+                                <td style="padding:7px;text-align:right;"><div dx-select-box="sb_workBreak" class="center"></div></td>
                             </tr>
+                            <tr style="padding: 7px;" ng-show="WorkBreak == true">
+                                <td class="col-sm-6 col-md-6" style="padding:7px;text-align:right;"><div dx-number-box="txt_workBreakPeriod" class="center"></div></td>
+                            </tr>
+
                         </table>
 
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
                                 <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="4">
-                                    اقدامات پیشگیرانه/پیشنهادی یا اصلاحی لازم
+                                    :اقدامات پیشگیرانه/پیشنهادی یا اصلاحی لازم
                                 </td>
                             </tr>
                             <tr>
@@ -318,28 +345,6 @@
 
                         </table>
 
-
-                        <div style="clear:both"></div>
-
-
-
-                        <table ng-show="url_sign" style="width:100%;margin-top:10px;border:1px solid #eee;">
-                            <tr>
-                                <td style="padding:10px;border-bottom:1px solid #eeee;text-align:center" colspan="3">
-                                    <div ng-show="url_sign" style="text-align:center;font-size:14px;padding:0px;">The document signed and approved by</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width:25%;"></td>
-                                <td style="width:50%; text-align:center;padding:10px">
-
-                                    <div ng-show="url_sign" style="text-align:center;font-size:16px;padding:5px;">{{PIC}}</div>
-                                    <div ng-show="url_sign" style="text-align:center;font-size:16px;padding:5px;">{{signDate}}</div>
-                                    <img style="height:auto;display: block; width: 50%;margin:0 auto 0 auto" ng-show="url_sign" ng-src="{{url_sign}}" />
-                                </td>
-                                <td style="width:25%;"></td>
-                            </tr>
-                        </table>
                         <div style="clear:both"></div>
                     </div>
                 </div>

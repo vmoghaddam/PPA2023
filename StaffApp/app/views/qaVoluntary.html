@@ -20,6 +20,7 @@
     .ctd-selected {
         background-color: red;
     }
+
     .dx-toolbar-center {
         width: 100%;
     }
@@ -35,63 +36,82 @@
 
                         <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="2">
+                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="2">
                                     Contact Information (Optionally) (اطلاعات تماس (اختیاری
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Email (آدرس ایمیل): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold">  :(Email) آدرس ایمیل </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Tel No. (شماره تلفن): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_telNumber" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Full Name (نام و نام‌خانوادگی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_name"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :(Tel No.) شماره تلفن </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_telNumber" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :(Full Name) نام و نام‌خانوادگی </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_name" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> :(Related Department) واحد مربوطه</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_relatedDepartment" class="center"></div></td>
                             </tr>
                         </table>
 
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="2">
-                                    Hazard Details جزئیات پتانسیل خطر :
+                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="2">
+                                    :(Hazard Details) جزئیات پتانسیل خطر
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Hazard identified: </td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold">  تاریخ شناسایی پتانسیل خطر <br />:(Date of Hazard identified)</td>
+                            </tr>
+                            <tr>
                                 <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Affected area of Incident/Hazard: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding: 7px;text-align:right; font-weight: bold">  مناطق تحت تاثیر پتانسیل خطر<br />:(Affected area of Incident/Hazard) </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Report Date: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_repDate"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center"></div></td>
                             </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:right; font-weight: bold"> تاریخ گزارش<br />:(Report Date) </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_repDate" class="center"></div></td>
+                            </tr>
+                            
                         </table>
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
-                                    Description of Incident/Hazard
+                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold">
+                                    شرح پتانسیل خطر یا حادثه <br />:(Description of Incident/Hazard)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_hazardDes"></div></td>
+                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_hazardDes" class="center"></div></td>
                             </tr>
 
                         </table>
 
                         <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
-                                    Recommended action to mitigate hazard
+                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold">
+                                    اقدام توصیه شده جهت رفع پتانسیل خطر<br />:(Recommended action to mitigate hazard)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_recAction"></div></td>
+                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_recAction" class="center"></div></td>
                             </tr>
 
                         </table>
@@ -113,9 +133,9 @@
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Email (آدرس ایمیل): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center"></div></td>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Tel No. (شماره تلفن): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_telNumber" class="center" dx-validator="{validationGroup:'asradd',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_telNumber" class="center"></div></td>
                             </tr>
                             <tr>
                                 <td style="padding: 7px;text-align:left; font-weight: bold"> Full Name (نام و نام‌خانوادگی): </td>

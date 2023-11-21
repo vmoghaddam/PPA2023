@@ -39,8 +39,10 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
         onShown: function (e) {
 
 
-            if ($scope.tempData != null)
-                $scope.bind();
+            if ($scope.tempData != null && $scope.tempData.Files != null)
+                $scope.bind(0);
+            else
+                $scope.bind(1);
 
 
 
@@ -53,6 +55,10 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
             $scope.popup_attachment_visible = false;
             $rootScope.$broadcast('onAttachmentHide', $scope.files);
             $scope.files = [];
+            $scope.uploaderValueDocument = [];
+            $scope.fileList = [];
+            $scope.fileNames = [];
+            $scope.Remark = null;
         },
         onContentReady: function (e) {
             if (!$scope.popup_instance)
@@ -98,12 +104,15 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
     };
 
     $scope.bind = function () {
-        QAService.getImportedFile($scope.entity.EntityId, $scope.entity.EmployeeId, $scope.entity.Type).then(function (response) {
-            $.each(response.Data, function (_i, _d) {
-                $scope.files.push({ Id: -1, AttachmentId: _d.Id, FileName: _d.Lable, FileType: _d.AttachmentType, Description: _d.Description });
-               
-            });
-        });
+      
+              
+                QAService.getImportedFile($scope.entity.EntityId, $scope.entity.EmployeeId, $scope.entity.Type).then(function (response) {
+                    if (response.IsSuccess == true)
+                        $.each(response.Data, function (_i, _d) {
+                            $scope.files.push({ Id: -1, AttachmentId: _d.Id, FileName: _d.Lable, FileType: _d.AttachmentType, Description: _d.Description });
+                        });
+                });
+        
     }
 
 
@@ -246,6 +255,11 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
         $scope.entity.Type = $scope.tempData.Type;
         $scope.entity.EmployeeId = $scope.tempData.EmployeeId;
         $scope.isEditable = $scope.tempData.isEditable;
+        console.log($scope.tempData.Files);
+        if ($scope.tempData.Files != null) {
+            $scope.files = $scope.tempData.Files.filter(function (obj) { return obj.Id !== -1});
+        }
+
         $scope.popup_attachment_visible = true;
     });
 }]);

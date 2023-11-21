@@ -37,6 +37,17 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
+    var _getCabinReporter = function () {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + '/api/get/csr/reporter').then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
 
     var _getFlightPhase = function () {
 
@@ -528,6 +539,18 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
+     var _getEmployee = function (eid) {
+
+        var deferred = $q.defer();
+         $http.get(apiQA + 'api/qa/get/employee/' + eid).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
 
     serviceFactory.getCreatorHistory = _getCreatorHistory;
 
@@ -546,6 +569,7 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     serviceFactory.getCSRByFlightId = _getCSRByFlightId;
     serviceFactory.getEventTitle = _getEventTitle;
     serviceFactory.getFlightPhase = _getFlightPhase;
+    serviceFactory.getCabinReporter = _getCabinReporter;
 
 
     serviceFactory.getCHRByFlightId = _getCHRByFlightId;
@@ -583,6 +607,7 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     serviceFactory.downloadQa = _downloadQa;
 
     serviceFactory.getStation = _getStation;
+    serviceFactory.getEmployee = _getEmployee;
 
     return serviceFactory;
 

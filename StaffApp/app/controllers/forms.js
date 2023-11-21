@@ -396,7 +396,9 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
         useMaskBehavior: true,
         onValueChanged: function (e) {
             //$scope.bind();
+            $scope.flt = null;
             $scope.bind_flts();
+            console.log("date value changed");
         },
         bindingOptions: {
             value: 'df'
@@ -454,16 +456,17 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
         placeholder: 'Flight No',
         displayExpr: "FlightNumber",
         onSelectionChanged: function (e) {
+            console.log(e.selectedItem);
 
             if (!e.selectedItem) {
                 $scope.flt_no = null;
                 $scope.flt_route = null;
+            } else {
+
+                $scope.flt_no = e.selectedItem.FlightNumber;
+                $scope.flt_route = e.selectedItem.FromAirportIATA + '-' + e.selectedItem.ToAirportIATA + ' (' + e.selectedItem.Register + ') (' +
+                    moment(new Date(e.selectedItem.STDLocal)).format('HH:mm') + ')';
             }
-
-            $scope.flt_no = e.selectedItem.FlightNumber;
-            $scope.flt_route = e.selectedItem.FromAirportIATA + '-' + e.selectedItem.ToAirportIATA + ' (' + e.selectedItem.Register + ') (' +
-                moment(new Date(e.selectedItem.STDLocal)).format('HH:mm') + ')';
-
 
         },
         bindingOptions: {
@@ -497,9 +500,14 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'normal', text: 'Select', onClick: function (e) {
-                        var data = { FlightId: $scope.flt.ID, crewId: $rootScope.employeeId };
-
-                        $rootScope.$broadcast($scope.selected_type, data);
+                        if ($scope.selected_type == "InitQAVoluntary") {
+                            var data = {crewId: $rootScope.employeeId };
+                            $rootScope.$broadcast($scope.selected_type, data);
+                        }
+                        else {
+                            var data = { FlightId: $scope.flt.ID, crewId: $rootScope.employeeId };
+                            $rootScope.$broadcast($scope.selected_type, data);
+                        }
 
                     }
                 }, toolbar: 'bottom'

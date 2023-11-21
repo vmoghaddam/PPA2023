@@ -1,13 +1,6 @@
 ﻿'use strict';
 app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
-    $scope.isNew = true;
     $scope.isEditable = false;
-    $scope.isLockVisible = false;
-    $scope.isContentVisible = false;
-    $scope.isFullScreen = false;
-    var detector = new MobileDetect(window.navigator.userAgent);
-
-    //if (detector.mobile() && !detector.tablet())
     $scope.isFullScreen = true;
 
     $scope.entity = {
@@ -22,15 +15,13 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         Type: 6,
     }
 
-    $scope.optOPCatagory = [];
-    $scope.optDISCatagory = [];
-
+    
 
     ////////////////////////
     $scope.popup_add_visible = false;
     $scope.popup_height = $(window).height() - 300;
     $scope.popup_width = $(window).width() - 0;
-    $scope.popup_add_title = 'Dispatch Hazard Report';
+    $scope.popup_add_title = 'Dispatch Hazard/Event Safety Report Form';
     $scope.popup_instance = null;
 
     $scope.popup_add = {
@@ -87,6 +78,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                                 $scope.popup_add_visible = false;
 
                             }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                            $scope.entity.files = [];
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -104,6 +96,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                             Type: $scope.followUpEntity.Type,
                             EntityId: $scope.entity.Id,
                             isEditable: $scope.isEditable,
+                            Files: $scope.entity.files,
                         }
                         $rootScope.$broadcast('InitAttachmentPopup', data);
                     }
@@ -141,7 +134,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                             $scope.loadingVisible = false;
                             $scope.entity.Id = res.Data.Id;
                             General.ShowNotify(Config.Text_SavedOk, 'success');
-                            
+                            $scope.entity.files = [];
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -171,9 +164,6 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         },
         onShown: function (e) {
 
-            if ($scope.isNew) {
-                $scope.isContentVisible = true;
-            }
             if ($scope.tempData != null)
                 $scope.bind();
 
@@ -258,6 +248,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
                     $scope.entity.EmployeeName = res.Data.EmployeeName;
                     $scope.entity.Email = res.Data.Email;
                     $scope.entity.Mobile = res.Data.Mobile;
+                    $scope.entity.DateOccurrence = res.Data.DateOccurrence;
 
                     $scope.isEditable = true;
                 }
@@ -341,10 +332,9 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.txt_dateReport = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
-        displayFormat: "yyyy-MMM-dd  HH:mm",
+        displayFormat: "yyyy-MMM-dd",
         bindingOptions: {
             value: 'entity.DateReport',
             useMaskBehavior: 'isEditable',
@@ -384,13 +374,12 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.txt_opEventDate = {
         hoverStateEnabled: false,
+        readOnly: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateOccurrence',
-            useMaskBehavior: 'isEditable',
-            readOnly: '!isEditable'
         }
     }
 
@@ -418,6 +407,15 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.OPLocation',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+    $scope.txt_jobPos = {
+        hoverStateEnabled: false,
+        bindingOptions: {
+            value: 'entity.JobPosition',
             useMaskBehavior: 'isEditable',
             readOnly: '!isEditable'
         }
@@ -525,27 +523,24 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
     }
 
     $scope.txt_email = {
-        hoverStateEnabled: false,
-        useMaskBehavior: false,
         readOnly: true,
+        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.Email',
         }
     }
 
     $scope.txt_telNumber = {
-        hoverStateEnabled: false,
-        useMaskBehavior: false,
         readOnly: true,
+        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.Mobile',
            }
     }
 
     $scope.txt_name = {
-        hoverStateEnabled: false,
-        useMaskBehavior: false,
         readOnly: true,
+        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.EmployeeName',
             
@@ -558,18 +553,6 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
     ////////////////////////////////
 
     $scope.tempData = null;
-    $scope.$on('onSign', function (event, prms) {
-
-        if (prms.doc == 'dhr')
-            flightService.signDocLocal(prms, prms.doc).then(function (response) {
-                // $scope.isEditable = false;
-                // $scope.isLockVisible = false;
-                $scope.url_sign = signFiles + prms.PICId + ".jpg";
-                $scope.PIC = prms.PIC;
-                $scope.signDate = moment(new Date(prms.JLDatePICApproved)).format('YYYY-MM-DD HH:mm');
-            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
-    });
     $scope.$on('InitQADispatch', function (event, prms) {
 
 
