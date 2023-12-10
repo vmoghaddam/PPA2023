@@ -1,24 +1,28 @@
 ﻿<style>
-    .ctd {
-        border: 1px solid #eee;
-        text-align: center;
+    .tab-field {
+        padding: 7px;
+        text-align: left
     }
 
-    .ctd-empty {
-        border: 0px solid #eee;
-        text-align: center;
+    .tab-field-title {
+        padding: 7px;
+        text-align: left;
+        font-weight: bold
     }
 
-    .ctr {
-        /*height:30px;*/
+    .tab-title {
+        background-color: whitesmoke;
+        padding: 7px;
+        text-align: left;
+        color: black;
+        font-weight: bold
     }
 
-    .ctd-center {
-        background-color: lightseagreen;
-    }
-
-    .ctd-selected {
-        background-color: red;
+    .tab-style {
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        width: 100%;
+        color: black
     }
 
     .dx-toolbar-center {
@@ -33,64 +37,64 @@
 
                 <div class="container">
                     <div class="visible-xs">
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Title: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_title" class="center"></div></td>
+                                <td class="tab-field-title"> Title: </td>
+                                <td class="tab-field"><div dx-text-box="txt_title" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Airport: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-select-box="sb_airport" class="center"></div></td>
+                                <td class="tab-field-title"> Airport: </td>
+                                <td class="tab-field"><div dx-select-box="sb_airport" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Date: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_date" class="center" dx-validator="{validationGroup:'ground',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-title"> Date: </td>
+                                <td class="tab-field"><div dx-date-box="txt_date" class="center" dx-validator="{validationGroup:'ground',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px; text-align: left; font-weight: bold"> Time of occurrence: </td>
-                                <td style="padding: 7px; text-align: left;"><div dx-date-box="txt_OccurrenceTime" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-title"> Time of occurrence: </td>
+                                <td class="tab-field"><div dx-date-box="txt_OccurrenceTime" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Phase Of Operation: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_optPhase" class="center"></div></td>
+                                <td class="tab-field-title"> Phase Of Operation: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_optPhase" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Area: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_area" class="center"></div></td>
+                                <td class="tab-field-title"> Area: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_area" class="center"></div></td>
+                            </tr>
+                            <tr ng-show="fltInfo">
+                                <td class="tab-field-title"> Aircraft Register: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_acRegister" class="center"></div></td>
+                            </tr>
+                            <tr ng-show="fltInfo">
+                                <td class="tab-field-title"> Aircraft Type: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_acType" class="center"></div></td>
+                            </tr>
+                            <tr ng-show="fltInfo">
+                                <td class="tab-field-title"> Flight Number: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_fltNum" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Aircraft Register: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_acRegister" class="center"></div></td>
+                                <td class="tab-field-title"> Scheduled Ground Time: </td>
+                                <td class="tab-field"> <div dx-date-box="txt_gndTime" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Aircraft Type: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_acType" class="center"></div></td>
+                                <td class="tab-field-title"> Flight Delay: </td>
+                                <td class="tab-field"> <div dx-date-box="txt_fltDelay" class="center"></div></td>
                             </tr>
-                            <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Flight Number: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_fltNum" class="center"></div></td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Scheduled Ground Time: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_gndTime" class="center"></div></td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Flight Delay: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_fltDelay" class="center"></div></td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Flight Cancelled: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-select-box="sb_fltCancelled" class="center"></div></td>
+                            <tr ng-show="fltInfo">
+                                <td class="tab-field-title"> Flight Cancelled: </td>
+                                <td class="tab-field"> <div dx-select-box="sb_fltCancelled" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                        <div class="dx-border tab-style">
+                            <div class="tab-title">
                                 Damage By:
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 7px; text-align: left" ng-repeat="x in damageBy">
+                            <div class="col-xs-12 col-sm-12 col-md-12 tab-field" ng-repeat="x in damageBy">
                                 <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDamageBy(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
@@ -98,21 +102,21 @@
 
                         </div>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     DETAILS OF DAMAGE
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_damageDetail" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_damageDetail" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="9">
+                                <td class="tab-title" colspan="9">
                                     NUMBER OF CASUALTIES
                                 </td>
                             </tr>
@@ -122,281 +126,281 @@
                                 <td style="padding: 7px;text-align:center;">Non-Fatal</td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" class="col-md-1 col-sm-1"> Employees:</td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_eeCasualty" class="center"></div></td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_eeNonCasualty" class="center"></div></td>
+                                <td class="tab-field-title col-md-1 col-sm-1"> Employees:</td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_eeCasualty" class="center"></div></td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_eeNonCasualty" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" class="col-md-1 col-sm-1"> Passengers:</td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_paxCasualty" class="center"></div></td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_paxNonCasualty" class="center"></div></td>
+                                <td class="tab-field-title col-md-1 col-sm-1"> Passengers:</td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_paxCasualty" class="center"></div></td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_paxNonCasualty" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" class="col-md-1 col-sm-1"> Other:</td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_otherCasualty" class="center"></div></td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_otherNonCasualty" class="center"></div></td>
+                                <td class="tab-field-title col-md-1 col-sm-1"> Other:</td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_otherCasualty" class="center"></div></td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_otherNonCasualty" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
+                                <td class="tab-title" colspan="6">
                                     VEHICLE/RAMP EQUIMPMENT DETAILS AND CONDITIONS REPORT <br /> (گزارش شرایط و جزئیات وسائل نقلیه و تجهیزات رمپ)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Serial Fleet nr. (شماره سریال ناوگان): </td>
+                                <td class="tab-field-title"> Serial Fleet nr. (شماره سریال ناوگان): </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veFleetSerial" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-box="txt_veFleetSerial" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Type (نوع): </td>
+                                <td class="tab-field-title"> Type (نوع): </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veType" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-box="txt_veType" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Owner (مالک): </td>
+                                <td class="tab-field-title"> Owner (مالک): </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veOwner" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-box="txt_veOwner" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Area (محل وقوع): </td>
+                                <td class="tab-field-title"> Area (محل وقوع): </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veArea" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-box="txt_veArea" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Age Of Vehivle/Ramp Eq.(عمر تچهیزات رمپ/وسیله نقلیه): </td>
+                                <td class="tab-field-title"> Age Of Vehivle/Ramp Eq.(عمر تچهیزات رمپ/وسیله نقلیه): </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-number-box="txt_veAga" class="center"></div></td>
+                                <td class="tab-field"> <div dx-number-box="txt_veAga" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Last Overhaul (اخرین تعمیر اساسی): </td>
+                                <td class="tab-field-title"> Last Overhaul (اخرین تعمیر اساسی): </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veLastOverhaul" class="center"></div></td>
-                            </tr>
-
-
-                            <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Remarks: </td>
-
-                            </tr>
-                            <tr>
-                                <td style="padding: 7px;text-align:left;" colspan="2"> <div dx-text-area="txt_veRemarks" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-box="txt_veLastOverhaul" class="center"></div></td>
                             </tr>
 
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Tyres (تایرها): </td>
+                                <td class="tab-field-title"> Remarks: </td>
+
                             </tr>
                             <tr>
-                                <td style="padding: 7px; text-align: center" colspan="2"> <div dx-select-box="sb_veTyer" class="center"></div></td>
+                                <td class="tab-field" colspan="2"> <div dx-text-area="txt_veRemarks" class="center"></div></td>
+                            </tr>
+
+
+                            <tr>
+                                <td class="tab-field-title" colspan="1"> Tyres (تایرها): </td>
+                            </tr>
+                            <tr>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veTyer" class="center"></div></td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Brakes (ترمزها): </td>
+                                <td class="tab-field-title" colspan="1"> Brakes (ترمزها): </td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px; text-align: center;" colspan="2"> <div dx-select-box="sb_veBrake" class="center"></div></td>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veBrake" class="center"></div></td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Steering (فرمان): </td>
+                                <td class="tab-field-title" colspan="1"> Steering (فرمان): </td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px; text-align: center;" colspan="2"> <div dx-select-box="sb_veSteering" class="center"></div></td>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veSteering" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Lights (چراغ‌ها): </td>
-                            </tr>
-
-                            <tr>
-                                <td style="padding: 7px; text-align: center;" colspan="2"> <div dx-select-box="sb_veLight" class="center"></div></td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Wipers (برف پاک‌کن): </td>
+                                <td class="tab-field-title" colspan="1"> Lights (چراغ‌ها): </td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px; text-align: center;" colspan="2"> <div dx-select-box="sb_veWiper" class="center"></div></td>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veLight" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Protection (حفاظ): </td>
-                            </tr>
-
-                            <tr>
-                                <td style="padding: 7px; text-align: center;" colspan="2"> <div dx-select-box="sb_veProtection" class="center"></div></td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Warning Devices (وسایل هشداردهنده): </td>
+                                <td class="tab-field-title" colspan="1"> Wipers (برف پاک‌کن): </td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px; text-align: center;" colspan="2"> <div dx-select-box="sb_veWarningDevices" class="center"></div></td>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veWiper" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Stabilizer (استابیلایزر‌ها): </td>
-                            </tr>
-
-                            <tr>
-                                <td style="padding: 7px; text-align: center;" colspan="2"> <div dx-select-box="sb_veStab" class="center"></div></td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Tow Hitch (اتصال کشنده): </td>
+                                <td class="tab-field-title" colspan="1"> Protection (حفاظ): </td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px; text-align: center;" colspan="2"> <div dx-select-box="sb_veTow" class="center"></div></td>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veProtection" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="1"> Field of vision from driving position <br /> (میدان دید هنگام رانندگی): </td>
+                                <td class="tab-field-title" colspan="1"> Warning Devices (وسایل هشداردهنده): </td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px; text-align: center;" colspan="2"> <div dx-select-box="sb_veVision" class="center"></div></td>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veWarningDevices" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="tab-field-title" colspan="1"> Stabilizer (استابیلایزر‌ها): </td>
+                            </tr>
+
+                            <tr>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veStab" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="tab-field-title" colspan="1"> Tow Hitch (اتصال کشنده): </td>
+                            </tr>
+
+                            <tr>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veTow" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="tab-field-title" colspan="1"> Field of vision from driving position <br /> (میدان دید هنگام رانندگی): </td>
+                            </tr>
+
+                            <tr>
+                                <td class="tab-field" style="text-align: center !important" colspan="2"> <div dx-select-box="sb_veVision" class="center"></div></td>
                             </tr>
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
+                                <td class="tab-title" colspan="6">
                                     DETAILS OF PERSONNEL INVOLVED <br /> (مشخصات کارکنان درگیر)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Name (نام): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1Name" class="center"></div></td>
+                                <td class="tab-field-title"> Name (نام): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1Name" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Job Title (عنوان شغل): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1Job" class="center"></div></td>
+                                <td class="tab-field-title"> Job Title (عنوان شغل): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1Job" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Company (شرکت): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1Compony" class="center"></div></td>
+                                <td class="tab-field-title"> Company (شرکت): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1Compony" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> staff Nr. (شماره کارمندی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1StaffNum" class="center"></div></td>
+                                <td class="tab-field-title"> staff Nr. (شماره کارمندی): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1StaffNum" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> license (گواهینامه): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1License" class="center"></div></td>
+                                <td class="tab-field-title"> license (گواهینامه): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1License" class="center"></div></td>
                             </tr>
 
                             <tr style="border-bottom: 1px dashed #eee; padding: 5px"></tr>
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Name (نام): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2Name" class="center"></div></td>
+                                <td class="tab-field-title"> Name (نام): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2Name" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Job Title (عنوان شغل): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2Job" class="center"></div></td>
+                                <td class="tab-field-title"> Job Title (عنوان شغل): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2Job" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Company (شرکت): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2Compony" class="center"></div></td>
+                                <td class="tab-field-title"> Company (شرکت): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2Compony" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> staff Nr. (شماره کارمندی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2StaffNum" class="center"></div></td>
+                                <td class="tab-field-title"> staff Nr. (شماره کارمندی): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2StaffNum" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> license (گواهینامه): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2License" class="center"></div></td>
+                                <td class="tab-field-title"> license (گواهینامه): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2License" class="center"></div></td>
                             </tr>
 
                             <tr style="border-bottom: 1px dashed #eee;padding: 5px"></tr>
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Name (نام): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3Name" class="center"></div></td>
+                                <td class="tab-field-title"> Name (نام): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3Name" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Job Title (عنوان شغل): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3Job" class="center"></div></td>
+                                <td class="tab-field-title"> Job Title (عنوان شغل): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3Job" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Company (شرکت): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3Compony" class="center"></div></td>
+                                <td class="tab-field-title"> Company (شرکت): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3Compony" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> staff Nr. (شماره کارمندی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3StaffNum" class="center"></div></td>
+                                <td class="tab-field-title"> staff Nr. (شماره کارمندی): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3StaffNum" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> license (گواهینامه): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3License" class="center"></div></td>
+                                <td class="tab-field-title"> license (گواهینامه): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3License" class="center"></div></td>
                             </tr>
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
+                                <td class="tab-title" colspan="6">
                                     CONDITIONS
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Visibillity (دید): </td>
-                                <td style="padding: 7px;text-align:left;"><div dx-number-box="txt_VISByMeter" class="center"></div><p style="display:inline-block">m</p></td>
-                                <td style="padding: 7px;text-align:left;"><div dx-number-box="txt_VISByKiloMeter" class="center"></div><p style="display:inline-block">km</p></td>
+                                <td class="tab-field-title"> Visibillity (دید): </td>
+                                <td class="tab-field"><div dx-number-box="txt_VISByMeter" class="center"></div><p style="display:inline-block">m</p></td>
+                                <td class="tab-field"><div dx-number-box="txt_VISByKiloMeter" class="center"></div><p style="display:inline-block">km</p></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Wind/gust (باد/تندباد): </td>
-                                <td style="padding: 7px;text-align:left;" colspan="2"> <div dx-number-box="txt_wind" class="center"></div><p>kts</p></td>
+                                <td class="tab-field-title"> Wind/gust (باد/تندباد): </td>
+                                <td class="tab-field" colspan="2"> <div dx-number-box="txt_wind" class="center"></div><p>kts</p></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Temperature (دما): </td>
-                                <td style="padding: 7px;text-align:left;" colspan="2"> <div dx-number-box="txt_temp" class="center"></div><p>c</p></td>
+                                <td class="tab-field-title"> Temperature (دما): </td>
+                                <td class="tab-field" colspan="2"> <div dx-number-box="txt_temp" class="center"></div><p>c</p></td>
                             </tr>
 
                         </table>
-                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                        <div class="dx-border tab-style">
+                            <div class="tab-title">
                                 Weather (هوا):
                             </div>
 
-                            <div class="col-xs-4 col-sm-4 col-md-4" style="padding: 7px; text-align: left" ng-repeat="x in weather">
+                            <div class="col-xs-4 col-sm-4 col-md-4 tab-field" ng-repeat="x in weather">
                                 <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkWeather(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                         </div>
 
                         <div style="clear:both"></div>
 
-                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                        <div class="dx-border tab-style">
+                            <div class="tab-title">
                                 Surface (سطح) :
                             </div>
 
-                            <div class="col-xs-4 col-sm-4 col-md-4" style="" ng-repeat="x in surface">
+                            <div class="col-xs-4 col-sm-4 col-md-4 tab-field" ng-repeat="x in surface">
                                 <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkSurface(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
-                          
+
                         </div>
                         <div style="clear:both"></div>
 
-                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                        <div class="dx-border tab-style">
+                            <div class="tab-title">
                                 Lighting:
                             </div>
 
-                            <div class="col-xs-4 col-sm-4 col-md-4" style="padding: 7px; text-align: left" ng-repeat="x in lighting">
+                            <div class="col-xs-4 col-sm-4 col-md-4 tab-field" ng-repeat="x in lighting">
                                 <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkLighting(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                         </div>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     CONTRIBUTORY FACTORS <br />(عوامل کمکی)
                                 </td>
                             </tr>
@@ -407,14 +411,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_contributFact" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_contributFact" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     EVENT
                                 </td>
                             </tr>
@@ -425,31 +429,31 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_Event" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_Event" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     CORRECTIVE ACTION TAKEN  <br /> (اقدامات اصلاحی صورت گرفته)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_correctiveAction" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_correctiveAction" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     OTHER INFORMATION & SUGGESTIONS FOR PREVENTIVE ACTIONS <br /> (سایر اطلاعات و پیشنهادهایی جهت اقدامات پیشگیرانه)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_otherRMK" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_otherRMK" class="center"></div></td>
                             </tr>
 
                         </table>
@@ -462,48 +466,48 @@
 
                 <div class="container">
                     <div class="visible-sm visible-md">
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Date: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_date" class="center" dx-validator="{validationGroup:'ground',  validationRules: [{ type: 'required',   }]}"></div></td>
-                                <td style="padding: 7px; text-align: left; font-weight: bold"> Time of occurrence: </td>
-                                <td style="padding: 7px; text-align: left;"><div dx-date-box="txt_OccurrenceTime" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-title"> Date: </td>
+                                <td class="tab-field"><div dx-date-box="txt_date" class="center" dx-validator="{validationGroup:'ground',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-title"> Time of occurrence: </td>
+                                <td class="tab-field"><div dx-date-box="txt_OccurrenceTime" class="center" dx-validator="{validationGroup:'seurity',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Flight Delay: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_fltDelay" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Phase Of Operation: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_optPhase" class="center"></div></td>
+                                <td class="tab-field-title"> Flight Delay: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_fltDelay" class="center"></div></td>
+                                <td class="tab-field-title"> Phase Of Operation: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_optPhase" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Area: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_area" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Aircraft Register: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_acRegister" class="center"></div></td>
+                                <td class="tab-field-title"> Area: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_area" class="center"></div></td>
+                                <td class="tab-field-title"> Aircraft Register: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_acRegister" class="center"></div></td>
                             </tr>
                             <tr>
 
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Aircraft Type: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_acType" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Flight Number: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_fltNum" class="center"></div></td>
+                                <td class="tab-field-title"> Aircraft Type: </td>
+                                <td class="tab-field"> <div dx-text-box="txt_acType" class="center"></div></td>
+                                <td class="tab-field-title"> Flight Number: </td>
+                                <td class="tab-field"> <div dx-date-box="txt_fltNum" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Scheduled Ground Time: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_gndTime" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Flight Cancelled: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-select-box="sb_fltCancelled" class="center"></div></td>
+                                <td class="tab-field-title"> Scheduled Ground Time: </td>
+                                <td class="tab-field"> <div dx-date-box="txt_gndTime" class="center"></div></td>
+                                <td class="tab-field-title"> Flight Cancelled: </td>
+                                <td class="tab-field"> <div dx-select-box="sb_fltCancelled" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                        <div class="dx-border tab-style">
+                            <div class="tab-title">
                                 Damage By:
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in damageBy">
+                            <div class="col-xs-3 col-sm-3 col-md-3 tab-field" ng-repeat="x in damageBy">
                                 <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkDamageBy(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
@@ -511,21 +515,21 @@
 
                         </div>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     DETAILS OF DAMAGE
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_damageDetail" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_damageDetail" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="9">
+                                <td class="tab-title" colspan="9">
                                     NUMBER OF CASUALTIES
                                 </td>
                             </tr>
@@ -541,213 +545,213 @@
                                 <td style="padding: 7px;text-align:center;">Non-Fatal</td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" class="col-md-1 col-sm-1"> Employees:</td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_eeCasualty" class="center"></div></td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_eeNonCasualty" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" class="col-md-1 col-sm-1"> Passengers:</td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_paxCasualty" class="center"></div></td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_paxNonCasualty" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" class="col-md-1 col-sm-1"> Other:</td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_otherCasualty" class="center"></div></td>
-                                <td style="padding: 7px; text-align: center;" class="col-md-1 col-sm-1"> <div dx-number-box="txt_otherNonCasualty" class="center"></div></td>
+                                <td class="tab-field-title col-md-1 col-sm-1"> Employees:</td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_eeCasualty" class="center"></div></td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_eeNonCasualty" class="center"></div></td>
+                                <td class="tab-field-title col-md-1 col-sm-1"> Passengers:</td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_paxCasualty" class="center"></div></td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_paxNonCasualty" class="center"></div></td>
+                                <td class="tab-field-title col-md-1 col-sm-1"> Other:</td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_otherCasualty" class="center"></div></td>
+                                <td class="col-md-1 col-sm-1 tab-field"> <div dx-number-box="txt_otherNonCasualty" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
+                                <td class="tab-title" colspan="6">
                                     VEHICLE/RAMP EQUIMPMENT DETAILS AND CONDITIONS REPORT<br />(گزارش شرایط و جزئیات وسائل نقلیه و تجهیزات رمپ)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Serial Fleet nr. (شماره سریال ناوگان): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veFleetSerial" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Type (نوع): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veType" class="center"></div></td>
+                                <td class="tab-field-title"> Serial Fleet nr. (شماره سریال ناوگان): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_veFleetSerial" class="center"></div></td>
+                                <td class="tab-field-title"> Type (نوع): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_veType" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Owner (مالک): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veOwner" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Area (محل وقوع): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veArea" class="center"></div></td>
+                                <td class="tab-field-title"> Owner (مالک): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_veOwner" class="center"></div></td>
+                                <td class="tab-field-title"> Area (محل وقوع): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_veArea" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Age Of Vehivle/Ramp Eq.(عمر تچهیزات رمپ/وسیله نقلیه): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-number-box="txt_veAga" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Last Overhaul (اخرین تعمیر اساسی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_veLastOverhaul" class="center"></div></td>
+                                <td class="tab-field-title"> Age Of Vehivle/Ramp Eq.(عمر تچهیزات رمپ/وسیله نقلیه): </td>
+                                <td class="tab-field"> <div dx-number-box="txt_veAga" class="center"></div></td>
+                                <td class="tab-field-title"> Last Overhaul (اخرین تعمیر اساسی): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_veLastOverhaul" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Remarks: </td>
-                                <td style="padding: 7px;text-align:left;" colspan="3"> <div dx-text-area="txt_veRemarks" class="center"></div></td>
-                            </tr>
-
-                            <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Tyres (تایرها): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veTyer" class="center"></div></td>
+                                <td class="tab-field-title"> Remarks: </td>
+                                <td class="tab-field" colspan="3"> <div dx-text-area="txt_veRemarks" class="center"></div></td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Brakes (ترمزها): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veBrake" class="center"></div></td>
+                                <td class="tab-field-title" colspan="3"> Tyres (تایرها): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veTyer" class="center"></div></td>
                             </tr>
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Steering (فرمان): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veSteering" class="center"></div></td>
+                                <td class="tab-field-title" colspan="3"> Brakes (ترمزها): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veBrake" class="center"></div></td>
+                            </tr>
+
+                            <tr>
+                                <td class="tab-field-title" colspan="3"> Steering (فرمان): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veSteering" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Lights (چراغ‌ها): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veLight" class="center"></div></td>
+                                <td class="tab-field-title" colspan="3"> Lights (چراغ‌ها): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veLight" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Wipers (برف پاک‌کن): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veWiper" class="center"></div></td>
+                                <td class="tab-field-title" colspan="3"> Wipers (برف پاک‌کن): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veWiper" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Protection (حفاظ): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veProtection" class="center"></div></td>
+                                <td class="tab-field-title" colspan="3"> Protection (حفاظ): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veProtection" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Warning Devices (وسایل هشداردهنده): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veWarningDevices" class="center"></div></td>
+                                <td class="tab-field-title" colspan="3"> Warning Devices (وسایل هشداردهنده): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veWarningDevices" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Stabilizer (استابیلایزر‌ها): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veStab" class="center"></div></td>
+                                <td class="tab-field-title" colspan="3"> Stabilizer (استابیلایزر‌ها): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veStab" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Tow Hitch (اتصال کشنده): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veTow" class="center"></div></td>
+                                <td class="tab-field-title" colspan="3"> Tow Hitch (اتصال کشنده): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veTow" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold" colspan="3"> Field of vision from driving position (میدان دید هنگام رانندگی): </td>
-                                <td style="padding: 7px; text-align: center;"> <div dx-select-box="sb_veVision" class="center"></div></td>
+                                <td class="tab-field-title" colspan="3"> Field of vision from driving position (میدان دید هنگام رانندگی): </td>
+                                <td class="tab-field" style="text-align: center !important"> <div dx-select-box="sb_veVision" class="center"></div></td>
                             </tr>
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
+                                <td class="tab-title" colspan="6">
                                     DETAILS OF PERSONNEL INVOLVED <br />(مشخصات کارکنان درگیر)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Name (نام): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1Name" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Job Title (عنوان شغل): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1Job" class="center"></div></td>
+                                <td class="tab-field-title"> Name (نام): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1Name" class="center"></div></td>
+                                <td class="tab-field-title"> Job Title (عنوان شغل): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1Job" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Company (شرکت): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1Compony" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> staff Nr. (شماره کارمندی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1StaffNum" class="center"></div></td>
+                                <td class="tab-field-title"> Company (شرکت): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1Compony" class="center"></div></td>
+                                <td class="tab-field-title"> staff Nr. (شماره کارمندی): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1StaffNum" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> license (گواهینامه): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p1License" class="center"></div></td>
+                                <td class="tab-field-title"> license (گواهینامه): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p1License" class="center"></div></td>
                             </tr>
 
                             <tr style="border-bottom: 1px dashed #eee; padding: 5px"></tr>
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Name (نام): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2Name" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Job Title (عنوان شغل): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2Job" class="center"></div></td>
+                                <td class="tab-field-title"> Name (نام): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2Name" class="center"></div></td>
+                                <td class="tab-field-title"> Job Title (عنوان شغل): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2Job" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Company (شرکت): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2Compony" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> staff Nr. (شماره کارمندی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2StaffNum" class="center"></div></td>
+                                <td class="tab-field-title"> Company (شرکت): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2Compony" class="center"></div></td>
+                                <td class="tab-field-title"> staff Nr. (شماره کارمندی): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2StaffNum" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> license (گواهینامه): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p2License" class="center"></div></td>
+                                <td class="tab-field-title"> license (گواهینامه): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p2License" class="center"></div></td>
                             </tr>
 
                             <tr style="border-bottom: 1px dashed #eee;padding: 5px"></tr>
 
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Name (نام): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3Name" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Job Title (عنوان شغل): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3Job" class="center"></div></td>
+                                <td class="tab-field-title"> Name (نام): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3Name" class="center"></div></td>
+                                <td class="tab-field-title"> Job Title (عنوان شغل): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3Job" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Company (شرکت): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3Compony" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> staff Nr. (شماره کارمندی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3StaffNum" class="center"></div></td>
+                                <td class="tab-field-title"> Company (شرکت): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3Compony" class="center"></div></td>
+                                <td class="tab-field-title"> staff Nr. (شماره کارمندی): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3StaffNum" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> license (گواهینامه): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_p3License" class="center"></div></td>
+                                <td class="tab-field-title"> license (گواهینامه): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_p3License" class="center"></div></td>
                             </tr>
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="6">
+                                <td class="tab-title" colspan="6">
                                     CONDITIONS
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Visibillity (دید): </td>
-                                <td style="padding: 7px;text-align:left;"><div dx-number-box="txt_VISByMeter" class="center"></div><p>m</p></td>
-                                <td style="padding: 7px;text-align:left;"><div dx-number-box="txt_VISByKiloMeter" class="center"></div><p>km</p></td>
+                                <td class="tab-field-title"> Visibillity (دید): </td>
+                                <td class="tab-field"><div dx-number-box="txt_VISByMeter" class="center"></div><p>m</p></td>
+                                <td class="tab-field"><div dx-number-box="txt_VISByKiloMeter" class="center"></div><p>km</p></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Wind/gust (باد/تندباد): </td>
-                                <td style="padding: 7px;text-align:left;" colspan="2"> <div dx-number-box="txt_wind" class="center"></div><p>kts</p></td>
+                                <td class="tab-field-title"> Wind/gust (باد/تندباد): </td>
+                                <td class="tab-field" colspan="2"> <div dx-number-box="txt_wind" class="center"></div><p>kts</p></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Temperature (دما): </td>
-                                <td style="padding: 7px;text-align:left;" colspan="2"> <div dx-number-box="txt_temp" class="center"></div><p>c</p></td>
+                                <td class="tab-field-title"> Temperature (دما): </td>
+                                <td class="tab-field" colspan="2"> <div dx-number-box="txt_temp" class="center"></div><p>c</p></td>
                             </tr>
 
                         </table>
-                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                        <div class="dx-border tab-style">
+                            <div class="tab-title">
                                 Weather (هوا):
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in weather">
+                            <div class="col-xs-3 col-sm-3 col-md-3 tab-field" ng-repeat="x in weather">
                                 <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkWeather(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
                         <div style="clear:both"></div>
 
-                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                        <div class="dx-border tab-style">
+                            <div class="tab-title">
                                 Surface (سطح) :
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in surface">
+                            <div class="col-xs-3 col-sm-3 col-md-3 tab-field" ng-repeat="x in surface">
                                 <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkSurface(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
                         <div style="clear:both"></div>
 
-                        <div style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
-                            <div style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                        <div class="dx-border tab-style">
+                            <div class="tab-title">
                                 Lighting:
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 col-md-3" style="padding: 1%" ng-repeat="x in lighting">
+                            <div class="col-xs-3 col-sm-3 col-md-3 tab-field" ng-repeat="x in lighting">
                                 <input type="checkbox" style="text-align:right" ng-checked="x.checked" ng-model="x.checked" ng-change="chkLighting(x)" ng-disabled="!isEditable" /> {{x.Title}}
                             </div>
                             <div style="clear:both"></div>
                         </div>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     CONTRIBUTORY FACTORS <br /> (عوامل کمکی)
                                 </td>
                             </tr>
@@ -758,14 +762,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_contributFact" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_contributFact" class="center"></div></td>
                             </tr>
 
                         </table>
-                        
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     EVENT
                                 </td>
                             </tr>
@@ -776,31 +780,31 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_Event" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_Event" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     CORRECTIVE ACTION TAKEN  <br /> (اقدامات اصلاحی صورت گرفته)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_correctiveAction" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_correctiveAction" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     OTHER INFORMATION & SUGGESTIONS FOR PREVENTIVE ACTIONS <br /> (سایر اطلاعات و پیشنهادهایی جهت اقدامات پیشگیرانه)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_otherRMK" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_otherRMK" class="center"></div></td>
                             </tr>
 
                         </table>

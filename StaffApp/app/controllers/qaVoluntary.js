@@ -8,7 +8,7 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         Status: null,
         StatusEmployeeId: null,
         DateStatus: null,
-        DateSign: null
+        DateSign: null,
     };
 
 
@@ -42,7 +42,7 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
 
                         $scope.entity.Signed = "1";
-                      /*  $scope.entity.FlightId = $scope.tempData.FlightId;*/
+                        /*  $scope.entity.FlightId = $scope.tempData.FlightId;*/
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
@@ -56,18 +56,27 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
                             $scope.entity.Id = res.Data.Id;
                             $scope.followUpEntity.EntityId = res.Data.Id;
-                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+                            if (res.IsSuccess == true) {
+                                $scope.entity.Id = res.Data.Id;
+                                $scope.followUpEntity.EntityId = res.Data.Id;
+                                QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
-                                $scope.loadingVisible = false;
-                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                    $scope.loadingVisible = false;
+                                    General.ShowNotify(Config.Text_SavedOk, 'success');
 
-                                if ($scope.tempData.Status == "Not Signed") {
-                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "In Progress";
-                                }
+                                    if ($scope.tempData.Status == "Not Signed") {
+                                        var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                        row.Status = "In Progress";
+                                    }
 
-                                $scope.popup_add_visible = false;
-                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                                    $scope.popup_add_visible = false;
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                            }
+                            else {
+                                General.ShowNotify(Config.Text_SaveFailed, 'error');
+                                $scope.entity.Id = -1;
+                                $scope.followUpEntity.EntityId = -1;
+                            }
                             $scope.entity.files = [];
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -103,7 +112,6 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
                             return;
                         }
 
-                        //$scope.entity.FlightId = $scope.tempData.FlightId;
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
 
@@ -112,9 +120,17 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
                         $scope.loadingVisible = true;
                         QAService.saveVHR($scope.entity).then(function (res) {
                             $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                            General.ShowNotify(Config.Text_SavedOk, 'success');
+                            if (res.IsSuccess == true) {
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.entity.Id = res.Data.Id;
+                            }
+                            else {
+                                General.ShowNotify(Config.Text_SaveFailed, 'error');
+                                $scope.entity.Id = -1;
+                            }
                             $scope.entity.files = [];
+
+
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -145,12 +161,12 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
         onShown: function (e) {
             if ($scope.tempData != null)
                 $scope.bind();
+
         },
-        onHiding: function () {
+        onHiding: function (e) {
             $rootScope.IsRootSyncEnabled = true;
             $scope.entity = {
                 Id: -1,
-
             };
 
             $scope.popup_add_visible = false;
@@ -180,21 +196,23 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
     /////////////////////////////////
     $scope.fill = function (data) {
+        console.log(data);
         $scope.entity = data;
     };
 
     $scope.bind = function () {
-        QAService.getEmployee($scope.tempData.crewId).then(function (response) {
-            $scope.entity.Email = response.Data.Email;
-            $scope.entity.Name = response.Data.Name;
-            $scope.entity.TelNumber = response.Data.Mobile;
-        });
+        //QAService.getEmployee($scope.tempData.crewId).then(function (response) {
+        //    $scope.entity.Email = response.Data.Email;
+        //    $scope.entity.Name = response.Data.Name;
+        //    $scope.entity.TelNumber = response.Data.Mobile;
+
+        //});
 
         if ($scope.tempData.EntityId != null) {
             QAService.getVHRById($scope.tempData.EntityId).then(function (res) {
                 $scope.fill(res.Data);
                 $scope.isEditable = !$scope.entity.DateSign;
-                
+
 
             });
         }
@@ -244,7 +262,6 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
     }
 
     $scope.txt_repDate = {
-        hoverStateEnabled: false,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
@@ -287,26 +304,29 @@ app.controller('qaVoluntaryController', ['$scope', '$location', 'QAService', 'au
 
 
     $scope.txt_telNumber = {
-        readOnly: true,
-        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.TelNumber',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
         }
     }
 
     $scope.txt_name = {
-        readOnly: true,
-        useMaskBehavior: false,
         bindingOptions: {
-            value: 'entity.Name',
+            value: 'entity.EmployeeName',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
         }
     }
 
     $scope.txt_email = {
-        readOnly: true,
-        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.Email',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
         }
     }
 

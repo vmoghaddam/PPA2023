@@ -2,6 +2,7 @@
 app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
     $scope.isEditable = false;
     $scope.isFullScreen = true;
+    $scope.fltInfo = false;
 
     $scope.entity = {
         Id: -1,
@@ -58,18 +59,22 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
 
                             $scope.entity.Id = res.Data.Id;
                             $scope.followUpEntity.EntityId = res.Data.Id;
-                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+                            if (res.IsSuccess == true) {
+                                QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
-                                $scope.loadingVisible = false;
-                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                    $scope.loadingVisible = false;
+                                    General.ShowNotify(Config.Text_SavedOk, 'success');
 
-                                if ($scope.tempData.Status == "Not Signed") {
-                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "In Progress";
-                                }
-                                $scope.popup_add_visible = false;
-                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-                            $scope.entity.files = [];
+                                    if ($scope.tempData.Status == "Not Signed") {
+                                        var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                        row.Status = "In Progress";
+                                    }
+                                    $scope.popup_add_visible = false;
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                                $scope.entity.files = [];
+                            } else {
+                                General.ShowNotify('error', 'error');
+                            }
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -114,8 +119,14 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
                         $scope.loadingVisible = true;
                         QAService.saveMaintenance($scope.entity).then(function (res) {
                             $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                            General.ShowNotify(Config.Text_SavedOk, 'success');
+                            if (res.IsSuccess == true) {
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.entity.Id = res.Data.Id;
+                            }
+                            else {
+                                General.ShowNotify(Config.Text_SaveFailed, 'error');
+                                $scope.entity.Id = -1;
+                            }
                             $scope.entity.files = [];
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -155,8 +166,10 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
         },
         onHiding: function () {
             $rootScope.IsRootSyncEnabled = true;
+            $scope.fltInfo = false;
             $scope.entity = {
                 Id: -1,
+                SerialNumber: null
             };
             $scope.popup_add_visible = false;
             $rootScope.$broadcast('onQAMaintenanceHide', null);
@@ -198,30 +211,41 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
             $.each(res.Data, function (_i, _d) {
                 $scope.dsComponentSpect.push({ "id": _d.Id, "title": _d.Title });
             });
-
-            QAService.getMORByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
-
-                if (res.Data.Id != null) {
-                    $scope.fill(res.Data);
-                    $scope.isEditable = !$scope.entity.DateSign;
+            if ($scope.entity.FlightId == null) {
+                if ($scope.tempData.EntityId != null) {
+                    QAService.getMORById($scope.tempData.EntityId).then(function (res) {
+                        $scope.fill(res.Data);
+                        $scope.isEditable = !$scope.entity.DateSign;
+                    });
+                } else {
+                    $scope.isEditable = true
                 }
-                else {
-                    $scope.entity = {
-                        Id: -1,
-                        FlightNumber: res.Data.FlightNumber,
-                        AircraftType: res.Data.AircraftType,
-                        Register: res.Data.Register,
-                        ScheduledGroundTime: res.Data.ScheduledGroundTime,
-                        flightCancelled: res.Data.flightCancelled,
-                        EmployeeName: res.Data.EmployeeName,
-                        FlightRoute: res.Data.FlightRoute,
-                        DateOccurrence: res.Data.DateOccurrence
+            } else {
+                QAService.getMORByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
 
+                    if (res.Data.Id != null) {
+                        $scope.fill(res.Data);
+                        $scope.fltInfo = true
+                        $scope.isEditable = !$scope.entity.DateSign;
                     }
-                    $scope.isEditable = true;
-                }
-            });
+                    else {
+                        $scope.entity = {
+                            Id: -1,
+                            FlightNumber: res.Data.FlightNumber,
+                            AircraftType: res.Data.AircraftType,
+                            Register: res.Data.Register,
+                            ScheduledGroundTime: res.Data.ScheduledGroundTime,
+                            flightCancelled: res.Data.flightCancelled,
+                            EmployeeName: res.Data.EmployeeName,
+                            FlightRoute: res.Data.FlightRoute,
+                            DateOccurrence: res.Data.DateOccurrence
 
+                        }
+                        $scope.fltInfo = true
+                        $scope.isEditable = true;
+                    }
+                });
+            }
         });
 
 
@@ -279,24 +303,24 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
 
 
     $scope.txt_OccurrenceDate = {
-        hoverStateEnabled: false,
-        readOnly: true,
-
         displayFormat: 'yyyy-MM-dd',
-        type: 'datetime',
+        type: 'date',
         pickerType: "rollers",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_OccurrenceTime = {
-        hoverStateEnabled: false,
         type: 'time',
         pickerType: "rollers",
         displayFormat: "HH:mm",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -385,10 +409,11 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
     }
 
     $scope.txt_name = {
-        readOnly: true,
-        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.EmployeeName',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
         }
     }
 

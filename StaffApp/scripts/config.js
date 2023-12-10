@@ -19,6 +19,7 @@ Config.Text_CanNotEdit = 'این ردیف قابل ویرایش نمی باشد'
 Config.Text_FillRequired = 'Please fill in all required fields.';
 Config.Text_SavedOk = 'The changes have been successfully saved.';
 Config.Text_SameItemExist = 'Same item exists.';
+Config.Text_SaveFailed = 'There Is Some Problem In Saveing';
 Config.LocalData = {};
 
 

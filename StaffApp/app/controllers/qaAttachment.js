@@ -148,8 +148,7 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
 
     $scope.deleteFile = function (f) {
 
-        console.log(f);
-
+        
         if (f.Id != -1) {
             $.each($scope.files, function (_i, _d) {
                 if (_d.Id == f.Id)
@@ -200,10 +199,6 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
             $scope.files.push({ Id: id = id + 1, AttachmentId: -1, FileName: $scope.file.name, FileType: $scope.file.type, Description: $scope.Remark });
             $scope.Remark = null;
             $scope.entity.FileName = null;
-            //QAService.importAttachment($scope.entity).then(function (response) {
-            //    $scope.loadingVisible = false;
-            //    console.log(response);
-            //});
         }
     };
 
@@ -255,7 +250,7 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
         $scope.entity.Type = $scope.tempData.Type;
         $scope.entity.EmployeeId = $scope.tempData.EmployeeId;
         $scope.isEditable = $scope.tempData.isEditable;
-        console.log($scope.tempData.Files);
+
         if ($scope.tempData.Files != null) {
             $scope.files = $scope.tempData.Files.filter(function (obj) { return obj.Id !== -1});
         }

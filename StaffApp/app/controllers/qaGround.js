@@ -5,6 +5,7 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
     $scope.isLockVisible = false;
     $scope.isContentVisible = false;
     $scope.isFullScreen = false;
+    $scope.fltInfo = false;
     var detector = new MobileDetect(window.navigator.userAgent);
 
     //if (detector.mobile() && !detector.tablet())
@@ -79,17 +80,21 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
                             $scope.entity.Id = res.Data.Id;
                             $scope.followUpEntity.EntityId = res.Data.Id;
-                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+                            if (res.IsSuccess == true) {
+                                QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
-                                $scope.loadingVisible = false;
-                                General.ShowNotify(Config.Text_SavedOk, 'success');
-                                if ($scope.tempData.Status == "Not Signed") {
-                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "In Progress";
-                                }
+                                    $scope.loadingVisible = false;
+                                    General.ShowNotify(Config.Text_SavedOk, 'success');
+                                    if ($scope.tempData.Status == "Not Signed") {
+                                        var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                        row.Status = "In Progress";
+                                    }
 
-                                $scope.popup_add_visible = false;
-                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                                    $scope.popup_add_visible = false;
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                            } else {
+                                General.ShowNotify('error', 'error')
+                            }
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -152,11 +157,16 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                         $scope.loadingVisible = true;
                         QAService.saveGround($scope.entity).then(function (res) {
                             $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                            General.ShowNotify(Config.Text_SavedOk, 'success');
+                            if (res.IsSuccess == true) {
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.entity.Id = res.Data.Id;
+                            }
+                            else {
+                                General.ShowNotify(Config.Text_SaveFailed, 'error');
+                                $scope.entity.Id = -1;
+                            }
                             $scope.entity.files = [];
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
 
 
                     }
@@ -193,7 +203,7 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         },
         onHiding: function () {
             $rootScope.IsRootSyncEnabled = true;
-            //$scope.clearEntity();
+            $scope.fltInfo = false;
             $scope.entity = {
                 Id: -1,
             };
@@ -380,27 +390,44 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         QAService.getLighting().then(function (res) {
             $scope.lighting = res.Data;
 
-            QAService.getGIAByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
-                if (res.Data.Id != null) {
-                    $scope.fill(res.Data);
-                    $scope.isEditable = !$scope.entity.DateSign;
-
+            if ($scope.entity.FlightId == null) {
+                if ($scope.tempData.EntityId != null) {
+                    QAService.getGIAById($scope.tempData.EntityId).then(function (res) {
+                        $scope.fill(res.Data);
+                        $scope.isEditable = !$scope.entity.DateSign;
+                    });
                 } else {
                     $scope.entity = {
                         Id: -1,
-                        FlightNumber: res.Data.FlightNumber,
-                        AircraftType: res.Data.AircraftType,
-                        Register: res.Data.Register,
-                        flightCancelled: res.Data.flightCancelled,
                         DateOccurrence: res.Data.DateOccurrence,
                         ScheduledGroundTime: "00:00:00",
                         FlightDelay: "00:00:00"
-
                     }
                     $scope.isEditable = true
                 }
-            });
-        })
+            } else {
+                QAService.getGIAByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
+                    if (res.Data.Id != null) {
+                        $scope.fill(res.Data);
+                        $scope.isEditable = !$scope.entity.DateSign;
+                        $scope.fltInfo = true;
+                    } else {
+                        $scope.fltInfo = true;
+                        $scope.entity = {
+                            Id: -1,
+                            FlightNumber: res.Data.FlightNumber,
+                            AircraftType: res.Data.AircraftType,
+                            Register: res.Data.Register,
+                            flightCancelled: res.Data.flightCancelled,
+                            DateOccurrence: res.Data.DateOccurrence,
+                            ScheduledGroundTime: "00:00:00",
+                            FlightDelay: "00:00:00"
+                        }
+                        $scope.isEditable = true
+                    }
+                });
+            }
+        });
 
 
 
@@ -434,23 +461,24 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     /////////////////////////////////
     $scope.txt_date = {
-        hoverStateEnabled: false,
-        readOnly: true,
-        type: 'datetime',
-        pickerType: "rollers",
+        type: 'date',
+        pickerType: 'rollers',
         displayFormat: "yyyy-MMM-dd",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_OccurrenceTime = {
-        hoverStateEnabled: false,
         type: 'time',
         pickerType: "rollers",
         displayFormat: "HH:mm",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 

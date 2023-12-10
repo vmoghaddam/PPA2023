@@ -2,6 +2,7 @@
 app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
     $scope.isEditable = false;
     $scope.isFullScreen = true;
+    $scope.fltInfo = false;
 
     $scope.entity = {
         Id: -1,
@@ -61,19 +62,23 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
 
                             $scope.entity.Id = res.Data.Id;
                             $scope.followUpEntity.EntityId = res.Data.Id;
-                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+                            if (res.IsSuccess == true) {
+                                QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
-                                $scope.loadingVisible = false;
-                                General.ShowNotify(Config.Text_SavedOk, 'success');
-                                $scope.popup_add_visible = false;
-                                if ($scope.tempData.Status == "Not Signed") {
-                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "In Progress";
-                                }
+                                    $scope.loadingVisible = false;
+                                    General.ShowNotify(Config.Text_SavedOk, 'success');
+                                    $scope.popup_add_visible = false;
+                                    if ($scope.tempData.Status == "Not Signed") {
+                                        var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                        row.Status = "In Progress";
+                                    }
 
-                                $scope.popup_add_visible = false;
-                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-                            $scope.entity.files = [];
+                                    $scope.popup_add_visible = false;
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                                $scope.entity.files = [];
+                            } else {
+                                General.ShowNotify('error', 'error');
+                            }
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -119,8 +124,14 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
                         $scope.loadingVisible = true;
                         QAService.saveSHR($scope.entity).then(function (res) {
                             $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                            General.ShowNotify(Config.Text_SavedOk, 'success');
+                            if (res.IsSuccess == true) {
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.entity.Id = res.Data.Id;
+                            }
+                            else {
+                                General.ShowNotify(Config.Text_SaveFailed, 'error');
+                                $scope.entity.Id = -1;
+                            }
                             $scope.entity.files = [];
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
@@ -155,7 +166,7 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
         },
         onHiding: function () {
             $rootScope.IsRootSyncEnabled = true;
-            //$scope.clearEntity();
+            $scope.fltInfo = false;
             $scope.entity = {
                 Id: -1,
 
@@ -190,8 +201,6 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
 
     /////////////////////////////////
     $scope.fill = function (data) {
-        console.log(data);
-
 
         $scope.entity = data;
         $.each($scope.shrReason, function (_i, _d) {
@@ -210,24 +219,33 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
 
         QAService.getSHRReason().then(function (res) {
             $scope.shrReason = res.Data
-            QAService.getSHRByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
-                if (res.Data.Id != null) {
-                    $scope.fill(res.Data);
-                    $scope.isEditable = !$scope.entity.DateSign;
-                }
-                else {
-                    $scope.entity.FlightNumber = res.Data.FlightNumber;
-                    $scope.entity.Route = res.Data.Route;
-                    $scope.entity.Register = res.Data.Register;
-                    $scope.entity.EmployeeName = res.Data.EmployeeName;
-                    $scope.entity.Email = res.Data.Email;
-                    $scope.entity.Mobile = res.Data.Mobile;
-                    $scope.entity.DateOccurrence = res.Data.DateOccurrence;
+            if ($scope.entity.FlightId == null) {
+                if ($scope.tempData.EntityId != null) {
+                    QAService.getSHRById($scope.tempData.EntityId).then(function (res) {
+                        $scope.fill(res.Data);
+                        $scope.isEditable = !$scope.entity.DateSign;
+                    });
+                } else { $scope.isEditable = true }
+            } else {
+                QAService.getSHRByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
+                    if (res.Data.Id != null) {
+                        $scope.fill(res.Data);
+                        $scope.isEditable = !$scope.entity.DateSign;
+                    }
+                    else {
+                        $scope.entity.FlightNumber = res.Data.FlightNumber;
+                        $scope.entity.Route = res.Data.Route;
+                        $scope.entity.Register = res.Data.Register;
+                        $scope.entity.EmployeeName = res.Data.EmployeeName;
+                        $scope.entity.Email = res.Data.Email;
+                        $scope.entity.Mobile = res.Data.Mobile;
+                        $scope.entity.DateOccurrence = res.Data.DateOccurrence;
+                        $scope.fltInfo = true;
+                        $scope.isEditable = true;
+                    }
 
-                    $scope.isEditable = true;
-                }
-
-            });
+                });
+            }
         });
 
 
@@ -307,22 +325,23 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
     }
 
     $scope.txt_hazardDate = {
-        hoverStateEnabled: false,
-        readOnly: true,
         type: 'date',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
     $scope.txt_hazardTime = {
-        hoverStateEnabled: false,
         type: 'time',
         pickerType: "rollers",
         displayFormat: "HH:mm",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -448,7 +467,7 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
         displayExpr: 'title',
         valueExpr: 'value',
         bindingOptions: {
-            value: 'WorkBreak',
+            value: 'entity.WorkBreak',
             useMaskBehavior: 'isEditable',
             readOnly: '!isEditable'
         }
@@ -512,26 +531,29 @@ app.controller('qaSecurityController', ['$scope', '$location', 'QAService', 'aut
     }
 
     $scope.txt_telNumber = {
-        readOnly: true,
-        useMaskBehavior: false,
         bindingOptions: {
-            value: 'entity.Mobile',
+            value: 'entity.TelNumber',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
         }
     }
 
     $scope.txt_email = {
-        readOnly: true,
-        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.Email',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
         }
     }
 
     $scope.txt_name = {
-        readOnly: true,
-        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.EmployeeName',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
         }
     }
 

@@ -1,24 +1,28 @@
 ﻿<style>
-    .ctd {
-        border: 1px solid #eee;
-        text-align: center;
+    .tab-field {
+        padding: 7px;
+        text-align: left
     }
 
-    .ctd-empty {
-        border: 0px solid #eee;
-        text-align: center;
+    .tab-field-title {
+        padding: 7px;
+        text-align: right;
+        font-weight: bold
     }
 
-    .ctr {
-        /*height:30px;*/
+    .tab-title {
+        background-color: whitesmoke;
+        padding: 7px;
+        text-align: right;
+        color: black;
+        font-weight: bold
     }
 
-    .ctd-center {
-        background-color: lightseagreen;
-    }
-
-    .ctd-selected {
-        background-color: red;
+    .tab-style {
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        width: 100%;
+        color: black
     }
 
     .dx-toolbar-center {
@@ -34,84 +38,84 @@
                 <div class="container">
                     <div class="visible-xs">
 
-                        <table style="margin-top:10px;border:1px solid #eee;width:100%;color:black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="2">
+                                <td class="tab-title" colspan="2">
                                     Contact Information (Optionally) (اطلاعات تماس (اختیاری
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:right; font-weight: bold">  :(Email) آدرس ایمیل </td>
+                                <td class="tab-field-title">  :(Email) آدرس ایمیل </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center"></div></td>
+                                <td class="tab-field"><div dx-text-box="txt_email" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :(Tel No.) شماره تلفن </td>
+                                <td class="tab-field-title"> :(Tel No.) شماره تلفن </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:right;"><div dx-text-box="txt_telNumber" class="center"></div></td>
+                                <td class="tab-field"><div dx-text-box="txt_telNumber" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :(Full Name) نام و نام‌خانوادگی </td>
+                                <td class="tab-field-title"> :(Full Name) نام و نام‌خانوادگی </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_name" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-box="txt_name" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> :(Related Department) واحد مربوطه</td>
+                                <td class="tab-field-title"> :(Related Department) واحد مربوطه</td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_relatedDepartment" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-box="txt_relatedDepartment" class="center"></div></td>
                             </tr>
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold" colspan="2">
+                                <td class="tab-title" colspan="2">
                                     :(Hazard Details) جزئیات پتانسیل خطر
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:right; font-weight: bold">  تاریخ شناسایی پتانسیل خطر <br />:(Date of Hazard identified)</td>
+                                <td class="tab-field-title">  تاریخ شناسایی پتانسیل خطر <br />:(Date of Hazard identified)</td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:right; font-weight: bold">  مناطق تحت تاثیر پتانسیل خطر<br />:(Affected area of Incident/Hazard) </td>
+                                <td class="tab-field-title">  مناطق تحت تاثیر پتانسیل خطر<br />:(Affected area of Incident/Hazard) </td>
                             </tr>
                             <tr>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center"></div></td>
+                                <td class="tab-field"><div dx-text-box="txt_affectedArea" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:right; font-weight: bold"> تاریخ گزارش<br />:(Report Date) </td>
+                                <td class="tab-field-title"> تاریخ گزارش<br />:(Report Date) </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_repDate" class="center"></div></td>
+                                <td class="tab-field"> <div dx-date-box="txt_repDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             
                         </table>
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     شرح پتانسیل خطر یا حادثه <br />:(Description of Incident/Hazard)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_hazardDes" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_hazardDes" class="center"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:right;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     اقدام توصیه شده جهت رفع پتانسیل خطر<br />:(Recommended action to mitigate hazard)
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_recAction" class="center"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_recAction" class="center"></div></td>
                             </tr>
 
                         </table>
@@ -125,64 +129,64 @@
 
                 <div class="container">
                     <div class="visible-sm visible-md">
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="4">
+                                <td class="tab-title" colspan="4">
                                     Contact Information (Optionally) (اطلاعات تماس (اختیاری
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Email (آدرس ایمیل): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_email" class="center"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Tel No. (شماره تلفن): </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_telNumber" class="center"></div></td>
+                                <td class="tab-field-title"> Email (آدرس ایمیل): </td>
+                                <td class="tab-field"><div dx-text-box="txt_email" class="center"></div></td>
+                                <td class="tab-field-title"> Tel No. (شماره تلفن): </td>
+                                <td class="tab-field"><div dx-text-box="txt_telNumber" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Full Name (نام و نام‌خانوادگی): </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-box="txt_Name"></div></td>
+                                <td class="tab-field-title"> Full Name (نام و نام‌خانوادگی): </td>
+                                <td class="tab-field"> <div dx-text-box="txt_Name"></div></td>
                             </tr>
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold" colspan="4">
+                                <td class="tab-title" colspan="4">
                                     Hazard Details جزئیات پتانسیل خطر :
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Date of Hazard identified: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Affected area of Incident/Hazard: </td>
-                                <td style="padding:7px;text-align:left;"><div dx-text-box="txt_affectedArea" class="center"></div></td>
+                                <td class="tab-field-title"> Date of Hazard identified: </td>
+                                <td class="tab-field"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-title"> Affected area of Incident/Hazard: </td>
+                                <td class="tab-field"><div dx-text-box="txt_affectedArea" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left; font-weight: bold"> Report Date: </td>
-                                <td style="padding: 7px;text-align:left;"> <div dx-date-box="txt_repDate" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-title"> Report Date: </td>
+                                <td class="tab-field"> <div dx-date-box="txt_repDate" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                         </table>
 
 
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     Description of Incident/Hazard
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_hazardDes"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_hazardDes"></div></td>
                             </tr>
 
                         </table>
 
-                        <table style="margin-top: 10px; border: 1px solid #eee; width: 100%; color: black" class="dx-border">
+                        <table class="dx-border tab-style">
                             <tr>
-                                <td style="background-color:lightgray;padding:7px;text-align:left;color:black;font-weight:bold">
+                                <td class="tab-title">
                                     Recommended action to mitigate hazard
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 7px;text-align:left;"> <div dx-text-area="txt_recAction"></div></td>
+                                <td class="tab-field"> <div dx-text-area="txt_recAction"></div></td>
                             </tr>
 
                         </table>
