@@ -1,19 +1,19 @@
 ﻿<style>
-    .tab-field {
+    .tab-field-R {
         padding: 7px;
         text-align: left
     }
 
-    .tab-field-title {
+    .tab-field-R-title {
         padding: 7px;
-        text-align: right;
+        text-align: right !important;
         font-weight: bold
     }
 
-    .tab-title {
+    .tab-title-R {
         background-color: whitesmoke;
         padding: 7px;
-        text-align: right;
+        text-align: right !important;
         color: black;
         font-weight: bold
     }
@@ -40,82 +40,98 @@
 
                         <table class="dx-border tab-style">
                             <tr>
-                                <td class="tab-title" colspan="2">
+                                <td class="tab-title-R" colspan="2">
                                     Contact Information (Optionally) (اطلاعات تماس (اختیاری
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title">  :(Email) آدرس ایمیل </td>
+                                <td class="tab-field-R-title" style="text-align:left !important"> Anonymous Submit: </td>
+                                <td class="tab-field-R" style="text-align: right !important"> <div dx-check-box="ch_anonymous" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td class="tab-field"><div dx-text-box="txt_email" class="center"></div></td>
+                                <td class="tab-field-R-title">  :(Email) آدرس ایمیل </td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title"> :(Tel No.) شماره تلفن </td>
+                                <td class="tab-field-R" colspan="2"><div dx-text-box="txt_email" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td class="tab-field"><div dx-text-box="txt_telNumber" class="center"></div></td>
+                                <td class="tab-field-R-title"> :(Tel No.) شماره تلفن </td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title"> :(Full Name) نام و نام‌خانوادگی </td>
+                                <td class="tab-field-R" colspan="2"><div dx-text-box="txt_telNumber" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td class="tab-field"> <div dx-text-box="txt_name" class="center"></div></td>
+                                <td class="tab-field-R-title"> :(Full Name) نام و نام‌خانوادگی </td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title"> :(Related Department) واحد مربوطه</td>
+                                <td class="tab-field-R" colspan="2"> <div dx-text-box="txt_name" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td class="tab-field"> <div dx-text-box="txt_relatedDepartment" class="center"></div></td>
+                                <td class="tab-field-R-title"> :(Related Department) واحد مربوطه</td>
+                            </tr>
+                            <tr>
+                                <td class="tab-field-R" colspan="2"> <div dx-text-box="txt_relatedDepartment" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="tab-field-R-title">  :دلیل تاریخ </td>
+                            </tr>
+                            <tr>
+                                <td class="tab-field-R" colspan="2"> <div dx-text-area="txt_delayReason" class="center"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="tab-field-R-title"> :تاخیر(دقیقه) </td>
+                            </tr>
+                            <tr>
+                                <td class="tab-field-R" colspan="2"> <div dx-number-box="num_delay" class="center"></div></td>
                             </tr>
                         </table>
 
                         <table class="dx-border tab-style">
                             <tr>
-                                <td class="tab-title" colspan="2">
+                                <td class="tab-title-R" colspan="2">
                                     :(Hazard Details) جزئیات پتانسیل خطر
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title">  تاریخ شناسایی پتانسیل خطر <br />:(Date of Hazard identified)</td>
+                                <td class="tab-field-R-title">  تاریخ شناسایی پتانسیل خطر <br />:(Date of Hazard identified)</td>
                             </tr>
                             <tr>
-                                <td class="tab-field"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-R"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title">  مناطق تحت تاثیر پتانسیل خطر<br />:(Affected area of Incident/Hazard) </td>
+                                <td class="tab-field-R-title">  مناطق تحت تاثیر پتانسیل خطر<br />:(Affected area of Incident/Hazard) </td>
                             </tr>
                             <tr>
-                                <td class="tab-field"><div dx-text-box="txt_affectedArea" class="center"></div></td>
+                                <td class="tab-field-R"><div dx-text-box="txt_affectedArea" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title"> تاریخ گزارش<br />:(Report Date) </td>
+                                <td class="tab-field-R-title"> تاریخ گزارش<br />:(Report Date) </td>
                             </tr>
                             <tr>
-                                <td class="tab-field"> <div dx-date-box="txt_repDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-R"> <div dx-date-box="txt_repDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
-                            
+
                         </table>
                         <table class="dx-border tab-style">
                             <tr>
-                                <td class="tab-title">
+                                <td class="tab-title-R">
                                     شرح پتانسیل خطر یا حادثه <br />:(Description of Incident/Hazard)
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tab-field"> <div dx-text-area="txt_hazardDes" class="center"></div></td>
+                                <td class="tab-field-R"> <div dx-text-area="txt_hazardDes" class="center"></div></td>
                             </tr>
 
                         </table>
 
                         <table class="dx-border tab-style">
                             <tr>
-                                <td class="tab-title">
+                                <td class="tab-title-R">
                                     اقدام توصیه شده جهت رفع پتانسیل خطر<br />:(Recommended action to mitigate hazard)
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tab-field"> <div dx-text-area="txt_recAction" class="center"></div></td>
+                                <td class="tab-field-R"> <div dx-text-area="txt_recAction" class="center"></div></td>
                             </tr>
 
                         </table>
@@ -131,37 +147,37 @@
                     <div class="visible-sm visible-md">
                         <table class="dx-border tab-style">
                             <tr>
-                                <td class="tab-title" colspan="4">
+                                <td class="tab-title-R" colspan="4">
                                     Contact Information (Optionally) (اطلاعات تماس (اختیاری
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title"> Email (آدرس ایمیل): </td>
-                                <td class="tab-field"><div dx-text-box="txt_email" class="center"></div></td>
-                                <td class="tab-field-title"> Tel No. (شماره تلفن): </td>
-                                <td class="tab-field"><div dx-text-box="txt_telNumber" class="center"></div></td>
+                                <td class="tab-field-R-title"> Email (آدرس ایمیل): </td>
+                                <td class="tab-field-R"><div dx-text-box="txt_email" class="center"></div></td>
+                                <td class="tab-field-R-title"> Tel No. (شماره تلفن): </td>
+                                <td class="tab-field-R"><div dx-text-box="txt_telNumber" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title"> Full Name (نام و نام‌خانوادگی): </td>
-                                <td class="tab-field"> <div dx-text-box="txt_Name"></div></td>
+                                <td class="tab-field-R-title"> Full Name (نام و نام‌خانوادگی): </td>
+                                <td class="tab-field-R"> <div dx-text-box="txt_Name"></div></td>
                             </tr>
                         </table>
 
                         <table class="dx-border tab-style">
                             <tr>
-                                <td class="tab-title" colspan="4">
+                                <td class="tab-title-R" colspan="4">
                                     Hazard Details جزئیات پتانسیل خطر :
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title"> Date of Hazard identified: </td>
-                                <td class="tab-field"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
-                                <td class="tab-field-title"> Affected area of Incident/Hazard: </td>
-                                <td class="tab-field"><div dx-text-box="txt_affectedArea" class="center"></div></td>
+                                <td class="tab-field-R-title"> Date of Hazard identified: </td>
+                                <td class="tab-field-R"><div dx-date-box="txt_hazardDate" class="center" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-R-title"> Affected area of Incident/Hazard: </td>
+                                <td class="tab-field-R"><div dx-text-box="txt_affectedArea" class="center"></div></td>
                             </tr>
                             <tr>
-                                <td class="tab-field-title"> Report Date: </td>
-                                <td class="tab-field"> <div dx-date-box="txt_repDate" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
+                                <td class="tab-field-R-title"> Report Date: </td>
+                                <td class="tab-field-R"> <div dx-date-box="txt_repDate" dx-validator="{validationGroup:'voluntary',  validationRules: [{ type: 'required',   }]}"></div></td>
                             </tr>
                         </table>
 
@@ -169,24 +185,24 @@
 
                         <table class="dx-border tab-style">
                             <tr>
-                                <td class="tab-title">
+                                <td class="tab-title-R">
                                     Description of Incident/Hazard
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tab-field"> <div dx-text-area="txt_hazardDes"></div></td>
+                                <td class="tab-field-R"> <div dx-text-area="txt_hazardDes"></div></td>
                             </tr>
 
                         </table>
 
                         <table class="dx-border tab-style">
                             <tr>
-                                <td class="tab-title">
+                                <td class="tab-title-R">
                                     Recommended action to mitigate hazard
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tab-field"> <div dx-text-area="txt_recAction"></div></td>
+                                <td class="tab-field-R"> <div dx-text-area="txt_recAction"></div></td>
                             </tr>
 
                         </table>

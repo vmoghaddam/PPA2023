@@ -21,6 +21,7 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
 
     $scope.followUpEntity = {
         Type: 1,
+        Feedback: "test test test test test test test test"
     }
 
 
@@ -91,6 +92,10 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
                                     }
 
                                     $scope.popup_add_visible = false;
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                                QAService.saveFeedBack($scope.followUpEntity).then(function (response) {
+                                    console.log(response);
                                 }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                             } else {
                                 General.ShowNotify('error', 'error')
@@ -1097,6 +1102,21 @@ app.controller('qaGroundController', ['$scope', '$location', 'QAService', 'authS
         }
     }
 
+    $scope.txt_delayReason = {
+        bindingOptions: {
+            value: 'entity.DelayReason',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+    $scope.num_delay = {
+        bindingOptions: {
+            value: 'entity.Delay',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
 
 
 

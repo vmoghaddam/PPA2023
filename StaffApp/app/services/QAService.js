@@ -465,6 +465,19 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     }
 	
 	
+	var _saveFeedBack = function (entity) {
+
+        var deferred = $q.defer();
+        $http.post(apiQA +'api/qa/save/feedback', entity).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+	
+	
 	 var _deleteAttachment = function (entity) {
 
         var deferred = $q.defer();
@@ -745,6 +758,8 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
 
     serviceFactory.getStation = _getStation;
     serviceFactory.getEmployee = _getEmployee;
+
+    serviceFactory.saveFeedBack = _saveFeedBack;
 
     return serviceFactory;
 

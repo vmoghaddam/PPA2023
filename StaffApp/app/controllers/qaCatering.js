@@ -14,6 +14,7 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.followUpEntity = {
         Type: 4,
+        Feedback: "test test test test test test test test"
     }
 
     ////////////////////////
@@ -74,6 +75,11 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
                                     $scope.popup_add_visible = false;
                                 }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                                QAService.saveFeedBack($scope.followUpEntity).then(function (response) {
+                                    console.log(response);
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
                             } else {
                                 General.ShowNotify('error', 'success');
                             }
@@ -546,6 +552,22 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
             useMaskBehavior: 'isEditable',
             readOnly: '!isEditable'
 
+        }
+    }
+
+    $scope.txt_delayReason = {
+        bindingOptions: {
+            value: 'entity.DelayReason',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+    $scope.num_delay = {
+        bindingOptions: {
+            value: 'entity.Delay',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 

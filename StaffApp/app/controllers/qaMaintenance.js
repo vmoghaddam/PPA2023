@@ -14,6 +14,7 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
 
     $scope.followUpEntity = {
         Type: 3,
+        Feedback: "test test test test test test test test"
     }
 
 
@@ -70,6 +71,10 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
                                         row.Status = "In Progress";
                                     }
                                     $scope.popup_add_visible = false;
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                                QAService.saveFeedBack($scope.followUpEntity).then(function (response) {
+                                    console.log(response);
                                 }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                                 $scope.entity.files = [];
                             } else {
@@ -464,6 +469,24 @@ app.controller('qaMaintenanceController', ['$scope', '$location', 'QAService', '
             readOnly: '!isEditable'
         }
     };
+
+    $scope.txt_delayReason = {
+        bindingOptions: {
+            value: 'entity.DelayReason',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+    $scope.num_delay = {
+        bindingOptions: {
+            value: 'entity.Delay',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+
 
     ////////////////////////////////
 

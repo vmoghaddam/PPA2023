@@ -16,6 +16,7 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
 
     $scope.followUpEntity = {
         Type: 0,
+        Feedback: "test test test test test test test test"
     }
 
 
@@ -76,6 +77,10 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
                                         row.Status = "In Progress";
                                     }
                                     $scope.popup_add_visible = false;
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                                QAService.saveFeedBack($scope.followUpEntity).then(function (response) {
+                                    console.log(response);
                                 }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                             } else {
                                 General.ShowNotify('error', 'error');
@@ -493,19 +498,17 @@ app.controller('qaCabinController', ['$scope', '$location', 'QAService', 'authSe
         }
     }
 
-    $scope.txt_recived = {
-        hoverStateEnabled: false,
+    $scope.txt_delayReason = {
         bindingOptions: {
-            value: 'entity.Recived',
+            value: 'entity.DelayReason',
             useMaskBehavior: 'isEditable',
             readOnly: '!isEditable'
         }
     }
 
-    $scope.txt_followup = {
-        hoverStateEnabled: false,
+    $scope.num_delay = {
         bindingOptions: {
-            value: 'entity.FollowUp',
+            value: 'entity.Delay',
             useMaskBehavior: 'isEditable',
             readOnly: '!isEditable'
         }

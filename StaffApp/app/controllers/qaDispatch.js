@@ -26,6 +26,7 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.followUpEntity = {
         Type: 6,
+        Feedback: "test test test test test test test test"
     }
 
 
@@ -196,6 +197,10 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
 
                                     $scope.popup_add_visible = false;
 
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                                QAService.saveFeedBack($scope.followUpEntity).then(function (response) {
+                                    console.log(response);
                                 }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
                                 $scope.entity.files = [];
                             } else {
@@ -711,6 +716,22 @@ app.controller('qaDispatchController', ['$scope', '$location', 'QAService', 'aut
             useMaskBehavior: 'isEditable',
             readOnly: '!isEditable'
 
+        }
+    }
+
+    $scope.txt_delayReason = {
+        bindingOptions: {
+            value: 'entity.DelayReason',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+    $scope.num_delay = {
+        bindingOptions: {
+            value: 'entity.Delay',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
