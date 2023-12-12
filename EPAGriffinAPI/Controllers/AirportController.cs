@@ -57,7 +57,11 @@ namespace EPAGriffinAPI.Controllers
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                //throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += ex.InnerException.Message;
+                return Ok(msg);
             }
 
 

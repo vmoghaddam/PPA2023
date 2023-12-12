@@ -19,7 +19,7 @@ namespace EPAGriffinAPI.Models
         public string PID { get; set; }
         public int PersonId { get; set; }
         public Nullable<System.DateTime> DateJoinCompany { get; set; }
-        public Nullable<int> ExpCompany { get; set; }
+        public int ExpCompany { get; set; }
         public Nullable<System.DateTime> DateRegister { get; set; }
         public bool IsActive { get; set; }
         public Nullable<System.DateTime> DateConfirmed { get; set; }
@@ -47,7 +47,7 @@ namespace EPAGriffinAPI.Models
         public Nullable<System.DateTime> DatePassportExpire { get; set; }
         public string Address { get; set; }
         public Nullable<System.DateTime> DateJoinAvation { get; set; }
-        public Nullable<int> Exp { get; set; }
+        public int Exp { get; set; }
         public Nullable<System.DateTime> DateLastCheckUP { get; set; }
         public Nullable<System.DateTime> DateNextCheckUP { get; set; }
         public Nullable<System.DateTime> DateYearOfExperience { get; set; }
@@ -63,7 +63,7 @@ namespace EPAGriffinAPI.Models
         public Nullable<int> LastLocationId { get; set; }
         public string LastLocation { get; set; }
         public string CurrentLocationCity { get; set; }
-        public Nullable<int> CurrentLocationCityId { get; set; }
+        public int CurrentLocationCityId { get; set; }
         public int AvStatusId { get; set; }
         public string AvStatus { get; set; }
         public int IsAvSecExpired { get; set; }
@@ -163,5 +163,7 @@ namespace EPAGriffinAPI.Models
         public Nullable<System.DateTime> OPCIssued { get; set; }
         public Nullable<System.DateTime> OPCExpired { get; set; }
         public Nullable<System.DateTime> LicenceIssued { get; set; }
+        public Nullable<System.DateTime> Type737Expired { get; set; }
+        public Nullable<System.DateTime> TypeMDExpired { get; set; }
     }
 }

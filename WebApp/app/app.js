@@ -611,6 +611,10 @@ app.config(function ($routeProvider) {
         controller: "dutyTimelineController",
         templateUrl: "/app/views/dutyTimeline.html"
     });
+    $routeProvider.when("/duty/timeline/z", {
+        controller: "zdutyTimelineController",
+        templateUrl: "/app/views/zdutyTimeline.html"
+    });
     //$routeProvider.when("/scheduling/admin", {
     //    controller: "schedulingController",
     //    templateUrl: "/app/views/scheduling.html",

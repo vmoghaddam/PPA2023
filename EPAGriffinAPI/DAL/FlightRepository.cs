@@ -5374,21 +5374,21 @@ namespace EPAGriffinAPI.DAL
             this.context.FlightInformations.Remove(entityToDelete);
         }
 
-        public  object  UpdateLogUser(List<int> ids,string username)
+        public object UpdateLogUser(List<int> ids, string username)
         {
             try
             {
                 var _ids = string.Join(",", ids);
-                this.context.Database.ExecuteSqlCommand("update flightlogmain set username='" + username + "' where flightid in (" + _ids + ")") ;
+                this.context.Database.ExecuteSqlCommand("update flightlogmain set username='" + username + "' where flightid in (" + _ids + ")");
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
         }
 
-        public async Task<List<int>> DeleteFlightGroup(/*dynamic dto,*/DateTime intervalFrom, DateTime intervalTo, List<int> days, int flightId, int interval, int checkTime,string username)
+        public async Task<List<int>> DeleteFlightGroup(/*dynamic dto,*/DateTime intervalFrom, DateTime intervalTo, List<int> days, int flightId, int interval, int checkTime, string username)
         {
 
             List<int> result = new List<int>();
@@ -7841,7 +7841,7 @@ namespace EPAGriffinAPI.DAL
 
                 }).ToList();
 
-                var allowedTypes = new List<int>() { 1167, 1168, 5001, 5000,   300008, 1170, 1169, 100002,   100001, 100003, 100004, 100005, 100006  };
+                var allowedTypes = new List<int>() { 1167, 1168, 5001, 5000, 300008, 1170, 1169, 100002, 100001, 100003, 100004, 100005, 100006 };
                 //var others = this.context.FDPs.Where(q => q.CrewId == id && (q.DutyType != 1165 && q.DutyType != 10001 && q.DutyType != 10000)).ToList();
                 var others = this.context.FDPs.Where(q => q.CrewId == id && allowedTypes.Contains(q.DutyType) && q.DateConfirmed != null).ToList();
                 var ds2 = others.Select(q => new appAll()
@@ -7883,11 +7883,11 @@ namespace EPAGriffinAPI.DAL
                         case 1170:
                             x.TypeStr = "RES";
                             break;
-                        case 100004: 
+                        case 100004:
                         case 100005:
                         case 100006:
                             x.TypeStr = "EXP";
-                                break;
+                            break;
                         default:
                             x.TypeStr = "DTY";
                             break;
@@ -8754,8 +8754,8 @@ namespace EPAGriffinAPI.DAL
         }
         internal async Task<List<SMSDeliveryStatus>> GetSMSStatus(List<Int64> refIds)
         {
-            var ids = refIds.Where(w=>w!=-1).Select(q => q.ToString()).ToList();
-            var smses = await this.context.SMSHistories.Where(q => ids.Contains(q.Ref) )  .ToListAsync();
+            var ids = refIds.Where(w => w != -1).Select(q => q.ToString()).ToList();
+            var smses = await this.context.SMSHistories.Where(q => ids.Contains(q.Ref)).ToListAsync();
             Magfa m = new Magfa();
             var status = m.getStatus(refIds);
             List<SMSDeliveryStatus> result = new List<SMSDeliveryStatus>();
@@ -9000,7 +9000,7 @@ namespace EPAGriffinAPI.DAL
 
 
 
-            var fdps = await this.context.FDPs.Where(q =>( (q.DateStart >= datefrom && q.DateStart <= dateto) || (q.DateEnd >= datefrom && q.DateEnd <= dateto)) && q.DutyType!=5000).ToListAsync();
+            var fdps = await this.context.FDPs.Where(q => ((q.DateStart >= datefrom && q.DateStart <= dateto) || (q.DateEnd >= datefrom && q.DateEnd <= dateto)) && q.DutyType != 5000).ToListAsync();
             var Ids = fdps.Select(q => q.Id).ToList();
             foreach (var f in fdps)
             {
@@ -9013,7 +9013,7 @@ namespace EPAGriffinAPI.DAL
             }
 
             var query = await (from x in this.context.ViewCrewDuties
-                               where Ids.Contains(x.Id) && x.DutyType!=5000
+                               where Ids.Contains(x.Id) && x.DutyType != 5000
                                select x).ToListAsync();
             var _fids = query.Select(q => (Nullable<int>)q.Id).ToList();
             var histories = await this.context.SMSHistories.Where(q => _fids.Contains(q.ResId)).ToListAsync();
@@ -9028,16 +9028,16 @@ namespace EPAGriffinAPI.DAL
                 strs.Add(ConfigurationManager.AppSettings["airline"] + " Airlines");
                 strs.Add("Dear " + x.Name + ",");
 
-                 
+
                 var day = (DateTime)x.DateLocal;
                 var _start = (DateTime)x.Start;
                 var _end = (DateTime)x.End;
                 if (x.DutyType == 1165)
                 {
-                      _start = (DateTime)x.STDLocal;
-                      _end = (DateTime)x.STALocal;
+                    _start = (DateTime)x.STDLocal;
+                    _end = (DateTime)x.STALocal;
                 }
-               
+
                 var dayStr = day.ToString("ddd") + " " + day.Year + "-" + day.Month + "-" + day.Day;
                 var datesent = DateTime.Now.Year + "/" + DateTime.Now.Month.ToString().PadLeft(2, '0') + "/" + DateTime.Now.Day.ToString().PadLeft(2, '0') + " " + DateTime.Now.Hour.ToString().PadLeft(2, '0') + ":" + DateTime.Now.Minute.ToString().PadLeft(2, '0');
 
@@ -9154,8 +9154,46 @@ namespace EPAGriffinAPI.DAL
                 }
 
                 var query = await (from x in this.context.ViewCrewDuties
-                                   where Ids.Contains(x.Id) && x.DutyType!=5000
-                                   select x).ToListAsync();
+                                   where Ids.Contains(x.Id) && x.DutyType != 5000
+                                   select new
+                                   {
+                                       x.DateLocal
+,
+                                       x.Start
+,
+                                       x.End
+,
+                                       x.DutyType
+,
+                                       x.STDLocal
+,
+                                       x.STALocal
+,
+                                       x.DutyTypeTitle
+,
+                                       x.Route
+,
+                                       x.FltNo
+,
+                                       x.Remark
+,
+                                       x.CanceledNo
+,
+                                       x.CanceledRoute
+,
+                                       x.Remark2
+
+,
+                                       x.Mobile
+,
+                                       x.Name
+,
+                                       x.Id
+,
+                                       x.CrewId
+                                   }
+
+                                   ).Distinct().ToListAsync();
                 var _fids = query.Select(q => (Nullable<int>)q.Id).ToList();
                 var histories = await this.context.SMSHistories.Where(q => _fids.Contains(q.ResId)).ToListAsync();
                 Magfa m = new Magfa();
@@ -9277,10 +9315,13 @@ namespace EPAGriffinAPI.DAL
 
 
                     //var result10 = m2.enqueue(1, "09124449584", text)[0];
-                    var exist = histories.Where(q => q.ResId == x.Id).FirstOrDefault();
-                    if (exist != null)
+
+                    //var exist = histories.Where(q => q.ResId == x.Id).FirstOrDefault();
+                    var exist = histories.Where(q => q.ResId == x.Id).ToList();
+                    if (exist != null && exist.Count>0)
                     {
-                        this.context.SMSHistories.Remove(exist);
+                        // this.context.SMSHistories.Remove(exist);
+                        this.context.SMSHistories.RemoveRange(exist);
                     }
 
                     this.context.SMSHistories.Add(new SMSHistory()
@@ -9299,9 +9340,11 @@ namespace EPAGriffinAPI.DAL
 
 
                     });
-                    var existcps = await this.context.CrewPickupSMS.FirstOrDefaultAsync(q => q.FDPId == x.Id && q.CrewId == x.CrewId);
-                    if (existcps != null)
-                        this.context.CrewPickupSMS.Remove(existcps);
+                    //var existcps = await this.context.CrewPickupSMS.FirstOrDefaultAsync(q => q.FDPId == x.Id && q.CrewId == x.CrewId);
+                    var existcps = await this.context.CrewPickupSMS.Where(q => q.FDPId == x.Id && q.CrewId == x.CrewId).ToListAsync();
+                    if (existcps != null && existcps.Count()>0)
+                        //  this.context.CrewPickupSMS.Remove(existcps);
+                        this.context.CrewPickupSMS.RemoveRange(existcps);
                     var cps = new CrewPickupSM()
                     {
                         CrewId = (int)x.CrewId,
@@ -9337,14 +9380,14 @@ namespace EPAGriffinAPI.DAL
                 }
                 return iddels;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var msg = ex.Message;
                 if (ex.InnerException != null)
                     msg += "    IN:" + ex.InnerException.Message;
                 return msg;
             }
-            
+
         }
 
         public string SendGetRequest(string uri)
@@ -12800,7 +12843,7 @@ namespace EPAGriffinAPI.DAL
             var _start = start.ToUniversalTime();
             var _end = end.ToUniversalTime();
             var fdps = await this.context.FDPs.Where(q => q.DutyType == 1165 && q.CrewId != null && q.InitStart >= _start && q.InitStart <= _end
-              && !string.IsNullOrEmpty( q.Key)
+              && !string.IsNullOrEmpty(q.Key)
             ).ToListAsync();
             var _ids = fdps.Select(q => q.Id).ToList();
             //  var viewfdps=await this.context.ViewFDPRests.Where(q => _ids.Contains(q.Id)).ToListAsync();
@@ -12893,7 +12936,7 @@ namespace EPAGriffinAPI.DAL
         //reposition 2022-01-25
         internal FDP AddDuty(dynamic dto)
         {
-            
+
             var duty = new FDP();
             DateTime _date = Convert.ToDateTime(dto.DateStart);
             _date = _date.Date;
@@ -12909,7 +12952,7 @@ namespace EPAGriffinAPI.DAL
 
             duty.InitStart = duty.DateStart;
             duty.InitEnd = duty.DateEnd;
-            var rest = new List<int>() { 1167, 1168, 1170, 5000, 5001, 100001, 100003,300010 };
+            var rest = new List<int>() { 1167, 1168, 1170, 5000, 5001, 100001, 100003, 300010 };
             duty.InitRestTo = rest.Contains(duty.DutyType) ? ((DateTime)duty.InitEnd).AddHours(12) : duty.DateEnd;
 
             var _bl = Convert.ToInt32(dto.BL);
@@ -12989,8 +13032,8 @@ namespace EPAGriffinAPI.DAL
                || (duty.InitEnd >= q.InitStart && duty.InitEnd <= q.InitRestTo)
                || (q.InitStart >= duty.InitStart && q.InitRestTo <= duty.InitRestTo)
               )
-           ); 
-            if (_interupted != null )
+           );
+            if (_interupted != null)
             {
                 //Rest/Interruption Error
                 return new CustomActionResult(HttpStatusCode.NotAcceptable, new
@@ -13168,7 +13211,7 @@ namespace EPAGriffinAPI.DAL
             }
             return true;
         }
-        
+
         internal async Task<CustomActionResult> RemoveItemsFromFDP(string strItems, int crewId, int reason, string remark, int notify, int noflight, string username = "")
         {
             //var _fdpItemIds = strItems.Split('*').Select(q => Convert.ToInt32(q)).Distinct().ToList();
@@ -17796,7 +17839,7 @@ namespace EPAGriffinAPI.DAL
                 fdps = query,
                 am = stbyam,
                 pm = stbypm,
-                rs=res,
+                rs = res,
 
             };
             return result;
@@ -17822,7 +17865,7 @@ namespace EPAGriffinAPI.DAL
         {
             //2020-11-22 noreg
             var query = from x in this.context.ViewCrewDutyNoRegs
-                            where x.Start >= dateStart && x.Start <= dateEnd
+                        where x.Start >= dateStart && x.Start <= dateEnd
                         //where (dateStart >=x.Start && dateStart<=x.End) || (x.Start>=dateStart && x.Start<=dateEnd)
                         select x;
             if (cabin == 1)
@@ -19520,17 +19563,17 @@ namespace EPAGriffinAPI.DAL
             period = Convert.ToInt32((dto - dfrom).TotalDays) + 1;
             var dto2 = dfrom.AddDays(-1).Date;
             var dfrom2 = dto2.AddDays(-period + 1).Date;
-            
-            var delayedFlightsCurrent = await this.context.DlyGrpFlights.Where(x => x.STDDay >= dfrom && x.STDDay <= dto  ).ToListAsync();
-            var delayedFlightsCurrentInt = await this.context.DlyGrpFlights.Where(x => x.STDDay >= dfrom && x.STDDay <= dto && (x.FromAirportIATA=="NJF" || x.ToAirportIATA=="NJF" || x.FromAirportIATA == "ISU" || x.ToAirportIATA == "ISU")).ToListAsync();
-           
+
+            var delayedFlightsCurrent = await this.context.DlyGrpFlights.Where(x => x.STDDay >= dfrom && x.STDDay <= dto).ToListAsync();
+            var delayedFlightsCurrentInt = await this.context.DlyGrpFlights.Where(x => x.STDDay >= dfrom && x.STDDay <= dto && (x.FromAirportIATA == "NJF" || x.ToAirportIATA == "NJF" || x.FromAirportIATA == "ISU" || x.ToAirportIATA == "ISU")).ToListAsync();
+
             List<int> currentDelayedFlightsIds = new List<int>();
             List<int> currentDelayedFlightsIdsInt = new List<int>();
 
 
 
 
-            var delayedFlightsPast = await this.context.DlyGrpFlights.Where(x => x.STDDay >= dfrom2 && x.STDDay <= dto2  ).ToListAsync();
+            var delayedFlightsPast = await this.context.DlyGrpFlights.Where(x => x.STDDay >= dfrom2 && x.STDDay <= dto2).ToListAsync();
             var delayedFlightsPastInt = await this.context.DlyGrpFlights.Where(x => x.STDDay >= dfrom2 && x.STDDay <= dto2 && (x.FromAirportIATA == "NJF" || x.ToAirportIATA == "NJF" || x.FromAirportIATA == "ISU" || x.ToAirportIATA == "ISU")).ToListAsync();
             List<int> pastDelayedFlightsIds = new List<int>();
             List<int> pastDelayedFlightsIdsInt = new List<int>();
@@ -19594,7 +19637,7 @@ namespace EPAGriffinAPI.DAL
                         pastDelayedFlightsIds = delayedFlightsPast.Where(q => q.Delay >= 181).Select(q => q.FlightId).ToList();
                         pastDelayedFlightsIdsInt = delayedFlightsPastInt.Where(q => q.Delay >= 181).Select(q => q.FlightId).ToList();
                         break;
-                        
+
                     default:
                         break;
                 }
@@ -19615,18 +19658,18 @@ namespace EPAGriffinAPI.DAL
 
                         };
             var queryInt = from x in this.context.RptDelayLegMaps
-                        where x.STDDay >= dfrom && x.STDDay <= dto && cats.Contains(x.MapTitle2) && currentDelayedFlightsIdsInt.Contains(x.FlightId)
-                        group x by new { x.MapTitle, x.MapTitle2 } into grp
-                        select new DelayReportPeriodic()
-                        {
-                            Title = grp.Key.MapTitle,
-                            Title2 = grp.Key.MapTitle2,
-                            Current = grp.Sum(q => q.Delay),
-                            Past = 0,
-                            Diff = 0,
-                            Percent = 0,
+                           where x.STDDay >= dfrom && x.STDDay <= dto && cats.Contains(x.MapTitle2) && currentDelayedFlightsIdsInt.Contains(x.FlightId)
+                           group x by new { x.MapTitle, x.MapTitle2 } into grp
+                           select new DelayReportPeriodic()
+                           {
+                               Title = grp.Key.MapTitle,
+                               Title2 = grp.Key.MapTitle2,
+                               Current = grp.Sum(q => q.Delay),
+                               Past = 0,
+                               Diff = 0,
+                               Percent = 0,
 
-                        };
+                           };
             var missCurrent = await (from x in this.context.RptDelayLegMaps
                                      where x.STDDay >= dfrom && x.STDDay <= dto && !cats.Contains(x.MapTitle2) && currentDelayedFlightsIds.Contains(x.FlightId)
                                      group x by true into grp
@@ -19641,18 +19684,18 @@ namespace EPAGriffinAPI.DAL
 
                                      }).FirstOrDefaultAsync();
             var missCurrentInt = await (from x in this.context.RptDelayLegMaps
-                                     where x.STDDay >= dfrom && x.STDDay <= dto && !cats.Contains(x.MapTitle2) && currentDelayedFlightsIdsInt.Contains(x.FlightId)
-                                     group x by true into grp
-                                     select new DelayReportPeriodic()
-                                     {
-                                         Title = "متفرقه",
-                                         Title2 = "MISCELLANEOUS",
-                                         Current = grp.Sum(q => q.Delay),
-                                         Past = 0,
-                                         Diff = 0,
-                                         Percent = 0,
+                                        where x.STDDay >= dfrom && x.STDDay <= dto && !cats.Contains(x.MapTitle2) && currentDelayedFlightsIdsInt.Contains(x.FlightId)
+                                        group x by true into grp
+                                        select new DelayReportPeriodic()
+                                        {
+                                            Title = "متفرقه",
+                                            Title2 = "MISCELLANEOUS",
+                                            Current = grp.Sum(q => q.Delay),
+                                            Past = 0,
+                                            Diff = 0,
+                                            Percent = 0,
 
-                                     }).FirstOrDefaultAsync();
+                                        }).FirstOrDefaultAsync();
             var query2 = from x in this.context.RptDelayLegMaps
                          where x.STDDay >= dfrom2 && x.STDDay <= dto2 && cats.Contains(x.MapTitle2) && pastDelayedFlightsIds.Contains(x.FlightId)
                          group x by new { x.MapTitle, x.MapTitle2 } into grp
@@ -19667,18 +19710,18 @@ namespace EPAGriffinAPI.DAL
 
                          };
             var query2Int = from x in this.context.RptDelayLegMaps
-                         where x.STDDay >= dfrom2 && x.STDDay <= dto2 && cats.Contains(x.MapTitle2) && pastDelayedFlightsIdsInt.Contains(x.FlightId)
-                         group x by new { x.MapTitle, x.MapTitle2 } into grp
-                         select new DelayReportPeriodic()
-                         {
-                             Title = grp.Key.MapTitle,
-                             Title2 = grp.Key.MapTitle2,
-                             Current = grp.Sum(q => q.Delay),
-                             Past = 0,
-                             Diff = 0,
-                             Percent = 0,
+                            where x.STDDay >= dfrom2 && x.STDDay <= dto2 && cats.Contains(x.MapTitle2) && pastDelayedFlightsIdsInt.Contains(x.FlightId)
+                            group x by new { x.MapTitle, x.MapTitle2 } into grp
+                            select new DelayReportPeriodic()
+                            {
+                                Title = grp.Key.MapTitle,
+                                Title2 = grp.Key.MapTitle2,
+                                Current = grp.Sum(q => q.Delay),
+                                Past = 0,
+                                Diff = 0,
+                                Percent = 0,
 
-                         };
+                            };
             var missPast = await (from x in this.context.RptDelayLegMaps
                                   where x.STDDay >= dfrom2 && x.STDDay <= dto2 && !cats.Contains(x.MapTitle2) && pastDelayedFlightsIds.Contains(x.FlightId)
                                   group x by true into grp
@@ -19693,18 +19736,18 @@ namespace EPAGriffinAPI.DAL
 
                                   }).FirstOrDefaultAsync();
             var missPastInt = await (from x in this.context.RptDelayLegMaps
-                                  where x.STDDay >= dfrom2 && x.STDDay <= dto2 && !cats.Contains(x.MapTitle2) && pastDelayedFlightsIdsInt.Contains(x.FlightId)
-                                  group x by true into grp
-                                  select new DelayReportPeriodic()
-                                  {
-                                      Title = "متفرقه",
-                                      Title2 = "MISCELLANEOUS",
-                                      Current = grp.Sum(q => q.Delay),
-                                      Past = 0,
-                                      Diff = 0,
-                                      Percent = 0,
+                                     where x.STDDay >= dfrom2 && x.STDDay <= dto2 && !cats.Contains(x.MapTitle2) && pastDelayedFlightsIdsInt.Contains(x.FlightId)
+                                     group x by true into grp
+                                     select new DelayReportPeriodic()
+                                     {
+                                         Title = "متفرقه",
+                                         Title2 = "MISCELLANEOUS",
+                                         Current = grp.Sum(q => q.Delay),
+                                         Past = 0,
+                                         Diff = 0,
+                                         Percent = 0,
 
-                                  }).FirstOrDefaultAsync();
+                                     }).FirstOrDefaultAsync();
 
             var current = await query.ToListAsync();
             var currentInt = await queryInt.ToListAsync();
@@ -19826,7 +19869,7 @@ namespace EPAGriffinAPI.DAL
             foreach (var cat in cats)
             {
                 var xc = current.FirstOrDefault(q => q.Title2 == cat);
-                var xcInt= currentInt.FirstOrDefault(q => q.Title2 == cat);
+                var xcInt = currentInt.FirstOrDefault(q => q.Title2 == cat);
                 var xp = past.FirstOrDefault(q => q.Title2 == cat);
                 var xpInt = pastInt.FirstOrDefault(q => q.Title2 == cat);
                 if (xc == null)
@@ -19930,7 +19973,7 @@ namespace EPAGriffinAPI.DAL
                                    select new DelayReportFlightSum()
                                    {
                                        Total = grp.Count(),
-                                       Pax = grp.Sum(q =>  q.PaxAdult + q.PaxChild),
+                                       Pax = grp.Sum(q => q.PaxAdult + q.PaxChild),
                                        Seats = grp.Sum(q => q.TotalSeat),
                                        Freight = grp.Sum(q => q.Freight)
                                    }).FirstOrDefaultAsync();
@@ -19941,27 +19984,27 @@ namespace EPAGriffinAPI.DAL
                                 select new DelayReportFlightSum()
                                 {
                                     Total = grp.Count(),
-                                    Pax = grp.Sum(q =>  q.PaxAdult + q.PaxChild),
+                                    Pax = grp.Sum(q => q.PaxAdult + q.PaxChild),
                                     Seats = grp.Sum(q => q.TotalSeat),
                                     Freight = grp.Sum(q => q.Freight),
-                                    SeatsDiff = grp.Count()-flightInt.Total
+                                    SeatsDiff = grp.Count() - flightInt.Total
                                 }).FirstOrDefaultAsync();
-            flight.LF = Math.Round((double)((flight.Pax- flightInt.Pax) * 100.0 / (flight.Seats- flightInt.Seats)), 2, MidpointRounding.AwayFromZero);
+            flight.LF = Math.Round((double)((flight.Pax - flightInt.Pax) * 100.0 / (flight.Seats - flightInt.Seats)), 2, MidpointRounding.AwayFromZero);
             flightInt.LF = Math.Round((double)(flightInt.Pax * 100.0 / flightInt.Seats), 2, MidpointRounding.AwayFromZero);
-           
+
 
 
             var flightPastInt = await (from x in this.context.C_ViewLegTime
-                                    where (x.FromAirportIATA == "NJF" || x.ToAirportIATA == "NJF" || x.FromAirportIATA == "ISU" || x.ToAirportIATA == "ISU") && (x.FlightStatusID == 3 || x.FlightStatusID == 15) && x.STDDay >= dfrom2 && x.STDDay <= dto2
-                                    group x by true into grp
-                                    select new DelayReportFlightSum()
-                                    {
-                                        Total = grp.Count(),
-                                        Pax = grp.Sum(q => q.PaxInfant + q.PaxAdult + q.PaxChild),
-                                        Seats = grp.Sum(q => q.TotalSeat),
-                                        Freight = grp.Sum(q => q.Freight),
+                                       where (x.FromAirportIATA == "NJF" || x.ToAirportIATA == "NJF" || x.FromAirportIATA == "ISU" || x.ToAirportIATA == "ISU") && (x.FlightStatusID == 3 || x.FlightStatusID == 15) && x.STDDay >= dfrom2 && x.STDDay <= dto2
+                                       group x by true into grp
+                                       select new DelayReportFlightSum()
+                                       {
+                                           Total = grp.Count(),
+                                           Pax = grp.Sum(q => q.PaxInfant + q.PaxAdult + q.PaxChild),
+                                           Seats = grp.Sum(q => q.TotalSeat),
+                                           Freight = grp.Sum(q => q.Freight),
 
-                                    }).FirstOrDefaultAsync();
+                                       }).FirstOrDefaultAsync();
             var flightPast = await (from x in this.context.C_ViewLegTime
                                     where (x.FlightStatusID == 3 || x.FlightStatusID == 15) && x.STDDay >= dfrom2 && x.STDDay <= dto2
                                     group x by true into grp
@@ -19974,18 +20017,18 @@ namespace EPAGriffinAPI.DAL
                                         SeatsDiff = grp.Count() - flightPastInt.Total
 
                                     }).FirstOrDefaultAsync();
-            flightPast.LF = Math.Round((double)((flightPast.Pax-flightPastInt.Pax) * 100.0 / (flightPast.Seats- flightPastInt.Seats)), 2, MidpointRounding.AwayFromZero);
+            flightPast.LF = Math.Round((double)((flightPast.Pax - flightPastInt.Pax) * 100.0 / (flightPast.Seats - flightPastInt.Seats)), 2, MidpointRounding.AwayFromZero);
             flightPastInt.LF = Math.Round((double)(flightPastInt.Pax * 100.0 / flightPastInt.Seats), 2, MidpointRounding.AwayFromZero);
 
             flight.TotalDiff = flightPast.Total == 0 ? 100 : Math.Round((double)((flight.Total - flightPast.Total) * 100.0 / flightPast.Total), 2, MidpointRounding.AwayFromZero);
             flight.PaxDiff = flightPast.Pax == 0 ? 100 : Math.Round((double)((flight.Pax - flightPast.Pax) * 100.0 / flightPast.Pax), 2, MidpointRounding.AwayFromZero);
-          //  flight.SeatsDiff = flightPast.Seats == 0 ? 100 : Math.Round((double)((flight.Seats - flightPast.Seats) * 100.0 / flightPast.Seats), 2, MidpointRounding.AwayFromZero);
+            //  flight.SeatsDiff = flightPast.Seats == 0 ? 100 : Math.Round((double)((flight.Seats - flightPast.Seats) * 100.0 / flightPast.Seats), 2, MidpointRounding.AwayFromZero);
             flight.FreightDiff = flightPast.Freight == 0 ? 100 : Math.Round((double)((flight.Freight - flightPast.Freight) * 100.0 / flightPast.Freight), 2, MidpointRounding.AwayFromZero);
             flight.LFDiff = flightPast.LF == 0 ? 100 : Math.Round((double)((flight.LF - flightPast.LF) * 100.0 / flightPast.LF), 2, MidpointRounding.AwayFromZero);
 
             flightInt.TotalDiff = flightPastInt.Total == 0 ? 100 : Math.Round((double)((flightInt.Total - flightPastInt.Total) * 100.0 / flightPastInt.Total), 2, MidpointRounding.AwayFromZero);
             flightInt.PaxDiff = flightPastInt.Pax == 0 ? 100 : Math.Round((double)((flightInt.Pax - flightPastInt.Pax) * 100.0 / flightPastInt.Pax), 2, MidpointRounding.AwayFromZero);
-            flightInt.SeatsDiff = flightPast.SeatsDiff == 0 ? 100 : Math.Round((double)((flight.SeatsDiff - flightPast .SeatsDiff) * 100.0 / flightPast.SeatsDiff), 2, MidpointRounding.AwayFromZero);
+            flightInt.SeatsDiff = flightPast.SeatsDiff == 0 ? 100 : Math.Round((double)((flight.SeatsDiff - flightPast.SeatsDiff) * 100.0 / flightPast.SeatsDiff), 2, MidpointRounding.AwayFromZero);
             flightInt.FreightDiff = flightPastInt.Freight == 0 ? 100 : Math.Round((double)((flightInt.Freight - flightPastInt.Freight) * 100.0 / flightPastInt.Freight), 2, MidpointRounding.AwayFromZero);
             flightInt.LFDiff = flightPastInt.LF == 0 ? 100 : Math.Round((double)((flightInt.LF - flightPastInt.LF) * 100.0 / flightPastInt.LF), 2, MidpointRounding.AwayFromZero);
 
@@ -20110,7 +20153,7 @@ namespace EPAGriffinAPI.DAL
                 dlTotalInt = Math.Round((double)(totalDelayInt / flightInt.Total), 0, MidpointRounding.AwayFromZero),
                 flight,
                 flightInt,
-                flightPast=flightInt,
+                flightPast = flightInt,
                 flightPastInt
 
             };
@@ -20530,7 +20573,7 @@ namespace EPAGriffinAPI.DAL
             }
             ////////////////////////////////////
             var flightInt = await (from x in this.context.C_ViewLegTime
-                                   where (x.FromAirportIATA == "NJF" || x.ToAirportIATA == "NJF" || x.FromAirportIATA == "ISU" || x.ToAirportIATA=="ISU") && (x.FlightStatusID == 3 || x.FlightStatusID == 15) && x.STDDay >= dfrom && x.STDDay <= dto
+                                   where (x.FromAirportIATA == "NJF" || x.ToAirportIATA == "NJF" || x.FromAirportIATA == "ISU" || x.ToAirportIATA == "ISU") && (x.FlightStatusID == 3 || x.FlightStatusID == 15) && x.STDDay >= dfrom && x.STDDay <= dto
                                    group x by true into grp
                                    select new DelayReportFlightSum()
                                    {
@@ -20720,7 +20763,7 @@ namespace EPAGriffinAPI.DAL
 
             return result;
         }
-        public async Task<object> GetRptDelayReportPeriodic2(DateTime dto, DateTime dfrom, int period, List<string> cats,int  range)
+        public async Task<object> GetRptDelayReportPeriodic2(DateTime dto, DateTime dfrom, int period, List<string> cats, int range)
         {
             dto = dto.Date;
             dfrom = dfrom.Date;
@@ -20729,14 +20772,14 @@ namespace EPAGriffinAPI.DAL
             var dfrom2 = dto2.AddDays(-period + 1).Date;
             var delayedFlightsCurrent = await this.context.DlyGrpFlights.Where(x => x.STDDay >= dfrom && x.STDDay <= dto).ToListAsync();
             List<int> currentDelayedFlightsIds = new List<int>();
-          
-         
+
+
 
 
             var delayedFlightsPast = await this.context.DlyGrpFlights.Where(x => x.STDDay >= dfrom2 && x.STDDay <= dto2).ToListAsync();
 
             List<int> pastDelayedFlightsIds = new List<int>();
-            
+
 
             if (range == -1)
             {
@@ -20763,18 +20806,18 @@ namespace EPAGriffinAPI.DAL
                         break;
                     case 4:
                         //Between 31 min & 60 min
-                        currentDelayedFlightsIds = delayedFlightsCurrent.Where(q => q.Delay >= 31 && q.Delay<=60).Select(q => q.FlightId).ToList();
+                        currentDelayedFlightsIds = delayedFlightsCurrent.Where(q => q.Delay >= 31 && q.Delay <= 60).Select(q => q.FlightId).ToList();
                         pastDelayedFlightsIds = delayedFlightsPast.Where(q => q.Delay >= 31 && q.Delay <= 60).Select(q => q.FlightId).ToList();
                         break;
                     case 5:
                         //Between 1 hrs & 2 hrs
-                        currentDelayedFlightsIds = delayedFlightsCurrent.Where(q => q.Delay >=61 && q.Delay <= 120).Select(q => q.FlightId).ToList();
+                        currentDelayedFlightsIds = delayedFlightsCurrent.Where(q => q.Delay >= 61 && q.Delay <= 120).Select(q => q.FlightId).ToList();
                         pastDelayedFlightsIds = delayedFlightsPast.Where(q => q.Delay >= 61 && q.Delay <= 120).Select(q => q.FlightId).ToList();
                         break;
                     case 6:
                         //Between 2 hrs & 3 hrs
                         currentDelayedFlightsIds = delayedFlightsCurrent.Where(q => q.Delay >= 121 && q.Delay <= 180).Select(q => q.FlightId).ToList();
-                        pastDelayedFlightsIds = delayedFlightsPast.Where(q => q.Delay >=121 && q.Delay <= 180).Select(q => q.FlightId).ToList();
+                        pastDelayedFlightsIds = delayedFlightsPast.Where(q => q.Delay >= 121 && q.Delay <= 180).Select(q => q.FlightId).ToList();
                         break;
                     case 7:
                         //above 30
@@ -20952,15 +20995,15 @@ namespace EPAGriffinAPI.DAL
             }
             ////////////////////////////////////
             var flightInt = await (from x in this.context.C_ViewLegTime
-                                where (x.FromAirportIATA=="NJF" || x.ToAirportIATA=="NJF") && (x.FlightStatusID == 3 || x.FlightStatusID == 15) && x.STDDay >= dfrom && x.STDDay <= dto
-                                group x by true into grp
-                                select new DelayReportFlightSum()
-                                {
-                                    Total = grp.Count(),
-                                    Pax = grp.Sum(q => q.PaxInfant + q.PaxAdult + q.PaxChild),
-                                    Seats = grp.Sum(q => q.TotalSeat),
-                                    Freight = grp.Sum(q => q.Freight)
-                                }).FirstOrDefaultAsync();
+                                   where (x.FromAirportIATA == "NJF" || x.ToAirportIATA == "NJF") && (x.FlightStatusID == 3 || x.FlightStatusID == 15) && x.STDDay >= dfrom && x.STDDay <= dto
+                                   group x by true into grp
+                                   select new DelayReportFlightSum()
+                                   {
+                                       Total = grp.Count(),
+                                       Pax = grp.Sum(q => q.PaxInfant + q.PaxAdult + q.PaxChild),
+                                       Seats = grp.Sum(q => q.TotalSeat),
+                                       Freight = grp.Sum(q => q.Freight)
+                                   }).FirstOrDefaultAsync();
 
             var flight = await (from x in this.context.C_ViewLegTime
                                 where (x.FlightStatusID == 3 || x.FlightStatusID == 15) && x.STDDay >= dfrom && x.STDDay <= dto
@@ -21843,13 +21886,13 @@ namespace EPAGriffinAPI.DAL
             //2023-09-12
 
             var query = from x in this.context.RptFDPMonthlyPersians
-                        //    where x.PYear == year && x.PeriodFixTime == _period  
-                       //  where x.FirstName == "ARASH"
+                            //    where x.PYear == year && x.PeriodFixTime == _period  
+                            //  where x.FirstName == "ARASH"
                         select x;
-           
+
             var query2 = from x in this.context.RptNoFDPMonthlyPersians
-                          //   where x.PYear == year && x.PeriodFixTime == _period  
-                         //where x.FirstName == "BAHADOR"
+                             //   where x.PYear == year && x.PeriodFixTime == _period  
+                             //where x.FirstName == "BAHADOR"
                          select x;
 
             if (period != "1")
@@ -22000,7 +22043,7 @@ namespace EPAGriffinAPI.DAL
 
             foreach (var x in _fixDs)
             {
-                 x.FixTimeTotal = x.FixTime;
+                x.FixTimeTotal = x.FixTime;
             }
             var noFDPs = await query2.ToListAsync();
             try
@@ -22016,7 +22059,7 @@ namespace EPAGriffinAPI.DAL
                             exist.FixTimeTotal = 0;
                         if (x.DutyTypeTitle == "StandBy")
                             exist.StandBy += x.Count;
-                       // if (x.DutyTypeTitle == "OTHER AIRLINE STBY")
+                        // if (x.DutyTypeTitle == "OTHER AIRLINE STBY")
                         //    exist.StandBy += x.Count;
                         if (x.DutyTypeTitle == "Mission" /*|| x.DutyTypeTitle.StartsWith("عم")*/)
                         {
@@ -22096,7 +22139,7 @@ namespace EPAGriffinAPI.DAL
                             Name = x.Name,
                             PeriodFixTime = x.PeriodFixTime,
                             PYear = (int)x.PYear,
-                            RankOrder =(int) x.RankOrder,
+                            RankOrder = (int)x.RankOrder,
                             ScheduleName = x.ScheduleName,
                             JobGroup = x.JobGroup,
                             JobGroupCode = x.JobGroupCode,
@@ -22105,7 +22148,7 @@ namespace EPAGriffinAPI.DAL
                             FirstName = x.FirstName,
                             Misson = 0,
                             StandBy = 0,
-                            FixTimeTotal=0,
+                            FixTimeTotal = 0,
 
                         };
                         if (x.DutyTypeTitle == "StandBy")
@@ -22116,7 +22159,7 @@ namespace EPAGriffinAPI.DAL
                             rec.FixTimeTotal = x.Duration;
                         }
 
-                       // if (x.DutyTypeTitle == "OTHER AIRLINE STBY")
+                        // if (x.DutyTypeTitle == "OTHER AIRLINE STBY")
                         //    rec.StandBy += x.Count;
 
 
@@ -22237,13 +22280,13 @@ namespace EPAGriffinAPI.DAL
 
             List<RptReposition> repos = new List<RptReposition>();
             var reposQuery = this.context.RptRepositions;
-             if (period != "1")
+            if (period != "1")
             {
-                repos =await  reposQuery.Where(x => x.PYear == year && x.PeriodFixTime == _period).ToListAsync();  
+                repos = await reposQuery.Where(x => x.PYear == year && x.PeriodFixTime == _period).ToListAsync();
             }
-             else
+            else
             {
-                repos= await reposQuery.Where(x => (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)).ToListAsync();
+                repos = await reposQuery.Where(x => (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)).ToListAsync();
             }
             foreach (var rec in repos)
             {
@@ -22288,7 +22331,7 @@ namespace EPAGriffinAPI.DAL
             }
             else
             {
-                 redirect = await redirectQuery.Where(x => (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)).ToListAsync();
+                redirect = await redirectQuery.Where(x => (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)).ToListAsync();
             }
             foreach (var rec in redirect)
             {
@@ -22322,7 +22365,7 @@ namespace EPAGriffinAPI.DAL
                 }
             }
 
-           
+
             //var deadhead = await this.context.RptDeadHeads.Where(x => x.PYear == year && x.PeriodFixTime == _period).ToListAsync();
             List<RptDeadHead> deadhead = new List<RptDeadHead>();
             var dhQuery = this.context.RptDeadHeads;
@@ -22376,7 +22419,7 @@ namespace EPAGriffinAPI.DAL
             {
                 fixDs,
                 noDs,
-               // noFDPs
+                // noFDPs
             };
 
         }
@@ -22531,7 +22574,7 @@ namespace EPAGriffinAPI.DAL
                             Name = x.Name,
                             PeriodFixTime = x.PeriodFixTime,
                             PYear = (int)x.PYear,
-                            RankOrder =(int) x.RankOrder,
+                            RankOrder = (int)x.RankOrder,
                             ScheduleName = x.ScheduleName,
                             JobGroup = x.JobGroup,
                             JobGroupCode = x.JobGroupCode,

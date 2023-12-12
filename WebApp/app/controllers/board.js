@@ -22353,7 +22353,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         $scope.StopUTimer();
         $scope.StopNowLineTimer();
         //$timeout.cancel(mytimeout);
-    });
+    }); 
     $rootScope.$broadcast('FlightBoardLoaded', null);
     $scope.scroll_dep_height = $(window).height() - 195;
     var appWindow = angular.element($window);
@@ -22379,7 +22379,7 @@ app.controller('boardController', ['$scope', '$location', '$routeParams', '$root
         //if ($(window).width() > $(window).height()) {
         //    $scope.$apply(function () {
         //        $scope.footerfilter = false;
-        //        $scope.IsLandscape = true;
+        //          $scope.IsLandscape = true;
 
         //    });
 

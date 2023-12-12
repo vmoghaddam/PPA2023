@@ -17,7 +17,7 @@ namespace WebApp
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-
+            int i = 0;
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

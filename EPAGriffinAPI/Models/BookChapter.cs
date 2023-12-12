@@ -29,9 +29,9 @@ namespace EPAGriffinAPI.Models
         public Nullable<int> BookId { get; set; }
         public string BookKey { get; set; }
     
-        public virtual Book Book { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookChapter> BookChapter1 { get; set; }
         public virtual BookChapter BookChapter2 { get; set; }
+        public virtual Book Book { get; set; }
     }
 }

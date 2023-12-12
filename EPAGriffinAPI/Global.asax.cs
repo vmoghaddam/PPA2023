@@ -25,6 +25,8 @@ namespace EPAGriffinAPI
         {
             HttpContext context = base.Context;
             var request=context.Request;
+          //  var ids=context.User.Identity;
+            
         }
 
 

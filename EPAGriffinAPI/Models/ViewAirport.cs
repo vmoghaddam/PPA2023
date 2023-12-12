@@ -27,5 +27,6 @@ namespace EPAGriffinAPI.Models
         public Nullable<decimal> Latitude { get; set; }
         public Nullable<decimal> Longitude { get; set; }
         public Nullable<int> SortIndex { get; set; }
+        public string Category { get; set; }
     }
 }

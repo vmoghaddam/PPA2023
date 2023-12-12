@@ -273,7 +273,6 @@ namespace EPAGriffinAPI.Models
         public virtual DbSet<ViewImportPlan> ViewImportPlans { get; set; }
         public virtual DbSet<Idea> Ideas { get; set; }
         public virtual DbSet<ThirdPartySyncHistory> ThirdPartySyncHistories { get; set; }
-        public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<BookChapter> BookChapters { get; set; }
         public virtual DbSet<BookFile> BookFiles { get; set; }
         public virtual DbSet<ViewBookFile> ViewBookFiles { get; set; }
@@ -442,6 +441,8 @@ namespace EPAGriffinAPI.Models
         public virtual DbSet<ViewPlanFlight> ViewPlanFlights { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<BookCourse> BookCourses { get; set; }
     
         public virtual int GetOverDuty(string aDate, Nullable<int> aDuty, Nullable<int> aFlight, Nullable<int> aPID)
         {

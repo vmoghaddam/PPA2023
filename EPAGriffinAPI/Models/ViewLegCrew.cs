@@ -105,5 +105,6 @@ namespace EPAGriffinAPI.Models
         public Nullable<System.DateTime> JL_LandingLocal { get; set; }
         public Nullable<int> JL_FlightTime { get; set; }
         public Nullable<int> JL_BlockTime { get; set; }
+        public string PID { get; set; }
     }
 }

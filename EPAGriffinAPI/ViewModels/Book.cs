@@ -57,6 +57,7 @@ namespace EPAGriffinAPI.ViewModels
         public string Publisher { get; set; }
         public string Category { get; private set; }
         public string BookKey { get;  set; }
+        public Nullable<int> CourseId { get; set; }
 
         public DateTime? DateValidUntil { get; set; }
         public DateTime? DeadLine { get; set; }
@@ -179,6 +180,19 @@ namespace EPAGriffinAPI.ViewModels
             set { bookKeywords = value; }
         }
 
+        List<int> courseIds = null;
+        public List<int> CourseIds
+        {
+            get
+            {
+                if (courseIds == null)
+                    courseIds = new List<int>();
+                return courseIds;
+
+            }
+            set { courseIds = value; }
+        }
+
         List<int> bookAuthors = null;
         public List<int> BookAuthors
         {
@@ -244,6 +258,7 @@ namespace EPAGriffinAPI.ViewModels
             entity.DeadLine = book.DeadLine;
             entity.DateValidUntil = book.DateValidUntil;
             entity.BookKey = book.BookKey;
+            entity.CourseId = book.CourseId;
         }
         public static void FillDto(Models.Book entity, ViewModels.Book book)
         {
@@ -286,6 +301,7 @@ namespace EPAGriffinAPI.ViewModels
             book.DeadLine = entity.DeadLine;
             book.DateValidUntil = entity.DateValidUntil;
             book.BookKey = entity.BookKey;
+            book.CourseId = entity.CourseId;
         }
 
         public static void FillDto(Models.ViewBookApplicableEmployee entity, ViewModels.Book book)
@@ -342,6 +358,7 @@ namespace EPAGriffinAPI.ViewModels
             book.DateValidUntil = entity.DateValidUntil;
             book.DeadLine = entity.DeadLine;
             
+
 
         }
     }

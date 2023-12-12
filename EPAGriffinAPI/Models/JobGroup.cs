@@ -32,6 +32,9 @@ namespace EPAGriffinAPI.Models
         public int CustomerId { get; set; }
         public string FullCode2 { get; set; }
         public Nullable<int> Manager { get; set; }
+        public Nullable<bool> IsSelectable { get; set; }
+        public string FullCode2Temp { get; set; }
+        public string CodeTemp { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseRelatedGroup> CourseRelatedGroups { get; set; }

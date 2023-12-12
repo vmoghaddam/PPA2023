@@ -86,7 +86,7 @@ namespace EPAGriffinAPI.Models
         public Nullable<decimal> duration { get; set; }
         public int taskId { get; set; }
         public Nullable<int> FlightGroupID { get; set; }
-        public Nullable<int> PlanId { get; set; }
+        public int PlanId { get; set; }
         public Nullable<int> ManufacturerId { get; set; }
         public string Manufacturer { get; set; }
         public string FromSortName { get; set; }

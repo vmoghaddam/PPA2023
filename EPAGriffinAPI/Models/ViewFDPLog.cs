@@ -39,5 +39,7 @@ namespace EPAGriffinAPI.Models
         public string UserName { get; set; }
         public string Action { get; set; }
         public Nullable<System.DateTime> DateAction { get; set; }
+        public string JobGroup { get; set; }
+        public string DutyTypeTitle { get; set; }
     }
 }

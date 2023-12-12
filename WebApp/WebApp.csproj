@@ -274,6 +274,7 @@
     <Content Include="app\controllers\usersController.js" />
     <Content Include="app\controllers\verify.js" />
     <Content Include="app\controllers\vrAdd.js" />
+    <Content Include="app\controllers\zdutyTimeline.js" />
     <Content Include="app\services\activityService.js" />
     <Content Include="app\services\aircraftService.js" />
     <Content Include="app\services\airportService.js" />
@@ -296,6 +297,7 @@
     <Content Include="app\services\statService.js" />
     <Content Include="app\services\trainingService.js" />
     <Content Include="app\services\weatherService.js" />
+    <Content Include="app\services\zschedulingService.js" />
     <Content Include="app\views\aircraftSelect.html" />
     <Content Include="app\views\aircrafttype.html" />
     <Content Include="app\views\airport.html" />
@@ -502,6 +504,7 @@
     <Content Include="app\views\users.html" />
     <Content Include="app\views\verify.html" />
     <Content Include="app\views\vrAdd.html" />
+    <Content Include="app\views\zdutyTimeline.html" />
     <Content Include="content\css\bootstrap-4.min.css" />
     <Content Include="content\css\bootstrap.min.css" />
     <Content Include="content\css\core-ui.css" />

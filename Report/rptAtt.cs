@@ -325,6 +325,11 @@ namespace Report
         public string S03 { get; set; }
         public string S04 { get; set; }
         public string S05 { get; set; }
+            public string S06 { get; set; }
+        public string S07 { get; set; }
+        public string S08 { get; set; }
+        public string S09 { get; set; }
+        public string S10 { get; set; }
 
 
 

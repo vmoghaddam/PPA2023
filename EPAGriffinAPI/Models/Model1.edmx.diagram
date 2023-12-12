@@ -328,21 +328,10 @@
         <EntityTypeShape EntityType="EPAGRIFFINModel.ViewImportPlan" Width="1.5" PointX="70.375" PointY="45.75" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.Idea" Width="1.5" PointX="70.375" PointY="34.75" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.ThirdPartySyncHistory" Width="1.5" PointX="3.375" PointY="41.75" />
-        <EntityTypeShape EntityType="EPAGRIFFINModel.Book" Width="1.5" PointX="9" PointY="0.75" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.BookChapter" Width="1.5" PointX="11.25" PointY="8.25" />
-        <AssociationConnector Association="EPAGRIFFINModel.fk_bc_b" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_Book_Customer_Id" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_BOOK_ORG" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_BookAircraftType_Book_Id" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_BookAutor_Book_Id" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_BookKeyword_Book_Id" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_BookRelatedEmployee_Book_Id" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_BookRelatedStudyField_Book_Id" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_EmployeeBookStatus_Book_Id" />
         <AssociationConnector Association="EPAGRIFFINModel.fk_bf_bf" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.BookFile" Width="1.5" PointX="30.625" PointY="1.625" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.ViewBookFile" Width="1.5" PointX="35.375" PointY="57.75" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_BookFile_Book_Id" />
         <AssociationConnector Association="EPAGRIFFINModel.FK_BookFile_Document_Id" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.ViewBookFileVisited" Width="1.5" PointX="35.375" PointY="70.75" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.ViewBookChapter" Width="1.5" PointX="33.375" PointY="23.75" />
@@ -485,7 +474,6 @@
         <EntityTypeShape EntityType="EPAGRIFFINModel.ViewFormA" Width="1.5" PointX="84.375" PointY="26.625" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.ViewFormAMonthly" Width="1.5" PointX="84.375" PointY="88.625" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.BookRelatedGroup" Width="1.5" PointX="39.625" PointY="0.75" />
-        <AssociationConnector Association="EPAGRIFFINModel.FK_BookRelatedGroup_Book_Id" />
         <AssociationConnector Association="EPAGRIFFINModel.FK_BookRelatedGroup_JobGroup_Id" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.RptFuelLeg" Width="1.5" PointX="35.375" PointY="76.75" />
         <EntityTypeShape EntityType="EPAGRIFFINModel.RptFuelMonthlyType" Width="1.5" PointX="86.375" PointY="0.75" />
@@ -586,6 +574,20 @@
         <AssociationConnector Association="EPAGRIFFINModel.FK_PersonRating_Person" />
         <AssociationConnector Association="EPAGRIFFINModel.FK_UM_Type_Access_UM_Users" />
         <AssociationConnector Association="EPAGRIFFINModel.FK_UserCourse_Person" />
+        <EntityTypeShape EntityType="EPAGRIFFINModel.Book" Width="1.5" PointX="9" PointY="0.75" />
+        <AssociationConnector Association="EPAGRIFFINModel.fk_bc_b" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_Book_Customer_Id" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_BOOK_ORG" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_BookAircraftType_Book_Id" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_BookAutor_Book_Id" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_BookFile_Book_Id" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_BookKeyword_Book_Id" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_BookRelatedEmployee_Book_Id" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_BookRelatedGroup_Book_Id" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_BookRelatedStudyField_Book_Id" />
+        <AssociationConnector Association="EPAGRIFFINModel.FK_EmployeeBookStatus_Book_Id" />
+        <EntityTypeShape EntityType="EPAGRIFFINModel.BookCourse" Width="1.5" PointX="11.25" PointY="1.125" />
+        <AssociationConnector Association="EPAGRIFFINModel.fk_bc_book" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

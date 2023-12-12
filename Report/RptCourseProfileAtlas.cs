@@ -37,6 +37,7 @@ namespace Report
             var c = 1;
             foreach (var emp in ds)
             {
+                
                 var empatts = atts.Where(q => q.PersonId == emp.PersonId).ToList();
                 int k = 1;
                 foreach (var se in sessions)
@@ -60,6 +61,12 @@ namespace Report
                                 break;
                             case 5:
                                 emp.S05 = "*";// "✓";
+                                break;
+                            case 6:
+                                emp.S06 = "*";// "✓";
+                                break;
+                            case 7:
+                                emp.S07 = "*";// "✓";
                                 break;
                             default:
                                 break;
@@ -306,13 +313,109 @@ namespace Report
 
 
                     break;
+
+                case 6:
+                    cellSe01.Text = ((DateTime)sessions[0].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                        + ((DateTime)sessions[0].DateEnd).ToString("HH:mm");
+
+                    cellSe01.Visible = true;
+
+                    s1r1s.Visible = true;
+
+
+                    cellSe02.Visible = true;
+                    cellSe02.Text = ((DateTime)sessions[1].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[1].DateEnd).ToString("HH:mm");
+
+                    s2r1s.Visible = true;
+
+
+                    cellSe03.Visible = true;
+                    cellSe03.Text = ((DateTime)sessions[2].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[2].DateEnd).ToString("HH:mm");
+
+                    s3r1s.Visible = true;
+
+
+                    cellSe04.Visible = true;
+                    cellSe04.Text = ((DateTime)sessions[3].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[3].DateEnd).ToString("HH:mm");
+
+                    s4r1s.Visible = true;
+
+
+                    cellSe05.Visible = true;
+                    cellSe05.Text = ((DateTime)sessions[4].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[4].DateEnd).ToString("HH:mm");
+
+                    s5r1s.Visible = true;
+
+                    cellSe06.Visible = true;
+                    cellSe06.Text = ((DateTime)sessions[5].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[5].DateEnd).ToString("HH:mm");
+
+                    s6r1s.Visible = true;
+
+
+                    break;
+
+                case 7:
+                    cellSe01.Text = ((DateTime)sessions[0].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                        + ((DateTime)sessions[0].DateEnd).ToString("HH:mm");
+
+                    cellSe01.Visible = true;
+
+                    s1r1s.Visible = true;
+
+
+                    cellSe02.Visible = true;
+                    cellSe02.Text = ((DateTime)sessions[1].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[1].DateEnd).ToString("HH:mm");
+
+                    s2r1s.Visible = true;
+
+
+                    cellSe03.Visible = true;
+                    cellSe03.Text = ((DateTime)sessions[2].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[2].DateEnd).ToString("HH:mm");
+
+                    s3r1s.Visible = true;
+
+
+                    cellSe04.Visible = true;
+                    cellSe04.Text = ((DateTime)sessions[3].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[3].DateEnd).ToString("HH:mm");
+
+                    s4r1s.Visible = true;
+
+
+                    cellSe05.Visible = true;
+                    cellSe05.Text = ((DateTime)sessions[4].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[4].DateEnd).ToString("HH:mm");
+
+                    s5r1s.Visible = true;
+
+                    cellSe06.Visible = true;
+                    cellSe06.Text = ((DateTime)sessions[5].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[5].DateEnd).ToString("HH:mm");
+
+                    s6r1s.Visible = true;
+
+                    cellSe07.Visible = true;
+                    cellSe07.Text = ((DateTime)sessions[6].DateStart).ToString("yyyy-MM-dd HH:mm - ")
+                       + ((DateTime)sessions[6].DateEnd).ToString("HH:mm");
+
+                    s7r1s.Visible = true;
+
+
+                    break;
                 default:
                     break;
             }
             var _w = this.PageWidth - this.Margins.Left - this.Margins.Right;
 
-            hFullName.WidthF = _w - sessionsCount * 90 - (hNo.WidthF + hNID.WidthF + hDep.WidthF + hResult.WidthF + hSig.WidthF);
-            cFullName.WidthF = _w - sessionsCount * 90 - (hNo.WidthF + hNID.WidthF + hDep.WidthF + hResult.WidthF + hSig.WidthF);
+            hFullName.WidthF = _w - sessionsCount * 90 - (hNo.WidthF + hNID.WidthF /*+ hDep.WidthF*/ + hResult.WidthF + hSig.WidthF);
+            cFullName.WidthF = _w - sessionsCount * 90 - (hNo.WidthF + hNID.WidthF /*+ hDep.WidthF*/ + hResult.WidthF + hSig.WidthF);
             //  xrTableCell46.WidthF = _w - sessionsCount * 90 - (hNo.WidthF + hNID.WidthF + hDep.WidthF + hResult.WidthF + hSig.WidthF);
 
 

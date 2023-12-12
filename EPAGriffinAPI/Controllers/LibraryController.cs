@@ -426,6 +426,8 @@ namespace EPAGriffinAPI.Controllers
             unitOfWork.BookRepository.FillBookKeywords(entity, dto);
             unitOfWork.BookRepository.FillBookFiles(entity, dto);
 
+            unitOfWork.BookRepository.FillBookCourses(entity, dto);
+
 
 
             var saveResult = await unitOfWork.SaveAsync();

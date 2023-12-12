@@ -32,6 +32,9 @@ namespace EPAGriffinAPI.Models
         public string Password { get; set; }
         public Nullable<int> CustomerId { get; set; }
         public Nullable<int> GroupId { get; set; }
+        public Nullable<int> C1GroupId { get; set; }
+        public Nullable<int> C2GroupId { get; set; }
+        public Nullable<int> C3GroupId { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual JobGroup JobGroup { get; set; }

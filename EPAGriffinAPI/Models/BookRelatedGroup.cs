@@ -20,7 +20,7 @@ namespace EPAGriffinAPI.Models
         public int BookId { get; set; }
         public Nullable<int> TypeId { get; set; }
     
-        public virtual Book Book { get; set; }
         public virtual JobGroup JobGroup { get; set; }
+        public virtual Book Book { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace EPAGriffinAPI.Models
         public Nullable<System.DateTime> DateVisit { get; set; }
         public Nullable<System.DateTime> DateDownload { get; set; }
     
-        public virtual Book Book { get; set; }
         public virtual Employee Employee { get; set; }
+        public virtual Book Book { get; set; }
     }
 }

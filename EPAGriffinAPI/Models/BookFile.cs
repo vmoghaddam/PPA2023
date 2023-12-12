@@ -20,7 +20,7 @@ namespace EPAGriffinAPI.Models
         public string Remark { get; set; }
         public Nullable<int> ChapterId { get; set; }
     
-        public virtual Book Book { get; set; }
         public virtual Document Document { get; set; }
+        public virtual Book Book { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace EPAGriffinAPI.Models
         public string Remark { get; set; }
         public Nullable<System.DateTime> DateSigned { get; set; }
     
-        public virtual Book Book { get; set; }
         public virtual Employee Employee { get; set; }
+        public virtual Book Book { get; set; }
     }
 }

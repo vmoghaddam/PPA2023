@@ -62,6 +62,8 @@ namespace EPAGriffinAPI.Models
         public Nullable<int> Quarter { get; set; }
         public int BaggageWeight { get; set; }
         public int CargoWeight { get; set; }
-        public Nullable<int> Freight { get; set; }
+        public int Freight { get; set; }
+        public Nullable<double> MaxCargoWeight { get; set; }
+        public int IsDom { get; set; }
     }
 }

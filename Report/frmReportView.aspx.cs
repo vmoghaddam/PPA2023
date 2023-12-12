@@ -60,9 +60,9 @@ namespace Report
                    // break;
                case "att":
                         string coid2 = Request.QueryString["cid"];
-                        var reportAtt2 = new RptCourseProfile(coid2);
+                       // var reportAtt2 = new RptCourseProfile(coid2);
                         //atlas
-                        //var reportAtt2 = new RptCourseProfileAtlas(coid2);
+                        var reportAtt2 = new RptCourseProfileAtlas(coid2);
                         ASPxWebDocumentViewer1.OpenReport(reportAtt2);
                         break;
                     //api/courses/passed/history
@@ -162,7 +162,7 @@ namespace Report
                     string cerId = Request.QueryString["id"];
 
 
-                    var rptfpc = new rptFPC();
+                        var rptfpc =new rptFPCAir1(); //new rptFPC();
                     dataSource = new JsonDataSource();
                     var rptfpcurl = apiUrlExtTemp + "/api/certificate/" + cerId;//apiUrlExtTemp + " / api/asr/flight/view/" + asrFlightId;
                     dataSource.JsonSource = new UriJsonSource(new Uri(rptfpcurl));

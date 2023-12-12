@@ -37,6 +37,22 @@ namespace EPAGriffinAPI.Controllers
 
         }
 
+        [Route("odata/sms/status/{str}")]
+        [AcceptVerbs("GET")]
+        // [Authorize]
+        public IHttpActionResult SMS(string str)
+        {
+            var ids = str.Split('_').Select(q => Convert.ToInt64(q)).ToList();
+            Magfa m = new Magfa();
+            var result9 = m.getStatus(ids);
+           // var result = 1;
+            //var p = new EPAGriffinAPI.Payamak();
+           // p.send("09124449584", "Hi Vahid");
+
+            return Ok(result9);
+
+        }
+
         public class SM
         {
             public string mobile { get; set; }

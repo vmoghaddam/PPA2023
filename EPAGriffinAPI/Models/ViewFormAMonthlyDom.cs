@@ -43,5 +43,7 @@ namespace EPAGriffinAPI.Models
         public Nullable<double> TotalToneDistanceAvailable { get; set; }
         public Nullable<double> WeightLoadFactor { get; set; }
         public Nullable<double> Distance { get; set; }
+        public Nullable<int> PaxWeight { get; set; }
+        public Nullable<double> C_Dis { get; set; }
     }
 }

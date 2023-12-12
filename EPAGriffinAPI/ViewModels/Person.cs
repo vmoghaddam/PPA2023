@@ -666,6 +666,7 @@ namespace EPAGriffinAPI.ViewModels
             person.StampUrl = entity.StampUrl;
             person.TechLogNo = entity.TechLogNo;
             person.DateIssueNDT = entity.DateIssueNDT;
+            person.DateExpireNDT = entity.DateExpireNDT;
             person.IntervalNDT = entity.IntervalNDT;
             person.NDTNumber = entity.NDTNumber;
             person.NDTIntervalCalanderTypeId = entity.NDTIntervalCalanderTypeId;

@@ -20,9 +20,9 @@ namespace EPAGriffinAPI.Models
             this.Locations = new HashSet<Location>();
             this.PersonCustomers = new HashSet<PersonCustomer>();
             this.FlightPlans = new HashSet<FlightPlan>();
-            this.Books = new HashSet<Book>();
             this.Ac_MSN = new HashSet<Ac_MSN>();
             this.FlightInformations = new HashSet<FlightInformation>();
+            this.Books = new HashSet<Book>();
         }
     
         public int Id { get; set; }
@@ -51,10 +51,10 @@ namespace EPAGriffinAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FlightPlan> FlightPlans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Book> Books { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ac_MSN> Ac_MSN { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FlightInformation> FlightInformations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Book> Books { get; set; }
     }
 }

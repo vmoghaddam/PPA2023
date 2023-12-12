@@ -82,6 +82,16 @@ namespace EPAGriffinAPI.Models
         public Nullable<decimal> MaxFDP { get; set; }
         public Nullable<int> BL { get; set; }
         public Nullable<int> FX { get; set; }
+        public Nullable<System.DateTime> ActualStart { get; set; }
+        public Nullable<System.DateTime> ActualEnd { get; set; }
+        public Nullable<System.DateTime> ActualRestTo { get; set; }
+        public Nullable<bool> IsOver { get; set; }
+        public Nullable<System.DateTime> STD { get; set; }
+        public Nullable<System.DateTime> STA { get; set; }
+        public Nullable<bool> OutOfHomeBase { get; set; }
+        public string InitPosition { get; set; }
+        public Nullable<System.DateTime> PLNEnd { get; set; }
+        public Nullable<System.DateTime> PLNRest { get; set; }
     
         public virtual Box Box { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

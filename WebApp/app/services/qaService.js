@@ -574,6 +574,36 @@ app.factory('qaService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     }
 
 
+    var _getProfiles = function () {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/qa/profiles?grp=-1'  ).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+    serviceFactory.getProfiles = _getProfiles;
+
+
+    var _getProfileLog = function (id) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/qa/log?id='+).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+    serviceFactory.getProfileLog = _getProfileLog;
+
+
+
+
 
     serviceFactory.getQAByEmployee = _getQAByEmployee;
     serviceFactory.getQAStatus = _getQAStatus;

@@ -37,10 +37,10 @@ namespace EPAGriffinAPI.Controllers
         public IHttpActionResult GetSendUp()
         {
             var result = unitOfWork.PersonRepository.SendUp();
-           
+
             return Ok(true);
         }
-      
+
         [Route("odata/send/cp")]
         public IHttpActionResult GetSendCp()
         {
@@ -81,7 +81,22 @@ namespace EPAGriffinAPI.Controllers
             }
 
         }
+        [Route("odata/users/new")]
+        [EnableQuery]
+        // [Authorize]
+        public IQueryable<ViewUser> GetUsersNew()
+        {
+            try
+            {
+                return unitOfWork.PersonRepository.GetViewUsers();
+                // return db.ViewAirports.AsNoTracking() ;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
 
+        }
         [Route("odata/users")]
         [EnableQuery]
         // [Authorize]
@@ -221,7 +236,7 @@ namespace EPAGriffinAPI.Controllers
             {
                 PhoneNumber = Convert.ToString(dto.PhoneNumber);
             }
-           
+
             ApplicationUserManager UserManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var user = new ApplicationUser() { UserName = userName, Email = email };
             user.PhoneNumber = PhoneNumber;
@@ -254,12 +269,12 @@ namespace EPAGriffinAPI.Controllers
             };
 
             unitOfWork.PersonRepository.Insert(ext);
-            
+
             if (personId != -1)
             {
                 await unitOfWork.PersonRepository.UpdateUserId(personId, created.Id);
             }
-            
+
             var saveResult = await unitOfWork.SaveAsync();
             if (saveResult.Code != HttpStatusCode.OK)
                 return saveResult;
@@ -284,8 +299,8 @@ namespace EPAGriffinAPI.Controllers
             var ln = Convert.ToString(dto.LastName);
             var personId = Convert.ToInt32(dto.PersonId);
             string st = "";
-            if (dto.Station!=null)
-              st = Convert.ToString(dto.Station);
+            if (dto.Station != null)
+                st = Convert.ToString(dto.Station);
             string Id = Convert.ToString(dto.Id);
             string PhoneNumber = "";
             if (dto.PhoneNumber != null)
@@ -354,7 +369,7 @@ namespace EPAGriffinAPI.Controllers
             string Id = Convert.ToString(dto.Id);
             ApplicationUserManager UserManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var user = await UserManager.FindByIdAsync(Id);
-           
+
             var token = await UserManager.GeneratePasswordResetTokenAsync(Id);
             IdentityResult result = await UserManager.ResetPasswordAsync(Id, token, password);
 
@@ -440,7 +455,7 @@ namespace EPAGriffinAPI.Controllers
         public async Task<IHttpActionResult> GetUserPasswordAssign()
         {
             var dbctx = new EPAGRIFFINEntities();
-            var person=dbctx.People.FirstOrDefault(q => q.UserId == "4034");
+            var person = dbctx.People.FirstOrDefault(q => q.UserId == "4034");
             var password = "1234@bB";
 
             string Id = "4034";
@@ -476,8 +491,8 @@ namespace EPAGriffinAPI.Controllers
             var password = Convert.ToString(dto.Password);
             var old = Convert.ToString(dto.Old);
             var username = Convert.ToString(dto.UserName);
-            var confirmed= Convert.ToString(dto.Confirmed);
-            if (password!=confirmed)
+            var confirmed = Convert.ToString(dto.Confirmed);
+            if (password != confirmed)
                 return new CustomActionResult(HttpStatusCode.NotAcceptable, "'Password' and 'Confirm Password' do not match.");
 
             ApplicationUserManager UserManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
@@ -761,12 +776,12 @@ namespace EPAGriffinAPI.Controllers
         [Route("odata/employees/library/{id}/{cid}/{type?}")]
         [EnableQuery]
         // [Authorize]
-        public IQueryable<ViewBookApplicableEmployee> GetEmployeesLibraryCustomer(int id,int cid, int? type = null)
+        public IQueryable<ViewBookApplicableEmployee> GetEmployeesLibraryCustomer(int id, int cid, int? type = null)
         {
             try
             {
                 if (type == null)
-                    return unitOfWork.BookRepository.GetViewBookApplicableEmployee().Where(q =>q.CustomerId==cid && q.EmployeeCustomerId==cid && q.IsExposed == 1 && q.EmployeeId == id).OrderBy(q => q.IsVisited).ThenBy(q => q.IsDownloaded).ThenByDescending(q => q.DateExposure);
+                    return unitOfWork.BookRepository.GetViewBookApplicableEmployee().Where(q => q.CustomerId == cid && q.EmployeeCustomerId == cid && q.IsExposed == 1 && q.EmployeeId == id).OrderBy(q => q.IsVisited).ThenBy(q => q.IsDownloaded).ThenByDescending(q => q.DateExposure);
                 else
                     return unitOfWork.BookRepository.GetViewBookApplicableEmployee().Where(q => q.CustomerId == cid && q.EmployeeCustomerId == cid && q.IsExposed == 1 && q.EmployeeId == id && q.TypeId == (int)type).OrderBy(q => q.IsVisited).ThenBy(q => q.IsDownloaded).ThenByDescending(q => q.DateExposure);
                 // return db.ViewAirports.AsNoTracking() ;
@@ -1068,7 +1083,7 @@ namespace EPAGriffinAPI.Controllers
                 if (crew.IsCockpit == 1)
                     _shared = _shared.Concat(_cockpit).ToList();
 
-                var items = await unitOfWork.PersonRepository.GetViewCertifications().Where(q =>q.PersonId==id && q.Remain <= 30 && _shared.Contains(q.TypeId))
+                var items = await unitOfWork.PersonRepository.GetViewCertifications().Where(q => q.PersonId == id && q.Remain <= 30 && _shared.Contains(q.TypeId))
                     .OrderBy(q => q.Remain).ThenBy(q => q.TypeId).ToListAsync();
                 foreach (var x in items)
                 {
@@ -1266,10 +1281,10 @@ namespace EPAGriffinAPI.Controllers
         [Route("odata/employee/certificates/type/{id}/{tid}")]
         [EnableQuery]
         // [Authorize]
-        public IQueryable<ViewCertification> GetEmployeesCertificationsByType2(int id,int tid)
+        public IQueryable<ViewCertification> GetEmployeesCertificationsByType2(int id, int tid)
         {
 
-            return unitOfWork.PersonRepository.GetViewCertifications().Where(q => q.EmployeeId == id && q.TypeId==tid);
+            return unitOfWork.PersonRepository.GetViewCertifications().Where(q => q.EmployeeId == id && q.TypeId == tid);
             // return db.ViewAirports.AsNoTracking() ;
 
 
@@ -1277,10 +1292,10 @@ namespace EPAGriffinAPI.Controllers
         [Route("odata/employee/certificates/{id}/{tid}")]
         [EnableQuery]
         // [Authorize]
-        public IQueryable<ViewCertification> GetEmployeesCertificationsByType(int id,int tid)
+        public IQueryable<ViewCertification> GetEmployeesCertificationsByType(int id, int tid)
         {
 
-            return unitOfWork.PersonRepository.GetViewCertifications().Where(q => q.EmployeeId == id && q.TypeId==tid);
+            return unitOfWork.PersonRepository.GetViewCertifications().Where(q => q.EmployeeId == id && q.TypeId == tid);
             // return db.ViewAirports.AsNoTracking() ;
 
 
@@ -1339,70 +1354,85 @@ namespace EPAGriffinAPI.Controllers
             return Ok(dto);
 
         }
-        [Route("odata/employee/save")]
+
+
+
+
+
+
+        [Route("odata/profile/save/new")]
 
         [AcceptVerbs("POST")]
-        public async Task<IHttpActionResult> PostEmployee(ViewModels.Employee dto)
+        public async Task<IHttpActionResult> PostEmployee2(ViewModels.Employee dto)
         {
-            // return Ok(client);
-            if (dto == null)
-                return Exceptions.getNullException(ModelState);
-            if (!ModelState.IsValid)
+            try
             {
-                // return BadRequest(ModelState);
-                return Exceptions.getModelValidationException(ModelState);
-            }
-            var validate = unitOfWork.PersonRepository.Validate(dto);
-            if (validate.Code != HttpStatusCode.OK)
-                return validate;
+                 return Ok(true);
+                if (dto == null)
+                    return Exceptions.getNullException(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    // return BadRequest(ModelState);
+                    return Exceptions.getModelValidationException(ModelState);
+                }
+                var validate = unitOfWork.PersonRepository.Validate(dto);
+                if (validate.Code != HttpStatusCode.OK)
+                    return validate;
 
-            ///////////////////////////////////////
-            //   if (dto.Person.VisaExpireDate!=null)
-            //    dto.Person.VisaExpireDate=((DateTime)dto.Person.VisaExpireDate).AddHours(3).AddMinutes(30);
-            ///////////////////////////////////////////
-            Person person = null;
-            if (dto.PersonId != -1)
-                person = await unitOfWork.PersonRepository.GetPersonById(dto.PersonId);
-            else
-                person = await unitOfWork.PersonRepository.GetPersonByNID(dto.Person.NID);
-            if (person == null)
+                ///////////////////////////////////////
+                //   if (dto.Person.VisaExpireDate!=null)
+                //    dto.Person.VisaExpireDate=((DateTime)dto.Person.VisaExpireDate).AddHours(3).AddMinutes(30);
+                ///////////////////////////////////////////
+                Person person = null;
+                if (dto.PersonId != -1)
+                    person = await unitOfWork.PersonRepository.GetPersonById(dto.PersonId);
+                else
+                    person = await unitOfWork.PersonRepository.GetPersonByNID(dto.Person.NID);
+                if (person == null)
+                {
+                    person = new Person();
+                    person.DateCreate = DateTime.Now;
+                    unitOfWork.PersonRepository.Insert(person);
+                }
+                ViewModels.Person.Fill(person, dto.Person);
+                PersonCustomer personCustomer = await unitOfWork.PersonRepository.GetPersonCustomer((int)dto.CustomerId, dto.Person.PersonId);
+                if (personCustomer == null)
+                {
+                    personCustomer = new PersonCustomer();
+
+                    person.PersonCustomers.Add(personCustomer);
+                }
+                ViewModels.PersonCustomer.Fill(personCustomer, dto);
+                Employee employee = await unitOfWork.PersonRepository.GetEmployee(personCustomer.Id);
+                if (employee == null)
+                    employee = new Employee();
+                personCustomer.Employee = employee;
+                ViewModels.Employee.Fill(employee, dto);
+                unitOfWork.PersonRepository.FillEmployeeLocations(employee, dto);
+
+                unitOfWork.PersonRepository.FillAircraftTypes(person, dto);
+                unitOfWork.PersonRepository.FillDocuments(person, dto);
+                unitOfWork.PersonRepository.FillEducations(person, dto);
+                unitOfWork.PersonRepository.FillExps(person, dto);
+                unitOfWork.PersonRepository.FillRatings(person, dto);
+
+
+
+                var saveResult = await unitOfWork.SaveAsync();
+                if (saveResult.Code != HttpStatusCode.OK)
+                    return saveResult;
+
+                dto.Id = employee.Id;
+                return Ok(dto);
+
+            }
+            catch (Exception ex)
             {
-                person = new Person();
-                person.DateCreate = DateTime.Now;
-                unitOfWork.PersonRepository.Insert(person);
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "    " + ex.InnerException.Message;
+                return Ok(msg);
             }
-            ViewModels.Person.Fill(person, dto.Person);
-            PersonCustomer personCustomer = await unitOfWork.PersonRepository.GetPersonCustomer((int)dto.CustomerId, dto.Person.PersonId);
-            if (personCustomer == null)
-            {
-                personCustomer = new PersonCustomer();
-
-                person.PersonCustomers.Add(personCustomer);
-            }
-            ViewModels.PersonCustomer.Fill(personCustomer, dto);
-            Employee employee = await unitOfWork.PersonRepository.GetEmployee(personCustomer.Id);
-            if (employee == null)
-                employee = new Employee();
-            personCustomer.Employee = employee;
-            ViewModels.Employee.Fill(employee, dto);
-            unitOfWork.PersonRepository.FillEmployeeLocations(employee, dto);
-
-            unitOfWork.PersonRepository.FillAircraftTypes(person, dto);
-            unitOfWork.PersonRepository.FillDocuments(person, dto);
-            unitOfWork.PersonRepository.FillEducations(person, dto);
-            unitOfWork.PersonRepository.FillExps(person, dto);
-            unitOfWork.PersonRepository.FillRatings(person, dto);
-
-
-
-            var saveResult = await unitOfWork.SaveAsync();
-            if (saveResult.Code != HttpStatusCode.OK)
-                return saveResult;
-
-            dto.Id = employee.Id;
-            return Ok(dto);
-
-
 
 
         }
@@ -1429,7 +1459,7 @@ namespace EPAGriffinAPI.Controllers
             if (saveResult.Code != HttpStatusCode.OK)
                 return saveResult;
 
-          
+
             return Ok(dto);
 
 

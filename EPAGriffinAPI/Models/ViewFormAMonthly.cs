@@ -67,5 +67,9 @@ namespace EPAGriffinAPI.Models
         public double TotalToneDistanceAvailableInt { get; set; }
         public double WeightLoadFactorInt { get; set; }
         public double DistanceInt { get; set; }
+        public Nullable<int> PaxWeight { get; set; }
+        public Nullable<int> PaxBaggageWeight { get; set; }
+        public int PaxWeightInt { get; set; }
+        public Nullable<int> PaxBaggageWeightInt { get; set; }
     }
 }

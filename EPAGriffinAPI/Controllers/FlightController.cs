@@ -5473,7 +5473,7 @@ namespace EPAGriffinAPI.Controllers
             return Ok(nowOffset);
         }
         [Route("odata/flight/group/save")]
-        //kakoli9
+        //2023-11-23
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> PostFlightGroup(ViewModels.FlightDto dto)
         {
@@ -8281,6 +8281,27 @@ namespace EPAGriffinAPI.Controllers
 
 
             return Ok(result);
+        }
+        [Route("odata/sms/test/{no}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetTestSMS(string no)
+        {
+            string msg = "";
+            Magfa m = new Magfa();
+            var res=m.test_mehr(1,no, "test sms "+DateTime.Now.ToString()) ;
+            
+            return Ok(res);
+        }
+
+        [Route("odata/sms/del/test/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetTestDelSMS(string id)
+        {
+            string msg = "";
+            Magfa m = new Magfa();
+            var res = m.getStatus(Convert.ToInt64(id));
+            msg = res[0].ToString();
+            return Ok(msg);
         }
 
         [Route("odata/duties/sms/save")]

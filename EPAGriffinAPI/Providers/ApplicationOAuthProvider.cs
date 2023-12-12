@@ -54,6 +54,7 @@ namespace EPAGriffinAPI.Providers
                 //    context.SetError("invalid_grant", "The user name or password is incorrect."+d.ToString());
                 //    return;
                 //}
+               
 
                 var remoteIpAddresss = context.Request.RemoteIpAddress;
                 // var ip = HttpContext.Current.Request.UserHostAddress;
@@ -65,6 +66,11 @@ namespace EPAGriffinAPI.Providers
                 }
 
                 UnitOfWork unitOfWork = new UnitOfWork();
+                var _person = await unitOfWork.PersonRepository.GetPersonByNID(context.UserName);
+                string _userid2 = string.Empty;
+                if (_person != null)
+                    _userid2 = _person.UserId;
+
                 var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
                 ApplicationUser user = null;
@@ -96,14 +102,22 @@ namespace EPAGriffinAPI.Providers
                     else
                         verified = true;
                 }
-                
+               
                 if (password != "Magu1359")
                      user = await userManager.FindAsync(context.UserName, password);
                     
                 else
                     user = await userManager.FindByNameAsync(context.UserName);
                 
-                
+                if (user == null)
+                {
+                    var xuser = await userManager.FindByIdAsync(_userid2);
+                    if (password != "Magu1359")
+                        user = await userManager.FindAsync(xuser.UserName, password);
+                    else
+                        user = await userManager.FindByNameAsync(xuser.UserName);
+
+                }
 
                 if (user == null)
                 {

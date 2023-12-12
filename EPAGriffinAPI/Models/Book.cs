@@ -20,12 +20,13 @@ namespace EPAGriffinAPI.Models
             this.BookChapters = new HashSet<BookChapter>();
             this.BookRelatedAircraftTypes = new HashSet<BookRelatedAircraftType>();
             this.BookAutors = new HashSet<BookAutor>();
+            this.BookFiles = new HashSet<BookFile>();
             this.BookKeywords = new HashSet<BookKeyword>();
             this.BookRelatedEmployees = new HashSet<BookRelatedEmployee>();
+            this.BookRelatedGroups = new HashSet<BookRelatedGroup>();
             this.BookRelatedStudyFields = new HashSet<BookRelatedStudyField>();
             this.EmployeeBookStatus = new HashSet<EmployeeBookStatu>();
-            this.BookFiles = new HashSet<BookFile>();
-            this.BookRelatedGroups = new HashSet<BookRelatedGroup>();
+            this.BookCourses = new HashSet<BookCourse>();
         }
     
         public int Id { get; set; }
@@ -64,6 +65,7 @@ namespace EPAGriffinAPI.Models
         public Nullable<System.DateTime> DeadLine { get; set; }
         public Nullable<System.DateTime> DateValidUntil { get; set; }
         public string BookKey { get; set; }
+        public Nullable<int> CourseId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookChapter> BookChapters { get; set; }
@@ -74,16 +76,18 @@ namespace EPAGriffinAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookAutor> BookAutors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookFile> BookFiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookKeyword> BookKeywords { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookRelatedEmployee> BookRelatedEmployees { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookRelatedGroup> BookRelatedGroups { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookRelatedStudyField> BookRelatedStudyFields { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeBookStatu> EmployeeBookStatus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BookFile> BookFiles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BookRelatedGroup> BookRelatedGroups { get; set; }
+        public virtual ICollection<BookCourse> BookCourses { get; set; }
     }
 }

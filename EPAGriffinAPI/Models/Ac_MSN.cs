@@ -75,6 +75,7 @@ namespace EPAGriffinAPI.Models
         public Nullable<int> CPT2Limit { get; set; }
         public Nullable<int> CPT3Limit { get; set; }
         public Nullable<int> CPT4Limit { get; set; }
+        public string AircraftType { get; set; }
     
         public virtual AircraftModel AircraftModel { get; set; }
         public virtual Organization Organization { get; set; }

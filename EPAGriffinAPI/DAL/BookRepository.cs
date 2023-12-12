@@ -201,7 +201,7 @@ namespace EPAGriffinAPI.DAL
                 ViewBookFileX.FillDto(x, bf);
                 book.BookFiles.Add(bf);
             }
-
+            book.CourseIds = await context.BookCourses.Where(q => q.BookId == id).OrderByDescending(q=>q.CourseId).Select(q => q.CourseId).ToListAsync();
             book.BookKeywords = await context.BookKeywords.Where(q => q.BookId == id).Select(q => q.Value).ToListAsync();
             book.BookAuthors = await context.BookAutors.Where(q => q.BookId == id).Select(q => q.PersonMiscId).ToListAsync();
 
@@ -235,19 +235,19 @@ namespace EPAGriffinAPI.DAL
 
 
                                                 }).ToList();
-            //book.BookRelatedGroups = (await (from x in context.BookRelatedGroups
-            //                                 join y in context.ViewJobGroups on x.GroupId equals y.Id
-            //                                 where x.BookId == id
-            //                                 select new { y, x.TypeId }).ToListAsync()).Select(q => new ViewModels./*JobGroup*/BookTypeGroup()
-            //                                 {
-            //                                     Title = q.y.Title,
-            //                                     FullCode = q.y.FullCode,
-            //                                     Remark = q.y.Remark,
-            //                                     Parent = q.y.Parent,
-            //                                     Id = q.y.Id,
-            //                                     TypeId = q.TypeId ?? -1,
-            //                                     Type = getTypeByTypeId(q.TypeId)
-            //                                 }).ToList();
+            book.BookRelatedGroups = (await (from x in context.BookRelatedGroups
+                                             join y in context.ViewJobGroups on x.GroupId equals y.Id
+                                             where x.BookId == id
+                                             select new { y, x.TypeId }).ToListAsync()).Select(q => new ViewModels./*JobGroup*/BookTypeGroup()
+                                             {
+                                                 Title = q.y.Title,
+                                                 FullCode = q.y.FullCode,
+                                                 Remark = q.y.Remark,
+                                                 Parent = q.y.Parent,
+                                                 Id = q.y.Id,
+                                                 TypeId = q.TypeId ?? -1,
+                                                 Type = getTypeByTypeId(q.TypeId)
+                                             }).ToList();
 
 
             var grps =  await (from x in context.BookRelatedGroups
@@ -571,6 +571,23 @@ namespace EPAGriffinAPI.DAL
                 {
                     Book = entity,
                     Value = x.ToLower(),
+                });
+        }
+
+        internal void FillBookCourses(Models.Book entity, ViewModels.Book dto)
+        {
+            var existing = this.context.BookCourses.Where(q => q.BookId == entity.Id).ToList();
+            while (existing.Count > 0)
+            {
+                var i = existing.First();
+                this.context.BookCourses.Remove(i);
+                existing.Remove(i);
+            }
+            foreach (var x in dto.CourseIds)
+                this.context.BookCourses.Add(new BookCourse()
+                {
+                    Book = entity,
+                      CourseId=x,
                 });
         }
 

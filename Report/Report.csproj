@@ -276,6 +276,12 @@
     <Compile Include="rptFPC.Designer.cs">
       <DependentUpon>rptFPC.cs</DependentUpon>
     </Compile>
+    <Compile Include="rptFPCAir1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rptFPCAir1.Designer.cs">
+      <DependentUpon>rptFPCAir1.cs</DependentUpon>
+    </Compile>
     <Compile Include="rptFPCPasco.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -467,6 +473,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="rptFPC.resx">
       <DependentUpon>rptFPC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptFPCAir1.resx">
+      <DependentUpon>rptFPCAir1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="rptFPCPasco.resx">
       <DependentUpon>rptFPCPasco.cs</DependentUpon>

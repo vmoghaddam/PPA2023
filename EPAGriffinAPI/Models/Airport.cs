@@ -37,6 +37,9 @@ namespace EPAGriffinAPI.Models
         public Nullable<decimal> Longitude { get; set; }
         public Nullable<int> SortIndex { get; set; }
         public Nullable<bool> IsInt { get; set; }
+        public string Country { get; set; }
+        public Nullable<int> UTC { get; set; }
+        public string Category { get; set; }
     
         public virtual City City { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
