@@ -1,13 +1,6 @@
 ﻿'use strict';
 app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
-    $scope.isNew = true;
     $scope.isEditable = false;
-    $scope.isLockVisible = false;
-    $scope.isContentVisible = false;
-    $scope.isFullScreen = false;
-    var detector = new MobileDetect(window.navigator.userAgent);
-
-    //if (detector.mobile() && !detector.tablet())
     $scope.isFullScreen = true;
 
     $scope.entity = {
@@ -20,11 +13,8 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
 
     $scope.followUpEntity = {
         Type: 7,
+        Feedback: "test test test test test test test test"
     }
-
-    $scope.fpoptions = [];
-    $scope.etoptions = [];
-
 
 
 
@@ -33,7 +23,7 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
     $scope.popup_add_visible = false;
     $scope.popup_height = $(window).height() - 300;
     $scope.popup_width = $(window).width() - 0;
-    $scope.popup_add_title = 'Cyber Security Hazard Report';
+    $scope.popup_add_title = ' Cyber Security Hazard/Event Safety Report Form';
     $scope.popup_instance = null;
 
     $scope.popup_add = {
@@ -53,8 +43,10 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
                         //    return;
                         //}
 
-                      
+
                         $scope.entity.Signed = "1";
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
                         $scope.followUpEntity.DateReferr = new Date();
@@ -68,16 +60,29 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
                         QAService.saveCyber($scope.entity).then(function (res) {
 
                             $scope.entity.Id = res.Data.Id;
-                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+                            $scope.followUpEntity.EntityId = res.Data.Id;
+                            if (res.IsSuccess == true) {
+                                QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+                                    console.log("follow up cyber")
+                                    $scope.loadingVisible = false;
+                                    General.ShowNotify(Config.Text_SavedOk, 'success');
 
-                                $scope.loadingVisible = false;
-                                General.ShowNotify(Config.Text_SavedOk, 'success');
-                                $scope.popup_add_visible = false;
-                                if ($scope.tempData.Status == "Not Signed") {
-                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "In Progress";
-                                }
-                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                                    if ($scope.tempData.Status == "Not Signed") {
+                                        var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                        row.Status = "In Progress";
+                                    }
+
+                                    $scope.popup_add_visible = false;
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                                QAService.saveFeedBack($scope.followUpEntity).then(function (response) {
+                                    console.log(response);
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                                $scope.entity.files = [];
+                            } else {
+                                General.ShowNotify('error', 'error');
+
+                            }
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -90,12 +95,13 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'success', text: '', icon: 'fas fa-file', onClick: function (e) {
-                      
+
                         var data = {
                             EmployeeId: $scope.tempData.crewId,
                             Type: $scope.followUpEntity.Type,
                             EntityId: $scope.entity.Id,
                             isEditable: $scope.isEditable,
+                            Files: $scope.entity.files,
                         };
                         $rootScope.$broadcast('InitAttachmentPopup', data);
                     }
@@ -105,6 +111,13 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'success', text: 'Save', icon: 'check', validationGroup: 'cyber', onClick: function (e) {
+                        var result = e.validationGroup.validate();
+
+                        if (!result.isValid) {
+                            General.ShowNotify(Config.Text_FillRequired, 'error');
+                            return;
+                        }
+
                         $scope.entity.FlightId = $scope.tempData.FlightId;
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
@@ -115,9 +128,16 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
                         $scope.loadingVisible = true;
                         QAService.saveCyber($scope.entity).then(function (res) {
                             $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                            General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.popup_add_visible = false;
+                           
+                            if (res.IsSuccess == true) {
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.entity.Id = res.Data.Id;
+                            }
+                            else {
+                                General.ShowNotify(Config.Text_SaveFailed, 'error');
+                                $scope.entity.Id = -1;
+                            }
+                            $scope.entity.files = [];
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -146,10 +166,6 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
 
         },
         onShown: function (e) {
-
-            if ($scope.isNew) {
-                $scope.isContentVisible = true;
-            }
             if ($scope.tempData != null)
                 $scope.bind();
 
@@ -160,13 +176,10 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
         },
         onHiding: function () {
             $rootScope.IsRootSyncEnabled = true;
-            //$scope.clearEntity();
+            $scope.fltInfo = false;
             $scope.entity = {
                 Id: -1,
-
             };
-            $scope.fpoptions = [];
-            $scope.etoptions = [];
             $scope.popup_add_visible = false;
             $rootScope.$broadcast('onQACyberSecurityHide', null);
         },
@@ -191,7 +204,6 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
 
 
     /////////////////////////////////
-    $scope.flight = null;
 
     $scope.chkIncidentBy = function (obj) {
         var _id = obj.Id;
@@ -239,30 +251,35 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
             else
                 _d.checked = false;
         });
+
+
     }
 
-   
+
     $scope.fill = function (data) {
         $scope.entity = data;
 
         $.each($scope.incident, function (_i, _d) {
             if (_d.Id == data.IncidentId)
                 _d.checked = true;
+
+
         });
 
         $.each($scope.access, function (_i, _d) {
             if (_d.Id == data.AccessId)
                 _d.checked = true;
+
         });
 
         $.each($scope.method, function (_i, _d) {
             if (_d.Id == data.MethodId)
                 _d.checked = true;
+
         });
-       
+
 
     };
-    $scope.isLockVisible = false;
     $scope.bind = function () {
         $scope.entity.FlightId = $scope.tempData.FlightId;
 
@@ -277,21 +294,37 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
 
         QAService.getCyberIncident().then(function (res) {
             $scope.incident = res.Data;
-            QAService.getCyberByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
-               
-                if (res.Data.Id != null && res.Data.EmployeeId == $scope.tempData.crewId) {
-                    $scope.fill(res.Data);
-                    $scope.isEditable = !$scope.entity.DateSign;
+            if ($scope.entity.FlightId == null) {
+                if ($scope.tempData.EntityId != null) {
+                    QAService.getCyberById($scope.tempData.EntityId).then(function (res) {
+                        $scope.fill(res.Data);
+                        $scope.isEditable = !$scope.entity.DateSign;
+                    });
+                } else {
+                    $scope.isEditable = true
                 }
-                else {
-                    $scope.entity.FlightNumber = res.Data.FlightNumber;
-                    $scope.entity.FlightSegment = res.Data.FlightSegment;
-                    $scope.entity.PaxTotal = res.Data.PaxTotal;
-                    $scope.entity.TypeRegisteration = res.Data.TypeRegisteration;
-                    $scope.isEditable = true;
+            } else {
+                QAService.getCyberByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
 
-                }
-            });
+                    if (res.Data.Id != null && res.Data.EmployeeId == $scope.tempData.crewId) {
+                        $scope.fill(res.Data);
+                        $scope.isEditable = !$scope.entity.DateSign;
+                    }
+                    else {
+                        $scope.entity.FlightNumber = res.Data.FlightNumber;
+                        $scope.entity.FlightSegment = res.Data.FlightSegment;
+                        $scope.entity.PaxTotal = res.Data.PaxTotal;
+                        $scope.entity.TypeRegisteration = res.Data.TypeRegisteration;
+                        $scope.entity.EmployeeName = res.Data.EmployeeName;
+                        $scope.entity.Email = res.Data.Email;
+                        $scope.entity.Mobile = res.Data.Mobile;
+                        $scope.entity.DateOccurrence = res.Data.DateOccurrence;
+                        $scope.fltInfo = true;
+                        $scope.isEditable = true;
+
+                    }
+                });
+            }
         });
 
 
@@ -327,9 +360,10 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
 
 
     $scope.txt_name = {
-        hoverStateEnabled: false,
         bindingOptions: {
-            value: 'entity.Name',
+            value: 'entity.EmployeeName',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -337,36 +371,81 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.JobTitle',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
-    $scope.txt_contactInfo = {
+    $scope.txt_mobile = {
+        bindingOptions: {
+            value: 'entity.Mobile',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
+        }
+    }
+
+    $scope.txt_email = {
+        bindingOptions: {
+            value: 'entity.Email',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
+        }
+    }
+
+    $scope.txt_incidentOther = {
         hoverStateEnabled: false,
         bindingOptions: {
-            value: 'entity.ContactInfo',
+            value: 'entity.IncidentDescription',
+        }
+    }
+
+    $scope.txt_methodOther = {
+        hoverStateEnabled: false,
+        bindingOptions: {
+            value: 'entity.MethodDescription',
+        }
+    }
+
+    $scope.txt_accessOther = {
+        hoverStateEnabled: false,
+        bindingOptions: {
+            value: 'entity.AccessDescription',
         }
     }
 
     $scope.txt_dateEvent = {
-        hoverStateEnabled: false,
-        useMaskBehavior: true,
-
-        type: 'datetime',
-        pickerType: "rollers",
-        displayFormat: "yyyy-MMM-dd  HH:mm",
+        type: 'date',
+        pickerType: 'rollers',
+        displayFormat: "yyyy-MMM-dd",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+    $scope.txt_OccurrenceTime = {
+        type: 'time',
+        pickerType: "rollers",
+        displayFormat: "HH:mm",
+        bindingOptions: {
+            value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_dateIncident = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateIncident',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -374,6 +453,8 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.AttackDescriptipn',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -381,45 +462,57 @@ app.controller('qaCyberSecurity', ['$scope', '$location', 'QAService', 'authServ
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.ImpactDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
     $scope.txt_breached = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.BreachedDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
     $scope.txt_containment = {
         hoverStateEnabled: false,
         bindingOptions: {
-            value: 'entity.AccessDescription',
+            value: 'entity.AccessMeasure',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
     $scope.txt_other = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Other',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
+    $scope.txt_delayReason = {
+        bindingOptions: {
+            value: 'entity.DelayReason',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+    $scope.num_delay = {
+        bindingOptions: {
+            value: 'entity.Delay',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
 
 
     ////////////////////////////////
 
     $scope.tempData = null;
-    $scope.$on('onSign', function (event, prms) {
-
-        if (prms.doc == 'csr')
-            flightService.signDocLocal(prms, prms.doc).then(function (response) {
-                // $scope.isEditable = false;
-                // $scope.isLockVisible = false;
-                $scope.url_sign = signFiles + prms.PICId + ".jpg";
-                $scope.PIC = prms.PIC;
-                $scope.signDate = moment(new Date(prms.JLDatePICApproved)).format('YYYY-MM-DD HH:mm');
-            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
-    });
     $scope.$on('InitQACyberSecurity', function (event, prms) {
-
+        console.log("qa cyber called");
 
         $scope.tempData = null;
 

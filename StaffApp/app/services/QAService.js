@@ -37,6 +37,17 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
+    var _getCabinReporter = function () {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + '/api/get/csr/reporter').then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
 
     var _getFlightPhase = function () {
 
@@ -135,10 +146,10 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
-    var _getCyberByFlightId = function (employeeId, flightId) {
+    var _getCyberByFlightId = function (crewId, flightId) {
 
         var deferred = $q.defer();
-        $http.get(apiQA + '/api/get/cyber/' + employeeId + '/' + flightId).then(function (response) {
+        $http.get(apiQA + '/api/get/cyber/' + crewId + "/" + flightId).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
             deferred.reject(Exceptions.getMessage(err));
@@ -234,10 +245,10 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
 
    
 
-    var _getCSRByFlightId = function (flightId, employeeId) {
+    var _getCSRByFlightId = function (flightId, crewId) {
 
         var deferred = $q.defer();
-        $http.get(apiQA+'/api/get/csr/' + flightId + '/' + employeeId).then(function (response) {
+        $http.get(apiQA+'/api/get/csr/' + flightId + "/" + crewId).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
             deferred.reject(Exceptions.getMessage(err));
@@ -246,10 +257,10 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
-    var _getMORByFlightId = function (employeeId, flightId) {
+    var _getMORByFlightId = function (crewId, flightId) {
 
         var deferred = $q.defer();
-        $http.get(apiQA+'/api/get/mor/' + employeeId + '/' + flightId).then(function (response) {
+        $http.get(apiQA + '/api/get/mor/' + crewId + '/' + flightId).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
             deferred.reject(Exceptions.getMessage(err));
@@ -270,10 +281,10 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
-    var _getGIAByFlightId = function (employeeId, flightId) {
+    var _getGIAByFlightId = function (crewId, flightId) {
 
         var deferred = $q.defer();
-        $http.get(apiQA+'/api/get/gia/' + employeeId + '/' + flightId).then(function (response) {
+        $http.get(apiQA + '/api/get/gia/' + crewId + '/' + flightId).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
             deferred.reject(Exceptions.getMessage(err));
@@ -282,17 +293,17 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
-    var _getCyberByFlightId = function (employeeId, flightId) {
+    //var _getCyberByFlightId = function (entity) {
 
-        var deferred = $q.defer();
-        $http.get(apiQA + '/api/get/cyber/' + employeeId + '/' + flightId).then(function (response) {
-            deferred.resolve(response.data);
-        }, function (err, status) {
-            deferred.reject(Exceptions.getMessage(err));
-        })
+    //    var deferred = $q.defer();
+    //    $http.post(apiQA + '/api/get/cyber/' + crewId + '/' + flightId).then(function (response) {
+    //        deferred.resolve(response.data);
+    //    }, function (err, status) {
+    //        deferred.reject(Exceptions.getMessage(err));
+    //    })
 
-        return deferred.promise;
-    }
+    //    return deferred.promise;
+    //}
 
 
     var _saveCHR = function (entity) {
@@ -307,10 +318,10 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
-    var _getCHRByFlightId = function (employeeId, flightId) {
+    var _getCHRByFlightId = function (crewId, flightId) {
 
         var deferred = $q.defer();
-        $http.get(apiQA+'/api/get/chr/' + employeeId + '/' + flightId).then(function (response) {
+        $http.get(apiQA + '/api/get/chr/' + crewId + '/' + flightId).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
             deferred.reject(Exceptions.getMessage(err));
@@ -355,10 +366,10 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
-    var _getSHRByFlightId = function (employeeId, flightId) {
+    var _getSHRByFlightId = function (crewId, flightId) {
 
         var deferred = $q.defer();
-        $http.get(apiQA+'/api/get/shr/' + employeeId + '/' + flightId).then(function (response) {
+        $http.get(apiQA + '/api/get/shr/'  + crewId + '/' + flightId ).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
             deferred.reject(Exceptions.getMessage(err));
@@ -392,10 +403,10 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
         return deferred.promise;
     }
 
-    var _getDHRByFlightId = function (employeeId, flightId) {
+    var _getDHRByFlightId = function (crewId, flightId) {
 
         var deferred = $q.defer();
-        $http.get(apiQA+'/api/get/dhr/' + employeeId + '/' + flightId).then(function (response) {
+        $http.get(apiQA + '/api/get/dhr/' + crewId + '/' + flightId).then(function (response) {
             deferred.resolve(response.data);
         }, function (err, status) {
             deferred.reject(Exceptions.getMessage(err));
@@ -454,6 +465,19 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     }
 	
 	
+	var _saveFeedBack = function (entity) {
+
+        var deferred = $q.defer();
+        $http.post(apiQA +'api/qa/save/feedback', entity).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+	
+	
 	 var _deleteAttachment = function (entity) {
 
         var deferred = $q.defer();
@@ -491,6 +515,183 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
 
         return deferred.promise;
     }
+
+    
+     var _downloadQa = function (filename, filetype) {
+        var deferred = $q.defer();
+        var name = filename + "." + filetype;
+         $http.get(apiQA + 'api/download/qa/' + filename + "/" + filetype, { responseType: 'arraybuffer' }).then(function (response) {
+            deferred.resolve(response.data);
+            console.log(response);
+            //var headers = response.config.headers;
+            //var filename = headers['content-disposition'].split('=')[1];
+            
+            var blob = new Blob([response.data], { type: "application/octet-stream" });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }, function (err, status) {
+            // deferred.reject(Exeptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    }
+
+
+    var _downloadQa1 = function (filename, filetype) {
+        var deferred = $q.defer();
+        var name = filename + "." + filetype;
+        $http.get(apiQA + 'api/download/qa/' + filename + "/" + filetype, { responseType: 'arraybuffer' }).then(function (response) {
+            deferred.resolve(response.data);
+            console.log(response);
+            //var headers = response.config.headers;
+            //var filename = headers['content-disposition'].split('=')[1];
+
+            browser.downloads.download({
+                url: URL.createObjectURL(new Blob([response.data], { type: "application/octet-stream" })),
+                filename: "test/test.txt",
+                saveAs: false,
+            })
+
+
+            //var blob = new Blob([response.data], { type: "application/octet-stream" });
+            //var url = window.URL.createObjectURL(blob);
+            //var a = document.createElement('a');
+            //a.href = url;
+            //a.download = name;
+            //a.click();
+            //window.URL.revokeObjectURL(url);
+        }, function (err, status) {
+            // deferred.reject(Exeptions.getMessage(err));
+        });
+
+        return deferred.promise;
+    }
+
+    var _getStation = function (cid) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + '/api/get/station').then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+     var _getEmployee = function (eid) {
+
+        var deferred = $q.defer();
+         $http.get(apiQA + 'api/qa/get/employee/' + eid).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+
+    var _getCSRById = function (Id) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/get/csr/byid/' + Id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+    var _getMORById = function (Id) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/get/mor/byid/' + Id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+    var _getVHRById = function (Id) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/get/vhr/' + Id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+    var _getGIAById = function (Id) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/get/gia/byid/' + Id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+    var _getCHRById = function (Id) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/get/chr/byid/' + Id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+    var _getSHRById = function (Id) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/get/shr/byid/' + Id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+    var _getDHRById = function (Id) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/get/dhr/byid/' + Id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
+    var _getCyberById = function (id) {
+
+        var deferred = $q.defer();
+        $http.get(apiQA + 'api/get/cyber/byid/' + id).then(function (response) {
+            deferred.resolve(response.data);
+        }, function (err, status) {
+            deferred.reject(Exceptions.getMessage(err));
+        })
+
+        return deferred.promise;
+    }
+
     serviceFactory.getCreatorHistory = _getCreatorHistory;
 
   
@@ -502,33 +703,42 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     serviceFactory.getWeather = _getWeather;
     serviceFactory.getSurface = _getSurface;
     serviceFactory.getLighting = _getLighting;
+    serviceFactory.getGIAById = _getGIAById;
 
     
     serviceFactory.saveCSR = _saveCRS;
     serviceFactory.getCSRByFlightId = _getCSRByFlightId;
     serviceFactory.getEventTitle = _getEventTitle;
     serviceFactory.getFlightPhase = _getFlightPhase;
+    serviceFactory.getCabinReporter = _getCabinReporter;
+    serviceFactory.getCSRById = _getCSRById;
+
 
 
     serviceFactory.getCHRByFlightId = _getCHRByFlightId;
     serviceFactory.saveCHR = _saveCHR;
     serviceFactory.getCHRReason = _getCHRReason;
+    serviceFactory.getCHRById = _getCHRById;
 
     serviceFactory.getSHRByFlightId = _getSHRByFlightId;
     serviceFactory.saveSHR = _saveSHR;
     serviceFactory.getSHRReason = _getSHRReason;
+    serviceFactory.getSHRById = _getSHRById;
 
     serviceFactory.getVHRById = _getVHRById;
     serviceFactory.saveVHR = _saveVHR;
+    serviceFactory.getVHRById = _getVHRById;
 
     serviceFactory.saveMaintenance = _saveMaintenance;
     serviceFactory.getMORByFlightId = _getMORByFlightId;
     serviceFactory.getMORCompnSpec = _getMORCompnSpec;
+    serviceFactory.getMORById = _getMORById;
 
     serviceFactory.saveDispatch = _saveDispatch;
     serviceFactory.getDHRByFlightId = _getDHRByFlightId;
     serviceFactory.getOPCatagory = _getOPCatagory;
     serviceFactory.getDISCatagory = _getDISCatagory;
+    serviceFactory.getDHRById = _getDHRById;
 
     serviceFactory.saveFollowUp = _saveFollowUp;
 
@@ -541,6 +751,15 @@ app.factory('QAService', ['$http', '$q', 'ngAuthSettings', '$rootScope', functio
     serviceFactory.getCyberIncident = _getCyberIncident;
     serviceFactory.getCyberAccess = _getCyberAccess;
     serviceFactory.getCyberMethod = _getCyberMethod;
+    serviceFactory.getCyberById = _getCyberById;
+
+    serviceFactory.downloadQa = _downloadQa;
+    serviceFactory.downloadQa1 = _downloadQa1;
+
+    serviceFactory.getStation = _getStation;
+    serviceFactory.getEmployee = _getEmployee;
+
+    serviceFactory.saveFeedBack = _saveFeedBack;
 
     return serviceFactory;
 

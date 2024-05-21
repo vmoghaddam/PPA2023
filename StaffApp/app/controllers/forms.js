@@ -1,5 +1,7 @@
 ﻿'use strict';
 app.controller('formsController', ['$scope', '$location', '$routeParams', '$rootScope', '$window', 'flightService', 'authService', 'notificationService', '$route', 'activityService', 'QAService', function ($scope, $location, $routeParams, $rootScope, $window, flightService, authService, notificationService, $route, activityService, QAService) {
+    $scope.flt = { ID: null };
+
     $scope.prms = $routeParams.prms;
 
     $scope.formatDate = function (dt) {
@@ -103,13 +105,11 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
     };
 
     $scope.showForm = function (obj) {
-        console.log(obj);
-
         var data = {
             FlightId: obj.FlightId,
             crewId: $rootScope.employeeId,
             Status: obj.Status,
-            EntityId: obj.EntityId,
+            EntityId: obj.EntityId, 
         };
 
         switch (obj.type) {
@@ -133,6 +133,9 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
                 break;
             case 6:
                 $rootScope.$broadcast('InitQADispatch', data);
+                break;
+            case 7:
+                $rootScope.$broadcast('InitQACyberSecurity', data);
                 break;
 
         }
@@ -302,20 +305,19 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
     $scope.bind = function () {
 
         $scope.loadingVisible = true;
-        /*flightService.getForms($rootScope.employeeId).then(function (response) {
-            $scope.loadingVisible = false;
-            
-            $scope.ds = response ;
-           // console.log('PIFs:');
-            console.log(response);
-
-        }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });*/
-
+       
         QAService.getCreatorHistory($rootScope.employeeId).then(function (res) {
             $scope.loadingVisible = false;
-            console.log(res);
             $scope.ds = res.Data;
-            $scope.bind_closed();
+
+            if ($scope.selectedTabIndex == 0)
+                $scope.bind_closed();
+            if ($scope.selectedTabIndex == 1)
+                $scope.bind_inprogress();
+            if ($scope.selectedTabIndex == 2)
+                $scope.bind_notsigned();
+
+
         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
     };
@@ -387,6 +389,7 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
         useMaskBehavior: true,
         onValueChanged: function (e) {
             //$scope.bind();
+            $scope.flt = null;
             $scope.bind_flts();
         },
         bindingOptions: {
@@ -413,7 +416,7 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
 
 
     $scope.flt_no = null;
-    $scope.flt = null;
+    $scope.flt = {ID: null};
     $scope.txt_route = {
         hoverStateEnabled: false,
 
@@ -433,29 +436,36 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
 
             $scope.ds_flts = response;
 
-            console.log(response);
-
         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
     };
+
+
+   
     $scope.sb_flts = {
 
         showClearButton: true,
-        searchEnabled: true,
-        searchExpr: ["FlightNumber"],
+        //searchEnabled: true,
+        //searchExpr: ["FlightNumber"],
         placeholder: 'Flight No',
         displayExpr: "FlightNumber",
         onSelectionChanged: function (e) {
-
             if (!e.selectedItem) {
                 $scope.flt_no = null;
                 $scope.flt_route = null;
+                
+            } else {
+
+                $scope.flt_no = e.selectedItem.FlightNumber;
+                $scope.flt_route = e.selectedItem.FromAirportIATA + '-' + e.selectedItem.ToAirportIATA + ' (' + e.selectedItem.Register + ') (' +
+                    moment(new Date(e.selectedItem.STDLocal)).format('HH:mm') + ')';
             }
 
-            $scope.flt_no = e.selectedItem.FlightNumber;
-            $scope.flt_route = e.selectedItem.FromAirportIATA + '-' + e.selectedItem.ToAirportIATA + ' (' + e.selectedItem.Register + ') (' +
-                moment(new Date(e.selectedItem.STDLocal)).format('HH:mm') + ')';
+        },
 
-
+        onValueChanged: function(e) {
+            if (e.value === null) {
+                $scope.flt = {ID: null};
+            }
         },
         bindingOptions: {
             value: 'flt',
@@ -474,7 +484,7 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
     }
 
 
-
+   
     $scope.popup_select_visible = false;
     $scope.popup_select = {
         height: 450,
@@ -488,9 +498,16 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
             {
                 widget: 'dxButton', location: 'after', options: {
                     type: 'normal', text: 'Select', onClick: function (e) {
-                        var data = { FlightId: $scope.flt.ID, crewId: $rootScope.employeeId };
-
-                        $rootScope.$broadcast($scope.selected_type, data);
+                        if ($scope.selected_type == "InitQAVoluntary") {
+                            var data = { crewId: $rootScope.employeeId };
+                            $rootScope.$broadcast($scope.selected_type, data);
+                        }
+                        else {
+                            var fltId = $scope.flt.ID == null ? null : $scope.flt.ID
+                            
+                            var data = { FlightId: fltId, crewId: $rootScope.employeeId };
+                            $rootScope.$broadcast($scope.selected_type, data);
+                        }
 
                     }
                 }, toolbar: 'bottom'
@@ -520,8 +537,9 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
 
             //$scope.clearEntity();
 
-            $scope.popup_newform_visible = false;
 
+            $scope.popup_newform_visible = false;
+            $scope.bind();
         },
         onContentReady: function (e) {
 
@@ -543,39 +561,46 @@ app.controller('formsController', ['$scope', '$location', '$routeParams', '$root
     /////////////////
 
     $scope.$on('onQACabinHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQACateringHide', function () {
 
-        //$scope.bind();
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
 
     });
     $scope.$on('onQAGroundHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQAMaintenanceHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQADispatchHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQASecurityHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQAVoluntaryHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
     $scope.$on('onQACyberSecurityHide', function () {
-        $scope.bind_inprogress();
-        $scope.bind_notsigned();
+        //$scope.bind_inprogress();
+        //$scope.bind_notsigned();
+        $scope.bind();
     });
 
 

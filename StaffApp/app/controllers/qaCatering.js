@@ -1,14 +1,8 @@
 ﻿'use strict';
 app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'authService', '$routeParams', '$rootScope', '$window', function ($scope, $location, QAService, authService, $routeParams, $rootScope, $window) {
-    $scope.isNew = true;
     $scope.isEditable = false;
-    $scope.isLockVisible = false;
-    $scope.isContentVisible = false;
-    $scope.isFullScreen = false;
-    var detector = new MobileDetect(window.navigator.userAgent);
-
-    //if (detector.mobile() && !detector.tablet())
     $scope.isFullScreen = true;
+    $scope.fltInfo = false;
 
     $scope.entity = {
         Id: -1,
@@ -20,12 +14,11 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.followUpEntity = {
         Type: 4,
+        Feedback: "test test test test test test test test"
     }
-    $scope.optReason = {},
 
-
-        ////////////////////////
-        $scope.popup_add_visible = false;
+    ////////////////////////
+    $scope.popup_add_visible = false;
     $scope.popup_height = $(window).height() - 300;
     $scope.popup_width = $(window).width() - 0;
     $scope.popup_add_title = 'Catering Hazard Report';
@@ -48,9 +41,10 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                             return;
                         }
 
-                        
+
                         $scope.entity.Signed = "1";
-                        console.log($scope.entity)
+                        $scope.entity.FlightId = $scope.tempData.FlightId;
+                        $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.followUpEntity.EntityId = $scope.entity.Id;
                         $scope.followUpEntity.ReferrerId = $scope.tempData.crewId;
                         $scope.followUpEntity.DateReferr = new Date();
@@ -66,19 +60,30 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                         QAService.saveCHR($scope.entity).then(function (res) {
 
                             $scope.entity.Id = res.Data.Id;
-                            QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
+                            $scope.followUpEntity.EntityId = res.Data.Id;
+                            if (res.IsSuccess == true) {
+                                QAService.saveFollowUp($scope.followUpEntity).then(function (response) {
 
-                                $scope.loadingVisible = false;
-                                General.ShowNotify(Config.Text_SavedOk, 'success');
-                                $scope.popup_add_visible = false;
+                                    $scope.loadingVisible = false;
+                                    General.ShowNotify(Config.Text_SavedOk, 'success');
+                                    $scope.popup_add_visible = false;
 
-                                if ($scope.tempData.Status == "Not Signed") {
-                                    var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
-                                    row.Status = "In Progress";
-                                }
+                                    if ($scope.tempData.Status == "Not Signed") {
+                                        var row = Enumerable.From($rootScope.ds_active).Where("$.EntityId==" + $scope.entity.Id).FirstOrDefault();
+                                        row.Status = "In Progress";
+                                    }
 
+                                    $scope.popup_add_visible = false;
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
-                            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+                                QAService.saveFeedBack($scope.followUpEntity).then(function (response) {
+                                    console.log(response);
+                                }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
+
+                            } else {
+                                General.ShowNotify('error', 'success');
+                            }
+                            $scope.entity.files = [];
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
 
 
@@ -96,6 +101,7 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                             Type: $scope.followUpEntity.Type,
                             EntityId: $scope.entity.Id,
                             isEditable: $scope.isEditable,
+                            Files: $scope.entity.files,
                         }
                         $rootScope.$broadcast('InitAttachmentPopup', data);
                     }
@@ -113,7 +119,6 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                         }
 
 
-                        //$scope.entity.OccurrenceDateTime = $scope.entity.OccurrenceDate + " " + $scope.entity.Time + ":00";
                         $scope.entity.FlightId = $scope.tempData.FlightId;
                         $scope.entity.EmployeeId = $scope.tempData.crewId;
                         $scope.entity.DateOccurrenceStr = moment(new Date($scope.entity.DateOccurrence)).format('YYYY-MM-DD-HH-mm');
@@ -127,11 +132,16 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                         $scope.loadingVisible = true;
                         QAService.saveCHR($scope.entity).then(function (res) {
                             $scope.loadingVisible = false;
-                            $scope.entity.Id = res.Data.Id;
-                            General.ShowNotify(Config.Text_SavedOk, 'success');
-                            $scope.popup_add_visible = false;
+                            if (res.IsSuccess == true) {
+                                General.ShowNotify(Config.Text_SavedOk, 'success');
+                                $scope.entity.Id = res.Data.Id;
+                            }
+                            else {
+                                General.ShowNotify(Config.Text_SaveFailed, 'error');
+                                $scope.entity.Id = -1;
+                            }
+                            $scope.entity.files = [];
                         }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
 
 
                     }
@@ -159,9 +169,6 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         },
         onShown: function (e) {
 
-            if ($scope.isNew) {
-                $scope.isContentVisible = true;
-            }
             if ($scope.tempData != null)
                 $scope.bind();
 
@@ -172,14 +179,12 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         },
         onHiding: function () {
             $rootScope.IsRootSyncEnabled = true;
-            //$scope.clearEntity();
+            $scope.fltInfo = false;
             $scope.entity = {
                 Id: -1,
                 ReasonId: null,
 
             };
-            $scope.fpoptions = [];
-            $scope.etoptions = [];
             $scope.popup_add_visible = false;
             $rootScope.$broadcast('onQACateringHide', null);
         },
@@ -205,12 +210,11 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
     /////////////////////////////////
 
     $scope.chkReason = function (obj) {
-        console.log(obj.Id);
         var _id = obj.Id;
         var _val = obj.checked;
 
         $.each($scope.chrReason, function (_i, _d) {
-            console.log(_val);
+
             if (_d.Id == _id) {
                 _d.checked = _val;
                 if (_val)
@@ -220,8 +224,6 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
                 _d.checked = false;
         });
 
-        console.log($scope.entity.ReasonId);
-        
         $.each($scope.chrReason, function (_i, _d) {
             if (_d.Title.includes('سایر')) {
                 if (_d.checked)
@@ -236,36 +238,58 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.fill = function (data) {
         $scope.entity = data;
+
+        console.log(data);
+
         $.each($scope.chrReason, function (_i, _d) {
             if (_d.Id == data.ReasonId)
                 _d.checked = true;
         });
     };
-    $scope.isLockVisible = false;
+
     $scope.bind = function () {
         $scope.entity.FlightId = $scope.tempData.FlightId;
 
         QAService.getCHRReason().then(function (res) {
             $scope.chrReason = res.Data
-            QAService.getCHRByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
-                console.log(res);
-                if (res.Data.Id != null) {
-                    $scope.fill(res.Data);
-                    $scope.isEditable = !$scope.entity.DateSign;
-                }
-                else {
-                    $scope.entity.FlightNumber = res.Data.FlightNumber;
-                    $scope.entity.Route = res.Data.Route;
-                    $scope.entity.Register = res.Data.Register;
+            if ($scope.entity.FlightId == null) {
+                if ($scope.tempData.EntityId != null) {
+                    QAService.getCHRById($scope.tempData.EntityId).then(function (res) {
+                        $scope.fill(res.Data);
+                        $scope.isEditable = !$scope.entity.DateSign;
+                    });
+                } else {
                     $scope.isEditable = true;
                 }
+            } else {
+                QAService.getCHRByFlightId($scope.tempData.crewId, $scope.entity.FlightId).then(function (res) {
+                    if (res.Data.Id != null) {
+                        $scope.fill(res.Data);
+                        $scope.isEditable = !$scope.entity.DateSign;
+                        $scope.fltInfo = true;
+                    }
+                    else {
+                        $scope.fltInfo = true;
+                        $scope.entity.FlightNumber = res.Data.FlightNumber;
+                        $scope.entity.Route = res.Data.Route;
+                        $scope.entity.Register = res.Data.Register;
+                        $scope.entity.EmployeeName = res.Data.EmployeeName;
+                        $scope.entity.Email = res.Data.Email;
+                        $scope.entity.Mobile = res.Data.Mobile;
+                        $scope.entity.DateOccurrence = res.Data.DateOccurrence;
+                        $scope.isEditable = true;
+                    }
 
-            });
+                });
+            }
         });
 
-      
+
 
     };
+
+
+
     ////////////////////////////////
     $scope.scroll_qaCatering_height = $(window).height() - 130;
     $scope.scroll_qaCatering = {
@@ -295,12 +319,13 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
 
     $scope.txt_reportDate = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
         type: 'datetime',
         pickerType: "rollers",
         displayFormat: "yyyy-MMM-dd  HH:mm",
         bindingOptions: {
             value: 'entity.DateReport',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -308,44 +333,69 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.ReasonDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
-    $scope.txt_dateOccurrence = {
+    $scope.txt_description = {
         hoverStateEnabled: false,
-        useMaskBehavior: true,
-        type: 'datetime',
+        bindingOptions: {
+            value: 'entity.Description',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+    $scope.txt_hazardDate = {
+        type: 'date',
         pickerType: "rollers",
-        displayFormat: "yyyy-MMM-dd  HH:mm",
+        displayFormat: "yyyy-MMM-dd",
         bindingOptions: {
             value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
-
+    $scope.txt_hazardTime = {
+        type: 'time',
+        pickerType: "rollers",
+        displayFormat: "HH:mm",
+        bindingOptions: {
+            value: 'entity.DateOccurrence',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
 
     $scope.txt_area = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Place',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_route = {
-        hoverStateEnabled: false,
+        readOnly: true,
+        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.Route',
         }
     }
 
     $scope.txt_register = {
-        hoverStateEnabled: false,
+        readOnly: true,
+        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.Register',
         }
     }
 
     $scope.txt_flightNumber = {
-        hoverStateEnabled: false,
+        readOnly: true,
+        useMaskBehavior: false,
         bindingOptions: {
             value: 'entity.FlightNumber',
         }
@@ -355,6 +405,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Trolley',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -362,6 +414,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Equipment',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -369,6 +423,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Transporter',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -377,27 +433,71 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.TrolleyEquipmentTransporterDecs',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
-    $scope.txt_saftyEquipmentUseage = {
-        hoverStateEnabled: false,
+    $scope.dsSafty = [
+        { value: false, title: 'NO' },
+        { value: true, title: 'YES' },
+    ];
+
+    $scope.sb_safty = {
+        showClearButton: false,
+        searchEnabled: false,
+        dataSource: $scope.dsSafty,
+        placeholder: '',
+        displayExpr: 'title',
+        valueExpr: 'value',
         bindingOptions: {
             value: 'entity.SaftyEquipmentUseage',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
+
+
 
     $scope.txt_saftyEquipmentType = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.SaftyEquipmentType',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
+
+
+
+
+
+    $scope.dsInjury = [
+        { value: false, title: 'NO' },
+        { value: true, title: 'YES' },
+    ];
+
+    $scope.sb_injuryOccurring = {
+        showClearButton: false,
+        searchEnabled: false,
+        dataSource: $scope.dsInjury,
+        placeholder: '',
+        displayExpr: 'title',
+        valueExpr: 'value',
+        bindingOptions: {
+            value: 'entity.InjeryOccurring',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
 
     $scope.txt_injuryDescription = {
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.InjuryDescription',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -405,6 +505,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.WorkBreak',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -412,6 +514,8 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.WorkBreakPeriod',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -419,27 +523,51 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
         hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.PreventiveActions',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
     $scope.txt_email = {
-        hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.Email',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
         }
     }
 
     $scope.txt_telNumber = {
-        hoverStateEnabled: false,
         bindingOptions: {
             value: 'entity.TelNumber ',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
         }
     }
 
-      $scope.txt_name = {
-        hoverStateEnabled: false,
+    $scope.txt_name = {
         bindingOptions: {
-            value: 'entity.Name ',
+            value: 'entity.EmployeeName',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+
+        }
+    }
+
+    $scope.txt_delayReason = {
+        bindingOptions: {
+            value: 'entity.DelayReason',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
+        }
+    }
+
+    $scope.num_delay = {
+        bindingOptions: {
+            value: 'entity.Delay',
+            useMaskBehavior: 'isEditable',
+            readOnly: '!isEditable'
         }
     }
 
@@ -449,27 +577,10 @@ app.controller('qaCateringController', ['$scope', '$location', 'QAService', 'aut
     ////////////////////////////////
 
     $scope.tempData = null;
-    $scope.$on('onSign', function (event, prms) {
-
-        if (prms.doc == 'chr')
-            flightService.signDocLocal(prms, prms.doc).then(function (response) {
-                // $scope.isEditable = false;
-                // $scope.isLockVisible = false;
-                $scope.url_sign = signFiles + prms.PICId + ".jpg";
-                $scope.PIC = prms.PIC;
-                $scope.signDate = moment(new Date(prms.JLDatePICApproved)).format('YYYY-MM-DD HH:mm');
-            }, function (err) { $scope.loadingVisible = false; General.ShowNotify(err.message, 'error'); });
-
-    });
     $scope.$on('InitQACatering', function (event, prms) {
-
 
         $scope.tempData = null;
         $scope.tempData = prms;
-        
-
-
-        console.log($scope.tempData);
 
         $scope.popup_add_visible = true;
 

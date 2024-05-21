@@ -31,16 +31,18 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
         dragEnabled: true,
         closeOnOutsideClick: false,
         onShowing: function (e) {
-           
+
             $scope.popup_instance.repaint();
 
 
         },
         onShown: function (e) {
 
-            
-            if ($scope.tempData != null)
-                $scope.bind();
+
+            if ($scope.tempData != null && $scope.tempData.Files != null)
+                $scope.bind(0);
+            else
+                $scope.bind(1);
 
 
 
@@ -49,10 +51,14 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
             $scope.entity = {
                 Id: -1,
             };
-           
+
             $scope.popup_attachment_visible = false;
             $rootScope.$broadcast('onAttachmentHide', $scope.files);
             $scope.files = [];
+            $scope.uploaderValueDocument = [];
+            $scope.fileList = [];
+            $scope.fileNames = [];
+            $scope.Remark = null;
         },
         onContentReady: function (e) {
             if (!$scope.popup_instance)
@@ -98,19 +104,25 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
     };
 
     $scope.bind = function () {
-        QAService.getImportedFile($scope.entity.EntityId, $scope.entity.EmployeeId, $scope.entity.Type).then(function (response) {
-
-            console.log(response);
-
-            $.each(response.Data, function (_i, _d) {
-                console.log(_d);
-                $scope.files.push({ Id: -1, AttachmentId: _d.Id, FileName: _d.Lable, FileType: _d.AttachmentType, Description: _d.Description });
-            });
-        });
+      
+              
+                QAService.getImportedFile($scope.entity.EntityId, $scope.entity.EmployeeId, $scope.entity.Type).then(function (response) {
+                    if (response.IsSuccess == true)
+                        $.each(response.Data, function (_i, _d) {
+                            $scope.files.push({ Id: -1, AttachmentId: _d.Id, FileName: _d.Lable, FileType: _d.AttachmentType, Description: _d.Description });
+                        });
+                });
+        
     }
 
 
-
+    $scope.download = function (e) {
+        $scope.loadingVisible = true;
+        var filename = e.FileName.split(".");
+        QAService.downloadQa(filename[0], filename[1]).then(function (response) {
+            $scope.loadingVisible = false;
+        });
+    }
 
     $scope.txt_fileRemark = {
         height: 100,
@@ -136,8 +148,7 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
 
     $scope.deleteFile = function (f) {
 
-        console.log(f);
-
+        
         if (f.Id != -1) {
             $.each($scope.files, function (_i, _d) {
                 if (_d.Id == f.Id)
@@ -172,7 +183,7 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
         //  width: $scope.popup_width = $(window).width() / 2.3,
         width: '100%',
         onClick: function (e) {
-            alert("Download");
+
         }
     };
 
@@ -183,14 +194,11 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
         width: 35,
         type: 'success',
         onClick: function (e) {
-            $scope.loadingVisible = true;
+
 
             $scope.files.push({ Id: id = id + 1, AttachmentId: -1, FileName: $scope.file.name, FileType: $scope.file.type, Description: $scope.Remark });
-            console.log($scope.files);
-            //QAService.importAttachment($scope.entity).then(function (response) {
-            //    $scope.loadingVisible = false;
-            //    console.log(response);
-            //});
+            $scope.Remark = null;
+            $scope.entity.FileName = null;
         }
     };
 
@@ -216,15 +224,13 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
             $scope.loadingVisible = true;
             $scope.fileList.push(res.file);
             $scope.fileCount = $scope.fileList.length;
-            console.log(res);
+            $scope.loadingVisible = true;
         },
 
 
 
         onUploaded: function (e) {
-            console.log(e);
             $scope.file = e.file;
-
             $scope.entity.FileName = e.file.name;
             $scope.entity.FileType = e.file.type;
             $scope.loadingVisible = false;
@@ -240,12 +246,15 @@ app.controller('qaAttachmentPopup', ['$scope', 'QAService', '$routeParams', '$ro
     $scope.$on('InitAttachmentPopup', function (event, prms) {
         $scope.tempData = prms;
 
-        console.log($scope.tempData);
-
         $scope.entity.EntityId = $scope.tempData.EntityId;
         $scope.entity.Type = $scope.tempData.Type;
         $scope.entity.EmployeeId = $scope.tempData.EmployeeId;
         $scope.isEditable = $scope.tempData.isEditable;
+
+        if ($scope.tempData.Files != null) {
+            $scope.files = $scope.tempData.Files.filter(function (obj) { return obj.Id !== -1});
+        }
+
         $scope.popup_attachment_visible = true;
     });
 }]);
